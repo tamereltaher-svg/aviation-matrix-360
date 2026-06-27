@@ -44,6 +44,21 @@ Thumbs.db
 .cursor/rules/nx-rules.mdc
 .github/instructions/nx.instructions.md
 
-# Replit
+# Build outputs
+artifacts/*/dist/
+artifacts/*/.expo/
+
+# Replit internals
 .cache/
 .local/
+.agents/
+attached_assets/
+
+# Env files — never commit secrets
+.env
+.env.*
+!.env.example
+
+# Backup archives
+*.tar.gz
+*.zip
