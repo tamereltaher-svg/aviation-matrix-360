@@ -1,0 +1,148 @@
+Improve the Aviation Matrix 360 website while keeping the current design style, navy aviation theme, typography, and layout quality.
+
+Do not rebuild the website from scratch.
+Only improve the existing pages and content.
+
+Main website structure must remain:
+
+Home
+About
+Platform
+Academy
+Contact
+
+Important brand structure:
+
+Aviation Matrix 360 is the parent aviation ecosystem.
+
+It has two main pillars:
+
+1. Aviation Matrix Platform
+2. Aviation Matrix Academy
+
+Kids Aviation Matrix must be presented as a sub-program under Aviation Matrix Academy, not as a separate main navigation item.
+
+Do not include Flight Support at this stage.
+
+Updates required:
+
+1. Homepage
+
+Add a section under the hero called:
+
+Our Ecosystem
+
+Create three cards:
+
+Card 1:
+Title:
+Operations
+
+Subtitle:
+Operational Intelligence and Aviation Systems
+
+Description:
+Aviation Matrix 360 helps aviation organizations structure operations, improve visibility, and connect execution with intelligence.
+
+Card 2:
+Title:
+Education
+
+Subtitle:
+Professional Aviation Learning and Development
+
+Description:
+Aviation Matrix Academy supports aviation professionals with operational knowledge, structured learning, and industry-focused development.
+
+Card 3:
+Title:
+Future Generations
+
+Subtitle:
+Kids Aviation Matrix Educational Programs
+
+Description:
+Kids Aviation Matrix introduces children to aviation, airports, aircraft, operations, and aviation careers through engaging educational experiences.
+
+2. Platform Page
+
+Update the page title to:
+
+Aviation Matrix Operations Platform
+
+Update the description to:
+
+An operational intelligence platform designed to help aviation organizations structure operations, govern data, improve visibility, and support decision making.
+
+Keep the Request a Demo button, but change its text to:
+
+Request Platform Preview
+
+3. Academy Page
+
+Keep the main title:
+
+Aviation Matrix Academy
+
+Add two sections:
+
+Section 1:
+Professional Aviation Learning
+
+Description:
+Professional aviation education, operational knowledge development, and industry-focused learning programs for aviation professionals and organizations.
+
+Section 2:
+Kids Aviation Matrix
+
+Description:
+Kids Aviation Matrix is an aviation education initiative designed to introduce children to aviation, airports, aircraft, operations, and aviation careers through engaging learning experiences.
+
+Button:
+Explore Kids Program
+
+4. Contact Page
+
+Do not display phone numbers.
+Do not display personal mobile numbers.
+Do not display physical addresses yet.
+Do not display private contact details.
+
+Keep only:
+
+* Contact form
+* General email placeholder:
+  [info@aviationmatrix360.com](mailto:info@aviationmatrix360.com)
+
+Add this message:
+
+Official contact details will be announced soon.
+
+5. Footer
+
+Add a footer to all pages containing:
+
+Aviation Matrix 360
+
+Links:
+Home
+About
+Platform
+Academy
+Contact
+
+Text:
+Aviation Matrix 360 is an aviation ecosystem focused on operations, education, and future aviation learning.
+
+6. General Rules
+
+No login.
+No dashboard.
+No backend.
+No database.
+No Supabase integration.
+No phone numbers.
+No physical address.
+No Flight Support section.
+Do not remove the current professional design.
+Keep the website responsive for desktop and mobile.

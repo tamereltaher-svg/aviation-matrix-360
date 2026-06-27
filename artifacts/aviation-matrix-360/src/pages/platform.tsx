@@ -48,14 +48,14 @@ export default function Platform() {
               Enterprise Solution
             </div>
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
-              Aviation Matrix Platform
+              Aviation Matrix Operations Platform
             </h1>
             <p className="text-xl text-white/80 leading-relaxed mb-8">
-              An Operational Intelligence Platform designed specifically for the aviation industry to structure operations, enforce governance, and provide unparalleled visibility.
+              An operational intelligence platform designed to help aviation organizations structure operations, govern data, improve visibility, and support decision making.
             </p>
             <Link href="/contact">
               <Button size="lg" className="bg-secondary text-white hover:bg-secondary/90">
-                Request a Demo
+                Request Platform Preview
               </Button>
             </Link>
           </motion.div>

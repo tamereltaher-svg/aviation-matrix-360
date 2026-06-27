@@ -37,24 +37,28 @@ export default function Academy() {
         </div>
       </section>
 
+      {/* Professional Aviation Learning Section */}
       <section className="py-24 bg-background">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">Developing Aviation Leaders</h2>
+              <h2 className="text-sm font-bold text-secondary tracking-widest uppercase mb-3">Section 1</h2>
+              <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-6">Professional Aviation Learning</h3>
               <div className="h-1 w-20 bg-secondary mb-8"></div>
-              
+              <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+                Professional aviation education, operational knowledge development, and industry-focused learning programs for aviation professionals and organizations.
+              </p>
               <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
                 <p>
                   Technology alone cannot drive the aviation industry forward; it requires highly skilled professionals who understand the intricate balance of operations, safety, and efficiency.
                 </p>
                 <p>
-                  The Aviation Matrix Academy offers rigorous, industry-aligned curricula designed to bridge the gap between theoretical knowledge and practical operational excellence. Our programs are crafted by industry veterans for the next generation of aviation leaders.
+                  The Aviation Matrix Academy offers rigorous, industry-aligned curricula designed to bridge the gap between theoretical knowledge and practical operational excellence.
                 </p>
               </div>
             </motion.div>
@@ -85,20 +89,55 @@ export default function Academy() {
         </div>
       </section>
 
-      <section className="py-24 bg-primary text-white">
+      {/* Kids Aviation Matrix Section */}
+      <section className="py-24 bg-muted/40 border-t border-border">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-white/10 mb-6">
-              <Rocket className="h-8 w-8 text-secondary" />
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Kids Aviation Matrix</h2>
-            <div className="h-1 w-20 bg-secondary mx-auto mb-8"></div>
-            <p className="text-xl text-white/80 leading-relaxed mb-10">
-              The future of aviation begins long before a professional career starts. Kids Aviation Matrix is our upcoming generational initiative designed to introduce children to the wonders of aerospace through engaging, age-appropriate educational experiences. 
-            </p>
-            <div className="inline-block px-6 py-3 border border-white/30 rounded-lg text-sm font-medium tracking-wide uppercase">
-              Initiative Launching Soon
-            </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="bg-primary rounded-2xl p-10 text-white order-2 lg:order-1"
+            >
+              <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-white/10 mb-6">
+                <Rocket className="h-8 w-8 text-secondary" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">Kids Aviation Matrix</h3>
+              <div className="h-1 w-16 bg-secondary mb-6"></div>
+              <p className="text-white/80 leading-relaxed mb-4">Airports. Aircraft. Operations. Careers.</p>
+              <ul className="space-y-3 text-white/70 text-sm">
+                {["Aviation and airport fundamentals", "How aircraft work", "Aviation careers exploration", "Operational concepts for young minds"].map((item, i) => (
+                  <li key={i} className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-secondary shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="order-1 lg:order-2"
+            >
+              <h2 className="text-sm font-bold text-secondary tracking-widest uppercase mb-3">Section 2</h2>
+              <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-6">Kids Aviation Matrix</h3>
+              <div className="h-1 w-20 bg-secondary mb-8"></div>
+              <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+                Kids Aviation Matrix is an aviation education initiative designed to introduce children to aviation, airports, aircraft, operations, and aviation careers through engaging learning experiences.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-10">
+                Part of the Aviation Matrix Academy ecosystem, this program ensures that the next generation grows up connected to aviation — not just as passengers, but as future professionals, innovators, and leaders in the industry.
+              </p>
+              <Link href="/contact">
+                <Button size="lg" className="bg-primary text-white hover:bg-primary/90">
+                  Explore Kids Program
+                </Button>
+              </Link>
+            </motion.div>
           </div>
         </div>
       </section>

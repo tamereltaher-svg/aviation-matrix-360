@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { toast } from "@/hooks/use-toast";
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { Mail, Info } from "lucide-react";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -63,47 +63,33 @@ export default function Contact() {
       <section className="py-24 bg-background flex-grow">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-16">
-            <div className="lg:col-span-2 space-y-10">
+            <div className="lg:col-span-2 space-y-8">
               <div>
-                <h3 className="text-2xl font-bold text-foreground mb-6">Headquarters</h3>
+                <h3 className="text-2xl font-bold text-foreground mb-6">Contact Information</h3>
                 <div className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                      <MapPin className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <h5 className="font-bold text-foreground">Address</h5>
-                      <p className="text-muted-foreground mt-1">1 Aviation Way, Sector 4<br />Global Hub, AM 360</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-4">
-                    <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                      <Phone className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <h5 className="font-bold text-foreground">Phone</h5>
-                      <p className="text-muted-foreground mt-1">+1 (800) MATRIX-0</p>
-                    </div>
-                  </div>
-                  
                   <div className="flex items-start gap-4">
                     <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
                       <Mail className="h-5 w-5" />
                     </div>
                     <div>
                       <h5 className="font-bold text-foreground">Email</h5>
-                      <p className="text-muted-foreground mt-1">contact@aviationmatrix360.com</p>
+                      <a
+                        href="mailto:info@aviationmatrix360.com"
+                        className="text-secondary hover:underline mt-1 block"
+                      >
+                        info@aviationmatrix360.com
+                      </a>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-4">
                     <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                      <Clock className="h-5 w-5" />
+                      <Info className="h-5 w-5" />
                     </div>
                     <div>
-                      <h5 className="font-bold text-foreground">Business Hours</h5>
-                      <p className="text-muted-foreground mt-1">Monday - Friday<br />8:00 AM - 6:00 PM (EST)</p>
+                      <p className="text-muted-foreground mt-1 italic">
+                        Official contact details will be announced soon.
+                      </p>
                     </div>
                   </div>
                 </div>
