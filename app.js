@@ -90,7 +90,7 @@ function registration(){
    <div class="field"><label>Education stage</label><select name="education_stage"><option value="school">School</option><option value="secondary">Secondary</option><option value="university">University</option><option value="graduate">Graduate</option><option value="other">Other</option></select></div>
    <div class="field"><label>Current city</label><input name="current_city" required value="${esc(state.current_city||'')}"></div>
    <div class="field"><label>Aviation interest</label><select name="aviation_interest"><option value="cabin_crew">Cabin Crew</option><option value="passenger_services">Passenger Services</option><option value="cargo">Cargo</option><option value="ground_operations">Ground Operations</option><option value="flight_ops">Flight Operations</option><option value="not_sure">Not sure yet</option></select></div>
-   <div class="field"><label>Preferred language</label><select name="preferred_language"><option value="ar">Arabic</option><option value="en">English</option><option value="fr">French</option><option value="ru">Russian</option><option value="ar_en">Arabic / English</option></select></div>
+   <div class="field"><label>Preferred language</label><select name="preferred_language"><option value="ar">Arabic</option><option value="en">English</option><option value="ar_en">Arabic / English</option></select></div>
    <div class="field full"><div class="check"><input type="checkbox" id="consent" name="consent" required><label for="consent">${t('privacy')}</label></div></div>
    <div class="field full"><div id="regMsg" class="helper"></div><button class="btn btn-dark" type="submit">${t('continue')}</button></div>
   </div></form>
@@ -209,7 +209,7 @@ async function submitRegistration(form){
  };
  const msg=document.getElementById('regMsg');msg.textContent='Registering candidate...';msg.className='helper';
  try{
-  const {data,error}=await supabase.from('candidates').insert([payload]).select('id').single();
+  const {data,error}=await supabase.from('aviation_interest_leads').insert([{...payload,status:'new'}]).select('id').single();
   if(error)throw error;
   state={...state,...payload,candidate_id:data?.id||state.candidate_id};save();
   document.getElementById('regOverlay')?.remove();render('welcome');
