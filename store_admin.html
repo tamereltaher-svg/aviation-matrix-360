@@ -127,25 +127,7 @@ td{padding:12px 10px;border-bottom:1px solid #edf2f5;vertical-align:middle}
 @media(max-width:1200px){.kpis{grid-template-columns:repeat(4,1fr)}.catalog{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{position:fixed;left:-260px;width:250px;transition:.2s}.sidebar.open{left:0}.section-grid{grid-template-columns:1fr}.catalog{grid-template-columns:1fr 1fr}.kpis{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:620px){.content{padding:14px}.catalog,.form-grid,.request-detail{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}.image-grid{grid-template-columns:1fr 1fr}.list-row,.list-row.opt{grid-template-columns:1fr}}
-
-.pipeline{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}
-.pipeline-step{padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:#f8fbfd;color:#6b7f91;font-size:10px;font-weight:900}
-.pipeline-step.current{background:var(--navy);color:#fff;border-color:var(--navy)}
-.pipeline-step.done{background:#e7f8f2;color:#0b6b55;border-color:#ccece2}
-.timeline{display:grid;gap:11px;margin-top:12px}
-.timeline-item{display:grid;grid-template-columns:16px 1fr;gap:10px;position:relative}
-.timeline-dot{width:10px;height:10px;border-radius:50%;background:var(--sky);margin-top:4px;box-shadow:0 0 0 4px #e9f8ff}
-.timeline-item:not(:last-child)::after{content:"";position:absolute;left:4px;top:17px;bottom:-12px;width:2px;background:#e2ebf0}
-.timeline-item strong{display:block;font-size:12px}.timeline-item small{color:var(--muted);font-size:10px}.timeline-item p{margin:3px 0 0;color:#4f6576;font-size:11px;line-height:1.45}
-.quote-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
-.quote-summary .box{background:#f7fafc;border:1px solid var(--line);border-radius:14px;padding:12px}.quote-summary small{color:var(--muted);font-weight:800}.quote-summary strong{display:block;font-size:18px;margin-top:4px}
-.quote-editor-row{display:grid;grid-template-columns:1.5fr 80px 105px 105px 80px;gap:8px;align-items:center;margin-bottom:8px}
-.quote-editor-row input{min-width:0}
-.profile-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.profile-stat{background:#f7fafc;border:1px solid var(--line);border-radius:14px;padding:12px}.profile-stat strong{display:block;font-size:22px}.profile-stat small{color:var(--muted)}
-@media(max-width:800px){.quote-summary,.profile-stats{grid-template-columns:1fr 1fr}.quote-editor-row{grid-template-columns:1fr 1fr}.quote-editor-row .wide{grid-column:1/-1}}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
 <div id="loginView" class="login-shell">
@@ -175,7 +157,6 @@ td{padding:12px 10px;border-bottom:1px solid #edf2f5;vertical-align:middle}
       <button data-page="pricing" onclick="openPage('pricing',this)"><span>◈</span><span>Add-ons & Pricing</span></button>
       <div class="nav-group">RELATIONSHIPS</div>
       <button data-page="requests" onclick="openPage('requests',this)"><span>☷</span><span>Requests</span></button>
-      <button data-page="quotations" onclick="openPage('quotations',this)"><span>▤</span><span>Quotations</span></button>
       <button data-page="meetings" onclick="openPage('meetings',this)"><span>◷</span><span>Meetings & Calls</span></button>
       <button data-page="institutions" onclick="openPage('institutions',this)"><span>▣</span><span>Institutions</span></button>
       <div class="nav-group">SYSTEM</div>
@@ -193,7 +174,6 @@ td{padding:12px 10px;border-bottom:1px solid #edf2f5;vertical-align:middle}
             <option value="">View As / Open Portal…</option>
             <option value="gateway">Customer Gateway</option>
             <option value="store">Live Store</option>
-            <option value="track">Track Request Portal</option>
             <option value="nursery">Preview: Nursery</option>
             <option value="school">Preview: School</option>
             <option value="university">Preview: University</option>
@@ -214,13 +194,13 @@ td{padding:12px 10px;border-bottom:1px solid #edf2f5;vertical-align:middle}
           <button class="btn sky" onclick="openPage('requests',document.querySelector('[data-page=requests]'))">Review Requests</button>
         </div>
         <div class="kpis">
+          <div class="kpi"><small>Products</small><strong id="kpiProducts">0</strong><em>catalog total</em></div>
+          <div class="kpi"><small>Active Products</small><strong id="kpiActiveProducts">0</strong><em>visible in store</em></div>
+          <div class="kpi"><small>Programs</small><strong id="kpiPrograms">0</strong><em>active offers</em></div>
           <div class="kpi"><small>Open Requests</small><strong id="kpiOpenRequests">0</strong><em>need attention</em></div>
-          <div class="kpi"><small>Draft Quotes</small><strong id="kpiDraftQuotes">0</strong><em>being prepared</em></div>
-          <div class="kpi"><small>Quotes Sent</small><strong id="kpiSentQuotes">0</strong><em>awaiting client</em></div>
-          <div class="kpi"><small>Approved</small><strong id="kpiApproved">0</strong><em>ready to execute</em></div>
-          <div class="kpi"><small>In Execution</small><strong id="kpiExecution">0</strong><em>active delivery</em></div>
-          <div class="kpi"><small>Pipeline Value</small><strong id="kpiPipelineValue">EGP 0</strong><em>sent quotations</em></div>
-          <div class="kpi"><small>Accepted Value</small><strong id="kpiAcceptedValue">EGP 0</strong><em>approved commercial value</em></div>
+          <div class="kpi"><small>All Requests</small><strong id="kpiRequests">0</strong><em>commercial history</em></div>
+          <div class="kpi"><small>Institutions</small><strong id="kpiInstitutions">0</strong><em>relationship base</em></div>
+          <div class="kpi"><small>Meetings / Calls</small><strong id="kpiMeetings">0</strong><em>pending contact</em></div>
         </div>
         <div class="section-grid">
           <div class="card">
@@ -256,21 +236,8 @@ td{padding:12px 10px;border-bottom:1px solid #edf2f5;vertical-align:middle}
       </section>
 
       <section id="page-requests" class="page">
-        <div class="toolbar"><input id="requestSearch" placeholder="Search request number / contact..." oninput="renderRequests()"><select id="requestStatus" onchange="loadRequests()"><option value="all">All status</option><option>new</option><option>reviewing</option><option>contacted</option><option>quotation_pending</option><option>quotation_sent</option><option>approved</option><option>execution</option><option>completed</option><option>rejected</option><option>closed</option><option>cancelled</option></select></div>
+        <div class="toolbar"><input id="requestSearch" placeholder="Search request number / contact..." oninput="renderRequests()"><select id="requestStatus" onchange="loadRequests()"><option value="all">All status</option><option>new</option><option>reviewing</option><option>contacted</option><option>quotation_pending</option><option>quotation_sent</option><option>approved</option><option>closed</option></select></div>
         <div class="card"><div class="table-wrap"><table><thead><tr><th>REQUEST</th><th>TYPE</th><th>CONTACT</th><th>AUDIENCE</th><th>INSTITUTION</th><th>STATUS</th><th>DATE</th><th></th></tr></thead><tbody id="requestsTable"></tbody></table></div></div>
-      </section>
-
-      <section id="page-quotations" class="page">
-        <div class="toolbar">
-          <input id="quotationSearch" placeholder="Search quotation / request / client..." oninput="renderQuotations()">
-          <select id="quotationStatus" onchange="loadQuotations()">
-            <option value="all">All status</option><option>draft</option><option>sent</option><option>accepted</option><option>rejected</option><option>expired</option>
-          </select>
-        </div>
-        <div class="card">
-          <div class="card-head"><div><h3>Commercial Quotations</h3><p>Prepare, issue and track every formal quotation</p></div></div>
-          <div class="table-wrap"><table><thead><tr><th>QUOTATION</th><th>REQUEST</th><th>CLIENT</th><th>VERSION</th><th>STATUS</th><th>TOTAL</th><th>VALID UNTIL</th><th></th></tr></thead><tbody id="quotationsTable"></tbody></table></div>
-        </div>
       </section>
 
       <section id="page-meetings" class="page">
@@ -284,7 +251,7 @@ td{padding:12px 10px;border-bottom:1px solid #edf2f5;vertical-align:middle}
 
       <section id="page-settings" class="page">
         <div class="section-grid">
-          <div class="card"><div class="card-head"><div><h3>Control Tower Structure</h3><p>Current live modules</p></div></div><div class="meta"><span class="chip">Dashboard</span><span class="chip">Products</span><span class="chip">Programs</span><span class="chip">Add-ons</span><span class="chip">Requests</span><span class="chip">Quotations</span><span class="chip">Track Portal</span><span class="chip">Meetings</span><span class="chip">Institutions</span></div></div>
+          <div class="card"><div class="card-head"><div><h3>Control Tower Structure</h3><p>Current live modules</p></div></div><div class="meta"><span class="chip">Dashboard</span><span class="chip">Products</span><span class="chip">Programs</span><span class="chip">Add-ons</span><span class="chip">Requests</span><span class="chip">Meetings</span><span class="chip">Institutions</span></div></div>
           <div class="card"><div class="card-head"><div><h3>Admin Access</h3><p>Current phase</p></div></div><p class="muted">One Super Admin account is active. Staff management can be added later without changing the core login architecture.</p></div>
         </div>
       </section>
@@ -304,7 +271,7 @@ const API='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/staff-admin-api
 const STORAGE='https://vsuekfzyebqnhthyvwpf.supabase.co/storage/v1/object/public/product-images/';
 let token=localStorage.getItem('am_staff_token')||'';
 let currentPage='dashboard';
-let products=[],programs=[],addons=[],requests=[],quotations=[],meetings=[],institutions=[];
+let products=[],programs=[],addons=[],requests=[],meetings=[],institutions=[];
 let productImageMeta={};
 let editingProduct=null,productImages=[],productVariants=[],productOptions=[],productAudiences=[];
 
@@ -340,7 +307,7 @@ async function boot(){
 function openPage(name,btn){
  currentPage=name;document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$id(`page-${name}`).classList.add('active');
  document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active');
- const meta={dashboard:['Dashboard','Aviation Matrix operational overview'],products:['Products','Store catalog, images, variants and personalization'],programs:['Programs','Ready programs by audience and delivery model'],pricing:['Add-ons & Pricing','Reusable customization options'],requests:['Requests','Commercial and institutional request pipeline'],quotations:['Quotations','Formal commercial offers and client approvals'],meetings:['Meetings & Calls','Online meetings and callback requests'],institutions:['Institutions','Schools, nurseries, universities and organizations'],settings:['Settings','Control Tower configuration']};
+ const meta={dashboard:['Dashboard','Aviation Matrix operational overview'],products:['Products','Store catalog, images, variants and personalization'],programs:['Programs','Ready programs by audience and delivery model'],pricing:['Add-ons & Pricing','Reusable customization options'],requests:['Requests','Commercial and institutional request pipeline'],meetings:['Meetings & Calls','Online meetings and callback requests'],institutions:['Institutions','Schools, nurseries, universities and organizations'],settings:['Settings','Control Tower configuration']};
  $id('pageTitle').textContent=meta[name][0];$id('pageSub').textContent=meta[name][1];
  refreshCurrent();
 }
@@ -350,19 +317,12 @@ async function refreshCurrent(){
  if(currentPage==='programs')return loadPrograms();
  if(currentPage==='pricing')return loadAddons();
  if(currentPage==='requests')return loadRequests();
- if(currentPage==='quotations')return loadQuotations();
  if(currentPage==='meetings')return loadMeetings();
  if(currentPage==='institutions')return loadInstitutions();
 }
 async function loadDashboard(){
- const d=await api('dashboard');const s=d.stats||{};
- $id('kpiOpenRequests').textContent=s.open_requests||0;
- $id('kpiDraftQuotes').textContent=s.draft_quotes||0;
- $id('kpiSentQuotes').textContent=s.sent_quotes||0;
- $id('kpiApproved').textContent=s.approved||0;
- $id('kpiExecution').textContent=s.execution||0;
- $id('kpiPipelineValue').textContent=money(s.pipeline_value||0,'EGP');
- $id('kpiAcceptedValue').textContent=money(s.accepted_value||0,'EGP');
+ const d=await api('dashboard');const s=d.stats;
+ $id('kpiProducts').textContent=s.products;$id('kpiActiveProducts').textContent=s.active_products;$id('kpiPrograms').textContent=s.programs;$id('kpiOpenRequests').textContent=s.open_requests;$id('kpiRequests').textContent=s.requests;$id('kpiInstitutions').textContent=s.institutions;$id('kpiMeetings').textContent=s.meetings;
  $id('recentRequests').innerHTML=(d.recent_requests||[]).length?(d.recent_requests||[]).map(r=>`<tr><td><strong>${esc(r.request_number)}</strong></td><td>${esc(r.request_type)}</td><td>${esc(r.audience_code)}</td><td>${statusBadge(r.status)}</td><td>${r.estimated_total?money(r.estimated_total,r.currency):'—'}</td><td>${dateFmt(r.created_at)}</td></tr>`).join(''):`<tr><td colspan="6" class="empty">No requests yet.</td></tr>`;
 }
 async function loadProducts(){
@@ -509,148 +469,35 @@ async function deleteAddon(id){if(!confirm('Delete add-on?'))return;await api('d
 
 async function loadRequests(){const d=await api('list_requests',{status:$id('requestStatus')?.value||'all'});requests=d.requests||[];renderRequests()}
 function renderRequests(){const q=($id('requestSearch')?.value||'').toLowerCase();const arr=requests.filter(r=>`${r.request_number} ${r.contact_person||''} ${r.email||''}`.toLowerCase().includes(q));$id('requestsTable').innerHTML=arr.length?arr.map(r=>`<tr><td><strong>${esc(r.request_number)}</strong></td><td>${esc(r.request_type)}</td><td>${esc(r.contact_person||r.email||r.mobile||'—')}</td><td>${esc(r.audience_code)}</td><td>${esc(r.am_institutions?.name||'—')}</td><td>${statusBadge(r.status)}</td><td>${dateFmt(r.created_at)}</td><td><button class="btn secondary" onclick="viewRequest('${r.id}')">Open</button></td></tr>`).join(''):`<tr><td colspan="8" class="empty">No requests found.</td></tr>`}
-
-const REQUEST_STAGES=['new','reviewing','contacted','quotation_pending','quotation_sent','approved','execution','completed'];
-function pipelineHtml(status){
- const idx=REQUEST_STAGES.indexOf(status);
- return `<div class="pipeline">${REQUEST_STAGES.map((s,i)=>`<span class="pipeline-step ${i<idx?'done':i===idx?'current':''}">${s.replaceAll('_',' ')}</span>`).join('')}</div>`;
-}
-function timelineHtml(events=[]){
- if(!events.length)return '<div class="empty">No timeline events yet.</div>';
- return `<div class="timeline">${events.map(e=>`<div class="timeline-item"><div class="timeline-dot"></div><div><strong>${esc(e.title)}</strong><small>${new Date(e.created_at).toLocaleString()}</small>${e.detail?`<p>${esc(e.detail)}</p>`:''}</div></div>`).join('')}</div>`;
-}
-async function viewRequest(id){
- const d=await api('get_request',{id});const r=d.request;
- const qs=d.quotations||[];
- openModal(r.request_number,`${r.request_type} • ${r.audience_code}`,
- `<div>${pipelineHtml(r.status)}</div>
-  <div class="request-detail">
-   <div class="detail-block"><strong>Contact</strong>${esc(r.contact_person||'—')}<br>${esc(r.email||'—')}<br>${esc(r.mobile||'—')}</div>
-   <div class="detail-block"><strong>Institution</strong>${esc(r.am_institutions?.name||'—')}<br>${esc(r.am_institutions?.institution_type||'')}</div>
-   <div class="detail-block"><strong>Program / Scope</strong>${esc(r.am_programs?.name||r.payload?.program_name||'Custom / Product Request')}<br>Learners: ${esc(r.learner_count||'—')}<br>Delivery: ${esc(r.delivery_mode||'—')}</div>
-   <div class="detail-block"><strong>Commercial</strong>${r.estimated_total?money(r.estimated_total,r.currency):'No estimate yet'}<br>${qs.length?`${qs.length} quotation version(s)`:'No quotation yet'}</div>
-  </div>
-  ${d.items.length?`<h3>Requested Items</h3><div class="table-wrap"><table><thead><tr><th>ITEM</th><th>QTY</th><th>UNIT</th><th>AMOUNT</th><th>CONFIG</th></tr></thead><tbody>${d.items.map(x=>`<tr><td><strong>${esc(x.name)}</strong></td><td>${x.quantity}</td><td>${money(x.unit_price,r.currency)}</td><td>${money(x.amount,r.currency)}</td><td>${esc(Object.entries(x.config||{}).filter(([k,v])=>v&&v!=='None').map(([k,v])=>`${k}: ${v}`).join(' • ')||'—')}</td></tr>`).join('')}</tbody></table></div>`:''}
-  <div class="form-grid" style="margin-top:16px">
-   <div class="field"><label>REQUEST STATUS</label><select id="rq_status">${['new','reviewing','contacted','quotation_pending','quotation_sent','approved','execution','completed','rejected','closed','cancelled'].map(x=>`<option ${r.status===x?'selected':''}>${x}</option>`).join('')}</select></div>
-   <div class="field"><label>STATUS NOTE</label><input id="rq_note" placeholder="Optional note visible in customer timeline"></div>
-  </div>
-  <div class="card-actions" style="justify-content:flex-end">
-    <button class="btn secondary" onclick="window.open('track_request.html?request=${encodeURIComponent(r.request_number)}','_blank')">Open Customer Tracking</button>
-    <button class="btn primary" onclick="createQuoteFromRequest('${r.id}')">${qs.length?'Create New Quote Version':'Create Quotation'}</button>
-    <button class="btn primary" onclick="updateRequest('${r.id}')">Update Status</button>
-  </div>
-  ${qs.length?`<h3>Quotations</h3><div class="table-wrap"><table><thead><tr><th>NUMBER</th><th>VERSION</th><th>STATUS</th><th>TOTAL</th><th></th></tr></thead><tbody>${qs.map(q=>`<tr><td>${esc(q.quotation_number)}</td><td>v${q.version_no}</td><td>${statusBadge(q.status)}</td><td>${money(q.total_amount,q.currency)}</td><td><button class="btn secondary" onclick="openQuotation('${q.id}')">Open</button></td></tr>`).join('')}</tbody></table></div>`:''}
-  <h3>Customer Timeline</h3>${timelineHtml(d.events||[])}`);
-}
-async function updateRequest(id){
- await api('update_request_status',{id,status:$id('rq_status').value,detail:$id('rq_note').value.trim()});
- closeModal();await loadRequests();await loadDashboard();
-}
-async function createQuoteFromRequest(requestId){
- const d=await api('create_quotation',{request_id:requestId});
- await openQuotation(d.quotation.id);
- await loadDashboard();await loadRequests();
-}
-async function loadQuotations(){
- const d=await api('list_quotations',{status:$id('quotationStatus')?.value||'all'});
- quotations=d.quotations||[];renderQuotations();
-}
-function renderQuotations(){
- const q=($id('quotationSearch')?.value||'').toLowerCase();
- const arr=quotations.filter(x=>`${x.quotation_number} ${x.am_requests?.request_number||''} ${x.am_requests?.contact_person||''} ${x.am_requests?.am_institutions?.name||''}`.toLowerCase().includes(q));
- $id('quotationsTable').innerHTML=arr.length?arr.map(x=>`<tr>
-  <td><strong>${esc(x.quotation_number)}</strong></td><td>${esc(x.am_requests?.request_number||'—')}</td>
-  <td>${esc(x.am_requests?.am_institutions?.name||x.am_requests?.contact_person||'—')}</td><td>v${x.version_no}</td>
-  <td>${statusBadge(x.status)}</td><td><strong>${money(x.total_amount,x.currency)}</strong></td><td>${x.valid_until?dateFmt(x.valid_until):'—'}</td>
-  <td><button class="btn secondary" onclick="openQuotation('${x.id}')">Open</button></td></tr>`).join(''):`<tr><td colspan="8" class="empty">No quotations found.</td></tr>`;
-}
-function quoteRowHtml(x,i){
- return `<div class="quote-editor-row">
-  <input class="wide" value="${esc(x.name||'')}" oninput="currentQuoteItems[${i}].name=this.value" placeholder="Item / service">
-  <input type="number" min="0" step="1" value="${Number(x.quantity||1)}" oninput="currentQuoteItems[${i}].quantity=Number(this.value||0);refreshQuoteTotals()">
-  <input type="number" min="0" step="0.01" value="${Number(x.unit_price||0)}" oninput="currentQuoteItems[${i}].unit_price=Number(this.value||0);refreshQuoteTotals()">
-  <input type="number" min="0" step="0.01" value="${Number(x.discount_amount||0)}" oninput="currentQuoteItems[${i}].discount_amount=Number(this.value||0);refreshQuoteTotals()">
-  <button class="btn danger" onclick="currentQuoteItems.splice(${i},1);renderQuoteRows();refreshQuoteTotals()">×</button>
- </div>`;
-}
-let currentQuote=null,currentQuoteItems=[];
-function renderQuoteRows(){$id('quoteRows').innerHTML=currentQuoteItems.map(quoteRowHtml).join('')||'<div class="empty">No quotation items.</div>'}
-function quoteCalc(){
- const subtotal=currentQuoteItems.reduce((s,x)=>s+Math.max(0,Number(x.quantity||0)*Number(x.unit_price||0)-Number(x.discount_amount||0)),0);
- const discount=Number($id('q_discount')?.value||0),tax=Number($id('q_tax')?.value||0);
- return {subtotal,total:Math.max(0,subtotal-discount+tax),discount,tax};
-}
-function refreshQuoteTotals(){const t=quoteCalc();if($id('q_subtotal'))$id('q_subtotal').textContent=money(t.subtotal,currentQuote?.currency||'EGP');if($id('q_total'))$id('q_total').textContent=money(t.total,currentQuote?.currency||'EGP');if($id('q_total2'))$id('q_total2').textContent=money(t.total,currentQuote?.currency||'EGP')}
-function addQuoteItem(){currentQuoteItems.push({item_type:'service',name:'',quantity:1,unit_price:0,discount_amount:0,config:{}});renderQuoteRows();refreshQuoteTotals()}
-async function openQuotation(id){
- const d=await api('get_quotation',{id});currentQuote=d.quotation;currentQuoteItems=d.items||[];
- const q=currentQuote,r=q.am_requests;
- openModal(q.quotation_number,`${r.request_number} • Version ${q.version_no}`,
- `<div class="quote-summary">
-   <div class="box"><small>Status</small><strong>${q.status.replaceAll('_',' ')}</strong></div>
-   <div class="box"><small>Client</small><strong style="font-size:14px">${esc(r.am_institutions?.name||r.contact_person||'—')}</strong></div>
-   <div class="box"><small>Valid Until</small><strong style="font-size:14px">${q.valid_until?dateFmt(q.valid_until):'—'}</strong></div>
-   <div class="box"><small>Total</small><strong id="q_total">${money(q.total_amount,q.currency)}</strong></div>
-  </div>
-  <div class="form-grid">
-    <div class="field"><label>VALID UNTIL</label><input id="q_valid" type="date" value="${q.valid_until||''}"></div>
-    <div class="field"><label>CURRENCY</label><input value="${q.currency}" readonly></div>
-  </div>
-  <h3>Quotation Items</h3>
-  <div style="display:grid;grid-template-columns:1.5fr 80px 105px 105px 80px;gap:8px;margin-bottom:6px;color:var(--muted);font-size:9px;font-weight:900"><span>ITEM</span><span>QTY</span><span>UNIT PRICE</span><span>LINE DISC.</span><span></span></div>
-  <div id="quoteRows"></div>
-  <button class="btn secondary" onclick="addQuoteItem()">+ Add Item</button>
-  <div class="form-grid" style="margin-top:14px">
-    <div class="field"><label>OVERALL DISCOUNT</label><input id="q_discount" type="number" value="${q.discount_amount||0}" oninput="refreshQuoteTotals()"></div>
-    <div class="field"><label>TAX / OTHER</label><input id="q_tax" type="number" value="${q.tax_amount||0}" oninput="refreshQuoteTotals()"></div>
-    <div class="field full"><label>TERMS</label><textarea id="q_terms">${esc(q.terms||'')}</textarea></div>
-    <div class="field full"><label>INTERNAL / CLIENT NOTES</label><textarea id="q_notes">${esc(q.notes||'')}</textarea></div>
-  </div>
-  <div class="quote-summary">
-    <div class="box"><small>Subtotal</small><strong id="q_subtotal">${money(q.subtotal,q.currency)}</strong></div>
-    <div class="box"><small>Overall Discount</small><strong>${money(q.discount_amount,q.currency)}</strong></div>
-    <div class="box"><small>Tax / Other</small><strong>${money(q.tax_amount,q.currency)}</strong></div>
-    <div class="box"><small>Grand Total</small><strong id="q_total2">${money(q.total_amount,q.currency)}</strong></div>
-  </div>
-  <div class="card-actions" style="justify-content:flex-end;flex-wrap:wrap">
-    <button class="btn secondary" onclick="downloadQuotationPdf()">Download PDF</button>
-    ${q.status==='draft'?'<button class="btn primary" onclick="saveQuotation()">Save Draft</button><button class="btn sky" onclick="sendQuotation()">Issue to Customer</button>':''}
-    ${q.status==='sent'?'<button class="btn primary" onclick="markQuoteAccepted()">Mark Accepted</button>':''}
-  </div>`);
- renderQuoteRows();refreshQuoteTotals();
-}
-async function saveQuotation(){
- const t=quoteCalc();await api('save_quotation',{id:currentQuote.id,quotation:{discount_amount:t.discount,tax_amount:t.tax,valid_until:$id('q_valid').value||null,terms:$id('q_terms').value,notes:$id('q_notes').value},items:currentQuoteItems});
- await openQuotation(currentQuote.id);await loadQuotations();
-}
-async function sendQuotation(){
- await saveQuotation();await api('send_quotation',{id:currentQuote.id});alert('Quotation issued. Customer tracking portal is updated and email notification is queued.');closeModal();await loadQuotations();await loadRequests();await loadDashboard();
-}
-async function markQuoteAccepted(){await api('mark_quotation_accepted',{id:currentQuote.id});closeModal();await loadQuotations();await loadRequests();await loadDashboard()}
-function downloadQuotationPdf(){
- if(!window.jspdf?.jsPDF)return alert('PDF library is loading.');
- const {jsPDF}=window.jspdf;const doc=new jsPDF({unit:'mm',format:'a4'}),W=doc.internal.pageSize.getWidth(),m=14;
- const q=currentQuote,r=q.am_requests,t=quoteCalc();let y=14;
- doc.setFillColor(6,25,43);doc.roundedRect(m,y,W-m*2,28,5,5,'F');doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(18);doc.text('AVIATION MATRIX',m+8,y+11);doc.setFontSize(8);doc.text('COMMERCIAL QUOTATION',m+8,y+18);doc.setFillColor(76,196,255);doc.roundedRect(W-m-47,y+6,39,10,4,4,'F');doc.setTextColor(6,25,43);doc.text(q.quotation_number,W-m-27.5,y+12,{align:'center'});y+=36;
- doc.setTextColor(16,38,58);doc.setFontSize(14);doc.text('Quotation',m,y);doc.setFontSize(8);doc.setFont('helvetica','normal');doc.text(`Request: ${r.request_number}   •   Valid until: ${q.valid_until||'—'}`,m,y+6);y+=14;
- doc.autoTable({startY:y,theme:'plain',body:[['Client',r.am_institutions?.name||r.contact_person||'—'],['Contact',`${r.contact_person||'—'} | ${r.email||r.mobile||'—'}`],['Audience',r.audience_code]],styles:{fontSize:8,cellPadding:2},columnStyles:{0:{fontStyle:'bold',cellWidth:28}}});y=doc.lastAutoTable.finalY+6;
- const rows=currentQuoteItems.map((x,i)=>[i+1,x.name,Number(x.quantity||0),money(x.unit_price,q.currency),money(Math.max(0,Number(x.quantity||0)*Number(x.unit_price||0)-Number(x.discount_amount||0)),q.currency)]);
- doc.autoTable({startY:y,head:[['#','Item','Qty','Unit Price','Amount']],body:rows,theme:'grid',styles:{fontSize:8,cellPadding:2},headStyles:{fillColor:[6,25,43]}});y=doc.lastAutoTable.finalY+8;
- doc.setFont('helvetica','bold');doc.setFontSize(9);doc.text(`Subtotal: ${money(t.subtotal,q.currency)}`,W-m,y,{align:'right'});doc.text(`Discount: ${money(t.discount,q.currency)}`,W-m,y+6,{align:'right'});doc.text(`Tax / Other: ${money(t.tax,q.currency)}`,W-m,y+12,{align:'right'});doc.setFontSize(14);doc.text(`TOTAL: ${money(t.total,q.currency)}`,W-m,y+21,{align:'right'});y+=30;
- if(q.terms){doc.setFontSize(8);doc.text('Terms',m,y);doc.setFont('helvetica','normal');doc.setFontSize(7);doc.text(doc.splitTextToSize(q.terms,W-m*2),m,y+5)}
- doc.save(`Aviation_Matrix_Quotation_${q.quotation_number}.pdf`);
-}
+async function viewRequest(id){const d=await api('get_request',{id});const r=d.request;openModal(r.request_number,`${r.request_type} • ${r.audience_code}`,`<div class="request-detail"><div class="detail-block"><strong>Contact</strong>${esc(r.contact_person||'—')}<br>${esc(r.email||'—')}<br>${esc(r.mobile||'—')}</div><div class="detail-block"><strong>Institution</strong>${esc(r.am_institutions?.name||'—')}<br>${esc(r.am_institutions?.institution_type||'')}</div><div class="detail-block"><strong>Program</strong>${esc(r.am_programs?.name||'Custom / Not selected')}<br>Learners: ${esc(r.learner_count||'—')}</div><div class="detail-block"><strong>Commercial</strong>${r.estimated_total?money(r.estimated_total,r.currency):'No estimate yet'}<br>Delivery: ${esc(r.delivery_mode||'—')}</div></div><div class="field" style="margin-top:16px"><label>STATUS</label><select id="rq_status">${['new','reviewing','contacted','quotation_pending','quotation_sent','approved','rejected','closed'].map(x=>`<option ${r.status===x?'selected':''}>${x}</option>`).join('')}</select></div><div class="card-actions" style="justify-content:flex-end"><button class="btn primary" onclick="updateRequest('${r.id}')">Update Status</button></div>${d.items.length?`<h3>Request Items</h3><div class="table-wrap"><table><thead><tr><th>ITEM</th><th>QTY</th><th>UNIT</th><th>AMOUNT</th></tr></thead><tbody>${d.items.map(x=>`<tr><td>${esc(x.name)}</td><td>${x.quantity}</td><td>${money(x.unit_price,r.currency)}</td><td>${money(x.amount,r.currency)}</td></tr>`).join('')}</tbody></table></div>`:''}`)}
+async function updateRequest(id){await api('update_request_status',{id,status:$id('rq_status').value});closeModal();loadRequests();loadDashboard()}
 
 async function loadMeetings(){const d=await api('list_meetings');meetings=d.meetings||[];$id('meetingsTable').innerHTML=meetings.length?meetings.map(m=>`<tr><td>${esc(m.meeting_type.replaceAll('_',' '))}</td><td>${esc(m.am_institutions?.name||'—')}</td><td>${esc(m.contact_person||m.email||m.mobile||'—')}</td><td>${m.scheduled_at?new Date(m.scheduled_at).toLocaleString():'Not scheduled'}</td><td>${statusBadge(m.status)}</td><td><button class="btn secondary" onclick="editMeeting('${m.id}')">Update</button></td></tr>`).join(''):`<tr><td colspan="6" class="empty">No meetings or callbacks yet.</td></tr>`}
 function editMeeting(id){const m=meetings.find(x=>x.id===id);openModal('Meeting / Callback',`${m.meeting_type.replaceAll('_',' ')}`,`<div class="detail-block"><strong>Contact</strong>${esc(m.contact_person||'—')}<br>${esc(m.email||'—')}<br>${esc(m.mobile||'—')}</div><div class="field" style="margin-top:14px"><label>STATUS</label><select id="mt_status">${['requested','scheduled','completed','cancelled','no_answer'].map(x=>`<option ${m.status===x?'selected':''}>${x}</option>`).join('')}</select></div><div class="card-actions" style="justify-content:flex-end"><button class="btn primary" onclick="updateMeeting('${m.id}')">Save Status</button></div>`)}
 async function updateMeeting(id){await api('update_meeting_status',{id,status:$id('mt_status').value});closeModal();loadMeetings();loadDashboard()}
 
 async function loadInstitutions(){const d=await api('list_institutions');institutions=d.institutions||[];renderInstitutions()}
-function renderInstitutions(){
- const q=($id('institutionSearch')?.value||'').toLowerCase();
- const arr=institutions.filter(x=>`${x.name} ${x.contact_person||''}`.toLowerCase().includes(q));
- $id('institutionsCatalog').innerHTML=arr.length?arr.map(x=>`<article class="institution-card"><span class="chip">${esc(x.institution_type)}</span><h3>${esc(x.name)}</h3><div class="muted">${esc(x.contact_person||'No contact person')}<br>${esc(x.mobile||x.email||'')}</div><div class="meta">${statusBadge(x.status)}</div><div class="card-actions"><button class="btn secondary" onclick="institutionProfile('${x.id}')">Open Profile</button><button class="btn secondary" onclick="editInstitution('${x.id}')">Edit</button></div></article>`).join(''):`<div class="empty">No institutions yet.</div>`;
+function renderInstitutions(){const q=($id('institutionSearch')?.value||'').toLowerCase();const arr=institutions.filter(x=>`${x.name} ${x.contact_person||''}`.toLowerCase().includes(q));$id('institutionsCatalog').innerHTML=arr.length?arr.map(x=>`<article class="institution-card"><span class="chip">${esc(x.institution_type)}</span><h3>${esc(x.name)}</h3><div class="muted">${esc(x.contact_person||'No contact person')}<br>${esc(x.mobile||x.email||'')}</div><div class="meta">${statusBadge(x.status)}</div><div class="card-actions"><button class="btn secondary" onclick="editInstitution('${x.id}')">Edit</button></div></article>`).join(''):`<div class="empty">No institutions yet.</div>`}
+function newInstitution(){openInstitutionEditor({id:null,institution_type:'school',name:'',contact_person:'',email:'',mobile:'',city:'',country:'Egypt',notes:'',status:'active'})}
+function editInstitution(id){openInstitutionEditor(institutions.find(x=>x.id===id))}
+function openInstitutionEditor(x){openModal(x.id?'Edit Institution':'New Institution','Relationship profile and primary contact',`<div class="form-grid"><div class="field"><label>TYPE</label><select id="in_type">${['nursery','school','university','institution','government'].map(v=>`<option ${x.institution_type===v?'selected':''}>${v}</option>`).join('')}</select></div><div class="field"><label>NAME</label><input id="in_name" value="${esc(x.name)}"></div><div class="field"><label>CONTACT PERSON</label><input id="in_contact" value="${esc(x.contact_person||'')}"></div><div class="field"><label>MOBILE</label><input id="in_mobile" value="${esc(x.mobile||'')}"></div><div class="field"><label>EMAIL</label><input id="in_email" type="email" value="${esc(x.email||'')}"></div><div class="field"><label>CITY</label><input id="in_city" value="${esc(x.city||'')}"></div><div class="field"><label>COUNTRY</label><input id="in_country" value="${esc(x.country||'Egypt')}"></div><div class="field"><label>STATUS</label><select id="in_status">${['lead','active','inactive','archived'].map(v=>`<option ${x.status===v?'selected':''}>${v}</option>`).join('')}</select></div><div class="field full"><label>NOTES</label><textarea id="in_notes">${esc(x.notes||'')}</textarea></div></div><div class="card-actions" style="justify-content:flex-end;margin-top:18px"><button class="btn primary" onclick="saveInstitution('${x.id||''}')">Save Institution</button></div>`)}
+async function saveInstitution(id){const institution={id:id||null,institution_type:$id('in_type').value,name:$id('in_name').value.trim(),contact_person:$id('in_contact').value.trim(),mobile:$id('in_mobile').value.trim(),email:$id('in_email').value.trim(),city:$id('in_city').value.trim(),country:$id('in_country').value.trim(),status:$id('in_status').value,notes:$id('in_notes').value.trim()};await api('save_institution',{institution});closeModal();loadInstitutions();loadDashboard()}
+
+function openModal(title,sub,body){$id('modalTitle').textContent=title;$id('modalSub').textContent=sub||'';$id('modalBody').innerHTML=body;$id('modal').classList.add('open')}
+function closeModal(){$id('modal').classList.remove('open')}
+$id('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()})
+$id('loginPassword').addEventListener('keydown',e=>{if(e.key==='Enter')login()})
+
+
+function switchPortal(value){
+  if(!value)return;
+  const root='https://tamereltaher-svg.github.io/aviation-matrix-360/';
+  let url='';
+  if(value==='gateway') url=root+'aviation_gateway_full.html?admin=1';
+  else if(value==='store') url=root+'aviation_store_live.html?admin=1';
+  else url=root+'aviation_gateway_full.html?admin=1&preview='+encodeURIComponent(value);
+  document.getElementById('portalSwitcher').value='';
+  window.location.href=url;
 }
 
 boot();
