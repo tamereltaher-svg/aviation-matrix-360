@@ -11,18 +11,9 @@ const D={
  ru:{dir:'ltr',hero:'Добро пожаловать на борт вашей авиационной карьеры',sub:'От первого карьерного решения до подходящего авиационного направления — Aviation Matrix строит ваш путь шаг за шагом.',start:'Начать check-in',journey:'Ваш путь начинается до специализации',journeySub:'Сначала мы формируем подтверждённый профессиональный профиль, затем открываем подходящий путь.',reg:'Check-in авиационного кандидата',fit:'Текущая + будущая пригодность',learn:'Мой маршрут',privacy:'Данные используются для оценки, формирования профиля и связи с вами.',welcome:'Ваш авиационный профиль активирован',confirm:'Подтвердить профиль',assess:'Предполётная оценка',results:'Результаты соответствия',dashboard:'Мой маршрут',continue:'Продолжить',next:'Следующий вопрос',finish:'Показать результаты',mission:'Первая миссия'}
 };
 
-const questions=[
- {dim:'communication',q:'مسافر متضايق وبيتحدث بصوت عالي. أول تصرف ليك؟',opts:[['أسمع المشكلة كاملة وأهدي الموقف',95],['أشرح القواعد مباشرة',76],['أطلب من زميل يتدخل',64],['أطلب منه يهدى قبل أي نقاش',54]]},
- {dim:'teamwork',q:'زميلك متأخر في تنفيذ جزء من مهمة مشتركة، تعمل إيه؟',opts:[['أتأكد من السبب وأساعد في إعادة توزيع العمل',92],['أنفذ الجزء بتاعه من غير ما أتكلم',70],['أبلغ المسؤول فورًا قبل ما أفهم السبب',58],['أسيبه يتحمل النتيجة وحده',40]]},
- {dim:'attention',q:'لاحظت اختلاف صغير بين رقم في النظام والمستند الورقي.',opts:[['أوقف الإجراء وأتحقق من المصدرين',96],['أكمل لأن الفرق صغير',38],['أسأل زميل فقط',66],['أعدل الرقم الأقرب للمنطق',30]]},
- {dim:'judgment',q:'عندك ضغط وقت ومعلومة ناقصة تؤثر على القرار.',opts:[['أحدد المعلومة الحرجة وأصعّد لو لازم',94],['أخمن وأكمل',32],['أنتظر بدون تواصل',54],['أختار أسرع حل متاح',62]]},
- {dim:'customer',q:'عميل طلب حاجة خارج الإجراء المعتاد.',opts:[['أوضح المتاح وأبحث عن بديل مسموح',93],['أرفض مباشرة',55],['أوافق عشان أرضيه',35],['أحوله لشخص آخر فورًا',67]]},
- {dim:'digital',q:'ظهرلك نظام جديد في الشغل لأول مرة.',opts:[['أتعلم الأساسيات وأجرب في بيئة آمنة',90],['أفضل الورق فقط',40],['أستنى حد يعمله مكاني',35],['أستخدمه مباشرة بدون فهم',52]]},
- {dim:'english',q:'لو وصلك Instruction بالإنجليزي وفي مصطلح مش واضح.',opts:[['أتأكد من المصطلح قبل التنفيذ',92],['أعتمد على التخمين',35],['أتجاهل الجزء غير الواضح',28],['أترجم ترجمة سريعة وأنفذ فورًا',66]]},
- {dim:'communication',q:'مطلوب منك توصل معلومة مهمة في وقت قصير.',opts:[['أذكر المعلومة الأساسية والتأثير والخطوة المطلوبة',95],['أحكي كل التفاصيل من البداية',68],['أرسل جملة مختصرة جدًا بدون سياق',50],['أؤجل الرسالة لوقت أهدى',40]]},
- {dim:'teamwork',q:'في اختلاف رأي داخل الفريق على أولوية التنفيذ.',opts:[['نرجع للهدف والإجراء ونحدد الأولوية بوضوح',94],['كل شخص يعمل بطريقته',34],['أمشي رأيي لأنه الأسرع',48],['نوقف كل شيء لحد المدير',60]]},
- {dim:'judgment',q:'أي وصف أقرب لك في مهنة الطيران؟',opts:[['أفضل العمل المنظم والمسؤولية والتعلم المستمر',92],['أهم شيء شكل الوظيفة والسفر',44],['أفضل الوظائف بدون ضغط أو إجراءات',38],['لسه بستكشف ومحتاج أعرف المسارات',78]]}
-];
+let runtimeQuestions=[];
+let questionTimer=null;
+let questionStartedAt=0;
 
 let lang=localStorage.getItem('am_lang')||'ar';
 let state=JSON.parse(localStorage.getItem('am_state')||'{}');
@@ -124,73 +115,226 @@ function confirmProfile(){
  </div><div style="margin-top:20px"><button id="beginAssessment" class="btn btn-primary">${t('assess')} ✈</button></div>`,1,30);
 }
 
-function resetAssessment(){
- assessment={index:0,answers:[],scores:{communication:0,teamwork:0,attention:0,judgment:0,customer:0,digital:0,english:0},counts:{communication:0,teamwork:0,attention:0,judgment:0,customer:0,digital:0,english:0}};
+
+async function loadPublishedQuestions(){
+ const {data,error}=await supabase
+   .from('question_bank')
+   .select('id,code,prompt,time_limit_seconds,question_options(id,option_code,option_text,sequence_no)')
+   .eq('status','published')
+   .like('code','CFV1_CC_%')
+   .order('code',{ascending:true});
+ if(error) throw error;
+ runtimeQuestions=(data||[]).map(q=>({
+   ...q,
+   question_options:(q.question_options||[]).sort((a,b)=>a.sequence_no-b.sequence_no)
+ }));
+ if(!runtimeQuestions.length) throw new Error('No published Cabin Crew questions found.');
 }
+
+async function beginLiveAssessment(){
+ const btn=document.getElementById('beginAssessment');
+ if(btn){btn.disabled=true;btn.textContent='Preparing assessment...';}
+ try{
+  await loadPublishedQuestions();
+  const {data,error}=await supabase.rpc('public_start_assessment',{
+    p_email:state.email,
+    p_mobile:state.mobile,
+    p_date_of_birth:state.date_of_birth,
+    p_career_code:'cabin_crew'
+  });
+  if(error) throw error;
+  assessment={
+    index:0,
+    attempt_id:data.attempt_id,
+    access_token:data.access_token,
+    candidate_id:data.candidate_id,
+    locked:false,
+    result:null
+  };
+  state.candidate_id=data.candidate_id;
+  save();
+  render('assessment');
+ }catch(e){
+  console.error(e);
+  if(btn){btn.disabled=false;btn.textContent='Pre-Flight Assessment ✈';}
+  alert('Unable to start assessment: '+(e.message||'Unknown error'));
+ }
+}
+
 function assessmentScreen(){
- if(!assessment) resetAssessment();
- const q=questions[assessment.index],pct=Math.round(((assessment.index)/questions.length)*100);
- return flowShell(`<div class="question-meta">PRE-FLIGHT ASSESSMENT · ${assessment.index+1} / ${questions.length}</div>
- <h2>${q.q}</h2><p class="muted">Pick the action closest to your natural response. We measure decision quality, not just right/wrong answers.</p>
- <div class="options">${q.opts.map((o,i)=>`<button class="option" data-opt="${i}"><strong>${String.fromCharCode(65+i)}</strong> — ${o[0]}</button>`).join('')}</div>`,2,35+pct*0.35);
+ if(!assessment || !runtimeQuestions.length){
+   return flowShell(`<h2>Assessment not ready</h2><p class="muted">Please return and start the assessment again.</p>`,2,35);
+ }
+ const q=runtimeQuestions[assessment.index];
+ const visible=(q.question_options||[]).filter(o=>o.option_code!=='TIMEOUT');
+ const pct=Math.round((assessment.index/runtimeQuestions.length)*100);
+ const limit=q.time_limit_seconds||15;
+ return flowShell(`<div dir="ltr" style="text-align:left">
+   <div style="display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:14px">
+    <div class="question-meta">CABIN CREW · PRE-FLIGHT ASSESSMENT · ${assessment.index+1} / ${runtimeQuestions.length}</div>
+    <div id="questionTimer" style="min-width:64px;text-align:center;padding:9px 12px;border-radius:999px;background:#071a2f;color:#fff;font-size:18px;font-weight:900">${limit}s</div>
+   </div>
+   <div style="height:8px;background:#e7eef3;border-radius:999px;overflow:hidden;margin-bottom:22px">
+    <div id="timerBar" style="height:100%;width:100%;background:#45b8f6;transition:width .2s linear"></div>
+   </div>
+   <h2>${esc(q.prompt)}</h2>
+   <p class="muted">Choose the response closest to what you would naturally do. You have ${limit} seconds. When time expires, the question closes automatically.</p>
+   <div class="options">
+    ${visible.map(o=>`<button class="option" data-option-id="${o.id}"><strong>${esc(o.option_code)}</strong> — ${esc(o.option_text)}</button>`).join('')}
+   </div>
+   <div id="answerMsg" class="helper" style="margin-top:12px"></div>
+  </div>`,2,35+pct*0.35);
 }
-function chooseAnswer(i){
- const q=questions[assessment.index],score=q.opts[i][1];
- assessment.answers.push({question:assessment.index,dim:q.dim,option:i,score});
- assessment.scores[q.dim]+=score;assessment.counts[q.dim]+=1;assessment.index++;
- if(assessment.index>=questions.length){finishAssessment()}else render('assessment');
+
+function startQuestionTimer(){
+ clearInterval(questionTimer);
+ if(!assessment || assessment.locked || !runtimeQuestions.length) return;
+ const q=runtimeQuestions[assessment.index];
+ const limit=q.time_limit_seconds||15;
+ questionStartedAt=Date.now();
+ let remaining=limit;
+ const label=document.getElementById('questionTimer');
+ const bar=document.getElementById('timerBar');
+ const paint=()=>{
+   if(label) label.textContent=`${remaining}s`;
+   if(bar) bar.style.width=`${Math.max(0,(remaining/limit)*100)}%`;
+   if(label){
+     label.style.background=remaining<=5?'#9b2c2c':remaining<=8?'#9a6714':'#071a2f';
+   }
+ };
+ paint();
+ questionTimer=setInterval(async()=>{
+   remaining-=1; paint();
+   if(remaining<=0){
+     clearInterval(questionTimer);
+     await submitTimedAnswer(null,true);
+   }
+ },1000);
 }
-function averages(){
- const out={};Object.keys(assessment.scores).forEach(k=>out[k]=assessment.counts[k]?Math.round(assessment.scores[k]/assessment.counts[k]):0);return out;
+
+async function submitTimedAnswer(optionId,isTimeout=false){
+ if(!assessment || assessment.locked) return;
+ assessment.locked=true;
+ clearInterval(questionTimer);
+ const q=runtimeQuestions[assessment.index];
+ const options=q.question_options||[];
+ const selected=isTimeout ? options.find(o=>o.option_code==='TIMEOUT') : options.find(o=>o.id===optionId);
+ if(!selected){
+   assessment.locked=false;
+   const msg=document.getElementById('answerMsg');
+   if(msg){msg.className='helper error';msg.textContent='Unable to record this answer.';}
+   return;
+ }
+ document.querySelectorAll('.option').forEach(b=>b.disabled=true);
+ const elapsed=isTimeout ? (q.time_limit_seconds||15) : Math.max(1,Math.min(q.time_limit_seconds||15,Math.ceil((Date.now()-questionStartedAt)/1000)));
+ const msg=document.getElementById('answerMsg');
+ if(msg){msg.textContent=isTimeout?'Time expired — moving to the next question...':'Answer recorded...';}
+ try{
+   const {error}=await supabase.rpc('public_submit_assessment_answer',{
+     p_attempt_id:assessment.attempt_id,
+     p_access_token:assessment.access_token,
+     p_question_id:q.id,
+     p_option_id:selected.id,
+     p_response_time_seconds:elapsed
+   });
+   if(error) throw error;
+   assessment.index+=1;
+   assessment.locked=false;
+   if(assessment.index>=runtimeQuestions.length){
+     await finishLiveAssessment();
+   }else{
+     render('assessment');
+   }
+ }catch(e){
+   console.error(e);
+   assessment.locked=false;
+   document.querySelectorAll('.option').forEach(b=>b.disabled=false);
+   if(msg){msg.className='helper error';msg.textContent='Connection error. Your question is paused — tap an answer again.';}
+ }
 }
-function finishAssessment(){
- const a=averages(),overall=Math.round(Object.values(a).reduce((x,y)=>x+y,0)/Object.values(a).length);
- const cabin=Math.round(a.communication*.18+a.customer*.14+a.teamwork*.14+a.judgment*.18+a.english*.18+a.attention*.12+a.digital*.06);
- const pax=Math.round(a.communication*.20+a.customer*.22+a.teamwork*.15+a.judgment*.15+a.english*.10+a.attention*.10+a.digital*.08);
- const ground=Math.round(a.teamwork*.18+a.judgment*.22+a.attention*.22+a.digital*.16+a.communication*.12+a.english*.10);
- const cargo=Math.round(a.attention*.26+a.judgment*.22+a.digital*.18+a.teamwork*.13+a.communication*.10+a.english*.11);
- const fits=[['Cabin Crew',cabin],['Passenger Services',pax],['Ground Operations',ground],['Cargo',cargo]].sort((x,y)=>y[1]-x[1]);
- state.assessment={averages:a,overall,fits,completed_at:new Date().toISOString(),answers:assessment.answers};save();render('results');
+
+async function finishLiveAssessment(){
+ clearInterval(questionTimer);
+ app.innerHTML=flowShell(`<div dir="ltr" style="text-align:left"><h2>Calculating your Cabin Crew fit...</h2><p class="muted">Your decisions are being evaluated against the Aviation Matrix competency model.</p></div>`,3,76);
+ try{
+   const {data,error}=await supabase.rpc('public_finish_assessment',{
+     p_attempt_id:assessment.attempt_id,
+     p_access_token:assessment.access_token,
+     p_career_code:'cabin_crew'
+   });
+   if(error) throw error;
+   assessment.result=data;
+   state.assessment=data;
+   state.assessment_completed_at=new Date().toISOString();
+   save();
+   render('results');
+ }catch(e){
+   console.error(e);
+   app.innerHTML=flowShell(`<div dir="ltr" style="text-align:left"><h2>We could not calculate the result</h2><p class="error">${esc(e.message||'Unknown error')}</p><button id="retryFinish" class="btn btn-dark">Retry result calculation</button></div>`,3,76);
+   document.getElementById('retryFinish')?.addEventListener('click',finishLiveAssessment);
+ }
 }
+
 function results(){
- const r=state.assessment;if(!r)return render('assessment');
- const best=r.fits[0],future=Math.min(97,best[1]+12);
- return flowShell(`<span class="eyebrow" style="color:#0b5279;border-color:#cfe8f5;background:#effaff">FIT ANALYSIS COMPLETE</span><h1>${t('results')}</h1>
- <div class="result-hero">
-  <div class="fit-card"><span class="muted">Current Fit · ${best[0]}</span><b>${best[1]}%</b><p>Your current profile based on the pre-flight assessment.</p></div>
-  <div class="fit-card"><span class="muted">Future Fit · ${best[0]}</span><b>${future}%</b><p>Potential after targeted development and mission completion.</p></div>
- </div>
- <h3 style="margin-top:22px">Suggested Aviation Paths</h3><div class="path-list">${r.fits.map((x,i)=>`<div class="path ${i===0?'best':''}"><strong>${i===0?'✈ ':''}${x[0]}</strong><span style="float:${D[lang].dir==='rtl'?'left':'right'}">${x[1]}%</span></div>`).join('')}</div>
- <div class="metric-grid">${Object.entries(r.averages).slice(0,4).map(([k,v])=>`<div class="metric"><span class="muted">${k}</span><b>${v}%</b></div>`).join('')}</div>
- <button id="openJourney" class="btn btn-dark">${t('dashboard')} →</button>`,3,78);
+ const r=state.assessment;
+ if(!r || typeof r.current_fit==='undefined') return render('confirm');
+ const strengths=r.strengths||[];
+ const gaps=r.development_gaps||[];
+ const statusLabel={
+   ready_now:'Ready Now',
+   ready_with_development:'Ready with Development',
+   development_required:'Development Required',
+   future_eligible:'Future Eligible'
+ }[r.readiness_status]||r.readiness_status||'Assessment Complete';
+ return flowShell(`<div dir="ltr" style="text-align:left">
+  <span class="eyebrow" style="color:#0b5279;border-color:#cfe8f5;background:#effaff">FIT ANALYSIS COMPLETE</span>
+  <h1>Cabin Crew Career Fit</h1>
+  <p class="section-lead">${esc(r.summary||'Your result is based on the behavior demonstrated across the assessment scenarios.')}</p>
+  <div class="result-hero">
+   <div class="fit-card"><span class="muted">Current Fit</span><b>${Math.round(Number(r.current_fit)||0)}%</b><p>What your current assessment evidence shows today.</p></div>
+   <div class="fit-card"><span class="muted">Future Fit</span><b>${Math.round(Number(r.future_fit)||0)}%</b><p>Estimated development potential — not a guarantee of future performance.</p></div>
+  </div>
+  <div style="margin:18px 0;padding:16px;border-radius:18px;background:#f2f8fc;border:1px solid #dceaf3">
+    <strong>Readiness Status: ${esc(statusLabel)}</strong>
+  </div>
+  <h3>Why Cabin Crew?</h3>
+  <p class="muted">The recommendation is explained using the competency evidence below. Aviation Matrix does not use a hidden pass/fail score.</p>
+  <div class="grid-3">${strengths.map(s=>`<div class="card info-card"><strong>${esc(s.name||s.code)}</strong><p><b>${Math.round(Number(s.score)||0)}%</b><br>Observed strength contributing to Cabin Crew fit.</p></div>`).join('')}</div>
+  <h3 style="margin-top:22px">Development Priorities</h3>
+  <div class="path-list">${gaps.length?gaps.map(g=>`<div class="path"><strong>${esc(g.name||g.code)}</strong><span style="float:right">${Math.round(Number(g.score)||0)}% → target ${Math.round(Number(g.target)||0)}%</span><br><small class="muted">${esc(g.reason||'Development recommended.')}${g.recommended_path?' · '+esc(g.recommended_path):''}</small></div>`).join(''):`<div class="path best"><strong>No major development gaps identified in this assessment.</strong></div>`}</div>
+  <div style="margin-top:22px"><button id="openJourney" class="btn btn-dark">View My Aviation Profile →</button></div>
+ </div>`,3,82);
 }
 function dashboard(){
- const r=state.assessment||{overall:0,fits:[['Exploring',0]],averages:{}},best=r.fits[0]||['Exploring',0],future=Math.min(97,best[1]+12);
- const eng=r.averages.english||0,jud=r.averages.judgment||0,comm=r.averages.communication||0,attention=r.averages.attention||0;
- return flowShell(`<section class="journey-hero"><small style="letter-spacing:.13em;color:#bce9ff;font-weight:900">WELCOME ABOARD · MY AVIATION JOURNEY</small>
- <h1 style="margin:10px 0 8px">${esc(state.full_name||'Candidate')}</h1><p style="color:#d8e9f4;margin:0">Status: Cleared for Foundation Journey · Suggested Path: <strong>${best[0]}</strong></p>
- <div class="journey-path"><span class="done">Check-in ✓</span><span class="done">Assessment ✓</span><span class="done">Fit ✓</span><span>Foundation</span><span>Specialization</span><span>Airline Ready</span></div>
+ const r=state.assessment||{};
+ const dims=r.dimensions||{};
+ const d=(code)=>Math.round(Number(dims[code]?.score)||0);
+ return flowShell(`<section class="journey-hero" dir="ltr" style="text-align:left">
+  <small style="letter-spacing:.13em;color:#bce9ff;font-weight:900">MY AVIATION MATRIX PROFILE</small>
+  <h1 style="margin:10px 0 8px">${esc(state.full_name||'Candidate')}</h1>
+  <p style="color:#d8e9f4;margin:0">Assessment complete · Cabin Crew Current Fit: <strong>${Math.round(Number(r.current_fit)||0)}%</strong></p>
+  <div class="journey-path"><span class="done">Check-in ✓</span><span class="done">Assessment ✓</span><span class="done">Fit ✓</span><span>Formal Enrollment 🔒</span><span>Journey Activation 🔒</span></div>
  </section>
- <div class="dashboard-grid">
+ <div class="dashboard-grid" dir="ltr" style="text-align:left">
   <div>
-   <div class="readiness"><h3>Aviation Readiness Panel</h3><p class="muted">Overall readiness to start your foundation journey.</p><div class="meter"><div style="width:${future}%"></div></div>
+   <div class="readiness"><h3>Aviation Readiness Panel</h3><p class="muted">Assessment evidence remains attached to your permanent Aviation Matrix profile.</p>
+    <div class="meter"><div style="width:${Math.round(Number(r.current_fit)||0)}%"></div></div>
     <div class="mini-bars">
-     ${[['Technical English',eng],['Decision Quality',jud],['Communication',comm],['Attention to Detail',attention]].map(x=>`<div class="mini-bar"><div class="head"><span>${x[0]}</span><strong>${x[1]}%</strong></div><div class="bar"><span style="width:${x[1]}%"></span></div></div>`).join('')}
+     ${[['Safety Mindset',d('safety_mindset')],['Communication',d('communication')],['Teamwork / CRM',d('teamwork_crm')],['English Readiness',d('english_readiness')]].map(x=>`<div class="mini-bar"><div class="head"><span>${x[0]}</span><strong>${x[1]}%</strong></div><div class="bar"><span style="width:${x[1]}%"></span></div></div>`).join('')}
     </div>
-   </div>
-   <div class="module-list">
-    <div class="module"><span class="pill ok">READY NEXT</span><div><strong>Learning Journey</strong><br><small>Foundation missions are ready to open.</small></div><span>→</span></div>
-    <div class="module"><span class="pill gray">PARALLEL</span><div><strong>Documents</strong><br><small>Verification can continue while you learn.</small></div><span>→</span></div>
-    <div class="module"><span class="pill warn">DEVELOP</span><div><strong>Technical English</strong><br><small>Integrated aviation terminology and communication.</small></div><span>→</span></div>
-    <div class="module"><span class="pill ok">COMPLETE</span><div><strong>Pre-Flight Assessment</strong><br><small>Your raw decision events and results are recorded.</small></div><span>✓</span></div>
-    <div class="module"><span class="pill gray">FUTURE</span><div><strong>Airline Matching</strong><br><small>Will compare your verified profile against current requirements.</small></div><span>→</span></div>
    </div>
   </div>
   <aside class="card mission">
-   <div class="mission-head"><small>NEXT MISSION · FOUNDATION JOURNEY</small><h3>Mission 01 — Why Humans Wanted to Fly</h3><p>Before roles and procedures, start with the human dream, the need to cross distance, and the forces that made flight possible.</p></div>
-   <div class="mission-body"><span class="pill ok">● READY FOR DEPARTURE</span>
-    <div class="meta-grid"><div class="meta"><label>Estimated Time</label><strong>25 Minutes</strong></div><div class="meta"><label>Level</label><strong>Foundation</strong></div><div class="meta"><label>Type</label><strong>Interactive Mission</strong></div><div class="meta"><label>Outcome</label><strong>Open Mission 02</strong></div></div>
-    <button class="btn btn-primary" id="startMission">START MISSION ✈</button><div id="missionMsg" class="helper" style="margin-top:12px"></div>
+   <div class="mission-head"><small>NEXT STAGE · FORMAL ENROLLMENT</small><h3>Your Learning Journey Is Locked</h3><p>Your assessment is complete, but training missions do not open until your formal Aviation Matrix file is activated.</p></div>
+   <div class="mission-body">
+    <span class="pill warn">🔒 ENROLLMENT REQUIRED</span>
+    <div class="meta-grid">
+     <div class="meta"><label>Candidate Number</label><strong>Issued at formal enrollment</strong></div>
+     <div class="meta"><label>Signature</label><strong>${new Date().getFullYear()-new Date(state.date_of_birth||'1900-01-01').getFullYear()<18?'Guardian required':'Candidate signature'}</strong></div>
+     <div class="meta"><label>Payment</label><strong>Pending</strong></div>
+     <div class="meta"><label>Journey Code</label><strong>Not activated</strong></div>
+    </div>
+    <button class="btn btn-soft" disabled>START MISSION 🔒</button>
    </div>
   </aside>
  </div>`,4,100);
@@ -223,8 +367,8 @@ function attach(){
  document.querySelector('[data-scroll]')?.addEventListener('click',e=>document.getElementById(e.currentTarget.dataset.scroll)?.scrollIntoView());
  const start=document.getElementById('startBtn');if(start)start.onclick=()=>{document.body.insertAdjacentHTML('beforeend',registration());attachModal()};
  document.getElementById('confirmBtn')?.addEventListener('click',()=>render('confirm'));
- document.getElementById('beginAssessment')?.addEventListener('click',()=>{resetAssessment();render('assessment')});
- document.querySelectorAll('.option').forEach(b=>b.onclick=()=>chooseAnswer(Number(b.dataset.opt)));
+ document.getElementById('beginAssessment')?.addEventListener('click',beginLiveAssessment);
+ document.querySelectorAll('.option').forEach(b=>b.onclick=()=>submitTimedAnswer(b.dataset.optionId,false));
  document.getElementById('openJourney')?.addEventListener('click',()=>render('dashboard'));
  document.getElementById('startMission')?.addEventListener('click',missionDemo);
 }
@@ -233,6 +377,7 @@ function attachModal(){
  document.getElementById('regForm')?.addEventListener('submit',e=>{e.preventDefault();submitRegistration(e.currentTarget)});
 }
 function render(view='landing'){
+ clearInterval(questionTimer);
  document.documentElement.lang=lang;document.documentElement.dir=D[lang].dir;
  if(view==='welcome')app.innerHTML=welcome();
  else if(view==='confirm')app.innerHTML=confirmProfile();
@@ -241,5 +386,6 @@ function render(view='landing'){
  else if(view==='dashboard')app.innerHTML=dashboard();
  else app.innerHTML=landing();
  attach();
+ if(view==='assessment') setTimeout(startQuestionTimer,0);
 }
 render();
