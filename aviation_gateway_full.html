@@ -299,7 +299,7 @@ footer{padding:30px;text-align:center;color:var(--muted)}
 <div id="adminPreviewBar" class="admin-preview">
   <div class="admin-wrap">
     <div class="left">
-      <span class="mode">ADMIN PREVIEW MODE • STABLE BUILD 2026.08.22.2</span>
+      <span class="mode">ADMIN PREVIEW MODE • STABLE BUILD 2026.08.22.3 • PROGRAM COVERS</span>
       <span id="previewText">Viewing Customer Gateway</span>
     </div>
     <div class="admin-actions">
@@ -416,7 +416,7 @@ const audiences=[
  {key:'government',icon:'🌍',title:'Government / National Programs',desc:'Scalable youth development, career pipeline, workforce readiness, and national aviation education initiatives.'}
 ];
 
-const programs={
+let programs={
  nursery:[
   {name:'Aviation Discovery Day',base:900},
   {name:'Weekly Kids Aviation Program',base:650},
@@ -474,6 +474,9 @@ const safeStorage={
 const STORE_SUPABASE_URL='https://vsuekfzyebqnhthyvwpf.supabase.co';
 const STORE_SUPABASE_KEY='sb_publishable_sRvoFKXyDEzQPLaAk3xZOQ_RLVxh5g3';
 const STORE_IMAGE_BASE=STORE_SUPABASE_URL+'/storage/v1/object/public/product-images/';
+const PROGRAM_CATALOG_API=STORE_SUPABASE_URL+'/functions/v1/program-catalog';
+const PROGRAM_IMAGE_BASE=STORE_SUPABASE_URL+'/storage/v1/object/public/program-images/';
+let liveProgramsLoaded=false;
 const GATEWAY_SUBMIT_API='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/gateway-submit';
 let requestContext={};
 let lastRequestReceipt=null;
@@ -513,6 +516,14 @@ audiences.forEach(a=>{
  grid.appendChild(el);
 });
 
+function customerProgramTheme(p){return ['aviation_blue','kids_colorful','dark','light'].includes(p.card_theme)?p.card_theme:'aviation_blue'}
+async function loadLivePrograms(){
+ if(liveProgramsLoaded)return true;
+ try{const r=await fetch(PROGRAM_CATALOG_API,{method:'GET'});if(!r.ok)throw new Error('program catalog unavailable');const d=await r.json();if(Array.isArray(d.programs)&&d.programs.length){const grouped={nursery:[],school:[],university:[],institution:[],government:[],individual:[]};for(const p of d.programs){if(!grouped[p.audience_code])grouped[p.audience_code]=[];grouped[p.audience_code].push({id:p.id,name:p.name,base:Number(p.base_price||0),currency:p.currency||'EGP',short_description:p.short_description||'',description:p.description||'',duration_label:p.duration_label||'',pricing_unit:p.pricing_unit||'per_learner',cover_image_path:p.cover_image_path||null,cover_image_alt:p.cover_image_alt||p.name,card_theme:p.card_theme||'aviation_blue',overlay_strength:Number(p.overlay_strength??42)})}programs=grouped}liveProgramsLoaded=true;return true}catch(e){console.warn('Using fallback program catalog',e);return false}
+}
+function programChoiceCard(k,p,i){const img=p.cover_image_path?`<img src="${PROGRAM_IMAGE_BASE+p.cover_image_path}" alt="${p.cover_image_alt||p.name}">`:'';const overlay=Math.max(0,Math.min(85,Number(p.overlay_strength??42)))/100;return `<button class="choice program-choice" onclick="selectProgramByIndex('${k}',${i})"><div class="program-choice-media program-choice-theme-${customerProgramTheme(p)}">${img}<div class="cover-shade" style="background:rgba(6,25,43,${overlay})"></div><div class="cover-copy"><small>${label(k).toUpperCase()}</small><strong>${p.name}</strong></div></div><div class="program-choice-body"><span>${p.short_description||'Explore this Aviation Matrix program.'}</span><span style="margin-top:7px;font-weight:900;color:var(--ink)">From ${p.currency||'EGP'} ${Number(p.base||0).toLocaleString()} ${p.pricing_unit==='per_learner'?'per learner':''}</span></div></button>`}
+function selectProgramByIndex(k,i){const p=(programs[k]||[])[i];if(!p)return;selectProgram(k,p.name,p.base)}
+
 function label(k){return audiences.find(a=>a.key===k)?.title||k}
 function show(t,s,b){
  document.getElementById('modalTitle').textContent=t;
@@ -523,19 +534,10 @@ function show(t,s,b){
 function closeModal(){document.getElementById('modal').classList.remove('open')}
 document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
 
-function openReady(k){
- const arr=programs[k]||[];
+async function openReady(k){
+ await loadLivePrograms();const arr=programs[k]||[];
  show(`${label(k)} Programs`,`Choose a ready program, customize it, add products, or talk to Aviation Matrix.`,
- `<div class="choice-grid">${arr.map(p=>`
-  <button class="choice" onclick="selectProgram('${k}','${p.name.replaceAll("'","\\'")}',${p.base})">
-   <strong>${p.name}</strong>
-   <span>From EGP ${p.base.toLocaleString()} per learner in this prototype.</span>
-  </button>`).join('')}</div>
-  ${k!=='individual'?`
-  <div class="sheet-actions">
-   <button class="back" onclick="openCustomize('${k}')">Build Custom Program</button>
-   <button class="submit" onclick="openStore('${k}')">Open Aviation Store</button>
-  </div>`:''}`);
+ `<div class="choice-grid">${arr.map((p,i)=>programChoiceCard(k,p,i)).join('')}</div>${k!=='individual'?`<div class="sheet-actions"><button class="back" onclick="openCustomize('${k}')">Build Custom Program</button><button class="submit" onclick="openStore('${k}')">Open Aviation Store</button></div>`:''}`);
 }
 
 function selectProgram(k,p,base){
