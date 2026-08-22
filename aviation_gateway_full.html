@@ -1,0 +1,708 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aviation Matrix — Aviation Gateway</title>
+<meta name="description" content="Aviation Matrix Aviation Gateway for individuals, nurseries, schools, universities, institutions and national programs.">
+<style>
+:root{
+  --navy:#06192b; --navy2:#0b2e4d; --navy3:#0d3c64; --sky:#4cc4ff; --sky2:#dff6ff;
+  --ink:#10263a; --muted:#6a7d8f; --line:#dfe8ef; --bg:#f4f8fb; --card:#fff;
+  --ok:#0f8b6d; --warn:#c56b15; --danger:#b42318;
+  --shadow:0 24px 64px rgba(6,25,43,.12);
+  --radius:26px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  color:var(--ink);
+  background:linear-gradient(180deg,#f9fcfe 0%,#f3f8fb 52%,#edf3f7 100%);
+}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.wrap{width:min(1180px,calc(100% - 28px));margin:auto}
+
+/* top */
+.top{
+  position:sticky;top:0;z-index:40;
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.top .wrap{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;gap:13px;align-items:center}
+.mark{
+  width:50px;height:50px;border-radius:16px;background:var(--navy);color:#fff;
+  display:grid;place-items:center;font-size:24px;box-shadow:0 12px 24px rgba(6,25,43,.18)
+}
+.brand h1{margin:0;font-size:21px;line-height:1.1}
+.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.12em;margin-top:3px}
+.nav{display:flex;gap:8px;flex-wrap:wrap}
+.nav a{padding:10px 13px;border-radius:999px;color:var(--muted);font-weight:800}
+.nav a.cta{background:var(--navy);color:#fff}
+
+/* gateway */
+.gateway{
+  position:relative;overflow:hidden;color:#fff;
+  background:
+    radial-gradient(circle at 82% 12%,rgba(76,196,255,.28),transparent 18%),
+    linear-gradient(135deg,#041321 0%,#082541 53%,#0c3d65 100%);
+}
+.gateway:before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);
+  background-size:44px 44px;
+}
+.gateway:after{
+  content:"";position:absolute;left:50%;bottom:-1px;transform:translateX(-50%);
+  width:5px;height:130px;
+  background:repeating-linear-gradient(to bottom,#dff7ff 0 15px,transparent 15px 29px);
+  opacity:.7
+}
+.gateway .wrap{
+  position:relative;z-index:1;
+  display:grid;grid-template-columns:1.08fr .92fr;gap:30px;
+  align-items:center;padding:62px 0 86px;
+}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;padding:9px 13px;
+  border:1px solid rgba(255,255,255,.16);border-radius:999px;
+  font-size:11px;font-weight:900;letter-spacing:.15em;color:#d8f2ff
+}
+.gateway h2{font-size:64px;line-height:1.02;margin:18px 0 14px;max-width:760px}
+.gateway .lead{font-size:18px;line-height:1.82;color:#d8e9f4;max-width:720px;margin:0}
+.ctas{display:flex;gap:11px;flex-wrap:wrap;margin-top:25px}
+.btn{border:0;border-radius:15px;padding:14px 18px;font-weight:900}
+.btn.sky{background:var(--sky);color:#06233a}
+.btn.ghost{background:rgba(255,255,255,.07);color:#fff;border:1px solid rgba(255,255,255,.17)}
+.gateway-card{
+  background:#fff;color:var(--ink);border-radius:30px;padding:24px;
+  box-shadow:0 28px 70px rgba(0,0,0,.22)
+}
+.gateway-card h3{font-size:29px;margin:7px 0 8px}
+.gateway-card p{font-size:15px;color:var(--muted);line-height:1.7;margin:0 0 18px}
+.steps{display:grid;gap:10px}
+.step{
+  display:grid;grid-template-columns:42px 1fr auto;gap:10px;align-items:center;
+  padding:13px;border:1px solid var(--line);border-radius:15px;background:#f8fbfd
+}
+.step b{font-size:17px}
+.step em{font-style:normal;color:#0c7fb6;font-size:10px;font-weight:900;letter-spacing:.08em}
+
+/* sections */
+.section{padding:72px 0}
+.title{text-align:center;max-width:820px;margin:0 auto 32px}
+.title h3{font-size:39px;margin:0 0 10px}
+.title p{margin:0;color:var(--muted);line-height:1.82}
+.paths{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.path{
+  background:#fff;border:1px solid var(--line);border-radius:26px;padding:22px;
+  box-shadow:var(--shadow);min-height:330px;display:flex;flex-direction:column;gap:12px
+}
+.ico{width:54px;height:54px;border-radius:17px;background:var(--sky2);display:grid;place-items:center;font-size:24px}
+.path h4{font-size:23px;margin:0}
+.path p{margin:0;color:var(--muted);line-height:1.68}
+.actions{display:grid;gap:9px;margin-top:auto}
+.actions button{
+  border-radius:13px;padding:12px 13px;text-align:left;font-weight:900;
+  border:1px solid var(--line);background:#f8fbfd;color:var(--ink)
+}
+.actions button.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+.offer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.offer{background:#fff;border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:var(--shadow)}
+.offer h4{margin:0 0 9px;font-size:20px}
+.offer p{margin:0;color:var(--muted);line-height:1.72}
+
+.banner{
+  background:linear-gradient(135deg,#07213a,#0b3456);color:#fff;
+  border-radius:30px;padding:30px;display:flex;gap:20px;align-items:center;justify-content:space-between
+}
+.banner h4{margin:0 0 7px;font-size:30px}
+.banner p{margin:0;color:#d9ebf5;line-height:1.75;max-width:800px}
+
+/* modal */
+.modal{
+  position:fixed;inset:0;background:rgba(3,15,26,.7);
+  display:none;align-items:center;justify-content:center;padding:18px;z-index:70
+}
+.modal.open{display:flex}
+.sheet{
+  width:min(930px,100%);max-height:93vh;overflow:auto;background:#fff;border-radius:28px;
+  box-shadow:0 30px 90px rgba(0,0,0,.33)
+}
+.sheet-head{
+  position:sticky;top:0;background:#fff;padding:22px 22px 15px;border-bottom:1px solid var(--line);
+  z-index:2;display:flex;justify-content:space-between;gap:14px
+}
+.sheet-head h3{margin:2px 0 4px;font-size:25px}
+.sheet-head p{margin:0;color:var(--muted)}
+.x{width:38px;height:38px;border:0;border-radius:50%;background:#eef3f6;font-size:20px}
+.sheet-body{padding:22px}
+.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.choice{
+  padding:16px;border:1px solid var(--line);border-radius:18px;background:#f9fbfd;text-align:left
+}
+.choice strong{display:block;font-size:17px;margin-bottom:5px}
+.choice span{color:var(--muted);font-size:13px;line-height:1.5}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:grid;gap:7px}
+.field.full{grid-column:1/-1}
+.field label{font-size:12px;font-weight:900;color:#40576a}
+.field input,.field select,.field textarea{
+  width:100%;border:1px solid #cfdae4;border-radius:13px;padding:12px;background:#fff;color:var(--ink)
+}
+.field textarea{min-height:96px;resize:vertical}
+
+.check-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.check{
+  display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);padding:12px;
+  border-radius:14px;background:#fafcfd
+}
+.check input{margin-top:3px}
+.check strong{display:block}
+.check small{color:var(--muted)}
+
+.sheet-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+.sheet-actions button{border:0;border-radius:13px;padding:12px 16px;font-weight:900}
+.back{background:#edf3f7;color:var(--ink)}
+.submit{background:var(--navy);color:#fff}
+
+.summary{
+  background:#f2f8fb;border:1px solid var(--line);padding:15px;border-radius:17px;
+  margin:14px 0;color:#41576a;line-height:1.65
+}
+.notice{padding:14px 16px;border-radius:15px;background:#e9f8f3;color:#0c6b56;font-weight:800}
+.muted{color:var(--muted);font-size:12px;line-height:1.5}
+.badge{display:inline-block;padding:5px 8px;border-radius:999px;background:#eef7fb;color:#0a6f9e;font-size:10px;font-weight:900}
+
+/* store */
+.store-toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.store-toolbar input{padding:11px 12px;border-radius:12px;border:1px solid var(--line);min-width:230px}
+.products{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.product{border:1px solid var(--line);border-radius:20px;padding:16px;background:#fff}
+.product h4{margin:8px 0 6px}
+.product p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+.price{font-size:22px;font-weight:900;color:var(--navy);margin:10px 0}
+.product button{width:100%;border:0;border-radius:12px;padding:11px;background:var(--navy);color:#fff;font-weight:900}
+.cart{margin-top:18px;border-top:1px solid var(--line);padding-top:16px}
+.cart-row{
+  display:grid;grid-template-columns:1fr 90px 250px;gap:12px;align-items:center;
+  padding:10px 0;border-bottom:1px dashed var(--line)
+}
+.cart-row input,.cart-row select{padding:9px;border:1px solid var(--line);border-radius:10px;width:100%}
+.total{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:14px;font-size:20px;font-weight:900}
+
+/* pricing */
+.price-box{
+  display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;
+  border:1px solid var(--line);border-radius:16px;padding:14px;background:#fbfdfe;margin-top:12px
+}
+.price-box strong{font-size:22px}
+footer{padding:30px;text-align:center;color:var(--muted)}
+
+@media(max-width:1020px){
+  .gateway .wrap{grid-template-columns:1fr}
+  .gateway h2{font-size:50px}
+  .paths,.offer-grid,.products{grid-template-columns:1fr 1fr}
+}
+@media(max-width:720px){
+  .top .wrap{display:block;padding:12px 0}
+  .nav{margin-top:10px}
+  .gateway h2{font-size:36px}
+  .paths,.offer-grid,.products,.form-grid,.choice-grid,.check-grid{grid-template-columns:1fr}
+  .field.full{grid-column:auto}
+  .cart-row{grid-template-columns:1fr}
+  .banner{display:block}
+  .banner .btn{margin-top:15px}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <div class="mark">✈</div>
+      <div>
+        <h1>Aviation Matrix</h1>
+        <small>AVIATION GATEWAY</small>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="#gateway">Gateway</a>
+      <a href="#paths">Paths</a>
+      <a href="#programs">Programs</a>
+      <a href="#contact">Talk to Us</a>
+      <a class="cta" href="#paths">Get Started</a>
+    </nav>
+  </div>
+</header>
+
+<section class="gateway" id="gateway">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">AVIATION MATRIX • AVIATION GATEWAY</span>
+      <h2>One Gateway Into Aviation.</h2>
+      <p class="lead">
+        From early childhood aviation discovery to career development, institutional partnerships,
+        and national-scale initiatives — choose who you are and move directly to what Aviation Matrix can offer you.
+      </p>
+      <div class="ctas">
+        <a class="btn sky" href="#paths">Choose Your Path</a>
+        <a class="btn ghost" href="#programs">Explore Programs</a>
+      </div>
+    </div>
+
+    <aside class="gateway-card">
+      <small style="font-weight:900;letter-spacing:.14em;color:#718395">AVIATION GATEWAY • ACCESS</small>
+      <h3>Discover. Choose. Customize.</h3>
+      <p>Choose a ready program, customize one, add products, or talk directly with Aviation Matrix before deciding.</p>
+      <div class="steps">
+        <div class="step"><b>01</b><span>Explore Available Programs</span><em>READY</em></div>
+        <div class="step"><b>02</b><span>Customize a Program</span><em>BUILD</em></div>
+        <div class="step"><b>03</b><span>Explore Aviation Store</span><em>SHOP</em></div>
+        <div class="step"><b>04</b><span>Book Meeting / Call Back</span><em>TALK</em></div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section class="section" id="paths">
+  <div class="wrap">
+    <div class="title">
+      <h3>Choose Your Path</h3>
+      <p>Select the audience that best represents you. Each path opens the programs, customization tools, products, and contact options relevant to you.</p>
+    </div>
+    <div class="paths" id="pathGrid"></div>
+  </div>
+</section>
+
+<section class="section" id="programs">
+  <div class="wrap">
+    <div class="title">
+      <h3>Flexible by Design</h3>
+      <p>Institutional clients can choose a ready package, customize it, combine it with student products, or request a consultation before making a decision.</p>
+    </div>
+    <div class="offer-grid">
+      <div class="offer"><h4>Ready Programs</h4><p>Pre-designed packages with clear target audiences, formats, and delivery models.</p></div>
+      <div class="offer"><h4>Multi-Select Add-ons</h4><p>Select multiple extras together: assessments, certificates, reports, parent sessions, branding, and more.</p></div>
+      <div class="offer"><h4>Aviation Store</h4><p>Add notebooks, mugs, kits, uniforms, badges, backpacks, and personalized student products.</p></div>
+      <div class="offer"><h4>Consultation & Meetings</h4><p>Book an online meeting or request a call back with your preferred contact time.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="wrap">
+    <div class="banner">
+      <div>
+        <h4>Not sure what fits your institution?</h4>
+        <p>Leave your details and Aviation Matrix can guide you through the available programs, customization options, products, and delivery models.</p>
+      </div>
+      <button class="btn sky" onclick="openGeneralCallback()">Request a Call Back</button>
+    </div>
+  </div>
+</section>
+
+<footer>Aviation Matrix — Aviation Gateway</footer>
+
+<div class="modal" id="modal">
+  <div class="sheet">
+    <div class="sheet-head">
+      <div><h3 id="modalTitle"></h3><p id="modalSub"></p></div>
+      <button class="x" onclick="closeModal()">×</button>
+    </div>
+    <div class="sheet-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+const audiences=[
+ {key:'nursery',icon:'🧸',title:'Nursery',desc:'Aviation discovery, weekly activities, themed days, characters, games, and age-appropriate learning experiences.'},
+ {key:'school',icon:'🏫',title:'School',desc:'Aviation clubs, school programs, career discovery, on-campus delivery, aviation days, and secondary-school career pathways.'},
+ {key:'university',icon:'🎓',title:'University',desc:'Career readiness, aviation awareness, employability, student assessment, workshops, and university partnership programs.'},
+ {key:'individual',icon:'👤',title:'Individual',desc:'Career assessment, aviation guidance, preparatory learning, professional development, and role-based training journeys.'},
+ {key:'institution',icon:'🏢',title:'Institution / Organization',desc:'Customized aviation education, workforce development, events, awareness programs, and group training solutions.'},
+ {key:'government',icon:'🌍',title:'Government / National Programs',desc:'Scalable youth development, career pipeline, workforce readiness, and national aviation education initiatives.'}
+];
+
+const programs={
+ nursery:[
+  {name:'Aviation Discovery Day',base:900},
+  {name:'Weekly Kids Aviation Program',base:650},
+  {name:'Monthly Aviation Experience',base:750},
+  {name:'Aviation Matrix Characters & Activities',base:500}
+ ],
+ school:[
+  {name:'Aviation Career Discovery Day',base:950},
+  {name:'Weekly Aviation Club',base:700},
+  {name:'Secondary Career Pathway',base:1100},
+  {name:'On-Campus Aviation Program',base:850}
+ ],
+ university:[
+  {name:'Aviation Career Readiness Program',base:1200},
+  {name:'Industry Awareness Series',base:900},
+  {name:'Student Assessment & Career Mapping',base:1350},
+  {name:'Specialized Aviation Workshops',base:1000}
+ ],
+ institution:[
+  {name:'Aviation Awareness Program',base:1000},
+  {name:'Workforce Development Package',base:1450},
+  {name:'Group Training Program',base:1250},
+  {name:'Custom Aviation Event',base:1600}
+ ],
+ government:[
+  {name:'National Aviation Awareness Initiative',base:1500},
+  {name:'Youth Aviation Pipeline',base:1750},
+  {name:'Career Readiness Initiative',base:1600},
+  {name:'National Workforce Development Program',base:1900}
+ ],
+ individual:[
+  {name:'Career Fit Assessment',base:650},
+  {name:'Cabin Crew Pathway',base:1200},
+  {name:'Aviation Foundation Program',base:900},
+  {name:'Preparatory Development Path',base:800}
+ ]
+};
+
+const addons=[
+ {name:'Assessment',desc:'Structured learner assessment',price:120},
+ {name:'Certificates',desc:'Printed or digital certificates',price:80},
+ {name:'Career Reports',desc:'Individual or group career reporting',price:160},
+ {name:'Parent Session',desc:'Parent awareness / briefing session',price:100},
+ {name:'Student Products',desc:'Add Aviation Matrix student products',price:0},
+ {name:'Personalization',desc:'Student names / institution name / logo',price:70},
+ {name:'Photo / Media Package',desc:'Event or program media coverage',price:150},
+ {name:'Custom Branding',desc:'Institution-specific branded materials',price:90}
+];
+
+const productCatalog=[
+ {id:'notebook',name:'Aviation Matrix Notebook',price:220,tag:'STATIONERY'},
+ {id:'mug',name:'Aviation Matrix Mug',price:180,tag:'MERCH'},
+ {id:'lanyard',name:'Student ID + Lanyard',price:150,tag:'IDENTITY'},
+ {id:'kit',name:'Student Aviation Kit',price:650,tag:'KIT'},
+ {id:'tshirt',name:'Aviation T-Shirt',price:450,tag:'APPAREL'},
+ {id:'cap',name:'Aviation Cap',price:280,tag:'APPAREL'},
+ {id:'uniform',name:'Full Aviation Uniform',price:1850,tag:'UNIFORM'},
+ {id:'backpack',name:'Aviation Backpack',price:760,tag:'BAG'},
+ {id:'badge',name:'Personalized Name Badge',price:120,tag:'IDENTITY'}
+];
+
+let cart=[];
+
+const grid=document.getElementById('pathGrid');
+audiences.forEach(a=>{
+ const institutional=a.key!=='individual';
+ const el=document.createElement('article');
+ el.className='path';
+ el.innerHTML=`
+  <div class="ico">${a.icon}</div>
+  <h4>${a.title}</h4>
+  <p>${a.desc}</p>
+  <div class="actions">
+   <button class="primary" onclick="openReady('${a.key}')">Explore Available Programs →</button>
+   ${institutional?`
+   <button onclick="openCustomize('${a.key}')">Customize a Program</button>
+   <button onclick="openStore('${a.key}')">Explore Aviation Store</button>
+   <button onclick="openMeeting('${a.key}')">Book an Online Meeting</button>
+   <button onclick="openCallback('${a.key}')">Request a Call Back</button>`:
+   `<button onclick="openIndividual()">Start My Application</button>`}
+  </div>`;
+ grid.appendChild(el);
+});
+
+function label(k){return audiences.find(a=>a.key===k)?.title||k}
+function show(t,s,b){
+ document.getElementById('modalTitle').textContent=t;
+ document.getElementById('modalSub').textContent=s||'';
+ document.getElementById('modalBody').innerHTML=b;
+ document.getElementById('modal').classList.add('open');
+}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+
+function openReady(k){
+ const arr=programs[k]||[];
+ show(`${label(k)} Programs`,`Choose a ready program, customize it, add products, or talk to Aviation Matrix.`,
+ `<div class="choice-grid">${arr.map(p=>`
+  <button class="choice" onclick="selectProgram('${k}','${p.name.replaceAll("'","\\'")}',${p.base})">
+   <strong>${p.name}</strong>
+   <span>From EGP ${p.base.toLocaleString()} per learner in this prototype.</span>
+  </button>`).join('')}</div>
+  ${k!=='individual'?`
+  <div class="sheet-actions">
+   <button class="back" onclick="openCustomize('${k}')">Build Custom Program</button>
+   <button class="submit" onclick="openStore('${k}')">Open Aviation Store</button>
+  </div>`:''}`);
+}
+
+function selectProgram(k,p,base){
+ show(p,`${label(k)} • Ready Program`,
+ `<div class="summary">
+   <strong>Selected program:</strong> ${p}<br>
+   <strong>Prototype base estimate:</strong> EGP ${Number(base).toLocaleString()} per learner<br><br>
+   Request it as-is, customize it, or combine it with Aviation Matrix products.
+ </div>
+ <div class="choice-grid">
+  <button class="choice" onclick="requestReady('${k}','${p.replaceAll("'","\\'")}',${base})">
+   <strong>Request This Program</strong><span>Continue with the ready program.</span>
+  </button>
+  ${k!=='individual'?`
+  <button class="choice" onclick="openCustomize('${k}','${p.replaceAll("'","\\'")}',${base})">
+   <strong>Customize This Program</strong><span>Adjust delivery, add-ons, and learner details.</span>
+  </button>
+  <button class="choice" onclick="openStore('${k}')">
+   <strong>Add Products</strong><span>Build a program + product bundle.</span>
+  </button>`:''}
+ </div>`);
+}
+
+function requestReady(k,p,base){
+ show('Program Request',`${label(k)} • ${p}`,contactForm(k,`Selected program: ${p} • Base estimate: EGP ${base}`))
+}
+
+function openCustomize(k,baseName='',basePrice=0){
+ const arr=programs[k]||[];
+ const opts=arr.map(p=>`<option value="${p.base}" ${p.name===baseName?'selected':''}>${p.name}</option>`).join('');
+ show('Customize a Program',`${label(k)} • Program Builder`,
+ `<form onsubmit="submitDemo(event,'custom program')">
+ <div class="form-grid">
+  <div class="field full">
+   <label>STARTING POINT</label>
+   <select id="programBase" onchange="recalcProgram()">
+    <option value="0">Build from scratch</option>${opts}
+   </select>
+  </div>
+  <div class="field"><label>AGE / EDUCATION STAGE</label><input required placeholder="e.g. 4–6 / Secondary / University"></div>
+  <div class="field"><label>APPROX. NUMBER OF LEARNERS</label><input id="learners" type="number" min="1" value="30" oninput="recalcProgram()"></div>
+  <div class="field"><label>DELIVERY LOCATION</label><select><option>At our institution</option><option>At Aviation Matrix</option><option>Online</option><option>Hybrid</option></select></div>
+  <div class="field"><label>FREQUENCY</label><select><option>One day</option><option>Weekly</option><option>Twice weekly</option><option>Monthly</option><option>Full term / semester</option><option>Custom schedule</option></select></div>
+  <div class="field"><label>SESSION LENGTH</label><select><option>45 minutes</option><option>60 minutes</option><option>90 minutes</option><option>2 hours</option><option>Half day</option><option>Full day</option></select></div>
+  <div class="field"><label>MAIN OBJECTIVE</label><select><option>Aviation awareness</option><option>Career discovery</option><option>Skills development</option><option>Career readiness</option><option>Training</option><option>Custom objective</option></select></div>
+
+  <div class="field full">
+   <label>ADD-ONS — SELECT AS MANY AS YOU NEED</label>
+   <div class="check-grid">
+    ${addons.map(a=>`
+     <label class="check">
+      <input type="checkbox" class="addon" data-price="${a.price}" onchange="recalcProgram()">
+      <span><strong>${a.name}</strong><small>${a.desc}</small></span>
+     </label>`).join('')}
+   </div>
+  </div>
+
+  <div class="field full"><label>WHAT WOULD YOU LIKE TO CHANGE OR ADD?</label><textarea placeholder="Tell us anything specific you need..."></textarea></div>
+ </div>
+
+ <div class="price-box">
+  <div>
+   <span class="muted">Estimated program total for the selected learner count</span>
+   <div class="muted">Prototype estimate only — final institutional quotation can vary by scope, location, schedule, quantity, and customization.</div>
+  </div>
+  <strong id="programEstimate">EGP 0</strong>
+ </div>
+
+ <div class="sheet-actions">
+  <button type="button" class="back" onclick="openReady('${k}')">Back</button>
+  <button type="button" class="back" onclick="openStore('${k}')">Add Products</button>
+  <button type="submit" class="submit">Continue</button>
+ </div>
+ </form>`);
+ if(basePrice){document.getElementById('programBase').value=String(basePrice)}
+ recalcProgram();
+}
+
+function recalcProgram(){
+ const n=Math.max(1,Number(document.getElementById('learners')?.value||1));
+ const base=Number(document.getElementById('programBase')?.value||0);
+ let addonPer=0;
+ document.querySelectorAll('.addon:checked').forEach(x=>addonPer+=Number(x.dataset.price||0));
+ const total=(base+addonPer)*n;
+ const el=document.getElementById('programEstimate');
+ if(el)el.textContent=`EGP ${total.toLocaleString()}`;
+}
+
+/* store */
+function openStore(k){
+ cart=[];
+ show('Aviation Matrix Store',`${label(k)} • Products & Personalization`,
+ `<div class="store-toolbar">
+   <div>
+    <span class="badge">INSTITUTIONAL STORE</span>
+    <div class="muted">Choose products, quantities, and personalization. Prices below are sample prototype prices.</div>
+   </div>
+   <input id="searchProduct" placeholder="Search products..." oninput="renderProducts('${k}')">
+ </div>
+
+ <div class="products" id="products"></div>
+
+ <div class="cart">
+  <h4>Selected Products</h4>
+  <div id="cartRows"></div>
+  <div class="total"><span>Estimated Products Total</span><span id="cartTotal">EGP 0</span></div>
+
+  <div class="summary">
+   <strong>Personalization options:</strong> Student Name • Institution Name • Logo • Name Badge • Size / Uniform Details<br>
+   <span class="muted">For large groups, a student list can later be uploaded by Excel/CSV instead of entering every student manually.</span>
+  </div>
+
+  <div class="sheet-actions">
+   <button class="back" onclick="openReady('${k}')">Back to Programs</button>
+   <button class="submit" onclick="storeCheckout('${k}')">Continue with Products</button>
+  </div>
+ </div>`);
+ renderProducts(k);
+ renderCart();
+}
+
+function renderProducts(k){
+ const q=(document.getElementById('searchProduct')?.value||'').toLowerCase();
+ const el=document.getElementById('products'); if(!el)return;
+ el.innerHTML=productCatalog.filter(p=>p.name.toLowerCase().includes(q)).map(p=>`
+  <div class="product">
+   <span class="badge">${p.tag}</span>
+   <h4>${p.name}</h4>
+   <p>Can be included in institutional bundles and personalized where relevant.</p>
+   <div class="price">EGP ${p.price.toLocaleString()}</div>
+   <button onclick="addToCart('${p.id}')">Add to Request</button>
+  </div>`).join('');
+}
+
+function addToCart(id){
+ const p=productCatalog.find(x=>x.id===id); if(!p)return;
+ const found=cart.find(x=>x.id===id);
+ if(found)found.qty++;
+ else cart.push({...p,qty:1,personalization:'None',studentName:'',size:''});
+ renderCart();
+}
+function updateQty(id,v){const x=cart.find(i=>i.id===id);if(x){x.qty=Math.max(1,Number(v||1));renderCart()}}
+function updatePers(id,v){const x=cart.find(i=>i.id===id);if(x){x.personalization=v;renderCart()}}
+function removeCart(id){cart=cart.filter(x=>x.id!==id);renderCart()}
+
+function renderCart(){
+ const rows=document.getElementById('cartRows'), total=document.getElementById('cartTotal');
+ if(!rows||!total)return;
+ if(!cart.length){
+  rows.innerHTML='<div class="muted">No products selected yet.</div>';
+  total.textContent='EGP 0'; return;
+ }
+ rows.innerHTML=cart.map(x=>`
+  <div class="cart-row">
+   <div><strong>${x.name}</strong><div class="muted">EGP ${x.price.toLocaleString()} each</div></div>
+   <input type="number" min="1" value="${x.qty}" onchange="updateQty('${x.id}',this.value)">
+   <div>
+    <select onchange="updatePers('${x.id}',this.value)">
+     <option ${x.personalization==='None'?'selected':''}>None</option>
+     <option ${x.personalization==='Student Name'?'selected':''}>Student Name</option>
+     <option ${x.personalization==='Institution Name'?'selected':''}>Institution Name</option>
+     <option ${x.personalization==='Logo + Name'?'selected':''}>Logo + Name</option>
+     ${x.id==='uniform'?`<option ${x.personalization==='Full Uniform Personalization'?'selected':''}>Full Uniform Personalization</option>`:''}
+    </select>
+    <button style="margin-top:6px;border:0;background:#fff;color:#b42318;font-weight:900" onclick="removeCart('${x.id}')">Remove</button>
+   </div>
+  </div>`).join('');
+ const sum=cart.reduce((s,x)=>s+x.price*x.qty,0);
+ total.textContent=`EGP ${sum.toLocaleString()}`;
+}
+
+function storeCheckout(k){
+ if(!cart.length){
+  show('Aviation Store',label(k),`<div class="summary">Choose at least one product first.</div><div class="sheet-actions"><button class="submit" onclick="openStore('${k}')">Back to Store</button></div>`);
+  return;
+ }
+ const total=cart.reduce((s,x)=>s+x.price*x.qty,0);
+ show('Product Request Summary',`${label(k)} • Aviation Store`,
+ `<div class="summary">
+  ${cart.map(x=>`<strong>${x.name}</strong> × ${x.qty} — ${x.personalization}<br>`).join('')}
+  <br><strong>Estimated Total: EGP ${total.toLocaleString()}</strong><br>
+  <span class="muted">Prototype estimate only. Final price can change based on quantity, branding, sizing, production, and delivery.</span>
+ </div>
+ <div class="choice-grid">
+  <button class="choice" onclick="storeContact('${k}')"><strong>Send Product Request</strong><span>Leave contact details for quotation and confirmation.</span></button>
+  <button class="choice" onclick="openMeeting('${k}')"><strong>Discuss in a Meeting</strong><span>Review products, quantities, and customization online.</span></button>
+ </div>`);
+}
+
+function storeContact(k){
+ show('Send Product Request',`${label(k)} • Products`,contactForm(k,'Product request'))
+}
+
+/* contact / meeting */
+function openMeeting(k){
+ show('Book an Online Meeting',`${label(k)} • Consultation`,
+ `<form onsubmit="submitDemo(event,'meeting request')">
+  <div class="form-grid">
+   <div class="field"><label>ORGANIZATION NAME</label><input required></div>
+   <div class="field"><label>CONTACT PERSON</label><input required></div>
+   <div class="field"><label>MOBILE NUMBER</label><input required placeholder="+20 ..."></div>
+   <div class="field"><label>EMAIL</label><input required type="email"></div>
+   <div class="field"><label>PREFERRED DATE</label><input required type="date"></div>
+   <div class="field"><label>PREFERRED TIME</label><input required type="time"></div>
+   <div class="field full"><label>WHAT WOULD YOU LIKE TO DISCUSS?</label><textarea placeholder="Programs, products, customization, delivery at your location, partnership..."></textarea></div>
+  </div>
+  <div class="sheet-actions">
+   <button type="button" class="back" onclick="closeModal()">Cancel</button>
+   <button class="submit">Request Meeting</button>
+  </div>
+ </form>`)
+}
+
+function openCallback(k){
+ show('Request a Call Back',`${label(k)} • Speak with Aviation Matrix`,
+ `<form onsubmit="submitDemo(event,'call back request')">
+  <div class="form-grid">
+   <div class="field"><label>ORGANIZATION NAME</label><input required></div>
+   <div class="field"><label>CONTACT PERSON</label><input required></div>
+   <div class="field"><label>MOBILE NUMBER</label><input required placeholder="+20 ..."></div>
+   <div class="field"><label>BEST TIME TO CALL</label><select><option>Morning</option><option>Afternoon</option><option>Evening</option></select></div>
+   <div class="field full"><label>WHAT DO YOU NEED HELP WITH?</label><textarea placeholder="I need help choosing a program, products, customization..."></textarea></div>
+  </div>
+  <div class="sheet-actions">
+   <button type="button" class="back" onclick="closeModal()">Cancel</button>
+   <button class="submit">Request Call Back</button>
+  </div>
+ </form>`)
+}
+
+function openGeneralCallback(){openCallback('institution')}
+
+function openIndividual(){
+ show('Start My Application','Individual • Aviation Matrix',
+ `<div class="summary">The individual route continues into the Aviation Matrix application, assessment, and candidate journey flow.</div>
+ <div class="sheet-actions">
+  <button class="back" onclick="closeModal()">Not Now</button>
+  <button class="submit" onclick="demoDone('Individual application entry')">Continue to Application</button>
+ </div>`)
+}
+
+function contactForm(k,note=''){
+ return `<form onsubmit="submitDemo(event,'request')">
+  <div class="form-grid">
+   <div class="field"><label>ORGANIZATION NAME</label><input required></div>
+   <div class="field"><label>CONTACT PERSON</label><input required></div>
+   <div class="field"><label>MOBILE NUMBER</label><input required placeholder="+20 ..."></div>
+   <div class="field"><label>EMAIL</label><input required type="email"></div>
+   <div class="field full"><label>NOTES</label><textarea>${note}</textarea></div>
+  </div>
+  <div class="sheet-actions"><button class="submit">Send Request</button></div>
+ </form>`;
+}
+
+function submitDemo(e,type){e.preventDefault();demoDone(type)}
+function demoDone(type){
+ show('Request Captured','Interactive prototype',
+ `<div class="notice">✓ ${type} completed successfully in this prototype.</div>
+ <div class="summary">In the live version, this step will create the appropriate Aviation Matrix lead/request and pricing record.</div>
+ <div class="sheet-actions"><button class="submit" onclick="closeModal()">Done</button></div>`)
+}
+</script>
+</body>
+</html>
