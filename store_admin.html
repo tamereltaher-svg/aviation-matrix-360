@@ -50,7 +50,7 @@ textarea{min-height:95px;resize:vertical}label{display:block;font-size:11px;font
 <main class="wrap">
 <section id="loginPanel" class="card login">
   <h2>Admin Sign In</h2>
-  <p style="color:var(--muted);line-height:1.7">Private access for the authorized Aviation Matrix Store Admin account only.</p>
+  <p style="color:var(--muted);line-height:1.7">Private Aviation Matrix staff access. Store Management permission is required.</p>
   <div id="loginMsg"></div>
   <div class="field">
     <label>AUTHORIZED ADMIN</label>
@@ -159,15 +159,36 @@ async function signOut(){await sb.auth.signOut();location.reload()}
 async function boot(){
   const {data:{session}}=await sb.auth.getSession();
   if(!session)return;
-  const {data:admin,error}=await sb.from('store_admins').select('user_id,role').eq('user_id',session.user.id).maybeSingle();
-  if(error||!admin){
+
+  const {data:staff,error:staffError}=await sb
+    .from('staff_accounts')
+    .select('user_id,email,full_name,role_code,is_active')
+    .eq('user_id',session.user.id)
+    .eq('is_active',true)
+    .maybeSingle();
+
+  if(staffError || !staff){
     await sb.auth.signOut();
-    return msg('loginMsg','This account is not authorized for Store Admin.',true);
+    return msg('loginMsg','This account is not an active Aviation Matrix staff account.',true);
   }
+
+  const {data:permission,error:permError}=await sb
+    .from('staff_permissions')
+    .select('permission_code,is_allowed')
+    .eq('user_id',session.user.id)
+    .eq('permission_code','store.manage')
+    .eq('is_allowed',true)
+    .maybeSingle();
+
+  if(permError || !permission){
+    await sb.auth.signOut();
+    return msg('loginMsg','This staff account does not have Store Management permission.',true);
+  }
+
   document.getElementById('loginPanel').classList.add('hidden');
   document.getElementById('adminPanel').classList.remove('hidden');
   document.getElementById('signOutBtn').classList.remove('hidden');
-  document.getElementById('authStatus').textContent=`Signed in: ${session.user.email}`;
+  document.getElementById('authStatus').textContent=`${staff.full_name || session.user.email} • ${staff.role_code}`;
   renderAudienceChecks();
   await loadProducts();
 }
