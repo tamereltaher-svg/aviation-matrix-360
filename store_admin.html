@@ -3,471 +3,377 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Aviation Matrix — Store Admin</title>
+<title>Aviation Matrix — Control Tower</title>
 <style>
 :root{
-  --navy:#06192b;--navy2:#0b2e4d;--sky:#4cc4ff;--ink:#10263a;
-  --muted:#6b7f91;--line:#dfe8ef;--bg:#f4f8fb;--white:#fff;
-  --ok:#0f8b6d;--danger:#b42318;--warn:#a75c00
+  --navy:#06192b;--navy2:#0a2945;--navy3:#0d3b61;--sky:#4cc4ff;--cyan:#dff6ff;
+  --ink:#10263a;--muted:#6c7f90;--line:#dfe8ef;--bg:#f3f7fa;--card:#fff;
+  --ok:#0d8a6b;--warn:#c87816;--danger:#b42318;--shadow:0 16px 44px rgba(6,25,43,.08)
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+html,body{margin:0;min-height:100%;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink);background:var(--bg)}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
-header{background:var(--navy);color:#fff;padding:16px 22px;position:sticky;top:0;z-index:30}
-.header{max-width:1400px;margin:auto;display:flex;justify-content:space-between;gap:15px;align-items:center}
-.brand{display:flex;gap:12px;align-items:center}
-.mark{width:44px;height:44px;border-radius:14px;background:#fff;color:var(--navy);display:grid;place-items:center;font-size:22px}
-.brand h1{margin:0;font-size:20px}.brand small{color:#bdd5e4}
-.wrap{max-width:1400px;margin:auto;padding:20px}
-.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:0 16px 42px rgba(6,25,43,.07)}
-.login{max-width:560px;margin:60px auto}.login h2{margin-top:0}
-.grid{display:grid;grid-template-columns:360px 1fr;gap:18px;align-items:start}
-.side{position:sticky;top:96px}
-.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}
-.btn{border:0;border-radius:12px;padding:11px 14px;font-weight:900;background:var(--navy);color:#fff}
-.btn.secondary{background:#eef4f7;color:var(--ink);border:1px solid var(--line)}
-.btn.danger{background:#fff;color:var(--danger);border:1px solid #f2c5bf}
-input,select,textarea{width:100%;padding:11px 12px;border:1px solid #cfdae4;border-radius:12px;background:#fff;color:var(--ink)}
-textarea{min-height:95px;resize:vertical}
-label{display:block;font-size:11px;font-weight:900;color:#486176;margin-bottom:6px;letter-spacing:.03em}
-.field{margin-bottom:12px}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.products{display:grid;gap:9px;max-height:65vh;overflow:auto}
-.pitem{border:1px solid var(--line);border-radius:14px;padding:12px;background:#fbfdfe;cursor:pointer}
-.pitem.active{border-color:#4cc4ff;background:#eef9ff}
-.pitem strong{display:block}.pitem small{color:var(--muted)}
-.badge{display:inline-block;padding:4px 7px;border-radius:999px;background:#eef7fb;color:#0a6f9e;font-size:9px;font-weight:900;margin-right:5px}
-.section-title{margin:24px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line);font-size:18px}
-.checks{display:flex;gap:8px;flex-wrap:wrap}
-.check{display:flex;gap:7px;align-items:center;padding:9px 11px;border:1px solid var(--line);border-radius:12px;background:#fbfdfe}
-.check input{width:auto}
-.images{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.image-card{border:1px solid var(--line);border-radius:16px;padding:9px;background:#fbfdfe}
-.image-card img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px;background:#eaf3f8}
-.image-card small{display:block;color:var(--muted);margin:6px 0;word-break:break-word}
-.variant-row,.option-row{display:grid;grid-template-columns:1fr 1fr 110px 80px;gap:8px;margin-bottom:8px;align-items:center}
-.option-row{grid-template-columns:1fr 1fr 120px 110px 80px}
-.notice{padding:12px 14px;border-radius:12px;background:#e8f8f3;color:#0b6a54;font-weight:800;margin-bottom:12px}
-.notice.error{background:#fff0ef;color:#a02b21}
-.notice.warn{background:#fff6e7;color:#8b5200}
 .hidden{display:none!important}
-.status{font-size:12px;color:#cfe4f1}
+.app{min-height:100vh;display:grid;grid-template-columns:250px 1fr}
+.sidebar{
+  position:sticky;top:0;height:100vh;background:linear-gradient(180deg,var(--navy),#08233b);
+  color:#fff;padding:18px 14px;display:flex;flex-direction:column;z-index:30
+}
+.brand{display:flex;gap:11px;align-items:center;padding:4px 8px 18px;border-bottom:1px solid rgba(255,255,255,.1)}
+.brand-mark{width:42px;height:42px;border-radius:14px;background:#fff;color:var(--navy);display:grid;place-items:center;font-size:21px}
+.brand h1{margin:0;font-size:17px}.brand small{display:block;color:#bcd4e4;font-size:10px;margin-top:2px}
+.nav{display:grid;gap:6px;margin-top:18px}
+.nav button{
+  width:100%;display:flex;gap:10px;align-items:center;border:0;border-radius:13px;
+  padding:11px 12px;background:transparent;color:#cfe0eb;text-align:left;font-weight:800
+}
+.nav button:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav button.active{background:#fff;color:var(--navy)}
+.nav button span:first-child{width:22px;text-align:center}
+.nav-group{font-size:9px;color:#7898ad;letter-spacing:.15em;font-weight:900;padding:18px 10px 6px}
+.side-foot{margin-top:auto;padding:12px 8px;border-top:1px solid rgba(255,255,255,.1)}
+.side-foot strong{display:block;font-size:12px}.side-foot small{color:#9fb9ca}
+.main{min-width:0}
+.topbar{
+  height:70px;background:rgba(255,255,255,.94);border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:20;backdrop-filter:blur(10px)
+}
+.page-title h2{margin:0;font-size:21px}.page-title small{color:var(--muted)}
+.top-actions{display:flex;gap:9px;align-items:center}
+.btn{border:0;border-radius:12px;padding:10px 14px;font-weight:900}
+.btn.primary{background:var(--navy);color:#fff}.btn.secondary{background:#edf3f7;color:var(--ink);border:1px solid var(--line)}
+.btn.sky{background:var(--sky);color:#06243c}.btn.danger{background:#fff;color:var(--danger);border:1px solid #f2c7c1}
+.content{padding:24px}
+.page{display:none}.page.active{display:block}
+.hero-card{
+  background:radial-gradient(circle at 85% 10%,rgba(76,196,255,.22),transparent 24%),linear-gradient(135deg,#071c31,#0c3659);
+  color:#fff;border-radius:26px;padding:26px;box-shadow:var(--shadow);display:flex;justify-content:space-between;gap:20px;align-items:center
+}
+.hero-card h3{font-size:30px;margin:0 0 8px}.hero-card p{margin:0;color:#d5e7f2;max-width:760px;line-height:1.7}
+.hero-badge{padding:9px 12px;border:1px solid rgba(255,255,255,.18);border-radius:999px;color:#caeafa;font-size:10px;font-weight:900;letter-spacing:.12em}
+.kpis{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;margin-top:18px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow)}
+.kpi small{color:var(--muted);font-weight:800}.kpi strong{display:block;font-size:28px;margin:7px 0 2px}.kpi em{font-style:normal;font-size:11px;color:#0c7dac}
+.section-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:18px;margin-top:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:var(--shadow)}
+.card-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.card-head h3{margin:0;font-size:18px}
+.card-head p{margin:3px 0 0;color:var(--muted);font-size:12px}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;color:#62798a;font-size:10px;letter-spacing:.05em;padding:10px;border-bottom:1px solid var(--line)}
+td{padding:12px 10px;border-bottom:1px solid #edf2f5;vertical-align:middle}
+.status{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:900;background:#eef4f7;color:#456173}
+.status.new,.status.requested{background:#eaf7ff;color:#0b6f9f}.status.approved,.status.active,.status.completed{background:#e7f8f2;color:#0b6b55}
+.status.reviewing,.status.quotation_pending,.status.scheduled{background:#fff5e8;color:#a1600e}.status.closed,.status.cancelled{background:#f1f2f3;color:#6c737a}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.toolbar input,.toolbar select{padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:#fff}
+.toolbar input{min-width:250px}
+.catalog{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.product-card,.program-card,.institution-card{
+  background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px;box-shadow:var(--shadow)
+}
+.product-card h3,.program-card h3,.institution-card h3{margin:8px 0 6px;font-size:17px}
 .muted{color:var(--muted);line-height:1.6}
-@media(max-width:980px){.grid{grid-template-columns:1fr}.side{position:static}.images{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:620px){.row,.variant-row,.option-row{grid-template-columns:1fr}.images{grid-template-columns:1fr}}
+.meta{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}
+.chip{display:inline-flex;padding:5px 8px;border-radius:999px;background:#eff6f9;color:#3f6175;font-size:9px;font-weight:900}
+.price{font-size:22px;font-weight:900;margin-top:8px}
+.card-actions{display:flex;gap:8px;margin-top:12px}
+.card-actions button{flex:1}
+.empty{padding:30px;text-align:center;color:var(--muted)}
+.login-shell{min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 80% 15%,rgba(76,196,255,.16),transparent 20%),linear-gradient(135deg,#041321,#0a2d4d)}
+.login-card{width:min(430px,calc(100% - 28px));background:#fff;border-radius:26px;padding:24px;box-shadow:0 28px 90px rgba(0,0,0,.26)}
+.login-card h1{margin:0 0 8px}.login-card p{color:var(--muted);line-height:1.6}
+.field{margin-bottom:12px}.field label{display:block;font-size:10px;color:#526b7c;font-weight:900;margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid #cfdae4;border-radius:11px;background:#fff}
+.field textarea{min-height:100px;resize:vertical}
+.notice{padding:11px 13px;border-radius:11px;margin:10px 0;background:#e8f8f3;color:#0b6a54;font-weight:800}.notice.error{background:#fff0ef;color:#a02b21}
+.modal{position:fixed;inset:0;background:rgba(3,15,26,.68);display:none;align-items:center;justify-content:center;padding:18px;z-index:100}
+.modal.open{display:flex}
+.sheet{width:min(980px,100%);max-height:93vh;overflow:auto;background:#fff;border-radius:25px;box-shadow:0 30px 90px rgba(0,0,0,.34)}
+.sheet-head{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);padding:18px 20px;display:flex;justify-content:space-between;gap:15px;z-index:3}
+.sheet-head h3{margin:0}.sheet-head p{margin:4px 0 0;color:var(--muted);font-size:12px}
+.close{width:36px;height:36px;border:0;border-radius:50%;background:#eef3f6;font-size:18px}
+.sheet-body{padding:20px}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px}
+.tabs button{border:1px solid var(--line);background:#f7fafc;border-radius:10px;padding:9px 11px;font-weight:800;color:#537084}
+.tabs button.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.tabpane{display:none}.tabpane.active{display:block}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.full{grid-column:1/-1}
+.check-grid{display:flex;gap:8px;flex-wrap:wrap}
+.check{display:flex;gap:7px;align-items:center;padding:9px 10px;border:1px solid var(--line);border-radius:11px;background:#fbfdfe}
+.check input{width:auto}
+.list-row{display:grid;grid-template-columns:1fr 1fr 120px 70px;gap:8px;margin-bottom:8px}.list-row.opt{grid-template-columns:1fr 1fr 120px 110px 70px}
+.image-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.img-card{border:1px solid var(--line);border-radius:14px;padding:8px}.img-card img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px}
+.request-detail{display:grid;grid-template-columns:1fr 1fr;gap:16px}.detail-block{background:#f8fbfd;border:1px solid var(--line);border-radius:15px;padding:14px}.detail-block strong{display:block;margin-bottom:6px}
+@media(max-width:1200px){.kpis{grid-template-columns:repeat(4,1fr)}.catalog{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{position:fixed;left:-260px;width:250px;transition:.2s}.sidebar.open{left:0}.section-grid{grid-template-columns:1fr}.catalog{grid-template-columns:1fr 1fr}.kpis{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.content{padding:14px}.catalog,.form-grid,.request-detail{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}.image-grid{grid-template-columns:1fr 1fr}.list-row,.list-row.opt{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<header>
-  <div class="header">
-    <div class="brand">
-      <div class="mark">✈</div>
-      <div><h1>Aviation Matrix Store Admin</h1><small>Secure Staff Access • Product Management</small></div>
+<div id="loginView" class="login-shell">
+  <div class="login-card">
+    <div class="brand" style="color:var(--ink);border:0;padding:0 0 16px">
+      <div class="brand-mark">✈</div>
+      <div><h1 style="font-size:21px">Aviation Matrix</h1><small style="color:var(--muted)">CONTROL TOWER • SECURE ADMIN ACCESS</small></div>
     </div>
-    <div>
-      <span id="authStatus" class="status">Not signed in</span>
-      <button id="signOutBtn" class="btn secondary hidden" onclick="signOut()">Sign out</button>
+    <h1>Welcome Back</h1>
+    <p>Manage products, programs, requests, meetings, institutions and pricing from one control tower.</p>
+    <div id="loginMsg"></div>
+    <div class="field"><label>ADMIN EMAIL</label><input id="loginEmail" value="tamereltaher@exit-logistics.com" readonly></div>
+    <div class="field"><label>PASSWORD</label><input id="loginPassword" type="password" placeholder="Enter your password"></div>
+    <button class="btn primary" style="width:100%" onclick="login()">Open Control Tower</button>
+  </div>
+</div>
+
+<div id="appView" class="app hidden">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><div class="brand-mark">✈</div><div><h1>Aviation Matrix</h1><small>CONTROL TOWER</small></div></div>
+    <div class="nav">
+      <div class="nav-group">OVERVIEW</div>
+      <button class="active" data-page="dashboard" onclick="openPage('dashboard',this)"><span>⌂</span><span>Dashboard</span></button>
+      <div class="nav-group">COMMERCIAL</div>
+      <button data-page="products" onclick="openPage('products',this)"><span>◫</span><span>Products</span></button>
+      <button data-page="programs" onclick="openPage('programs',this)"><span>✦</span><span>Programs</span></button>
+      <button data-page="pricing" onclick="openPage('pricing',this)"><span>◈</span><span>Add-ons & Pricing</span></button>
+      <div class="nav-group">RELATIONSHIPS</div>
+      <button data-page="requests" onclick="openPage('requests',this)"><span>☷</span><span>Requests</span></button>
+      <button data-page="meetings" onclick="openPage('meetings',this)"><span>◷</span><span>Meetings & Calls</span></button>
+      <button data-page="institutions" onclick="openPage('institutions',this)"><span>▣</span><span>Institutions</span></button>
+      <div class="nav-group">SYSTEM</div>
+      <button data-page="settings" onclick="openPage('settings',this)"><span>⚙</span><span>Settings</span></button>
     </div>
-  </div>
-</header>
+    <div class="side-foot"><strong id="staffName">Administrator</strong><small id="staffRole">super_admin</small></div>
+  </aside>
 
-<main class="wrap">
-<section id="loginPanel" class="card login">
-  <h2>Admin Sign In</h2>
-  <p class="muted">Private access for the authorized Aviation Matrix administrator.</p>
-  <div id="loginMsg"></div>
-  <div class="field">
-    <label>ADMIN EMAIL</label>
-    <input id="adminEmail" type="email" value="tamereltaher@exit-logistics.com" readonly>
-  </div>
-  <div class="field">
-    <label>PASSWORD</label>
-    <input id="adminPassword" type="password" placeholder="Enter your password" autocomplete="current-password">
-  </div>
-  <button class="btn" onclick="login()">Open Store Admin</button>
-</section>
-
-<section id="adminPanel" class="hidden">
-  <div class="grid">
-    <aside class="card side">
-      <div class="toolbar">
-        <button class="btn" onclick="newProduct()">+ Add Product</button>
-        <button class="btn secondary" onclick="loadProducts()">Refresh</button>
+  <main class="main">
+    <header class="topbar">
+      <div class="page-title"><h2 id="pageTitle">Dashboard</h2><small id="pageSub">Aviation Matrix operational overview</small></div>
+      <div class="top-actions">
+        <button class="btn secondary" onclick="refreshCurrent()">Refresh</button>
+        <button class="btn secondary" onclick="signOut()">Sign out</button>
       </div>
-      <div class="field">
-        <input id="productSearch" placeholder="Search products..." oninput="renderProductList()">
-      </div>
-      <div id="productList" class="products"></div>
-    </aside>
+    </header>
 
-    <section class="card">
-      <div id="editorEmpty">
-        <h2>Select a product</h2>
-        <p class="muted">Choose a product from the left or create a new one.</p>
-      </div>
-
-      <div id="editor" class="hidden">
-        <div class="toolbar" style="justify-content:space-between">
-          <div>
-            <span class="badge">PRODUCT</span>
-            <strong id="editorTitle">Product</strong>
+    <div class="content">
+      <section id="page-dashboard" class="page active">
+        <div class="hero-card">
+          <div><span class="hero-badge">AVIATION MATRIX • CONTROL TOWER</span><h3>Everything important, in one place.</h3><p>Track commercial activity, manage offers, monitor institutional interest, and move every request toward a clear next action.</p></div>
+          <button class="btn sky" onclick="openPage('requests',document.querySelector('[data-page=requests]'))">Review Requests</button>
+        </div>
+        <div class="kpis">
+          <div class="kpi"><small>Products</small><strong id="kpiProducts">0</strong><em>catalog total</em></div>
+          <div class="kpi"><small>Active Products</small><strong id="kpiActiveProducts">0</strong><em>visible in store</em></div>
+          <div class="kpi"><small>Programs</small><strong id="kpiPrograms">0</strong><em>active offers</em></div>
+          <div class="kpi"><small>Open Requests</small><strong id="kpiOpenRequests">0</strong><em>need attention</em></div>
+          <div class="kpi"><small>All Requests</small><strong id="kpiRequests">0</strong><em>commercial history</em></div>
+          <div class="kpi"><small>Institutions</small><strong id="kpiInstitutions">0</strong><em>relationship base</em></div>
+          <div class="kpi"><small>Meetings / Calls</small><strong id="kpiMeetings">0</strong><em>pending contact</em></div>
+        </div>
+        <div class="section-grid">
+          <div class="card">
+            <div class="card-head"><div><h3>Recent Requests</h3><p>Newest institutional and commercial activity</p></div><button class="btn secondary" onclick="openPage('requests',document.querySelector('[data-page=requests]'))">View all</button></div>
+            <div class="table-wrap"><table><thead><tr><th>REQUEST</th><th>TYPE</th><th>AUDIENCE</th><th>STATUS</th><th>VALUE</th><th>DATE</th></tr></thead><tbody id="recentRequests"></tbody></table></div>
           </div>
-          <div>
-            <button class="btn danger" onclick="deleteCurrentProduct()">Delete</button>
-            <button class="btn" onclick="saveAll()">Save Product</button>
+          <div class="card">
+            <div class="card-head"><div><h3>Quick Actions</h3><p>Common admin tasks</p></div></div>
+            <div style="display:grid;gap:10px">
+              <button class="btn primary" onclick="newProduct()">+ Add Product</button>
+              <button class="btn secondary" onclick="newProgram()">+ Add Program</button>
+              <button class="btn secondary" onclick="newInstitution()">+ Add Institution</button>
+              <button class="btn secondary" onclick="openPage('pricing',document.querySelector('[data-page=pricing]'))">Manage Add-ons</button>
+            </div>
           </div>
         </div>
+      </section>
 
-        <div id="editorMsg"></div>
+      <section id="page-products" class="page">
+        <div class="toolbar"><input id="productSearch" placeholder="Search products..." oninput="renderProducts()"><select id="productStatus" onchange="renderProducts()"><option value="all">All status</option><option value="active">Active</option><option value="hidden">Hidden</option></select><button class="btn primary" onclick="newProduct()">+ Add Product</button></div>
+        <div id="productCatalog" class="catalog"></div>
+      </section>
 
-        <div class="row">
-          <div class="field"><label>PRODUCT NAME</label><input id="name"></div>
-          <div class="field"><label>SKU</label><input id="sku"></div>
+      <section id="page-programs" class="page">
+        <div class="toolbar"><input id="programSearch" placeholder="Search programs..." oninput="renderPrograms()"><select id="programAudience" onchange="renderPrograms()"><option value="all">All audiences</option><option>nursery</option><option>school</option><option>university</option><option>individual</option><option>institution</option><option>government</option></select><button class="btn primary" onclick="newProgram()">+ Add Program</button></div>
+        <div id="programCatalog" class="catalog"></div>
+      </section>
+
+      <section id="page-pricing" class="page">
+        <div class="toolbar"><button class="btn primary" onclick="newAddon()">+ Add Add-on</button></div>
+        <div class="card"><div class="card-head"><div><h3>Program Add-ons</h3><p>Reusable options available in customized institutional programs</p></div></div><div class="table-wrap"><table><thead><tr><th>CODE</th><th>ADD-ON</th><th>PRICE</th><th>UNIT</th><th>STATUS</th><th></th></tr></thead><tbody id="addonsTable"></tbody></table></div></div>
+      </section>
+
+      <section id="page-requests" class="page">
+        <div class="toolbar"><input id="requestSearch" placeholder="Search request number / contact..." oninput="renderRequests()"><select id="requestStatus" onchange="loadRequests()"><option value="all">All status</option><option>new</option><option>reviewing</option><option>contacted</option><option>quotation_pending</option><option>quotation_sent</option><option>approved</option><option>closed</option></select></div>
+        <div class="card"><div class="table-wrap"><table><thead><tr><th>REQUEST</th><th>TYPE</th><th>CONTACT</th><th>AUDIENCE</th><th>INSTITUTION</th><th>STATUS</th><th>DATE</th><th></th></tr></thead><tbody id="requestsTable"></tbody></table></div></div>
+      </section>
+
+      <section id="page-meetings" class="page">
+        <div class="card"><div class="card-head"><div><h3>Meetings & Callbacks</h3><p>Requested and scheduled conversations</p></div></div><div class="table-wrap"><table><thead><tr><th>TYPE</th><th>INSTITUTION</th><th>CONTACT</th><th>SCHEDULED</th><th>STATUS</th><th></th></tr></thead><tbody id="meetingsTable"></tbody></table></div></div>
+      </section>
+
+      <section id="page-institutions" class="page">
+        <div class="toolbar"><input id="institutionSearch" placeholder="Search institutions..." oninput="renderInstitutions()"><button class="btn primary" onclick="newInstitution()">+ Add Institution</button></div>
+        <div id="institutionsCatalog" class="catalog"></div>
+      </section>
+
+      <section id="page-settings" class="page">
+        <div class="section-grid">
+          <div class="card"><div class="card-head"><div><h3>Control Tower Structure</h3><p>Current live modules</p></div></div><div class="meta"><span class="chip">Dashboard</span><span class="chip">Products</span><span class="chip">Programs</span><span class="chip">Add-ons</span><span class="chip">Requests</span><span class="chip">Meetings</span><span class="chip">Institutions</span></div></div>
+          <div class="card"><div class="card-head"><div><h3>Admin Access</h3><p>Current phase</p></div></div><p class="muted">One Super Admin account is active. Staff management can be added later without changing the core login architecture.</p></div>
         </div>
+      </section>
+    </div>
+  </main>
+</div>
 
-        <div class="row">
-          <div class="field"><label>SLUG</label><input id="slug"></div>
-          <div class="field"><label>CATEGORY</label><input id="category" placeholder="UNIFORM / APPAREL / KIT"></div>
-        </div>
-
-        <div class="field"><label>SHORT DESCRIPTION</label><textarea id="short_description"></textarea></div>
-        <div class="field"><label>FULL DESCRIPTION</label><textarea id="description"></textarea></div>
-
-        <div class="row">
-          <div class="field"><label>BASE PRICE</label><input id="base_price" type="number" step="0.01"></div>
-          <div class="field"><label>CURRENCY</label>
-            <select id="currency"><option>EGP</option><option>USD</option><option>EUR</option></select>
-          </div>
-        </div>
-
-        <div class="checks">
-          <label class="check"><input id="price_is_estimate" type="checkbox"> Estimated price</label>
-          <label class="check"><input id="is_active" type="checkbox"> Active / visible</label>
-          <label class="check"><input id="is_featured" type="checkbox"> Featured</label>
-        </div>
-
-        <h3 class="section-title">Available To</h3>
-        <div class="checks" id="audienceChecks"></div>
-
-        <h3 class="section-title">Product Images</h3>
-        <div class="row">
-          <div class="field"><label>UPLOAD IMAGE(S)</label><input id="imageUpload" type="file" accept="image/*" multiple></div>
-          <div class="field"><label>ALT TEXT</label><input id="imageAlt" placeholder="Full Aviation Uniform front view"></div>
-        </div>
-        <button class="btn secondary" onclick="uploadImages()">Upload Selected Images</button>
-        <div id="images" class="images" style="margin-top:14px"></div>
-
-        <h3 class="section-title">Variants / Sizes / Colors</h3>
-        <div id="variants"></div>
-        <button class="btn secondary" onclick="addVariantRow()">+ Add Variant</button>
-
-        <h3 class="section-title">Personalization Options</h3>
-        <div id="options"></div>
-        <button class="btn secondary" onclick="addOptionRow()">+ Add Personalization Option</button>
-
-        <div class="toolbar" style="justify-content:flex-end;margin-top:24px">
-          <button class="btn" onclick="saveAll()">Save Product + Details</button>
-        </div>
-      </div>
-    </section>
+<div id="modal" class="modal">
+  <div class="sheet">
+    <div class="sheet-head"><div><h3 id="modalTitle"></h3><p id="modalSub"></p></div><button class="close" onclick="closeModal()">×</button></div>
+    <div id="modalBody" class="sheet-body"></div>
   </div>
-</section>
-</main>
+</div>
 
 <script>
 const API='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/staff-admin-api';
-const STORAGE_BASE='https://vsuekfzyebqnhthyvwpf.supabase.co/storage/v1/object/public/product-images/';
-const audiences=['nursery','school','university','individual','institution','government'];
+const STORAGE='https://vsuekfzyebqnhthyvwpf.supabase.co/storage/v1/object/public/product-images/';
 let token=localStorage.getItem('am_staff_token')||'';
-let products=[], current=null, currentImages=[], currentVariants=[], currentOptions=[], currentAudiences=[];
+let currentPage='dashboard';
+let products=[],programs=[],addons=[],requests=[],meetings=[],institutions=[];
+let editingProduct=null,productImages=[],productVariants=[],productOptions=[],productAudiences=[];
 
-function notice(el,text,type='ok'){
-  document.getElementById(el).innerHTML=`<div class="notice ${type==='error'?'error':type==='warn'?'warn':''}">${text}</div>`;
-}
-function clearNotice(el){document.getElementById(el).innerHTML=''}
-function slugify(v){return String(v||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
+function $id(x){return document.getElementById(x)}
+function money(v,c='EGP'){return `${c} ${Number(v||0).toLocaleString()}`}
+function dateFmt(v){if(!v)return '—';return new Date(v).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function statusBadge(s){return `<span class="status ${esc(s)}">${esc(String(s||'').replaceAll('_',' '))}</span>`}
+function showNotice(el,text,error=false){$id(el).innerHTML=`<div class="notice ${error?'error':''}">${esc(text)}</div>`}
 
 async function api(action,payload={}){
-  const headers={'Content-Type':'application/json'};
-  if(token) headers.Authorization=`Bearer ${token}`;
-  const res=await fetch(API,{method:'POST',headers,body:JSON.stringify({action,...payload})});
-  const data=await res.json().catch(()=>({error:'INVALID_RESPONSE'}));
-  if(res.status===401 && action!=='login'){
-    localStorage.removeItem('am_staff_token');token='';
-    showLogin('Your admin session expired. Please sign in again.');
-    throw new Error('SESSION_EXPIRED');
-  }
-  if(!res.ok) throw Object.assign(new Error(data.error||'REQUEST_FAILED'),{status:res.status,data});
-  return data;
+ const headers={'Content-Type':'application/json'};if(token)headers.Authorization=`Bearer ${token}`;
+ const r=await fetch(API,{method:'POST',headers,body:JSON.stringify({action,...payload})});
+ const d=await r.json().catch(()=>({error:'INVALID_RESPONSE'}));
+ if(r.status===401&&action!=='login'){localStorage.removeItem('am_staff_token');token='';showLogin();throw new Error('SESSION_EXPIRED')}
+ if(!r.ok)throw Object.assign(new Error(d.error||'REQUEST_FAILED'),{status:r.status,data:d});
+ return d;
 }
-
 async function login(){
-  clearNotice('loginMsg');
-  const email=document.getElementById('adminEmail').value.trim();
-  const password=document.getElementById('adminPassword').value;
-  if(!password) return notice('loginMsg','Enter your password.','error');
-  try{
-    const data=await api('login',{email,password});
-    token=data.token;
-    localStorage.setItem('am_staff_token',token);
-    document.getElementById('adminPassword').value='';
-    await boot();
-  }catch(e){
-    if(e.status===429) notice('loginMsg','Too many failed attempts. Try again later.','error');
-    else notice('loginMsg','Invalid admin email or password.','error');
-  }
+ const pw=$id('loginPassword').value;if(!pw)return showNotice('loginMsg','Enter your password.',true);
+ try{
+  const d=await api('login',{email:$id('loginEmail').value,password:pw});token=d.token;localStorage.setItem('am_staff_token',token);$id('loginPassword').value='';await boot();
+ }catch(e){showNotice('loginMsg',e.status===429?'Too many failed attempts. Try again later.':'Invalid admin email or password.',true)}
 }
-
-async function signOut(){
-  try{await api('logout')}catch(e){}
-  localStorage.removeItem('am_staff_token');token='';
-  location.reload();
-}
-
-function showLogin(message=''){
-  document.getElementById('loginPanel').classList.remove('hidden');
-  document.getElementById('adminPanel').classList.add('hidden');
-  document.getElementById('signOutBtn').classList.add('hidden');
-  document.getElementById('authStatus').textContent='Not signed in';
-  if(message) notice('loginMsg',message,'warn');
-}
-
+async function signOut(){try{await api('logout')}catch(e){}localStorage.removeItem('am_staff_token');token='';location.reload()}
+function showLogin(){$id('loginView').classList.remove('hidden');$id('appView').classList.add('hidden')}
 async function boot(){
-  if(!token){showLogin();return}
-  try{
-    const data=await api('me');
-    document.getElementById('loginPanel').classList.add('hidden');
-    document.getElementById('adminPanel').classList.remove('hidden');
-    document.getElementById('signOutBtn').classList.remove('hidden');
-    document.getElementById('authStatus').textContent=`${data.staff.full_name||data.staff.email} • ${data.staff.role_code}`;
-    renderAudienceChecks();
-    await loadProducts();
-  }catch(e){
-    showLogin();
-  }
+ if(!token)return showLogin();
+ try{
+  const me=await api('me');$id('staffName').textContent=me.staff.full_name||me.staff.email;$id('staffRole').textContent=me.staff.role_code;$id('loginView').classList.add('hidden');$id('appView').classList.remove('hidden');await loadDashboard();
+ }catch(e){showLogin()}
 }
-
-function renderAudienceChecks(){
-  document.getElementById('audienceChecks').innerHTML=audiences.map(a=>`
-    <label class="check"><input type="checkbox" class="audience" value="${a}"> ${a[0].toUpperCase()+a.slice(1)}</label>
-  `).join('');
+function openPage(name,btn){
+ currentPage=name;document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$id(`page-${name}`).classList.add('active');
+ document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active');
+ const meta={dashboard:['Dashboard','Aviation Matrix operational overview'],products:['Products','Store catalog, images, variants and personalization'],programs:['Programs','Ready programs by audience and delivery model'],pricing:['Add-ons & Pricing','Reusable customization options'],requests:['Requests','Commercial and institutional request pipeline'],meetings:['Meetings & Calls','Online meetings and callback requests'],institutions:['Institutions','Schools, nurseries, universities and organizations'],settings:['Settings','Control Tower configuration']};
+ $id('pageTitle').textContent=meta[name][0];$id('pageSub').textContent=meta[name][1];
+ refreshCurrent();
 }
-
-async function loadProducts(){
-  const data=await api('list_products');
-  products=data.products||[];
-  renderProductList();
+async function refreshCurrent(){
+ if(currentPage==='dashboard')return loadDashboard();
+ if(currentPage==='products')return loadProducts();
+ if(currentPage==='programs')return loadPrograms();
+ if(currentPage==='pricing')return loadAddons();
+ if(currentPage==='requests')return loadRequests();
+ if(currentPage==='meetings')return loadMeetings();
+ if(currentPage==='institutions')return loadInstitutions();
 }
-
-function renderProductList(){
-  const q=(document.getElementById('productSearch')?.value||'').toLowerCase();
-  document.getElementById('productList').innerHTML=products
-    .filter(p=>p.name.toLowerCase().includes(q))
-    .map(p=>`
-      <div class="pitem ${current?.id===p.id?'active':''}" onclick="editProduct('${p.id}')">
-        <strong>${p.name}</strong>
-        <small>${p.category} • ${p.currency} ${Number(p.base_price).toLocaleString()} • ${p.is_active?'Active':'Hidden'}</small>
-      </div>
-    `).join('');
+async function loadDashboard(){
+ const d=await api('dashboard');const s=d.stats;
+ $id('kpiProducts').textContent=s.products;$id('kpiActiveProducts').textContent=s.active_products;$id('kpiPrograms').textContent=s.programs;$id('kpiOpenRequests').textContent=s.open_requests;$id('kpiRequests').textContent=s.requests;$id('kpiInstitutions').textContent=s.institutions;$id('kpiMeetings').textContent=s.meetings;
+ $id('recentRequests').innerHTML=(d.recent_requests||[]).length?(d.recent_requests||[]).map(r=>`<tr><td><strong>${esc(r.request_number)}</strong></td><td>${esc(r.request_type)}</td><td>${esc(r.audience_code)}</td><td>${statusBadge(r.status)}</td><td>${r.estimated_total?money(r.estimated_total,r.currency):'—'}</td><td>${dateFmt(r.created_at)}</td></tr>`).join(''):`<tr><td colspan="6" class="empty">No requests yet.</td></tr>`;
 }
-
-function newProduct(){
-  current={
-    id:null,name:'',sku:'',slug:'',category:'PRODUCT',
-    short_description:'',description:'',base_price:0,currency:'EGP',
-    price_is_estimate:true,is_active:false,is_featured:false,sort_order:999
-  };
-  currentImages=[];currentVariants=[];currentOptions=[];currentAudiences=[];
-  showEditor();
+async function loadProducts(){const d=await api('list_products');products=d.products||[];renderProducts()}
+function renderProducts(){
+ const q=($id('productSearch')?.value||'').toLowerCase(),st=$id('productStatus')?.value||'all';
+ const arr=products.filter(p=>p.name.toLowerCase().includes(q)&&(st==='all'||(st==='active'?p.is_active:!p.is_active)));
+ $id('productCatalog').innerHTML=arr.length?arr.map(p=>`<article class="product-card"><span class="chip">${esc(p.category)}</span><h3>${esc(p.name)}</h3><div class="muted">${esc(p.short_description||'No description')}</div><div class="meta"><span class="chip">${p.is_active?'Active':'Hidden'}</span>${p.is_featured?'<span class="chip">Featured</span>':''}</div><div class="price">${money(p.base_price,p.currency)}</div><div class="card-actions"><button class="btn secondary" onclick="editProduct('${p.id}')">Edit</button></div></article>`).join(''):`<div class="empty">No products found.</div>`;
 }
-
-async function editProduct(id){
-  const data=await api('get_product',{id});
-  current=data.product;
-  currentImages=data.images||[];
-  currentVariants=data.variants||[];
-  currentOptions=data.options||[];
-  currentAudiences=data.audiences||[];
-  showEditor();
-  renderProductList();
+async function editProduct(id){const d=await api('get_product',{id});editingProduct=d.product;productImages=d.images||[];productVariants=d.variants||[];productOptions=d.options||[];productAudiences=d.audiences||[];openProductEditor()}
+function newProduct(){editingProduct={id:null,name:'',sku:'',slug:'',category:'PRODUCT',short_description:'',description:'',base_price:0,currency:'EGP',price_is_estimate:true,is_active:false,is_featured:false,sort_order:999};productImages=[];productVariants=[];productOptions=[];productAudiences=[];openProductEditor()}
+function openProductEditor(){
+ const p=editingProduct,auds=['nursery','school','university','individual','institution','government'];
+ openModal(p.id?'Edit Product':'New Product','Product setup, pricing, imagery and personalization',`
+ <div class="tabs">${['basic','pricing','images','variants','personalization','audience','publish'].map((x,i)=>`<button class="${i===0?'active':''}" onclick="switchTab('${x}',this)">${x[0].toUpperCase()+x.slice(1)}</button>`).join('')}</div>
+ <div id="tab-basic" class="tabpane active"><div class="form-grid">
+  <div class="field"><label>PRODUCT NAME</label><input id="pe_name" value="${esc(p.name)}"></div><div class="field"><label>SKU</label><input id="pe_sku" value="${esc(p.sku||'')}"></div>
+  <div class="field"><label>SLUG</label><input id="pe_slug" value="${esc(p.slug||'')}"></div><div class="field"><label>CATEGORY</label><input id="pe_category" value="${esc(p.category)}"></div>
+  <div class="field full"><label>SHORT DESCRIPTION</label><textarea id="pe_short">${esc(p.short_description||'')}</textarea></div><div class="field full"><label>FULL DESCRIPTION</label><textarea id="pe_desc">${esc(p.description||'')}</textarea></div>
+ </div></div>
+ <div id="tab-pricing" class="tabpane"><div class="form-grid"><div class="field"><label>BASE PRICE</label><input id="pe_price" type="number" value="${p.base_price||0}"></div><div class="field"><label>CURRENCY</label><select id="pe_currency"><option ${p.currency==='EGP'?'selected':''}>EGP</option><option ${p.currency==='USD'?'selected':''}>USD</option><option ${p.currency==='EUR'?'selected':''}>EUR</option></select></div><div class="full check-grid"><label class="check"><input id="pe_est" type="checkbox" ${p.price_is_estimate?'checked':''}> Estimated price</label></div></div></div>
+ <div id="tab-images" class="tabpane"><div class="form-grid"><div class="field"><label>UPLOAD IMAGE(S)</label><input id="pe_files" type="file" accept="image/*" multiple></div><div class="field"><label>ALT TEXT</label><input id="pe_alt" placeholder="Product image description"></div></div><button class="btn secondary" onclick="uploadProductImages()">Upload images</button><div class="image-grid" style="margin-top:12px">${productImages.length?productImages.map(im=>`<div class="img-card"><img src="${STORAGE+im.storage_path}"><small class="muted">${esc(im.alt_text||'')}</small><div class="card-actions"><button class="btn secondary" onclick="setPrimary('${im.id}')">${im.is_primary?'Primary':'Set primary'}</button><button class="btn danger" onclick="deleteImage('${im.id}')">Delete</button></div></div>`).join(''):'<div class="empty">No images yet.</div>'}</div></div>
+ <div id="tab-variants" class="tabpane"><div id="variantRows">${renderVariantRows()}</div><button class="btn secondary" onclick="addVariant()">+ Add Variant</button></div>
+ <div id="tab-personalization" class="tabpane"><div id="optionRows">${renderOptionRows()}</div><button class="btn secondary" onclick="addOption()">+ Add Option</button></div>
+ <div id="tab-audience" class="tabpane"><div class="check-grid">${auds.map(a=>`<label class="check"><input class="pe_aud" value="${a}" type="checkbox" ${productAudiences.includes(a)?'checked':''}> ${a}</label>`).join('')}</div></div>
+ <div id="tab-publish" class="tabpane"><div class="check-grid"><label class="check"><input id="pe_active" type="checkbox" ${p.is_active?'checked':''}> Active / visible</label><label class="check"><input id="pe_featured" type="checkbox" ${p.is_featured?'checked':''}> Featured</label></div><div style="margin-top:14px" class="muted">Save when the product is ready. Active products appear in the live store.</div></div>
+ <div class="card-actions" style="justify-content:flex-end;margin-top:20px">${p.id?'<button class="btn danger" onclick="deleteCurrentProduct()">Delete Product</button>':''}<button class="btn primary" onclick="saveProduct()">Save Product</button></div>`);
 }
-
-function showEditor(){
-  document.getElementById('editorEmpty').classList.add('hidden');
-  document.getElementById('editor').classList.remove('hidden');
-  for(const k of ['name','sku','slug','category','short_description','description','base_price','currency']){
-    document.getElementById(k).value=current[k]??'';
-  }
-  for(const k of ['price_is_estimate','is_active','is_featured']){
-    document.getElementById(k).checked=!!current[k];
-  }
-  document.getElementById('editorTitle').textContent=current.name||'New Product';
-  document.querySelectorAll('.audience').forEach(x=>x.checked=currentAudiences.includes(x.value));
-  renderImages();renderVariants();renderOptions();
+function switchTab(name,btn){document.querySelectorAll('.tabpane').forEach(x=>x.classList.remove('active'));$id(`tab-${name}`).classList.add('active');document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active'));btn.classList.add('active')}
+function renderVariantRows(){return productVariants.map((v,i)=>`<div class="list-row"><input value="${esc(v.variant_type||'')}" oninput="productVariants[${i}].variant_type=this.value" placeholder="size / color"><input value="${esc(v.variant_value||'')}" oninput="productVariants[${i}].variant_value=this.value" placeholder="M / Blue"><input type="number" value="${v.price_delta||0}" oninput="productVariants[${i}].price_delta=Number(this.value||0)"><button class="btn danger" onclick="productVariants.splice(${i},1);$id('variantRows').innerHTML=renderVariantRows()">×</button></div>`).join('')}
+function addVariant(){productVariants.push({variant_type:'size',variant_value:'',price_delta:0,is_active:true});$id('variantRows').innerHTML=renderVariantRows()}
+function renderOptionRows(){return productOptions.map((o,i)=>`<div class="list-row opt"><input value="${esc(o.code||'')}" oninput="productOptions[${i}].code=this.value" placeholder="student_name"><input value="${esc(o.label||'')}" oninput="productOptions[${i}].label=this.value" placeholder="Student Name"><select onchange="productOptions[${i}].input_type=this.value">${['text','file','select','checkbox'].map(x=>`<option ${o.input_type===x?'selected':''}>${x}</option>`).join('')}</select><input type="number" value="${o.price_delta||0}" oninput="productOptions[${i}].price_delta=Number(this.value||0)"><button class="btn danger" onclick="productOptions.splice(${i},1);$id('optionRows').innerHTML=renderOptionRows()">×</button></div>`).join('')}
+function addOption(){productOptions.push({code:'',label:'',input_type:'text',price_delta:0,is_required:false,is_active:true,config:{}});$id('optionRows').innerHTML=renderOptionRows()}
+async function saveProduct(){
+ const name=$id('pe_name').value.trim(),slug=$id('pe_slug').value.trim()||name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+ const product={...editingProduct,name,sku:$id('pe_sku').value.trim()||null,slug,category:$id('pe_category').value.trim()||'PRODUCT',short_description:$id('pe_short').value.trim()||null,description:$id('pe_desc').value.trim()||null,base_price:Number($id('pe_price').value||0),currency:$id('pe_currency').value,price_is_estimate:$id('pe_est').checked,is_active:$id('pe_active').checked,is_featured:$id('pe_featured').checked};
+ const audiences=[...document.querySelectorAll('.pe_aud:checked')].map(x=>x.value);
+ const d=await api('save_product',{product,audiences,variants:productVariants,options:productOptions});editingProduct=d.product;await loadProducts();closeModal();if(currentPage==='dashboard')loadDashboard();
 }
-
-function collectProduct(){
-  const name=document.getElementById('name').value.trim();
-  return {
-    id:current?.id||null,
-    name,
-    sku:document.getElementById('sku').value.trim()||null,
-    slug:document.getElementById('slug').value.trim()||slugify(name),
-    category:document.getElementById('category').value.trim()||'PRODUCT',
-    short_description:document.getElementById('short_description').value.trim()||null,
-    description:document.getElementById('description').value.trim()||null,
-    base_price:Number(document.getElementById('base_price').value||0),
-    currency:document.getElementById('currency').value,
-    price_is_estimate:document.getElementById('price_is_estimate').checked,
-    is_active:document.getElementById('is_active').checked,
-    is_featured:document.getElementById('is_featured').checked,
-    sort_order:Number(current?.sort_order||999)
-  };
+async function uploadProductImages(){
+ if(!editingProduct.id){alert('Save the product first, then upload images.');return}
+ const files=[...$id('pe_files').files];for(const f of files){if(f.size>5*1024*1024){alert(`${f.name} exceeds 5MB`);continue}const b64=await fileB64(f);await api('upload_image',{product_id:editingProduct.id,filename:f.name,content_type:f.type,data_base64:b64,alt_text:$id('pe_alt').value||editingProduct.name})}await editProduct(editingProduct.id)
 }
+function fileB64(f){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(',')[1]);r.onerror=rej;r.readAsDataURL(f)})}
+async function setPrimary(id){await api('set_primary_image',{product_id:editingProduct.id,image_id:id});await editProduct(editingProduct.id)}
+async function deleteImage(id){if(!confirm('Delete image?'))return;await api('delete_image',{image_id:id});await editProduct(editingProduct.id)}
+async function deleteCurrentProduct(){if(!confirm('Delete this product?'))return;await api('delete_product',{id:editingProduct.id});closeModal();await loadProducts();loadDashboard()}
 
-async function saveAll(){
-  clearNotice('editorMsg');
-  const product=collectProduct();
-  if(!product.name) return notice('editorMsg','Product name is required.','error');
-  const selected=[...document.querySelectorAll('.audience:checked')].map(x=>x.value);
-  try{
-    const data=await api('save_product',{
-      product,
-      audiences:selected,
-      variants:currentVariants,
-      options:currentOptions
-    });
-    current=data.product;
-    currentAudiences=selected;
-    notice('editorMsg','Product saved successfully.');
-    await loadProducts();
-    await editProduct(current.id);
-  }catch(e){
-    notice('editorMsg',e.data?.error||'Unable to save product.','error');
-  }
-}
+async function loadPrograms(){const d=await api('list_programs');programs=d.programs||[];renderPrograms()}
+function renderPrograms(){const q=($id('programSearch')?.value||'').toLowerCase(),aud=$id('programAudience')?.value||'all';const arr=programs.filter(p=>p.name.toLowerCase().includes(q)&&(aud==='all'||p.audience_code===aud));$id('programCatalog').innerHTML=arr.length?arr.map(p=>`<article class="program-card"><span class="chip">${esc(p.audience_code)}</span><h3>${esc(p.name)}</h3><div class="muted">${esc(p.short_description||'')}</div><div class="meta"><span class="chip">${esc(p.duration_label||'Flexible')}</span><span class="chip">${esc(p.pricing_unit)}</span></div><div class="price">${money(p.base_price,p.currency)}</div><div class="card-actions"><button class="btn secondary" onclick="editProgram('${p.id}')">Edit</button></div></article>`).join(''):`<div class="empty">No programs found.</div>`}
+function newProgram(){openProgramEditor({id:null,code:'',audience_code:'school',name:'',short_description:'',description:'',base_price:0,currency:'EGP',pricing_unit:'per_learner',duration_label:'',delivery_modes:['on_site'],is_active:true,is_featured:false,sort_order:999})}
+function editProgram(id){openProgramEditor(programs.find(x=>x.id===id))}
+function openProgramEditor(p){openModal(p.id?'Edit Program':'New Program','Audience, delivery model and commercial setup',`<div class="form-grid"><div class="field"><label>CODE</label><input id="pg_code" value="${esc(p.code)}"></div><div class="field"><label>AUDIENCE</label><select id="pg_aud">${['nursery','school','university','individual','institution','government'].map(x=>`<option ${p.audience_code===x?'selected':''}>${x}</option>`).join('')}</select></div><div class="field full"><label>PROGRAM NAME</label><input id="pg_name" value="${esc(p.name)}"></div><div class="field full"><label>SHORT DESCRIPTION</label><textarea id="pg_short">${esc(p.short_description||'')}</textarea></div><div class="field full"><label>FULL DESCRIPTION</label><textarea id="pg_desc">${esc(p.description||'')}</textarea></div><div class="field"><label>BASE PRICE</label><input id="pg_price" type="number" value="${p.base_price||0}"></div><div class="field"><label>PRICING UNIT</label><select id="pg_unit">${['per_learner','per_person','per_group','flat_fee'].map(x=>`<option ${p.pricing_unit===x?'selected':''}>${x}</option>`).join('')}</select></div><div class="field"><label>DURATION</label><input id="pg_duration" value="${esc(p.duration_label||'')}"></div><div class="field"><label>CURRENCY</label><select id="pg_currency"><option ${p.currency==='EGP'?'selected':''}>EGP</option><option ${p.currency==='USD'?'selected':''}>USD</option></select></div><div class="full check-grid">${['on_site','aviation_matrix','online','hybrid'].map(x=>`<label class="check"><input class="pg_mode" value="${x}" type="checkbox" ${(p.delivery_modes||[]).includes(x)?'checked':''}> ${x}</label>`).join('')}</div><div class="full check-grid"><label class="check"><input id="pg_active" type="checkbox" ${p.is_active?'checked':''}> Active</label><label class="check"><input id="pg_featured" type="checkbox" ${p.is_featured?'checked':''}> Featured</label></div></div><div class="card-actions" style="justify-content:flex-end;margin-top:18px">${p.id?`<button class="btn danger" onclick="deleteProgram('${p.id}')">Delete</button>`:''}<button class="btn primary" onclick="saveProgram('${p.id||''}')">Save Program</button></div>`)}
+async function saveProgram(id){const program={id:id||null,code:$id('pg_code').value.trim(),audience_code:$id('pg_aud').value,name:$id('pg_name').value.trim(),short_description:$id('pg_short').value.trim(),description:$id('pg_desc').value.trim(),base_price:Number($id('pg_price').value||0),currency:$id('pg_currency').value,pricing_unit:$id('pg_unit').value,duration_label:$id('pg_duration').value.trim(),delivery_modes:[...document.querySelectorAll('.pg_mode:checked')].map(x=>x.value),is_active:$id('pg_active').checked,is_featured:$id('pg_featured').checked,sort_order:999};await api('save_program',{program});closeModal();await loadPrograms();loadDashboard()}
+async function deleteProgram(id){if(!confirm('Delete program?'))return;await api('delete_program',{id});closeModal();await loadPrograms();loadDashboard()}
 
-function renderImages(){
-  document.getElementById('images').innerHTML=currentImages.length
-    ? currentImages.map(im=>`
-      <div class="image-card">
-        <img src="${STORAGE_BASE+im.storage_path}" alt="${im.alt_text||''}">
-        <small>${im.alt_text||im.storage_path}</small>
-        <label class="check">
-          <input type="radio" name="primaryImage" ${im.is_primary?'checked':''} onchange="setPrimaryImage('${im.id}')"> Primary
-        </label>
-        <button class="btn danger" style="width:100%;margin-top:6px" onclick="deleteImage('${im.id}')">Delete</button>
-      </div>
-    `).join('')
-    : '<div class="muted">No product images yet.</div>';
-}
+async function loadAddons(){const d=await api('list_addons');addons=d.addons||[];$id('addonsTable').innerHTML=addons.length?addons.map(a=>`<tr><td>${esc(a.code)}</td><td><strong>${esc(a.name)}</strong><div class="muted">${esc(a.description||'')}</div></td><td>${money(a.unit_price,a.currency)}</td><td>${esc(a.pricing_unit)}</td><td>${statusBadge(a.is_active?'active':'hidden')}</td><td><button class="btn secondary" onclick="editAddon('${a.id}')">Edit</button></td></tr>`).join(''):`<tr><td colspan="6" class="empty">No add-ons.</td></tr>`}
+function newAddon(){openAddonEditor({id:null,code:'',name:'',description:'',unit_price:0,currency:'EGP',pricing_unit:'per_learner',is_active:true,sort_order:999})}
+function editAddon(id){openAddonEditor(addons.find(x=>x.id===id))}
+function openAddonEditor(a){openModal(a.id?'Edit Add-on':'New Add-on','Reusable program customization option',`<div class="form-grid"><div class="field"><label>CODE</label><input id="ad_code" value="${esc(a.code)}"></div><div class="field"><label>NAME</label><input id="ad_name" value="${esc(a.name)}"></div><div class="field full"><label>DESCRIPTION</label><textarea id="ad_desc">${esc(a.description||'')}</textarea></div><div class="field"><label>PRICE</label><input id="ad_price" type="number" value="${a.unit_price||0}"></div><div class="field"><label>PRICING UNIT</label><select id="ad_unit">${['per_learner','per_person','per_group','flat_fee'].map(x=>`<option ${a.pricing_unit===x?'selected':''}>${x}</option>`).join('')}</select></div><div class="full check-grid"><label class="check"><input id="ad_active" type="checkbox" ${a.is_active?'checked':''}> Active</label></div></div><div class="card-actions" style="justify-content:flex-end;margin-top:18px">${a.id?`<button class="btn danger" onclick="deleteAddon('${a.id}')">Delete</button>`:''}<button class="btn primary" onclick="saveAddon('${a.id||''}')">Save Add-on</button></div>`)}
+async function saveAddon(id){const addon={id:id||null,code:$id('ad_code').value.trim(),name:$id('ad_name').value.trim(),description:$id('ad_desc').value.trim(),unit_price:Number($id('ad_price').value||0),currency:'EGP',pricing_unit:$id('ad_unit').value,is_active:$id('ad_active').checked,sort_order:999};await api('save_addon',{addon});closeModal();loadAddons()}
+async function deleteAddon(id){if(!confirm('Delete add-on?'))return;await api('delete_addon',{id});closeModal();loadAddons()}
 
-function fileToBase64(file){
-  return new Promise((resolve,reject)=>{
-    const r=new FileReader();
-    r.onload=()=>resolve(String(r.result).split(',')[1]||'');
-    r.onerror=reject;
-    r.readAsDataURL(file);
-  });
-}
+async function loadRequests(){const d=await api('list_requests',{status:$id('requestStatus')?.value||'all'});requests=d.requests||[];renderRequests()}
+function renderRequests(){const q=($id('requestSearch')?.value||'').toLowerCase();const arr=requests.filter(r=>`${r.request_number} ${r.contact_person||''} ${r.email||''}`.toLowerCase().includes(q));$id('requestsTable').innerHTML=arr.length?arr.map(r=>`<tr><td><strong>${esc(r.request_number)}</strong></td><td>${esc(r.request_type)}</td><td>${esc(r.contact_person||r.email||r.mobile||'—')}</td><td>${esc(r.audience_code)}</td><td>${esc(r.am_institutions?.name||'—')}</td><td>${statusBadge(r.status)}</td><td>${dateFmt(r.created_at)}</td><td><button class="btn secondary" onclick="viewRequest('${r.id}')">Open</button></td></tr>`).join(''):`<tr><td colspan="8" class="empty">No requests found.</td></tr>`}
+async function viewRequest(id){const d=await api('get_request',{id});const r=d.request;openModal(r.request_number,`${r.request_type} • ${r.audience_code}`,`<div class="request-detail"><div class="detail-block"><strong>Contact</strong>${esc(r.contact_person||'—')}<br>${esc(r.email||'—')}<br>${esc(r.mobile||'—')}</div><div class="detail-block"><strong>Institution</strong>${esc(r.am_institutions?.name||'—')}<br>${esc(r.am_institutions?.institution_type||'')}</div><div class="detail-block"><strong>Program</strong>${esc(r.am_programs?.name||'Custom / Not selected')}<br>Learners: ${esc(r.learner_count||'—')}</div><div class="detail-block"><strong>Commercial</strong>${r.estimated_total?money(r.estimated_total,r.currency):'No estimate yet'}<br>Delivery: ${esc(r.delivery_mode||'—')}</div></div><div class="field" style="margin-top:16px"><label>STATUS</label><select id="rq_status">${['new','reviewing','contacted','quotation_pending','quotation_sent','approved','rejected','closed'].map(x=>`<option ${r.status===x?'selected':''}>${x}</option>`).join('')}</select></div><div class="card-actions" style="justify-content:flex-end"><button class="btn primary" onclick="updateRequest('${r.id}')">Update Status</button></div>${d.items.length?`<h3>Request Items</h3><div class="table-wrap"><table><thead><tr><th>ITEM</th><th>QTY</th><th>UNIT</th><th>AMOUNT</th></tr></thead><tbody>${d.items.map(x=>`<tr><td>${esc(x.name)}</td><td>${x.quantity}</td><td>${money(x.unit_price,r.currency)}</td><td>${money(x.amount,r.currency)}</td></tr>`).join('')}</tbody></table></div>`:''}`)}
+async function updateRequest(id){await api('update_request_status',{id,status:$id('rq_status').value});closeModal();loadRequests();loadDashboard()}
 
-async function uploadImages(){
-  if(!current?.id){
-    notice('editorMsg','Save the product first, then upload images.','warn');
-    return;
-  }
-  const files=[...document.getElementById('imageUpload').files];
-  if(!files.length){notice('editorMsg','Choose one or more images first.','warn');return}
-  const alt=document.getElementById('imageAlt').value.trim();
-  for(const file of files){
-    if(file.size>5*1024*1024){
-      notice('editorMsg',`${file.name} is larger than 5 MB.`,'error');
-      continue;
-    }
-    try{
-      const data_base64=await fileToBase64(file);
-      await api('upload_image',{
-        product_id:current.id,
-        filename:file.name,
-        content_type:file.type||'application/octet-stream',
-        data_base64,
-        alt_text:alt||current.name
-      });
-    }catch(e){
-      notice('editorMsg',`Upload failed for ${file.name}.`,'error');
-    }
-  }
-  document.getElementById('imageUpload').value='';
-  await editProduct(current.id);
-}
+async function loadMeetings(){const d=await api('list_meetings');meetings=d.meetings||[];$id('meetingsTable').innerHTML=meetings.length?meetings.map(m=>`<tr><td>${esc(m.meeting_type.replaceAll('_',' '))}</td><td>${esc(m.am_institutions?.name||'—')}</td><td>${esc(m.contact_person||m.email||m.mobile||'—')}</td><td>${m.scheduled_at?new Date(m.scheduled_at).toLocaleString():'Not scheduled'}</td><td>${statusBadge(m.status)}</td><td><button class="btn secondary" onclick="editMeeting('${m.id}')">Update</button></td></tr>`).join(''):`<tr><td colspan="6" class="empty">No meetings or callbacks yet.</td></tr>`}
+function editMeeting(id){const m=meetings.find(x=>x.id===id);openModal('Meeting / Callback',`${m.meeting_type.replaceAll('_',' ')}`,`<div class="detail-block"><strong>Contact</strong>${esc(m.contact_person||'—')}<br>${esc(m.email||'—')}<br>${esc(m.mobile||'—')}</div><div class="field" style="margin-top:14px"><label>STATUS</label><select id="mt_status">${['requested','scheduled','completed','cancelled','no_answer'].map(x=>`<option ${m.status===x?'selected':''}>${x}</option>`).join('')}</select></div><div class="card-actions" style="justify-content:flex-end"><button class="btn primary" onclick="updateMeeting('${m.id}')">Save Status</button></div>`)}
+async function updateMeeting(id){await api('update_meeting_status',{id,status:$id('mt_status').value});closeModal();loadMeetings();loadDashboard()}
 
-async function setPrimaryImage(image_id){
-  await api('set_primary_image',{product_id:current.id,image_id});
-  await editProduct(current.id);
-}
+async function loadInstitutions(){const d=await api('list_institutions');institutions=d.institutions||[];renderInstitutions()}
+function renderInstitutions(){const q=($id('institutionSearch')?.value||'').toLowerCase();const arr=institutions.filter(x=>`${x.name} ${x.contact_person||''}`.toLowerCase().includes(q));$id('institutionsCatalog').innerHTML=arr.length?arr.map(x=>`<article class="institution-card"><span class="chip">${esc(x.institution_type)}</span><h3>${esc(x.name)}</h3><div class="muted">${esc(x.contact_person||'No contact person')}<br>${esc(x.mobile||x.email||'')}</div><div class="meta">${statusBadge(x.status)}</div><div class="card-actions"><button class="btn secondary" onclick="editInstitution('${x.id}')">Edit</button></div></article>`).join(''):`<div class="empty">No institutions yet.</div>`}
+function newInstitution(){openInstitutionEditor({id:null,institution_type:'school',name:'',contact_person:'',email:'',mobile:'',city:'',country:'Egypt',notes:'',status:'active'})}
+function editInstitution(id){openInstitutionEditor(institutions.find(x=>x.id===id))}
+function openInstitutionEditor(x){openModal(x.id?'Edit Institution':'New Institution','Relationship profile and primary contact',`<div class="form-grid"><div class="field"><label>TYPE</label><select id="in_type">${['nursery','school','university','institution','government'].map(v=>`<option ${x.institution_type===v?'selected':''}>${v}</option>`).join('')}</select></div><div class="field"><label>NAME</label><input id="in_name" value="${esc(x.name)}"></div><div class="field"><label>CONTACT PERSON</label><input id="in_contact" value="${esc(x.contact_person||'')}"></div><div class="field"><label>MOBILE</label><input id="in_mobile" value="${esc(x.mobile||'')}"></div><div class="field"><label>EMAIL</label><input id="in_email" type="email" value="${esc(x.email||'')}"></div><div class="field"><label>CITY</label><input id="in_city" value="${esc(x.city||'')}"></div><div class="field"><label>COUNTRY</label><input id="in_country" value="${esc(x.country||'Egypt')}"></div><div class="field"><label>STATUS</label><select id="in_status">${['lead','active','inactive','archived'].map(v=>`<option ${x.status===v?'selected':''}>${v}</option>`).join('')}</select></div><div class="field full"><label>NOTES</label><textarea id="in_notes">${esc(x.notes||'')}</textarea></div></div><div class="card-actions" style="justify-content:flex-end;margin-top:18px"><button class="btn primary" onclick="saveInstitution('${x.id||''}')">Save Institution</button></div>`)}
+async function saveInstitution(id){const institution={id:id||null,institution_type:$id('in_type').value,name:$id('in_name').value.trim(),contact_person:$id('in_contact').value.trim(),mobile:$id('in_mobile').value.trim(),email:$id('in_email').value.trim(),city:$id('in_city').value.trim(),country:$id('in_country').value.trim(),status:$id('in_status').value,notes:$id('in_notes').value.trim()};await api('save_institution',{institution});closeModal();loadInstitutions();loadDashboard()}
 
-async function deleteImage(image_id){
-  if(!confirm('Delete this image?')) return;
-  await api('delete_image',{image_id});
-  await editProduct(current.id);
-}
-
-function renderVariants(){
-  document.getElementById('variants').innerHTML=currentVariants.map((v,i)=>`
-    <div class="variant-row">
-      <input value="${v.variant_type||''}" placeholder="Type: size / color" oninput="currentVariants[${i}].variant_type=this.value">
-      <input value="${v.variant_value||''}" placeholder="Value: M / Blue" oninput="currentVariants[${i}].variant_value=this.value">
-      <input type="number" value="${v.price_delta||0}" placeholder="Price +" oninput="currentVariants[${i}].price_delta=Number(this.value||0)">
-      <button class="btn danger" onclick="currentVariants.splice(${i},1);renderVariants()">×</button>
-    </div>
-  `).join('');
-}
-
-function addVariantRow(){
-  currentVariants.push({variant_type:'size',variant_value:'',price_delta:0,is_active:true,sort_order:currentVariants.length});
-  renderVariants();
-}
-
-function renderOptions(){
-  document.getElementById('options').innerHTML=currentOptions.map((o,i)=>`
-    <div class="option-row">
-      <input value="${o.code||''}" placeholder="student_name" oninput="currentOptions[${i}].code=this.value">
-      <input value="${o.label||''}" placeholder="Student Name" oninput="currentOptions[${i}].label=this.value">
-      <select onchange="currentOptions[${i}].input_type=this.value">
-        ${['text','file','select','checkbox'].map(x=>`<option ${o.input_type===x?'selected':''}>${x}</option>`).join('')}
-      </select>
-      <input type="number" value="${o.price_delta||0}" placeholder="Price +" oninput="currentOptions[${i}].price_delta=Number(this.value||0)">
-      <button class="btn danger" onclick="currentOptions.splice(${i},1);renderOptions()">×</button>
-    </div>
-  `).join('');
-}
-
-function addOptionRow(){
-  currentOptions.push({
-    code:'',label:'',input_type:'text',is_required:false,
-    price_delta:0,config:{},is_active:true,sort_order:currentOptions.length
-  });
-  renderOptions();
-}
-
-async function deleteCurrentProduct(){
-  if(!current?.id) return;
-  if(!confirm(`Delete ${current.name}? This removes the product and its linked images/configuration.`)) return;
-  try{
-    await api('delete_product',{id:current.id});
-    current=null;
-    document.getElementById('editor').classList.add('hidden');
-    document.getElementById('editorEmpty').classList.remove('hidden');
-    await loadProducts();
-  }catch(e){
-    notice('editorMsg','Unable to delete product.','error');
-  }
-}
-
-document.getElementById('adminPassword').addEventListener('keydown',e=>{
-  if(e.key==='Enter') login();
-});
+function openModal(title,sub,body){$id('modalTitle').textContent=title;$id('modalSub').textContent=sub||'';$id('modalBody').innerHTML=body;$id('modal').classList.add('open')}
+function closeModal(){$id('modal').classList.remove('open')}
+$id('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()})
+$id('loginPassword').addEventListener('keydown',e=>{if(e.key==='Enter')login()})
 
 boot();
 </script>
