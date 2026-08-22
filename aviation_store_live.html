@@ -33,6 +33,11 @@ h1{margin:0}.sub{color:#c7ddeb;margin-top:5px}
 <div class="products" id="products"></div>
 </main>
 <script>
+const safeStorage={
+  get(k){try{return localStorage.getItem(k)}catch(e){return null}},
+  set(k,v){try{localStorage.setItem(k,v)}catch(e){}},
+  remove(k){try{localStorage.removeItem(k)}catch(e){}}
+};
 const sb=window.supabase.createClient('https://vsuekfzyebqnhthyvwpf.supabase.co','sb_publishable_sRvoFKXyDEzQPLaAk3xZOQ_RLVxh5g3');
 let products=[], images=[], audiences=[];let filter='all';
 async function load(){
@@ -64,7 +69,7 @@ function render(){
   </article>`
  }).join('');
 }
-if(new URLSearchParams(location.search).get('admin')==='1' || localStorage.getItem('am_staff_token')){
+if(new URLSearchParams(location.search).get('admin')==='1' || safeStorage.get('am_staff_token')){
   document.getElementById('adminBar').style.display='block';
 }
 load();

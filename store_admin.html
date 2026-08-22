@@ -147,7 +147,7 @@ td{padding:12px 10px;border-bottom:1px solid #edf2f5;vertical-align:middle}
 
 <div id="appView" class="app hidden">
   <aside class="sidebar" id="sidebar">
-    <div class="brand"><div class="brand-mark">✈</div><div><h1>Aviation Matrix</h1><small>CONTROL TOWER</small></div></div>
+    <div class="brand"><div class="brand-mark">✈</div><div><h1>Aviation Matrix</h1><small>CONTROL TOWER • STABLE BUILD 2026.08.22.2</small></div></div>
     <div class="nav">
       <div class="nav-group">OVERVIEW</div>
       <button class="active" data-page="dashboard" onclick="openPage('dashboard',this)"><span>⌂</span><span>Dashboard</span></button>
@@ -269,7 +269,12 @@ td{padding:12px 10px;border-bottom:1px solid #edf2f5;vertical-align:middle}
 <script>
 const API='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/staff-admin-api';
 const STORAGE='https://vsuekfzyebqnhthyvwpf.supabase.co/storage/v1/object/public/product-images/';
-let token=localStorage.getItem('am_staff_token')||'';
+const safeStorage={
+  get(k){try{return localStorage.getItem(k)}catch(e){return null}},
+  set(k,v){try{localStorage.setItem(k,v)}catch(e){}},
+  remove(k){try{localStorage.removeItem(k)}catch(e){}}
+};
+let token=safeStorage.get('am_staff_token')||'';
 let currentPage='dashboard';
 let products=[],programs=[],addons=[],requests=[],meetings=[],institutions=[];
 let productImageMeta={};
@@ -286,17 +291,17 @@ async function api(action,payload={}){
  const headers={'Content-Type':'application/json'};if(token)headers.Authorization=`Bearer ${token}`;
  const r=await fetch(API,{method:'POST',headers,body:JSON.stringify({action,...payload})});
  const d=await r.json().catch(()=>({error:'INVALID_RESPONSE'}));
- if(r.status===401&&action!=='login'){localStorage.removeItem('am_staff_token');token='';showLogin();throw new Error('SESSION_EXPIRED')}
+ if(r.status===401&&action!=='login'){safeStorage.remove('am_staff_token');token='';showLogin();throw new Error('SESSION_EXPIRED')}
  if(!r.ok)throw Object.assign(new Error(d.error||'REQUEST_FAILED'),{status:r.status,data:d});
  return d;
 }
 async function login(){
  const pw=$id('loginPassword').value;if(!pw)return showNotice('loginMsg','Enter your password.',true);
  try{
-  const d=await api('login',{email:$id('loginEmail').value,password:pw});token=d.token;localStorage.setItem('am_staff_token',token);$id('loginPassword').value='';await boot();
+  const d=await api('login',{email:$id('loginEmail').value,password:pw});token=d.token;safeStorage.set('am_staff_token',token);$id('loginPassword').value='';await boot();
  }catch(e){showNotice('loginMsg',e.status===429?'Too many failed attempts. Try again later.':'Invalid admin email or password.',true)}
 }
-async function signOut(){try{await api('logout')}catch(e){}localStorage.removeItem('am_staff_token');token='';location.reload()}
+async function signOut(){try{await api('logout')}catch(e){}safeStorage.remove('am_staff_token');token='';location.reload()}
 function showLogin(){$id('loginView').classList.remove('hidden');$id('appView').classList.add('hidden')}
 async function boot(){
  if(!token)return showLogin();
@@ -500,6 +505,9 @@ function switchPortal(value){
   window.location.href=url;
 }
 
+window.addEventListener('error',e=>{
+  console.error('AM runtime error',e.error||e.message);
+});
 boot();
 </script>
 </body>

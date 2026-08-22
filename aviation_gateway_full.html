@@ -299,7 +299,7 @@ footer{padding:30px;text-align:center;color:var(--muted)}
 <div id="adminPreviewBar" class="admin-preview">
   <div class="admin-wrap">
     <div class="left">
-      <span class="mode">ADMIN PREVIEW MODE</span>
+      <span class="mode">ADMIN PREVIEW MODE • STABLE BUILD 2026.08.22.2</span>
       <span id="previewText">Viewing Customer Gateway</span>
     </div>
     <div class="admin-actions">
@@ -466,6 +466,11 @@ const addons=[
  {name:'Custom Branding',desc:'Institution-specific branded materials',price:90}
 ];
 
+const safeStorage={
+  get(k){try{return localStorage.getItem(k)}catch(e){return null}},
+  set(k,v){try{localStorage.setItem(k,v)}catch(e){}},
+  remove(k){try{localStorage.removeItem(k)}catch(e){}}
+};
 const STORE_SUPABASE_URL='https://vsuekfzyebqnhthyvwpf.supabase.co';
 const STORE_SUPABASE_KEY='sb_publishable_sRvoFKXyDEzQPLaAk3xZOQ_RLVxh5g3';
 const STORE_IMAGE_BASE=STORE_SUPABASE_URL+'/storage/v1/object/public/product-images/';
@@ -1043,7 +1048,7 @@ async function submitGatewayPayload(payload,button){
      status:'Received / Under Review',
      ...payload
    };
-   try{localStorage.setItem('am_last_request_receipt',JSON.stringify(lastRequestReceipt))}catch(e){}
+   try{safeStorage.set('am_last_request_receipt',JSON.stringify(lastRequestReceipt))}catch(e){}
 
    show('Request Received','Aviation Matrix',
     `<div class="notice">✓ Your request has been received successfully.</div>
@@ -1221,7 +1226,7 @@ async function imageUrlToDataUrl(url){
 async function downloadRequestPdf(){
  let receipt=lastRequestReceipt;
  if(!receipt){
-   try{receipt=JSON.parse(localStorage.getItem('am_last_request_receipt')||'null')}catch(e){}
+   try{receipt=JSON.parse(safeStorage.get('am_last_request_receipt')||'null')}catch(e){}
  }
  if(!receipt){
    alert('No recent request is available to download.');
@@ -1519,7 +1524,7 @@ async function downloadRequestPdf(){
 
 (function initAdminPreview(){
   const params=new URLSearchParams(location.search);
-  const isAdmin=params.get('admin')==='1' || !!localStorage.getItem('am_staff_token');
+  const isAdmin=params.get('admin')==='1' || !!safeStorage.get('am_staff_token');
   const preview=params.get('preview');
   if(isAdmin){
     document.getElementById('adminPreviewBar')?.classList.add('show');
