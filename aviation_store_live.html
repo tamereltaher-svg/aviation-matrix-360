@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aviation Matrix — Live Store</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:#f4f8fb;color:#10263a}
+header{background:#06192b;color:white;padding:22px}.wrap{max-width:1180px;margin:auto;padding:20px}
+h1{margin:0}.sub{color:#c7ddeb;margin-top:5px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}button{cursor:pointer}
+.chip{border:1px solid #dfe8ef;background:white;border-radius:999px;padding:9px 13px;font-weight:800}.chip.active{background:#06192b;color:white}
+.products{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:white;border:1px solid #dfe8ef;border-radius:22px;padding:14px;box-shadow:0 16px 38px rgba(6,25,43,.07)}
+.card img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:16px;background:#eaf3f8}.placeholder{width:100%;aspect-ratio:4/3;border-radius:16px;background:linear-gradient(135deg,#eaf7fd,#dceef8);display:grid;place-items:center;font-size:54px}
+.badge{display:inline-block;margin-top:10px;padding:5px 8px;background:#eef7fb;color:#0a6f9e;border-radius:999px;font-size:10px;font-weight:900}
+.price{font-size:24px;font-weight:900;margin:12px 0}.muted{color:#6a7d8f;line-height:1.6}
+@media(max-width:900px){.products{grid-template-columns:1fr 1fr}}@media(max-width:600px){.products{grid-template-columns:1fr}}
+</style></head>
+<body>
+<header><div class="wrap"><h1>Aviation Matrix Store</h1><div class="sub">Live products loaded from Supabase</div></div></header>
+<main class="wrap">
+<div class="filters" id="filters"></div>
+<div id="status" class="muted">Loading products...</div>
+<div class="products" id="products"></div>
+</main>
+<script>
+const sb=window.supabase.createClient('https://vsuekfzyebqnhthyvwpf.supabase.co','sb_publishable_sRvoFKXyDEzQPLaAk3xZOQ_RLVxh5g3');
+let products=[], images=[], audiences=[];let filter='all';
+async function load(){
+ const [p,i,a]=await Promise.all([
+   sb.from('store_products').select('*').eq('is_active',true).order('sort_order'),
+   sb.from('store_product_images').select('*').order('sort_order'),
+   sb.from('store_product_audiences').select('*')
+ ]);
+ if(p.error){document.getElementById('status').textContent=p.error.message;return}
+ products=p.data||[];images=i.data||[];audiences=a.data||[];
+ renderFilters();render();
+}
+function renderFilters(){
+ const arr=['all','nursery','school','university','individual','institution','government'];
+ document.getElementById('filters').innerHTML=arr.map(x=>`<button class="chip ${filter===x?'active':''}" onclick="filter='${x}';renderFilters();render()">${x==='all'?'All':x[0].toUpperCase()+x.slice(1)}</button>`).join('');
+}
+function render(){
+ const base='https://vsuekfzyebqnhthyvwpf.supabase.co'+'/storage/v1/object/public/product-images/';
+ const filtered=products.filter(p=>filter==='all'||audiences.some(a=>a.product_id===p.id&&a.audience_code===filter));
+ document.getElementById('status').textContent=`${filtered.length} product(s)`;
+ document.getElementById('products').innerHTML=filtered.map(p=>{
+  const pi=images.filter(x=>x.product_id===p.id).sort((a,b)=>Number(b.is_primary)-Number(a.is_primary)||a.sort_order-b.sort_order)[0];
+  return `<article class="card">
+   ${pi?`<img src="${base+pi.storage_path}" alt="${pi.alt_text||p.name}">`:`<div class="placeholder">✈️</div>`}
+   <span class="badge">${p.category}</span>
+   <h3>${p.name}</h3>
+   <div class="muted">${p.short_description||''}</div>
+   <div class="price">${p.currency} ${Number(p.base_price).toLocaleString()}${p.price_is_estimate?'*':''}</div>
+  </article>`
+ }).join('');
+}
+load();
+</script></body></html>
