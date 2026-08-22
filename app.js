@@ -143,6 +143,7 @@ let questionStartedAt=0;
 let lang=['en','fr','ru'].includes(localStorage.getItem('am_lang'))?localStorage.getItem('am_lang'):'en';
 let state=JSON.parse(localStorage.getItem('am_state')||'{}');
 let assessment=null;
+let resumeLoginState={application_number:null,masked_email:null};
 let currentView=localStorage.getItem('am_view')||'landing';
 const app=document.getElementById('app');
 
@@ -163,7 +164,7 @@ function header(){
  return `<header class="topbar"><div class="container topbar-inner">
   <div class="brand"><div class="brand-mark">✈</div><div>Aviation Matrix<small>Talent Intelligence & Development</small></div></div>
   <div style="display:flex;gap:10px;align-items:center">
-      ${currentView!=='landing'?`<button id="homeBtn" class="btn btn-outline" style="padding:8px 14px">${ui('home')}</button>`:''}
+      ${currentView!=='landing'?`<button id="homeBtn" class="btn" style="padding:8px 15px;background:#071a2f;color:#fff;border:1px solid #071a2f;box-shadow:0 5px 14px rgba(7,26,47,.18)">⌂ ${ui('home')}</button>`:''}
       <div class="lang">${currentView==='assessment'?'':['en','fr','ru'].map(l=>`<button data-lang="${l}" class="${lang===l?'active':''}">${l.toUpperCase()}</button>`).join('')}</div>
     </div>
  </div></header>`;
@@ -226,71 +227,223 @@ function registration(){
 }
 
 
+
+function resumeCopy(){
+ if(lang==='fr') return {
+  title:'Continuer ma candidature',
+  intro:'Entrez uniquement votre numéro de candidature. Un code de vérification sera envoyé à l’adresse e-mail enregistrée.',
+  app:'Numéro de candidature',
+  send:'Envoyer le code de vérification →',
+  sent:'Nous avons envoyé un code à',
+  otp:'Code de vérification',
+  verify:'Vérifier et continuer →',
+  resend:'Renvoyer le code',
+  back:'Changer le numéro',
+  finding:'Vérification du numéro de candidature...',
+  verifying:'Vérification du code...',
+  notFound:'Candidature introuvable. Vérifiez le numéro.',
+  invalidOtp:'Code invalide ou expiré. Réessayez.',
+  wait:'Veuillez patienter quelques secondes avant de renvoyer le code.'
+ };
+ if(lang==='ru') return {
+  title:'Продолжить заявку',
+  intro:'Введите только номер заявки. Код подтверждения будет отправлен на зарегистрированный e-mail.',
+  app:'Номер заявки',
+  send:'Отправить код подтверждения →',
+  sent:'Код отправлен на',
+  otp:'Код подтверждения',
+  verify:'Подтвердить и продолжить →',
+  resend:'Отправить код повторно',
+  back:'Изменить номер',
+  finding:'Проверяем номер заявки...',
+  verifying:'Проверяем код...',
+  notFound:'Заявка не найдена. Проверьте номер.',
+  invalidOtp:'Неверный или просроченный код.',
+  wait:'Подождите несколько секунд перед повторной отправкой.'
+ };
+ return {
+  title:'Continue My Application',
+  intro:'Enter only your Application Number. A verification code will be sent to the email registered on your application.',
+  app:'Application Number',
+  send:'Send Verification Code →',
+  sent:'We sent a verification code to',
+  otp:'Verification Code',
+  verify:'Verify & Continue →',
+  resend:'Resend Code',
+  back:'Change Application Number',
+  finding:'Checking your Application Number...',
+  verifying:'Verifying your code...',
+  notFound:'Application not found. Check the number and try again.',
+  invalidOtp:'Invalid or expired code. Please try again.',
+  wait:'Please wait a few seconds before requesting another code.'
+ };
+}
+
 function resumeApplicationModal(){
+ const c=resumeCopy();
  return `<div class="overlay" id="resumeOverlay"><div class="modal">
   <div class="modal-kicker">EXISTING APPLICATION · AVIATION MATRIX</div>
-  <div class="modal-head"><div><h2>Continue My Application</h2><p class="muted">Enter the details linked to your first registration.</p></div><button class="close" id="closeResume">×</button></div>
-  <form id="resumeForm"><div class="form-grid">
-   <div class="field full"><label>Application Number</label><input name="application_number" placeholder="AM-A-2026-000001" required></div>
-   <div class="field"><label>Email</label><input type="email" name="email" required></div>
-   <div class="field"><label>Date of birth</label><input type="date" name="date_of_birth" required></div>
-   <div class="field full"><div id="resumeMsg" class="helper"></div><button class="btn btn-dark" type="submit">Continue Application →</button></div>
-  </div></form>
+  <div class="modal-head"><div><h2>${c.title}</h2><p class="muted">${c.intro}</p></div><button class="close" id="closeResume">×</button></div>
+  <div id="resumeBody">
+   <form id="resumeLookupForm"><div class="form-grid">
+    <div class="field full"><label>${c.app}</label><input name="application_number" placeholder="AM-A-2026-000001" autocomplete="off" required></div>
+    <div class="field full"><div id="resumeMsg" class="helper"></div><button class="btn btn-dark" type="submit">${c.send}</button></div>
+   </div></form>
+  </div>
  </div></div>`;
 }
 
-async function resumeApplication(form){
+async function callApplicationLogin(payload){
+ const resp=await fetch(`${SUPABASE_URL}/functions/v1/application-login`,{
+  method:'POST',
+  headers:{
+   'Content-Type':'application/json',
+   'apikey':SUPABASE_KEY,
+   'Authorization':`Bearer ${SUPABASE_KEY}`
+  },
+  body:JSON.stringify(payload)
+ });
+ let data={};
+ try{data=await resp.json();}catch{}
+ if(!resp.ok){
+  const err=new Error(data.error||`HTTP_${resp.status}`);
+  err.code=data.error||`HTTP_${resp.status}`;
+  err.payload=data;
+  throw err;
+ }
+ return data;
+}
+
+function showOtpStep(){
+ const c=resumeCopy();
+ const body=document.getElementById('resumeBody');
+ if(!body) return;
+ body.innerHTML=`<div class="form-grid">
+  <div class="field full">
+   <div style="padding:14px 16px;border:1px solid #d7e8f2;background:#f4faff;border-radius:16px;margin-bottom:6px">
+    <small class="muted">${c.sent}</small><br>
+    <strong>${esc(resumeLoginState.masked_email||'your registered email')}</strong>
+   </div>
+  </div>
+  <form id="resumeOtpForm" class="field full" style="margin:0">
+   <label>${c.otp}</label>
+   <input name="otp" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="one-time-code" placeholder="••••••" style="text-align:center;letter-spacing:.24em;font-size:22px;font-weight:900" required>
+   <div id="resumeMsg" class="helper" style="margin-top:10px"></div>
+   <button class="btn btn-dark" type="submit" style="width:100%;margin-top:8px">${c.verify}</button>
+  </form>
+  <div class="field full" style="display:flex;gap:10px;flex-wrap:wrap">
+   <button id="resendOtp" type="button" class="btn btn-outline">${c.resend}</button>
+   <button id="changeApplication" type="button" class="btn btn-outline">${c.back}</button>
+  </div>
+ </div>`;
+ document.getElementById('resumeOtpForm')?.addEventListener('submit',e=>{e.preventDefault();verifyApplicationOtp(e.currentTarget)});
+ document.getElementById('resendOtp')?.addEventListener('click',requestApplicationOtpAgain);
+ document.getElementById('changeApplication')?.addEventListener('click',()=>{
+   document.getElementById('resumeOverlay')?.remove();
+   document.body.insertAdjacentHTML('beforeend',resumeApplicationModal());
+   attachResumeModal();
+ });
+ setTimeout(()=>document.querySelector('#resumeOtpForm input[name="otp"]')?.focus(),80);
+}
+
+async function requestApplicationOtp(form){
+ const c=resumeCopy();
  const fd=new FormData(form);
- const args={
-  p_application_number:String(fd.get('application_number')||'').trim().toUpperCase(),
-  p_email:String(fd.get('email')||'').trim(),
-  p_date_of_birth:fd.get('date_of_birth')
- };
+ const appNo=String(fd.get('application_number')||'').trim().toUpperCase();
  const msg=document.getElementById('resumeMsg');
- if(msg){msg.className='helper';msg.textContent='Finding your Aviation Matrix application...';}
+ if(msg){msg.className='helper';msg.textContent=c.finding;}
  try{
-  const {data,error}=await supabase.rpc('public_resume_application',args);
-  if(error) throw error;
-  state={...state,...data};
-  if(data.assessment_result){
-   const er=data.assessment_result.evidence_payload||{};
-   state.assessment={
-    current_fit:data.assessment_result.current_fit,
-    future_fit:data.assessment_result.future_fit,
-    readiness_status:data.assessment_result.readiness_status,
-    summary:data.assessment_result.summary,
-    ...er
-   };
-  }
-  save();
-
-  const {data:resumeData,error:resumeError}=await supabase.rpc('public_resume_assessment',args);
-  if(resumeError) throw resumeError;
-  document.getElementById('resumeOverlay')?.remove();
-
-  if(resumeData.status==='in_progress'){
-   await loadPublishedQuestions();
-   assessment={
-    index:Math.min(Number(resumeData.answered_count)||0,runtimeQuestions.length-1),
-    attempt_id:resumeData.attempt_id,
-    access_token:resumeData.access_token,
-    candidate_id:resumeData.candidate_id,
-    locked:false,
-    result:null
-   };
-   render('assessment');
-  }else if(resumeData.status==='completed' && state.assessment){
-   render('results');
-  }else if(data.assessment_result){
-   render('results');
-  }else if(data.profile_status){
-   render('confirm');
-  }else{
-   render('welcome');
-  }
+  const data=await callApplicationLogin({action:'send',application_number:appNo});
+  resumeLoginState={application_number:appNo,masked_email:data.masked_email||null};
+  showOtpStep();
  }catch(e){
   console.error(e);
-  if(msg){msg.className='helper error';msg.textContent=e.message?.includes('APPLICATION_NOT_FOUND')?'Application not found. Check the number, email and date of birth.':'Unable to continue this application: '+(e.message||'Unknown error');}
+  if(msg){
+   msg.className='helper error';
+   msg.textContent=e.code==='APPLICATION_NOT_FOUND'||e.code==='INVALID_APPLICATION_NUMBER'?c.notFound:
+                   e.code==='PLEASE_WAIT_BEFORE_RESEND'?c.wait:
+                   'Unable to send the verification code. Please try again.';
+  }
+ }
+}
+
+async function requestApplicationOtpAgain(){
+ const c=resumeCopy();
+ const msg=document.getElementById('resumeMsg');
+ if(!resumeLoginState.application_number) return;
+ if(msg){msg.className='helper';msg.textContent='Sending a new code...';}
+ try{
+  const data=await callApplicationLogin({action:'send',application_number:resumeLoginState.application_number});
+  resumeLoginState.masked_email=data.masked_email||resumeLoginState.masked_email;
+  if(msg){msg.className='helper';msg.textContent=`${c.sent} ${resumeLoginState.masked_email}`;}
+ }catch(e){
+  if(msg){msg.className='helper error';msg.textContent=e.code==='PLEASE_WAIT_BEFORE_RESEND'?c.wait:'Unable to resend the code right now.';}
+ }
+}
+
+async function verifyApplicationOtp(form){
+ const c=resumeCopy();
+ const fd=new FormData(form);
+ const token=String(fd.get('otp')||'').trim();
+ const msg=document.getElementById('resumeMsg');
+ if(msg){msg.className='helper';msg.textContent=c.verifying;}
+ try{
+  const verified=await callApplicationLogin({
+   action:'verify',
+   application_number:resumeLoginState.application_number,
+   token
+  });
+  const {error:sessionError}=await supabase.auth.setSession({
+   access_token:verified.access_token,
+   refresh_token:verified.refresh_token
+  });
+  if(sessionError) throw sessionError;
+  await resumeAuthenticatedApplication(resumeLoginState.application_number);
+ }catch(e){
+  console.error(e);
+  if(msg){msg.className='helper error';msg.textContent=e.code==='OTP_INVALID_OR_EXPIRED'||e.code==='INVALID_OTP'?c.invalidOtp:'Unable to verify this application right now.';}
+ }
+}
+
+async function resumeAuthenticatedApplication(appNo){
+ const {data,error}=await supabase.rpc('public_resume_application_auth',{p_application_number:appNo});
+ if(error) throw error;
+ state={...state,...data};
+ if(data.assessment_result){
+  const er=data.assessment_result.evidence_payload||{};
+  state.assessment={
+   current_fit:data.assessment_result.current_fit,
+   future_fit:data.assessment_result.future_fit,
+   readiness_status:data.assessment_result.readiness_status,
+   summary:data.assessment_result.summary,
+   ...er
+  };
+ }
+ save();
+
+ const {data:resumeData,error:resumeError}=await supabase.rpc('public_resume_assessment_auth',{p_application_number:appNo});
+ if(resumeError) throw resumeError;
+ document.getElementById('resumeOverlay')?.remove();
+
+ if(resumeData.status==='in_progress'){
+  await loadPublishedQuestions();
+  assessment={
+   index:Math.min(Number(resumeData.answered_count)||0,runtimeQuestions.length-1),
+   attempt_id:resumeData.attempt_id,
+   access_token:resumeData.access_token,
+   candidate_id:resumeData.candidate_id,
+   locked:false,
+   result:null
+  };
+  render('assessment');
+ }else if(resumeData.status==='completed' && state.assessment){
+  render('results');
+ }else if(data.assessment_result){
+  render('results');
+ }else if(data.profile_status){
+  render('confirm');
+ }else{
+  render('welcome');
  }
 }
 
@@ -611,7 +764,7 @@ function attachModal(){
 }
 function attachResumeModal(){
  document.getElementById('closeResume')?.addEventListener('click',()=>document.getElementById('resumeOverlay')?.remove());
- document.getElementById('resumeForm')?.addEventListener('submit',e=>{e.preventDefault();resumeApplication(e.currentTarget)});
+ document.getElementById('resumeLookupForm')?.addEventListener('submit',e=>{e.preventDefault();requestApplicationOtp(e.currentTarget)});
 }
 function render(view=currentView||'landing'){
  clearInterval(questionTimer);
