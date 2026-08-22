@@ -289,6 +289,10 @@ footer{padding:30px;text-align:center;color:var(--muted)}
   .banner .btn{margin-top:15px}
 }
 </style>
+
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
+
 </head>
 <body>
 
@@ -467,6 +471,7 @@ const STORE_SUPABASE_KEY='sb_publishable_sRvoFKXyDEzQPLaAk3xZOQ_RLVxh5g3';
 const STORE_IMAGE_BASE=STORE_SUPABASE_URL+'/storage/v1/object/public/product-images/';
 const GATEWAY_SUBMIT_API='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/gateway-submit';
 let requestContext={};
+let lastRequestReceipt=null;
 let liveStoreLoadedFor=null;
 let productCatalog=[
  {id:'notebook',name:'Aviation Matrix Notebook',price:220,tag:'STATIONERY',desc:'Premium aviation-themed notebook for students and institutional programs.',details:'Hard cover • Aviation Matrix branding • Suitable for student kits',sizes:[],personalize:['None','Student Name','Institution Name','Logo + Name']},
@@ -1030,11 +1035,28 @@ async function submitGatewayPayload(payload,button){
    });
    const data=await r.json().catch(()=>({}));
    if(!r.ok)throw new Error(data.error||'Unable to submit request');
+
+   lastRequestReceipt={
+     request_number:data.request_number,
+     request_id:data.request_id,
+     submitted_at:new Date().toISOString(),
+     status:'Received / Under Review',
+     ...payload
+   };
+   try{localStorage.setItem('am_last_request_receipt',JSON.stringify(lastRequestReceipt))}catch(e){}
+
    show('Request Received','Aviation Matrix',
     `<div class="notice">✓ Your request has been received successfully.</div>
-     <div class="summary"><strong>Request Number:</strong> ${data.request_number}<br>
-     Keep this number for reference. Aviation Matrix can now review this request from the Control Tower.</div>
-     <div class="sheet-actions"><button class="submit" onclick="closeModal()">Done</button></div>`);
+     <div class="summary">
+       <strong>Request Number:</strong> ${data.request_number}<br>
+       <strong>Status:</strong> Received / Under Review<br>
+       Keep this number for reference. Aviation Matrix can now review this request from the Control Tower.
+     </div>
+     <div class="sheet-actions" style="flex-wrap:wrap">
+       <button class="back" onclick="closeModal()">Done</button>
+       <button class="back" onclick="requestAnotherService()">Request Another Service</button>
+       <button class="submit" onclick="downloadRequestPdf()">Download Request PDF</button>
+     </div>`);
    requestContext={};
    return data;
  }catch(e){
@@ -1127,6 +1149,296 @@ function demoDone(type){
  `<div class="notice">✓ ${type} completed.</div>
  <div class="sheet-actions"><button class="submit" onclick="closeModal()">Done</button></div>`)
 }
+
+
+function requestAnotherService(){
+ closeModal();
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function safeFileName(v){
+ return String(v||'request').replace(/[^a-zA-Z0-9_-]+/g,'_').replace(/^_+|_+$/g,'');
+}
+
+function receiptTypeLabel(type){
+ const map={
+   product_request:'Product Request',
+   product:'Product Request',
+   program_request:'Program Request',
+   program:'Program Request',
+   custom_program:'Customized Program Request',
+   meeting_request:'Meeting Request',
+   meeting:'Meeting Request',
+   callback_request:'Callback Request',
+   callback:'Callback Request',
+   quotation:'Quotation Request',
+   partnership:'Partnership Request'
+ };
+ return map[type]||String(type||'Request').replaceAll('_',' ');
+}
+
+function receiptAudienceLabel(code){
+ const a=(typeof audiences!=='undefined'?audiences:[]).find(x=>x.key===code);
+ return a?.title||label(code||'institution');
+}
+
+function receiptMoney(v,c='EGP'){
+ return `${c} ${Number(v||0).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:2})}`;
+}
+
+function receiptItemConfigText(config){
+ if(!config||typeof config!=='object')return '';
+ const parts=[];
+ const names={
+   personalization:'Personalization',
+   student_name:'Student Name',
+   institution_name:'Institution Name',
+   size:'Size',
+   logo_name:'Logo',
+   student_list_count:'Student List'
+ };
+ for(const [k,v] of Object.entries(config)){
+   if(v===null||v===undefined||v===''||v===false||v===0)continue;
+   parts.push(`${names[k]||k.replaceAll('_',' ')}: ${Array.isArray(v)?v.join(', '):v}`);
+ }
+ return parts.join(' | ');
+}
+
+async function imageUrlToDataUrl(url){
+ try{
+   const r=await fetch(url,{mode:'cors'});
+   if(!r.ok)return null;
+   const blob=await r.blob();
+   return await new Promise((resolve,reject)=>{
+     const fr=new FileReader();
+     fr.onload=()=>resolve(fr.result);
+     fr.onerror=reject;
+     fr.readAsDataURL(blob);
+   });
+ }catch(e){return null}
+}
+
+async function downloadRequestPdf(){
+ let receipt=lastRequestReceipt;
+ if(!receipt){
+   try{receipt=JSON.parse(localStorage.getItem('am_last_request_receipt')||'null')}catch(e){}
+ }
+ if(!receipt){
+   alert('No recent request is available to download.');
+   return;
+ }
+ if(!window.jspdf?.jsPDF){
+   alert('PDF library is still loading. Please try again in a moment.');
+   return;
+ }
+
+ const {jsPDF}=window.jspdf;
+ const doc=new jsPDF({unit:'mm',format:'a4',orientation:'portrait'});
+ const pageW=doc.internal.pageSize.getWidth();
+ const pageH=doc.internal.pageSize.getHeight();
+ const margin=16;
+ let y=16;
+
+ const navy=[6,25,43];
+ const sky=[76,196,255];
+ const ink=[16,38,58];
+ const muted=[105,127,145];
+ const light=[244,248,251];
+
+ function ensureSpace(h=18){
+   if(y+h>pageH-18){
+     doc.addPage();
+     y=18;
+   }
+ }
+ function textLine(labelText,value){
+   if(value===null||value===undefined||value==='')return;
+   ensureSpace(9);
+   doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(...muted);
+   doc.text(labelText.toUpperCase(),margin,y);
+   doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(...ink);
+   const lines=doc.splitTextToSize(String(value),pageW-margin*2-48);
+   doc.text(lines,margin+48,y);
+   y+=Math.max(7,lines.length*5);
+ }
+
+ // Header
+ doc.setFillColor(...navy);
+ doc.roundedRect(margin,y,pageW-margin*2,30,5,5,'F');
+ doc.setTextColor(255,255,255);
+ doc.setFont('helvetica','bold');doc.setFontSize(19);
+ doc.text('AVIATION MATRIX',margin+8,y+11);
+ doc.setFont('helvetica','normal');doc.setFontSize(8);
+ doc.text('REQUEST ACKNOWLEDGEMENT',margin+8,y+18);
+ doc.setFillColor(...sky);
+ doc.roundedRect(pageW-margin-52,y+7,44,15,4,4,'F');
+ doc.setTextColor(...navy);doc.setFont('helvetica','bold');doc.setFontSize(8);
+ doc.text('RECEIVED',pageW-margin-30,y+16,{align:'center'});
+ y+=39;
+
+ doc.setTextColor(...ink);
+ doc.setFont('helvetica','bold');doc.setFontSize(15);
+ doc.text('Request Details',margin,y);
+ y+=8;
+
+ textLine('Request Number',receipt.request_number);
+ textLine('Submitted',new Date(receipt.submitted_at).toLocaleString('en-GB'));
+ textLine('Status',receipt.status||'Received / Under Review');
+ textLine('Request Type',receiptTypeLabel(receipt.request_type));
+ textLine('Audience',receiptAudienceLabel(receipt.audience_code));
+
+ ensureSpace(10);
+ doc.setDrawColor(220,232,239);
+ doc.line(margin,y,pageW-margin,y); y+=8;
+
+ doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(...ink);
+ doc.text('Client / Contact',margin,y); y+=8;
+ textLine('Organization',receipt.institution_name);
+ textLine('Contact Person',receipt.contact_person);
+ textLine('Mobile',receipt.mobile);
+ textLine('Email',receipt.email);
+
+ if(receipt.program_name || receipt.learner_count || receipt.delivery_mode){
+   ensureSpace(10);
+   doc.line(margin,y,pageW-margin,y); y+=8;
+   doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(...ink);
+   doc.text('Program Details',margin,y); y+=8;
+   textLine('Program',receipt.program_name);
+   textLine('Learners',receipt.learner_count);
+   textLine('Delivery',receipt.delivery_mode?.replaceAll('_',' '));
+ }
+
+ if(receipt.customization && typeof receipt.customization==='object'){
+   const c=receipt.customization;
+   textLine('Education Stage',c.education_stage);
+   textLine('Frequency',c.frequency);
+   textLine('Session Length',c.session_length);
+   textLine('Objective',c.objective);
+   if(Array.isArray(c.addons)&&c.addons.length){
+     textLine('Add-ons',c.addons.map(x=>x.name).join(', '));
+   }
+ }
+
+ const items=Array.isArray(receipt.items)?receipt.items:[];
+ if(items.length){
+   ensureSpace(22);
+   doc.line(margin,y,pageW-margin,y); y+=8;
+   doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(...ink);
+   doc.text('Requested Items',margin,y); y+=6;
+
+   // Optional primary thumbnails, max 4, if current product data is available.
+   const productItems=items.filter(x=>x.item_type==='product').slice(0,4);
+   const thumbData=[];
+   for(const it of productItems){
+     const p=(typeof productCatalog!=='undefined'?productCatalog:[]).find(x=>String(x.id)===String(it.ref_id) || x.name===it.name);
+     if(p?.primaryImagePath){
+       const data=await imageUrlToDataUrl(STORE_IMAGE_BASE+p.primaryImagePath);
+       if(data)thumbData.push({name:it.name,data});
+     }
+   }
+   if(thumbData.length){
+     ensureSpace(31);
+     let x=margin;
+     for(const t of thumbData){
+       try{
+         doc.addImage(t.data,'JPEG',x,y,24,18,undefined,'FAST');
+       }catch(e){
+         try{doc.addImage(t.data,'PNG',x,y,24,18,undefined,'FAST')}catch(e2){}
+       }
+       doc.setFont('helvetica','normal');doc.setFontSize(6.8);doc.setTextColor(...muted);
+       const nm=doc.splitTextToSize(t.name,28).slice(0,2);
+       doc.text(nm,x,y+21);
+       x+=43;
+     }
+     y+=29;
+   }
+
+   const rows=items.map((it,i)=>[
+     String(i+1),
+     it.name||'Item',
+     String(it.quantity||1),
+     receiptMoney(it.unit_price||0,receipt.currency||'EGP'),
+     receiptMoney(Number(it.quantity||1)*Number(it.unit_price||0),receipt.currency||'EGP'),
+     receiptItemConfigText(it.config)
+   ]);
+
+   if(typeof doc.autoTable==='function'){
+     doc.autoTable({
+       startY:y,
+       margin:{left:margin,right:margin},
+       head:[['#','Item','Qty','Unit Price','Amount','Details']],
+       body:rows,
+       theme:'grid',
+       styles:{font:'helvetica',fontSize:7.5,cellPadding:2.2,textColor:ink,lineColor:[225,233,238],lineWidth:.15},
+       headStyles:{fillColor:navy,textColor:[255,255,255],fontStyle:'bold'},
+       columnStyles:{
+         0:{cellWidth:8},
+         1:{cellWidth:38},
+         2:{cellWidth:12,halign:'center'},
+         3:{cellWidth:25,halign:'right'},
+         4:{cellWidth:25,halign:'right'},
+         5:{cellWidth:'auto'}
+       }
+     });
+     y=doc.lastAutoTable.finalY+8;
+   }else{
+     for(const row of rows){
+       ensureSpace(16);
+       doc.setFontSize(8);doc.setTextColor(...ink);
+       doc.text(`${row[1]} x ${row[2]} - ${row[4]}`,margin,y);
+       if(row[5]){doc.setFontSize(7);doc.setTextColor(...muted);doc.text(doc.splitTextToSize(row[5],pageW-margin*2),margin,y+4)}
+       y+=11;
+     }
+   }
+ }
+
+ if(receipt.notes){
+   ensureSpace(20);
+   doc.line(margin,y,pageW-margin,y); y+=8;
+   doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(...ink);
+   doc.text('Notes',margin,y); y+=6;
+   doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(...ink);
+   const noteLines=doc.splitTextToSize(String(receipt.notes),pageW-margin*2);
+   doc.text(noteLines,margin,y); y+=noteLines.length*4.5+6;
+ }
+
+ ensureSpace(35);
+ doc.setFillColor(...light);
+ doc.roundedRect(margin,y,pageW-margin*2,30,4,4,'F');
+ doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(...navy);
+ doc.text('ESTIMATED REQUEST VALUE',margin+7,y+8);
+ doc.setFontSize(15);
+ doc.text(receiptMoney(receipt.estimated_total||0,receipt.currency||'EGP'),margin+7,y+17);
+ doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(...muted);
+ const disclaimer='This document acknowledges receipt of the request only. Prices shown are estimates and do not constitute a final quotation. Final price, availability, branding, sizing, production and delivery are subject to Aviation Matrix review and confirmation.';
+ const disLines=doc.splitTextToSize(disclaimer,pageW-margin*2-78);
+ doc.text(disLines,margin+72,y+8);
+ y+=38;
+
+ ensureSpace(24);
+ doc.setFillColor(...navy);
+ doc.roundedRect(margin,y,pageW-margin*2,21,4,4,'F');
+ doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(9);
+ doc.text('NEXT STEP',margin+7,y+7);
+ doc.setFont('helvetica','normal');doc.setFontSize(8);
+ const next='Aviation Matrix will review your request and contact you to confirm the final quotation and delivery / program details.';
+ doc.text(doc.splitTextToSize(next,pageW-margin*2-14),margin+7,y+13);
+ y+=28;
+
+ // Footer on all pages
+ const totalPages=doc.getNumberOfPages();
+ for(let p=1;p<=totalPages;p++){
+   doc.setPage(p);
+   doc.setDrawColor(222,230,236);
+   doc.line(margin,pageH-12,pageW-margin,pageH-12);
+   doc.setFontSize(7);doc.setTextColor(...muted);
+   doc.text(`Aviation Matrix • Request ${receipt.request_number}`,margin,pageH-7);
+   doc.text(`Page ${p} of ${totalPages}`,pageW-margin,pageH-7,{align:'right'});
+ }
+
+ doc.save(`Aviation_Matrix_Request_${safeFileName(receipt.request_number)}.pdf`);
+}
+
 
 (function initAdminPreview(){
   const params=new URLSearchParams(location.search);
