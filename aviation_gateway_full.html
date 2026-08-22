@@ -465,6 +465,8 @@ const addons=[
 const STORE_SUPABASE_URL='https://vsuekfzyebqnhthyvwpf.supabase.co';
 const STORE_SUPABASE_KEY='sb_publishable_sRvoFKXyDEzQPLaAk3xZOQ_RLVxh5g3';
 const STORE_IMAGE_BASE=STORE_SUPABASE_URL+'/storage/v1/object/public/product-images/';
+const GATEWAY_SUBMIT_API='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/gateway-submit';
+let requestContext={};
 let liveStoreLoadedFor=null;
 let productCatalog=[
  {id:'notebook',name:'Aviation Matrix Notebook',price:220,tag:'STATIONERY',desc:'Premium aviation-themed notebook for students and institutional programs.',details:'Hard cover • Aviation Matrix branding • Suitable for student kits',sizes:[],personalize:['None','Student Name','Institution Name','Logo + Name']},
@@ -548,14 +550,21 @@ function selectProgram(k,p,base){
 }
 
 function requestReady(k,p,base){
- show('Program Request',`${label(k)} • ${p}`,contactForm(k,`Selected program: ${p} • Base estimate: EGP ${base}`))
+ requestContext={
+   request_type:'program_request',
+   audience_code:k,
+   program_name:p,
+   estimated_total:Number(base||0),
+   currency:'EGP'
+ };
+ show('Program Request',`${label(k)} • ${p}`,contactForm(k,`Selected program: ${p}`))
 }
 
 function openCustomize(k,baseName='',basePrice=0){
  const arr=programs[k]||[];
  const opts=arr.map(p=>`<option value="${p.base}" ${p.name===baseName?'selected':''}>${p.name}</option>`).join('');
  show('Customize a Program',`${label(k)} • Program Builder`,
- `<form onsubmit="submitDemo(event,'custom program')">
+ `<form onsubmit="continueCustomProgram(event,'${k}')">
  <div class="form-grid">
   <div class="field full">
    <label>STARTING POINT</label>
@@ -563,12 +572,12 @@ function openCustomize(k,baseName='',basePrice=0){
     <option value="0">Build from scratch</option>${opts}
    </select>
   </div>
-  <div class="field"><label>AGE / EDUCATION STAGE</label><input required placeholder="e.g. 4–6 / Secondary / University"></div>
+  <div class="field"><label>AGE / EDUCATION STAGE</label><input id="customStage" required placeholder="e.g. 4–6 / Secondary / University"></div>
   <div class="field"><label>APPROX. NUMBER OF LEARNERS</label><input id="learners" type="number" min="1" value="30" oninput="recalcProgram()"></div>
-  <div class="field"><label>DELIVERY LOCATION</label><select><option>At our institution</option><option>At Aviation Matrix</option><option>Online</option><option>Hybrid</option></select></div>
-  <div class="field"><label>FREQUENCY</label><select><option>One day</option><option>Weekly</option><option>Twice weekly</option><option>Monthly</option><option>Full term / semester</option><option>Custom schedule</option></select></div>
-  <div class="field"><label>SESSION LENGTH</label><select><option>45 minutes</option><option>60 minutes</option><option>90 minutes</option><option>2 hours</option><option>Half day</option><option>Full day</option></select></div>
-  <div class="field"><label>MAIN OBJECTIVE</label><select><option>Aviation awareness</option><option>Career discovery</option><option>Skills development</option><option>Career readiness</option><option>Training</option><option>Custom objective</option></select></div>
+  <div class="field"><label>DELIVERY LOCATION</label><select id="customDelivery"><option value="on_site">At our institution</option><option value="aviation_matrix">At Aviation Matrix</option><option value="online">Online</option><option value="hybrid">Hybrid</option></select></div>
+  <div class="field"><label>FREQUENCY</label><select id="customFrequency"><option>One day</option><option>Weekly</option><option>Twice weekly</option><option>Monthly</option><option>Full term / semester</option><option>Custom schedule</option></select></div>
+  <div class="field"><label>SESSION LENGTH</label><select id="customSession"><option>45 minutes</option><option>60 minutes</option><option>90 minutes</option><option>2 hours</option><option>Half day</option><option>Full day</option></select></div>
+  <div class="field"><label>MAIN OBJECTIVE</label><select id="customObjective"><option>Aviation awareness</option><option>Career discovery</option><option>Skills development</option><option>Career readiness</option><option>Training</option><option>Custom objective</option></select></div>
 
   <div class="field full">
    <label>ADD-ONS — SELECT AS MANY AS YOU NEED</label>
@@ -581,7 +590,7 @@ function openCustomize(k,baseName='',basePrice=0){
    </div>
   </div>
 
-  <div class="field full"><label>WHAT WOULD YOU LIKE TO CHANGE OR ADD?</label><textarea placeholder="Tell us anything specific you need..."></textarea></div>
+  <div class="field full"><label>WHAT WOULD YOU LIKE TO CHANGE OR ADD?</label><textarea id="customNotes" placeholder="Tell us anything specific you need..."></textarea></div>
  </div>
 
  <div class="price-box">
@@ -914,7 +923,7 @@ function storeCheckout(k){
  `<div class="summary">
   ${cart.map(x=>`<strong>${x.name}</strong> × ${x.qty}<br><span class="muted">${cartPersonalText(x)}</span><br>`).join('')}
   <br><strong>Estimated Total: EGP ${total.toLocaleString()}</strong><br>
-  <span class="muted">Prototype estimate only. Final price can change based on quantity, branding, sizing, production, and delivery.</span>
+  <span class="muted">Estimated price. Final quotation can change based on quantity, branding, sizing, production, and delivery.</span>
  </div>
  <div class="choice-grid">
   <button class="choice" onclick="storeContact('${k}')"><strong>Send Product Request</strong><span>Leave contact details for quotation and confirmation.</span></button>
@@ -923,21 +932,43 @@ function storeCheckout(k){
 }
 
 function storeContact(k){
+ const total=cart.reduce((s,x)=>s+x.price*x.qty,0);
+ requestContext={
+   request_type:'product_request',
+   audience_code:k,
+   estimated_total:total,
+   currency:'EGP',
+   items:cart.map(x=>({
+     item_type:'product',
+     ref_id:(String(x.id).includes('-')?x.id:null),
+     name:x.name,
+     quantity:x.qty,
+     unit_price:x.price,
+     config:{
+       personalization:x.personalization||'None',
+       student_name:x.studentName||'',
+       institution_name:x.institutionName||'',
+       size:x.size||'',
+       logo_name:x.logoName||'',
+       student_list_count:x.studentList?.length||0
+     }
+   }))
+ };
  show('Send Product Request',`${label(k)} • Products`,contactForm(k,'Product request'))
 }
 
 /* contact / meeting */
 function openMeeting(k){
  show('Book an Online Meeting',`${label(k)} • Consultation`,
- `<form onsubmit="submitDemo(event,'meeting request')">
+ `<form onsubmit="submitMeetingRequest(event,'${k}','meeting_request')">
   <div class="form-grid">
-   <div class="field"><label>ORGANIZATION NAME</label><input required></div>
-   <div class="field"><label>CONTACT PERSON</label><input required></div>
-   <div class="field"><label>MOBILE NUMBER</label><input required placeholder="+20 ..."></div>
-   <div class="field"><label>EMAIL</label><input required type="email"></div>
-   <div class="field"><label>PREFERRED DATE</label><input required type="date"></div>
-   <div class="field"><label>PREFERRED TIME</label><input required type="time"></div>
-   <div class="field full"><label>WHAT WOULD YOU LIKE TO DISCUSS?</label><textarea placeholder="Programs, products, customization, delivery at your location, partnership..."></textarea></div>
+   <div class="field"><label>ORGANIZATION NAME</label><input name="institution_name" required></div>
+   <div class="field"><label>CONTACT PERSON</label><input name="contact_person" required></div>
+   <div class="field"><label>MOBILE NUMBER</label><input name="mobile" required placeholder="+20 ..."></div>
+   <div class="field"><label>EMAIL</label><input name="email" required type="email"></div>
+   <div class="field"><label>PREFERRED DATE</label><input name="preferred_date" required type="date"></div>
+   <div class="field"><label>PREFERRED TIME</label><input name="preferred_time" required type="time"></div>
+   <div class="field full"><label>WHAT WOULD YOU LIKE TO DISCUSS?</label><textarea name="notes" placeholder="Programs, products, customization, delivery at your location, partnership..."></textarea></div>
   </div>
   <div class="sheet-actions">
    <button type="button" class="back" onclick="closeModal()">Cancel</button>
@@ -948,13 +979,14 @@ function openMeeting(k){
 
 function openCallback(k){
  show('Request a Call Back',`${label(k)} • Speak with Aviation Matrix`,
- `<form onsubmit="submitDemo(event,'call back request')">
+ `<form onsubmit="submitMeetingRequest(event,'${k}','callback_request')">
   <div class="form-grid">
-   <div class="field"><label>ORGANIZATION NAME</label><input required></div>
-   <div class="field"><label>CONTACT PERSON</label><input required></div>
-   <div class="field"><label>MOBILE NUMBER</label><input required placeholder="+20 ..."></div>
-   <div class="field"><label>BEST TIME TO CALL</label><select><option>Morning</option><option>Afternoon</option><option>Evening</option></select></div>
-   <div class="field full"><label>WHAT DO YOU NEED HELP WITH?</label><textarea placeholder="I need help choosing a program, products, customization..."></textarea></div>
+   <div class="field"><label>ORGANIZATION NAME</label><input name="institution_name" required></div>
+   <div class="field"><label>CONTACT PERSON</label><input name="contact_person" required></div>
+   <div class="field"><label>MOBILE NUMBER</label><input name="mobile" required placeholder="+20 ..."></div>
+   <div class="field"><label>EMAIL</label><input name="email" type="email"></div>
+   <div class="field"><label>BEST TIME TO CALL</label><select name="preferred_time_window"><option>Morning</option><option>Afternoon</option><option>Evening</option></select></div>
+   <div class="field full"><label>WHAT DO YOU NEED HELP WITH?</label><textarea name="notes" placeholder="I need help choosing a program, products, customization..."></textarea></div>
   </div>
   <div class="sheet-actions">
    <button type="button" class="back" onclick="closeModal()">Cancel</button>
@@ -975,23 +1007,124 @@ function openIndividual(){
 }
 
 function contactForm(k,note=''){
- return `<form onsubmit="submitDemo(event,'request')">
+ return `<form onsubmit="submitContactRequest(event,'${k}')">
   <div class="form-grid">
-   <div class="field"><label>ORGANIZATION NAME</label><input required></div>
-   <div class="field"><label>CONTACT PERSON</label><input required></div>
-   <div class="field"><label>MOBILE NUMBER</label><input required placeholder="+20 ..."></div>
-   <div class="field"><label>EMAIL</label><input required type="email"></div>
-   <div class="field full"><label>NOTES</label><textarea>${note}</textarea></div>
+   ${k==='individual'?'':`<div class="field"><label>ORGANIZATION NAME</label><input name="institution_name" required></div>`}
+   <div class="field"><label>CONTACT PERSON</label><input name="contact_person" required></div>
+   <div class="field"><label>MOBILE NUMBER</label><input name="mobile" required placeholder="+20 ..."></div>
+   <div class="field"><label>EMAIL</label><input name="email" required type="email"></div>
+   <div class="field full"><label>NOTES</label><textarea name="notes">${note||''}</textarea></div>
   </div>
   <div class="sheet-actions"><button class="submit">Send Request</button></div>
  </form>`;
 }
 
-function submitDemo(e,type){e.preventDefault();demoDone(type)}
+async function submitGatewayPayload(payload,button){
+ const old=button?.textContent||'Submit';
+ if(button){button.disabled=true;button.textContent='Sending…'}
+ try{
+   const r=await fetch(GATEWAY_SUBMIT_API,{
+     method:'POST',
+     headers:{'Content-Type':'application/json'},
+     body:JSON.stringify(payload)
+   });
+   const data=await r.json().catch(()=>({}));
+   if(!r.ok)throw new Error(data.error||'Unable to submit request');
+   show('Request Received','Aviation Matrix',
+    `<div class="notice">✓ Your request has been received successfully.</div>
+     <div class="summary"><strong>Request Number:</strong> ${data.request_number}<br>
+     Keep this number for reference. Aviation Matrix can now review this request from the Control Tower.</div>
+     <div class="sheet-actions"><button class="submit" onclick="closeModal()">Done</button></div>`);
+   requestContext={};
+   return data;
+ }catch(e){
+   if(button){button.disabled=false;button.textContent=old}
+   const host=document.querySelector('.sheet-body form');
+   if(host){
+     let msg=host.querySelector('.submit-error');
+     if(!msg){msg=document.createElement('div');msg.className='summary submit-error';msg.style.color='#a02b21';host.prepend(msg)}
+     msg.textContent='Unable to send the request. Please check the information and try again.';
+   }
+   console.error(e);
+   return null;
+ }
+}
+
+async function submitContactRequest(e,k){
+ e.preventDefault();
+ const form=e.currentTarget,fd=new FormData(form);
+ const payload={
+   ...requestContext,
+   audience_code:k,
+   institution_name:fd.get('institution_name')||'',
+   contact_person:fd.get('contact_person')||'',
+   mobile:fd.get('mobile')||'',
+   email:fd.get('email')||'',
+   notes:[requestContext.notes,fd.get('notes')].filter(Boolean).join('\n')
+ };
+ await submitGatewayPayload(payload,form.querySelector('button.submit'));
+}
+
+function continueCustomProgram(e,k){
+ e.preventDefault();
+ const baseSel=document.getElementById('programBase');
+ const learners=Number(document.getElementById('learners')?.value||1);
+ const selectedText=baseSel?.selectedOptions?.[0]?.textContent||'Build from scratch';
+ const selectedBase=Number(baseSel?.value||0);
+ const selectedAddons=[...document.querySelectorAll('.addon:checked')].map(x=>{
+   const label=x.closest('.check')?.querySelector('strong')?.textContent||'Add-on';
+   return {name:label,unit_price:Number(x.dataset.price||0)};
+ });
+ const addonPer=selectedAddons.reduce((s,x)=>s+x.unit_price,0);
+ const total=(selectedBase+addonPer)*learners;
+ requestContext={
+   request_type:'custom_program',
+   audience_code:k,
+   program_name:selectedText==='Build from scratch'?'':selectedText,
+   learner_count:learners,
+   delivery_mode:document.getElementById('customDelivery')?.value||'',
+   estimated_total:total,
+   currency:'EGP',
+   customization:{
+     education_stage:document.getElementById('customStage')?.value||'',
+     frequency:document.getElementById('customFrequency')?.value||'',
+     session_length:document.getElementById('customSession')?.value||'',
+     objective:document.getElementById('customObjective')?.value||'',
+     addons:selectedAddons
+   },
+   items:selectedAddons.map(a=>({
+     item_type:'addon',name:a.name,quantity:learners,unit_price:a.unit_price,config:{}
+   })),
+   notes:document.getElementById('customNotes')?.value||''
+ };
+ show('Complete Your Request',`${label(k)} • Customized Program`,contactForm(k,'Customized program request'));
+}
+
+async function submitMeetingRequest(e,k,type){
+ e.preventDefault();
+ const form=e.currentTarget,fd=new FormData(form);
+ const notes=[
+   fd.get('notes')||'',
+   fd.get('preferred_time_window')?`Preferred callback window: ${fd.get('preferred_time_window')}`:''
+ ].filter(Boolean).join('\n');
+ const payload={
+   request_type:type,
+   audience_code:k,
+   institution_name:fd.get('institution_name')||'',
+   contact_person:fd.get('contact_person')||'',
+   mobile:fd.get('mobile')||'',
+   email:fd.get('email')||'',
+   preferred_date:fd.get('preferred_date')||'',
+   preferred_time:fd.get('preferred_time')||'',
+   preferred_contact_method:type==='callback_request'?'phone':'online_meeting',
+   notes
+ };
+ await submitGatewayPayload(payload,form.querySelector('button.submit'));
+}
+
 function demoDone(type){
- show('Request Captured','Interactive prototype',
- `<div class="notice">✓ ${type} completed successfully in this prototype.</div>
- <div class="summary">In the live version, this step will create the appropriate Aviation Matrix lead/request and pricing record.</div>
+ show('Completed','Aviation Matrix',
+ `<div class="notice">✓ ${type} completed.</div>
  <div class="sheet-actions"><button class="submit" onclick="closeModal()">Done</button></div>`)
 }
 
