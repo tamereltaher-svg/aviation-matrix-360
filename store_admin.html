@@ -75,7 +75,7 @@ td{padding:12px 10px;border-bottom:1px solid #edf2f5;vertical-align:middle}
 .toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
 .toolbar input,.toolbar select{padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:#fff}
 .toolbar input{min-width:250px}
-.catalog{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.catalog{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
 .product-card,.program-card,.institution-card{
   background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px;box-shadow:var(--shadow)
 }
@@ -164,7 +164,7 @@ td{padding:12px 10px;border-bottom:1px solid #edf2f5;vertical-align:middle}
 
 <div id="appView" class="app hidden">
   <aside class="sidebar" id="sidebar">
-    <div class="brand"><div class="brand-mark">✈</div><div><h1>Aviation Matrix</h1><small>CONTROL TOWER • STABLE BUILD 2026.08.22.4 • COVER FIX</small></div></div>
+    <div class="brand"><div class="brand-mark">✈</div><div><h1>Aviation Matrix</h1><small>CONTROL TOWER • STABLE BUILD 2026.08.22.5 • PREMIUM PROGRAM CARDS</small></div></div>
     <div class="nav">
       <div class="nav-group">OVERVIEW</div>
       <button class="active" data-page="dashboard" onclick="openPage('dashboard',this)"><span>⌂</span><span>Dashboard</span></button>
