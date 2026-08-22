@@ -50,15 +50,18 @@ textarea{min-height:95px;resize:vertical}label{display:block;font-size:11px;font
 <main class="wrap">
 <section id="loginPanel" class="card login">
   <h2>Admin Sign In</h2>
-  <p style="color:var(--muted);line-height:1.7">Use your authorized Aviation Matrix admin email. A verification code will be sent to your email.</p>
+  <p style="color:var(--muted);line-height:1.7">Private access for the authorized Aviation Matrix Store Admin account only.</p>
   <div id="loginMsg"></div>
-  <div class="field"><label>ADMIN EMAIL</label><input id="adminEmail" type="email" placeholder="name@company.com"></div>
-  <button class="btn" onclick="sendOtp()">Send Verification Code</button>
-  <div id="otpBox" class="hidden" style="margin-top:16px">
-    <div class="field"><label>VERIFICATION CODE</label><input id="otpCode" inputmode="numeric" placeholder="6-digit code"></div>
-    <button class="btn" onclick="verifyOtp()">Verify & Open Admin</button>
+  <div class="field">
+    <label>AUTHORIZED ADMIN</label>
+    <input id="adminEmail" type="email" value="tamereltaher@exit-logistics.com" readonly>
   </div>
-</section>
+  <div class="field">
+    <label>PASSWORD</label>
+    <input id="adminPassword" type="password" placeholder="Enter your password" autocomplete="current-password">
+  </div>
+  <button class="btn" onclick="passwordLogin()">Open Store Admin</button>
+</section></section>
 
 <section id="adminPanel" class="hidden">
   <div class="grid">
@@ -138,21 +141,18 @@ let products=[], current=null, currentImages=[], currentVariants=[], currentOpti
 function msg(el,text,error=false){document.getElementById(el).innerHTML=`<div class="notice ${error?'error':''}">${text}</div>`}
 function clearMsg(el){document.getElementById(el).innerHTML=''}
 
-async function sendOtp(){
+async function passwordLogin(){
   clearMsg('loginMsg');
-  const email=document.getElementById('adminEmail').value.trim();
-  if(!email)return msg('loginMsg','Enter your admin email.',true);
-  const {error}=await sb.auth.signInWithOtp({email,options:{shouldCreateUser:false}});
-  if(error)return msg('loginMsg',error.message,true);
-  document.getElementById('otpBox').classList.remove('hidden');
-  msg('loginMsg','Verification code sent. Check your email.');
-}
-async function verifyOtp(){
-  const email=document.getElementById('adminEmail').value.trim();
-  const token=document.getElementById('otpCode').value.trim();
-  const {error}=await sb.auth.verifyOtp({email,token,type:'email'});
-  if(error)return msg('loginMsg',error.message,true);
-  await boot();
+  const email='tamereltaher@exit-logistics.com';
+  const password=document.getElementById('adminPassword').value;
+  if(!password)return msg('loginMsg','Enter your password.',true);
+  const {data,error}=await sb.auth.signInWithPassword({email,password});
+  if(error)return msg('loginMsg','Invalid admin password.',true);
+  await 
+document.getElementById('adminPassword')?.addEventListener('keydown',e=>{
+  if(e.key==='Enter') passwordLogin();
+});
+boot();
 }
 async function signOut(){await sb.auth.signOut();location.reload()}
 
