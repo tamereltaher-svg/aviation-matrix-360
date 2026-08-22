@@ -56,7 +56,7 @@ function render(){
  document.getElementById('products').innerHTML=filtered.map(p=>{
   const pi=images.filter(x=>x.product_id===p.id).sort((a,b)=>Number(b.is_primary)-Number(a.is_primary)||a.sort_order-b.sort_order)[0];
   return `<article class="card">
-   ${pi?`<img src="${base+pi.storage_path}" alt="${pi.alt_text||p.name}">`:`<div class="placeholder">✈️</div>`}
+   ${pi?`<img src="${base+pi.storage_path}?v=${encodeURIComponent(pi.id||pi.storage_path)}" alt="${pi.alt_text||p.name}">`:`<div class="placeholder">✈️</div>`}
    <span class="badge">${p.category}</span>
    <h3>${p.name}</h3>
    <div class="muted">${p.short_description||''}</div>

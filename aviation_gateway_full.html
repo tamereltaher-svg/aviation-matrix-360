@@ -238,7 +238,7 @@ footer{padding:30px;text-align:center;color:var(--muted)}
   background:linear-gradient(135deg,#eaf7fd,#dceef8);border:1px solid var(--line);
   display:grid;place-items:center;position:relative
 }
-.product-media svg{width:100%;height:100%;display:block}
+.product-media svg{width:100%;height:100%;display:block}.product-media img{width:100%;height:100%;object-fit:cover;display:block}
 .product-media .photo-label{
   position:absolute;left:10px;bottom:10px;padding:5px 8px;border-radius:999px;
   background:rgba(6,25,43,.82);color:#fff;font-size:9px;font-weight:900;letter-spacing:.08em
@@ -462,7 +462,11 @@ const addons=[
  {name:'Custom Branding',desc:'Institution-specific branded materials',price:90}
 ];
 
-const productCatalog=[
+const STORE_SUPABASE_URL='https://vsuekfzyebqnhthyvwpf.supabase.co';
+const STORE_SUPABASE_KEY='sb_publishable_sRvoFKXyDEzQPLaAk3xZOQ_RLVxh5g3';
+const STORE_IMAGE_BASE=STORE_SUPABASE_URL+'/storage/v1/object/public/product-images/';
+let liveStoreLoadedFor=null;
+let productCatalog=[
  {id:'notebook',name:'Aviation Matrix Notebook',price:220,tag:'STATIONERY',desc:'Premium aviation-themed notebook for students and institutional programs.',details:'Hard cover • Aviation Matrix branding • Suitable for student kits',sizes:[],personalize:['None','Student Name','Institution Name','Logo + Name']},
  {id:'mug',name:'Aviation Matrix Mug',price:180,tag:'MERCH',desc:'Branded aviation mug suitable for student gifts, staff packs, and events.',details:'Ceramic • Full-color branding area • Gift-ready',sizes:[],personalize:['None','Student Name','Institution Name','Logo + Name']},
  {id:'lanyard',name:'Student ID + Lanyard',price:150,tag:'IDENTITY',desc:'Student identity card and lanyard for programs, aviation clubs, and events.',details:'Printed ID card • Lanyard • Program identification',sizes:[],personalize:['Student Name','Institution Name','Logo + Name']},
@@ -609,8 +613,9 @@ function recalcProgram(){
 }
 
 /* store */
-function openStore(k){
+async function openStore(k){
  cart=[];
+ await loadLiveStoreData(k);
  show('Aviation Matrix Store',`${label(k)} • Products & Personalization`,
  `<div class="store-toolbar">
    <div>
@@ -652,12 +657,61 @@ function productSvg(p){
    <text x="200" y="245" text-anchor="middle" font-size="18" font-family="Arial" font-weight="700" fill="#12334a">${p.name}</text>
   </svg>`;
 }
+function productMedia(p){
+ if(p.primaryImagePath){
+   return `<img src="${STORE_IMAGE_BASE+p.primaryImagePath}" alt="${p.name}" onerror="this.outerHTML=productSvg(productCatalog.find(x=>x.id==='${p.id}')||p)">`;
+ }
+ return productSvg(p);
+}
+async function storeFetch(table,query=''){
+ const r=await fetch(`${STORE_SUPABASE_URL}/rest/v1/${table}?${query}`,{
+   headers:{apikey:STORE_SUPABASE_KEY,Authorization:`Bearer ${STORE_SUPABASE_KEY}`}
+ });
+ if(!r.ok)throw new Error(`${table} ${r.status}`);
+ return await r.json();
+}
+async function loadLiveStoreData(audience){
+ try{
+   const [ps,imgs,vars,opts,auds]=await Promise.all([
+     storeFetch('store_products','select=*&is_active=eq.true&order=sort_order.asc,name.asc'),
+     storeFetch('store_product_images','select=*&order=sort_order.asc'),
+     storeFetch('store_product_variants','select=*&is_active=eq.true&order=sort_order.asc'),
+     storeFetch('store_personalization_options','select=*&is_active=eq.true&order=sort_order.asc'),
+     storeFetch('store_product_audiences','select=*')
+   ]);
+   const allowedIds=new Set(auds.filter(a=>a.audience_code===audience).map(a=>a.product_id));
+   const hasAudienceLinks=auds.length>0;
+   productCatalog=ps.filter(p=>!hasAudienceLinks||allowedIds.has(p.id)).map(p=>{
+     const pi=imgs.filter(x=>x.product_id===p.id).sort((a,b)=>Number(b.is_primary)-Number(a.is_primary)||(a.sort_order||0)-(b.sort_order||0));
+     const pv=vars.filter(x=>x.product_id===p.id);
+     const po=opts.filter(x=>x.product_id===p.id);
+     return {
+       id:p.id,
+       name:p.name,
+       price:Number(p.base_price||0),
+       tag:p.category||'PRODUCT',
+       desc:p.short_description||'',
+       details:p.description||p.short_description||'',
+       sizes:pv.filter(v=>v.variant_type==='size').map(v=>v.variant_value),
+       personalize:['None',...po.map(o=>o.label)].filter((x,i,a)=>a.indexOf(x)===i),
+       primaryImagePath:pi[0]?.storage_path||null,
+       gallery:pi
+     };
+   });
+   liveStoreLoadedFor=audience;
+   return true;
+ }catch(e){
+   console.error('Live store load failed',e);
+   return false;
+ }
+}
+
 function renderProducts(k){
  const q=(document.getElementById('searchProduct')?.value||'').toLowerCase();
  const el=document.getElementById('products'); if(!el)return;
  el.innerHTML=productCatalog.filter(p=>p.name.toLowerCase().includes(q)).map(p=>`
   <div class="product">
-   <div class="product-media">${productSvg(p)}<span class="photo-label">PRODUCT IMAGE</span></div>
+   <div class="product-media">${productMedia(p)}<span class="photo-label">${p.primaryImagePath?'LIVE PRODUCT IMAGE':'PRODUCT IMAGE'}</span></div>
    <span class="badge">${p.tag}</span>
    <h4>${p.name}</h4>
    <p>${p.desc}</p>
@@ -726,7 +780,8 @@ function openProductDetail(k,id,idx=null){
  show(p.name,`${label(k)} • Product Details`,
  `<div class="product-detail">
    <div class="product-hero">
-     <div class="product-media">${productSvg(p)}<span class="photo-label">PRODUCT IMAGE AREA</span></div>
+     <div class="product-media">${productMedia(p)}<span class="photo-label">${p.primaryImagePath?'PRIMARY PRODUCT IMAGE':'PRODUCT IMAGE AREA'}</span></div>
+     ${p.gallery?.length>1?`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:8px">${p.gallery.slice(0,4).map(g=>`<img src="${STORE_IMAGE_BASE+g.storage_path}" style="width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:9px;border:1px solid var(--line)">`).join('')}</div>`:''}
    </div>
    <div>
      <span class="badge">${p.tag}</span>

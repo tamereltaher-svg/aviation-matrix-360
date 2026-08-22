@@ -80,6 +80,17 @@ td{padding:12px 10px;border-bottom:1px solid #edf2f5;vertical-align:middle}
   background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px;box-shadow:var(--shadow)
 }
 .product-card h3,.program-card h3,.institution-card h3{margin:8px 0 6px;font-size:17px}
+.product-thumb{
+  width:100%;aspect-ratio:4/3;border-radius:14px;overflow:hidden;
+  background:linear-gradient(135deg,#eaf7fd,#d8ecf6);border:1px solid var(--line);
+  display:grid;place-items:center;margin-bottom:12px
+}
+.product-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.product-thumb .no-image{font-size:34px;opacity:.65}
+.image-count{display:inline-flex;align-items:center;gap:4px;padding:5px 8px;border-radius:999px;background:#eef7fb;color:#0a6f9e;font-size:9px;font-weight:900}
+.upload-state{margin:10px 0;padding:10px 12px;border-radius:11px;background:#eef7fb;color:#0a6f9e;font-weight:800;font-size:12px}
+.upload-state.ok{background:#e8f8f3;color:#0b6a54}
+.upload-state.error{background:#fff0ef;color:#a02b21}
 .muted{color:var(--muted);line-height:1.6}
 .meta{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}
 .chip{display:inline-flex;padding:5px 8px;border-radius:999px;background:#eff6f9;color:#3f6175;font-size:9px;font-weight:900}
@@ -261,6 +272,7 @@ const STORAGE='https://vsuekfzyebqnhthyvwpf.supabase.co/storage/v1/object/public
 let token=localStorage.getItem('am_staff_token')||'';
 let currentPage='dashboard';
 let products=[],programs=[],addons=[],requests=[],meetings=[],institutions=[];
+let productImageMeta={};
 let editingProduct=null,productImages=[],productVariants=[],productOptions=[],productAudiences=[];
 
 function $id(x){return document.getElementById(x)}
@@ -313,11 +325,43 @@ async function loadDashboard(){
  $id('kpiProducts').textContent=s.products;$id('kpiActiveProducts').textContent=s.active_products;$id('kpiPrograms').textContent=s.programs;$id('kpiOpenRequests').textContent=s.open_requests;$id('kpiRequests').textContent=s.requests;$id('kpiInstitutions').textContent=s.institutions;$id('kpiMeetings').textContent=s.meetings;
  $id('recentRequests').innerHTML=(d.recent_requests||[]).length?(d.recent_requests||[]).map(r=>`<tr><td><strong>${esc(r.request_number)}</strong></td><td>${esc(r.request_type)}</td><td>${esc(r.audience_code)}</td><td>${statusBadge(r.status)}</td><td>${r.estimated_total?money(r.estimated_total,r.currency):'—'}</td><td>${dateFmt(r.created_at)}</td></tr>`).join(''):`<tr><td colspan="6" class="empty">No requests yet.</td></tr>`;
 }
-async function loadProducts(){const d=await api('list_products');products=d.products||[];renderProducts()}
+async function loadProducts(){
+ const d=await api('list_products');
+ products=d.products||[];
+ productImageMeta={};
+ await Promise.all(products.map(async p=>{
+   try{
+     const detail=await api('get_product',{id:p.id});
+     const imgs=detail.images||[];
+     const primary=imgs.find(x=>x.is_primary)||imgs[0]||null;
+     productImageMeta[p.id]={count:imgs.length,primary_path:primary?.storage_path||null};
+   }catch(e){
+     productImageMeta[p.id]={count:0,primary_path:null};
+   }
+ }));
+ renderProducts();
+}
 function renderProducts(){
  const q=($id('productSearch')?.value||'').toLowerCase(),st=$id('productStatus')?.value||'all';
  const arr=products.filter(p=>p.name.toLowerCase().includes(q)&&(st==='all'||(st==='active'?p.is_active:!p.is_active)));
- $id('productCatalog').innerHTML=arr.length?arr.map(p=>`<article class="product-card"><span class="chip">${esc(p.category)}</span><h3>${esc(p.name)}</h3><div class="muted">${esc(p.short_description||'No description')}</div><div class="meta"><span class="chip">${p.is_active?'Active':'Hidden'}</span>${p.is_featured?'<span class="chip">Featured</span>':''}</div><div class="price">${money(p.base_price,p.currency)}</div><div class="card-actions"><button class="btn secondary" onclick="editProduct('${p.id}')">Edit</button></div></article>`).join(''):`<div class="empty">No products found.</div>`;
+ $id('productCatalog').innerHTML=arr.length?arr.map(p=>{
+   const meta=productImageMeta[p.id]||{count:0,primary_path:null};
+   const media=meta.primary_path
+     ? `<img src="${STORAGE+meta.primary_path}" alt="${esc(p.name)}" onerror="this.parentElement.innerHTML='<div class=&quot;no-image&quot;>✈</div>'">`
+     : `<div class="no-image">✈</div>`;
+   return `<article class="product-card">
+     <div class="product-thumb">${media}</div>
+     <div style="display:flex;justify-content:space-between;gap:8px;align-items:center">
+       <span class="chip">${esc(p.category)}</span>
+       <span class="image-count">📷 ${meta.count} image${meta.count===1?'':'s'}</span>
+     </div>
+     <h3>${esc(p.name)}</h3>
+     <div class="muted">${esc(p.short_description||'No description')}</div>
+     <div class="meta"><span class="chip">${p.is_active?'Active':'Hidden'}</span>${p.is_featured?'<span class="chip">Featured</span>':''}</div>
+     <div class="price">${money(p.base_price,p.currency)}</div>
+     <div class="card-actions"><button class="btn secondary" onclick="editProduct('${p.id}')">Edit Product</button></div>
+   </article>`;
+ }).join(''):`<div class="empty">No products found.</div>`;
 }
 async function editProduct(id){const d=await api('get_product',{id});editingProduct=d.product;productImages=d.images||[];productVariants=d.variants||[];productOptions=d.options||[];productAudiences=d.audiences||[];openProductEditor()}
 function newProduct(){editingProduct={id:null,name:'',sku:'',slug:'',category:'PRODUCT',short_description:'',description:'',base_price:0,currency:'EGP',price_is_estimate:true,is_active:false,is_featured:false,sort_order:999};productImages=[];productVariants=[];productOptions=[];productAudiences=[];openProductEditor()}
@@ -331,7 +375,7 @@ function openProductEditor(){
   <div class="field full"><label>SHORT DESCRIPTION</label><textarea id="pe_short">${esc(p.short_description||'')}</textarea></div><div class="field full"><label>FULL DESCRIPTION</label><textarea id="pe_desc">${esc(p.description||'')}</textarea></div>
  </div></div>
  <div id="tab-pricing" class="tabpane"><div class="form-grid"><div class="field"><label>BASE PRICE</label><input id="pe_price" type="number" value="${p.base_price||0}"></div><div class="field"><label>CURRENCY</label><select id="pe_currency"><option ${p.currency==='EGP'?'selected':''}>EGP</option><option ${p.currency==='USD'?'selected':''}>USD</option><option ${p.currency==='EUR'?'selected':''}>EUR</option></select></div><div class="full check-grid"><label class="check"><input id="pe_est" type="checkbox" ${p.price_is_estimate?'checked':''}> Estimated price</label></div></div></div>
- <div id="tab-images" class="tabpane"><div class="form-grid"><div class="field"><label>UPLOAD IMAGE(S)</label><input id="pe_files" type="file" accept="image/*" multiple></div><div class="field"><label>ALT TEXT</label><input id="pe_alt" placeholder="Product image description"></div></div><button class="btn secondary" onclick="uploadProductImages()">Upload images</button><div class="image-grid" style="margin-top:12px">${productImages.length?productImages.map(im=>`<div class="img-card"><img src="${STORAGE+im.storage_path}"><small class="muted">${esc(im.alt_text||'')}</small><div class="card-actions"><button class="btn secondary" onclick="setPrimary('${im.id}')">${im.is_primary?'Primary':'Set primary'}</button><button class="btn danger" onclick="deleteImage('${im.id}')">Delete</button></div></div>`).join(''):'<div class="empty">No images yet.</div>'}</div></div>
+ <div id="tab-images" class="tabpane"><div class="form-grid"><div class="field"><label>UPLOAD IMAGE(S) — UPLOAD STARTS AUTOMATICALLY</label><input id="pe_files" type="file" accept="image/*" multiple onchange="autoUploadProductImages()"><div class="muted">JPG / PNG / WEBP • max 5 MB each. The first uploaded image becomes Primary automatically.</div></div><div class="field"><label>ALT TEXT</label><input id="pe_alt" placeholder="Product image description"></div></div><div id="imageUploadState"></div><button class="btn secondary" onclick="uploadProductImages()">Upload Selected Images</button><div class="image-grid" style="margin-top:12px">${productImages.length?productImages.map(im=>`<div class="img-card"><img src="${STORAGE+im.storage_path}"><small class="muted">${esc(im.alt_text||'')}</small><div class="card-actions"><button class="btn secondary" onclick="setPrimary('${im.id}')">${im.is_primary?'Primary':'Set primary'}</button><button class="btn danger" onclick="deleteImage('${im.id}')">Delete</button></div></div>`).join(''):'<div class="empty">No images yet.</div>'}</div></div>
  <div id="tab-variants" class="tabpane"><div id="variantRows">${renderVariantRows()}</div><button class="btn secondary" onclick="addVariant()">+ Add Variant</button></div>
  <div id="tab-personalization" class="tabpane"><div id="optionRows">${renderOptionRows()}</div><button class="btn secondary" onclick="addOption()">+ Add Option</button></div>
  <div id="tab-audience" class="tabpane"><div class="check-grid">${auds.map(a=>`<label class="check"><input class="pe_aud" value="${a}" type="checkbox" ${productAudiences.includes(a)?'checked':''}> ${a}</label>`).join('')}</div></div>
@@ -349,9 +393,59 @@ async function saveProduct(){
  const audiences=[...document.querySelectorAll('.pe_aud:checked')].map(x=>x.value);
  const d=await api('save_product',{product,audiences,variants:productVariants,options:productOptions});editingProduct=d.product;await loadProducts();closeModal();if(currentPage==='dashboard')loadDashboard();
 }
+async function autoUploadProductImages(){
+ if(!editingProduct?.id){
+   const box=$id('imageUploadState');
+   if(box)box.innerHTML='<div class="upload-state error">Save the product first, then choose the image again.</div>';
+   return;
+ }
+ await uploadProductImages();
+}
 async function uploadProductImages(){
- if(!editingProduct.id){alert('Save the product first, then upload images.');return}
- const files=[...$id('pe_files').files];for(const f of files){if(f.size>5*1024*1024){alert(`${f.name} exceeds 5MB`);continue}const b64=await fileB64(f);await api('upload_image',{product_id:editingProduct.id,filename:f.name,content_type:f.type,data_base64:b64,alt_text:$id('pe_alt').value||editingProduct.name})}await editProduct(editingProduct.id)
+ if(!editingProduct.id){
+   alert('Save the product first, then upload images.');
+   return;
+ }
+ const input=$id('pe_files');
+ const files=[...(input?.files||[])];
+ if(!files.length)return;
+ const state=$id('imageUploadState');
+ if(state)state.innerHTML=`<div class="upload-state">Uploading ${files.length} image${files.length===1?'':'s'}…</div>`;
+ let uploaded=0;
+ let failed=[];
+ for(const f of files){
+   if(f.size>5*1024*1024){failed.push(`${f.name}: exceeds 5 MB`);continue}
+   try{
+     const b64=await fileB64(f);
+     await api('upload_image',{
+       product_id:editingProduct.id,
+       filename:f.name,
+       content_type:f.type||'image/jpeg',
+       data_base64:b64,
+       alt_text:$id('pe_alt')?.value||editingProduct.name
+     });
+     uploaded++;
+   }catch(e){
+     failed.push(`${f.name}: ${e.data?.error||e.message||'upload failed'}`);
+   }
+ }
+ if(input)input.value='';
+ const detail=await api('get_product',{id:editingProduct.id});
+ editingProduct=detail.product;
+ productImages=detail.images||[];
+ productVariants=detail.variants||[];
+ productOptions=detail.options||[];
+ productAudiences=detail.audiences||[];
+ await loadProducts();
+ openProductEditor();
+ setTimeout(()=>{
+   const s=$id('imageUploadState');
+   if(s){
+     if(uploaded && !failed.length) s.innerHTML=`<div class="upload-state ok">✓ ${uploaded} image${uploaded===1?'':'s'} uploaded successfully. ${productImages.length} image${productImages.length===1?'':'s'} now saved for this product.</div>`;
+     else if(uploaded) s.innerHTML=`<div class="upload-state error">Uploaded ${uploaded}. ${failed.join(' • ')}</div>`;
+     else s.innerHTML=`<div class="upload-state error">${failed.join(' • ')||'Upload failed.'}</div>`;
+   }
+ },50);
 }
 function fileB64(f){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(',')[1]);r.onerror=rej;r.readAsDataURL(f)})}
 async function setPrimary(id){await api('set_primary_image',{product_id:editingProduct.id,image_id:id});await editProduct(editingProduct.id)}
