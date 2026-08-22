@@ -205,13 +205,13 @@ async function submitRegistration(form){
   full_name:fd.get('full_name'),mobile:fd.get('mobile'),email:fd.get('email'),
   date_of_birth:fd.get('date_of_birth'),education_stage:fd.get('education_stage'),
   current_city:fd.get('current_city'),aviation_interest:fd.get('aviation_interest'),
-  preferred_language:fd.get('preferred_language'),consent:true,source:'landing_pilot'
+  preferred_language:fd.get('preferred_language'),consent:true,source:'github_pages'
  };
  const msg=document.getElementById('regMsg');msg.textContent='Registering candidate...';msg.className='helper';
  try{
-  const {error}=await supabase.from('aviation_interest_leads').insert([{...payload,status:'new'}]);
+  const {data,error}=await supabase.from('aviation_interest_leads').insert([{...payload,status:'new'}]).select('id').single();
   if(error)throw error;
-  state={...state,...payload};save();
+  state={...state,...payload,candidate_id:data?.id||state.candidate_id};save();
   document.getElementById('regOverlay')?.remove();render('welcome');
  }catch(e){
   console.error(e);msg.className='helper error';msg.textContent='Supabase registration error: '+(e.message||'Please check database table/RLS.');
