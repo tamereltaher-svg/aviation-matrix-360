@@ -5,9 +5,135 @@ const SUPABASE_KEY='sb_publishable_sRvoFKXyDEzQPLaAk3xZOQ_RLVxh5g3';
 const supabase=createClient(SUPABASE_URL,SUPABASE_KEY);
 
 const D={
- en:{dir:'ltr',hero:'Welcome Aboard Your Aviation Journey',sub:'From your first career decision to the aviation path that fits you, Aviation Matrix builds your journey step by step.',start:'Start Candidate Check-in',journey:'Your journey starts before specialization',journeySub:'We do not sell one course to everyone. We build a verified professional picture, then open the right path.',reg:'Aviation Candidate Check-in',fit:'Current Fit + Future Fit',learn:'My Flight Path',privacy:'Your data is used to start assessment, build your professional profile, and communicate with you.',welcome:'Your aviation career file is now active',confirm:'Confirm Profile',assess:'Pre-Flight Assessment',results:'Fit Results',dashboard:'My Flight Path',continue:'Continue',next:'Next Question',finish:'View Results',mission:'First Mission'},
- fr:{dir:'ltr',hero:'Bienvenue à bord de votre parcours aviation',sub:'De votre première décision de carrière au parcours aviation qui vous correspond, Aviation Matrix construit votre trajectoire étape par étape.',start:'Commencer le check-in',journey:'Votre parcours commence avant la spécialisation',journeySub:'Nous construisons d’abord un profil professionnel vérifié, puis ouvrons le parcours le plus adapté.',reg:'Check-in du candidat aviation',fit:'Adéquation actuelle + future',learn:'Ma trajectoire',privacy:'Vos données servent à démarrer l’évaluation, construire votre profil et communiquer avec vous.',welcome:'Votre dossier aviation est actif',confirm:'Confirmer le profil',assess:'Évaluation pré-vol',results:'Résultats de compatibilité',dashboard:'Ma trajectoire',continue:'Continuer',next:'Question suivante',finish:'Voir les résultats',mission:'Première mission'},
- ru:{dir:'ltr',hero:'Добро пожаловать на борт вашей авиационной карьеры',sub:'От первого карьерного решения до подходящего авиационного направления — Aviation Matrix строит ваш путь шаг за шагом.',start:'Начать check-in',journey:'Ваш путь начинается до специализации',journeySub:'Сначала мы формируем подтверждённый профессиональный профиль, затем открываем подходящий путь.',reg:'Check-in авиационного кандидата',fit:'Текущая + будущая пригодность',learn:'Мой маршрут',privacy:'Данные используются для оценки, формирования профиля и связи с вами.',welcome:'Ваш авиационный профиль активирован',confirm:'Подтвердить профиль',assess:'Предполётная оценка',results:'Результаты соответствия',dashboard:'Мой маршрут',continue:'Продолжить',next:'Следующий вопрос',finish:'Показать результаты',mission:'Первая миссия'}
+ en:{
+  dir:'ltr',
+  nav:['Confirm profile','Pre-flight assessment','Fit results','My journey'],
+  home:'Home',
+  start:'Start your journey',
+  journey:'See how it works',
+  reg:'Candidate Check-in',
+  welcome:'Welcome aboard',
+  continueApp:'Continue My Application',
+  profileTitle:'My Aviation Matrix Profile',
+  application:'Application',
+  assessmentComplete:'Assessment complete',
+  currentFit:'Cabin Crew Current Fit',
+  readiness:'Aviation Readiness Panel',
+  evidence:'Assessment evidence remains attached to your Aviation Matrix profile.',
+  nextStage:'Next Stage · Formal Enrollment',
+  lockedTitle:'Your Learning Journey Is Locked',
+  lockedBody:'Your assessment is complete, but training missions do not open until your formal Aviation Matrix file is activated.',
+  enrollmentRequired:'Enrollment Required',
+  candidateNo:'Candidate Number',
+  candidateNoPending:'Issued at formal enrollment',
+  signature:'Signature',
+  payment:'Payment',
+  pending:'Pending',
+  journeyCode:'Journey Code',
+  notActivated:'Not activated',
+  startMission:'Start Mission',
+  checkin:'Check-in',
+  assessment:'Assessment',
+  fit:'Fit',
+  formalEnrollment:'Formal Enrollment',
+  journeyActivation:'Journey Activation',
+  strengths:'Why Cabin Crew?',
+  development:'Development Priorities',
+  status:'Readiness Status',
+  currentFitLabel:'Current Fit',
+  futureFitLabel:'Future Fit',
+  resultIntro:'The recommendation is explained using the competency evidence below. Aviation Matrix does not use a hidden pass/fail score.',
+  currentFitDesc:'What your current assessment evidence shows today.',
+  futureFitDesc:'Estimated development potential — not a guarantee of future performance.',
+  viewProfile:'View My Aviation Profile',
+  noGaps:'No major development gaps identified in this assessment.'
+ },
+ fr:{
+  dir:'ltr',
+  nav:['Confirmer le profil','Évaluation prévol','Résultats de compatibilité','Ma trajectoire'],
+  home:'Accueil',
+  start:'Commencer votre parcours',
+  journey:'Voir le fonctionnement',
+  reg:'Enregistrement candidat',
+  welcome:'Bienvenue à bord',
+  continueApp:'Continuer ma candidature',
+  profileTitle:'Mon profil Aviation Matrix',
+  application:'Candidature',
+  assessmentComplete:'Évaluation terminée',
+  currentFit:'Compatibilité actuelle Cabin Crew',
+  readiness:'Tableau de préparation aviation',
+  evidence:'Les preuves de votre évaluation restent liées à votre profil Aviation Matrix.',
+  nextStage:'Étape suivante · Inscription formelle',
+  lockedTitle:'Votre parcours de formation est verrouillé',
+  lockedBody:'Votre évaluation est terminée, mais les missions de formation restent verrouillées jusqu’à l’activation officielle de votre dossier Aviation Matrix.',
+  enrollmentRequired:'Inscription requise',
+  candidateNo:'Numéro candidat',
+  candidateNoPending:'Attribué lors de l’inscription formelle',
+  signature:'Signature',
+  payment:'Paiement',
+  pending:'En attente',
+  journeyCode:'Code du parcours',
+  notActivated:'Non activé',
+  startMission:'Démarrer la mission',
+  checkin:'Enregistrement',
+  assessment:'Évaluation',
+  fit:'Compatibilité',
+  formalEnrollment:'Inscription formelle',
+  journeyActivation:'Activation du parcours',
+  strengths:'Pourquoi Cabin Crew ?',
+  development:'Priorités de développement',
+  status:'Statut de préparation',
+  currentFitLabel:'Compatibilité actuelle',
+  futureFitLabel:'Compatibilité future',
+  resultIntro:'La recommandation est expliquée à partir des compétences observées. Aviation Matrix n’utilise pas de seuil caché de réussite/échec.',
+  currentFitDesc:'Ce que montrent aujourd’hui les éléments observés dans votre évaluation.',
+  futureFitDesc:'Potentiel de développement estimé — ce n’est pas une garantie de performance future.',
+  viewProfile:'Voir mon profil Aviation Matrix',
+  noGaps:'Aucun écart majeur de développement identifié dans cette évaluation.'
+ },
+ ru:{
+  dir:'ltr',
+  nav:['Подтвердить профиль','Предполётная оценка','Результаты соответствия','Мой маршрут'],
+  home:'Главная',
+  start:'Начать путь',
+  journey:'Как это работает',
+  reg:'Регистрация кандидата',
+  welcome:'Добро пожаловать',
+  continueApp:'Продолжить заявку',
+  profileTitle:'Мой профиль Aviation Matrix',
+  application:'Заявка',
+  assessmentComplete:'Оценка завершена',
+  currentFit:'Текущая пригодность Cabin Crew',
+  readiness:'Панель авиационной готовности',
+  evidence:'Результаты оценки остаются привязаны к вашему профилю Aviation Matrix.',
+  nextStage:'Следующий этап · Официальное зачисление',
+  lockedTitle:'Ваш учебный маршрут заблокирован',
+  lockedBody:'Оценка завершена, но учебные миссии откроются только после официальной активации вашего профиля Aviation Matrix.',
+  enrollmentRequired:'Требуется зачисление',
+  candidateNo:'Номер кандидата',
+  candidateNoPending:'Выдаётся при официальном зачислении',
+  signature:'Подпись',
+  payment:'Оплата',
+  pending:'Ожидается',
+  journeyCode:'Код маршрута',
+  notActivated:'Не активирован',
+  startMission:'Начать миссию',
+  checkin:'Регистрация',
+  assessment:'Оценка',
+  fit:'Соответствие',
+  formalEnrollment:'Официальное зачисление',
+  journeyActivation:'Активация маршрута',
+  strengths:'Почему Cabin Crew?',
+  development:'Приоритеты развития',
+  status:'Статус готовности',
+  currentFitLabel:'Текущая пригодность',
+  futureFitLabel:'Будущая пригодность',
+  resultIntro:'Рекомендация объясняется на основе наблюдаемых компетенций. Aviation Matrix не использует скрытую систему pass/fail.',
+  currentFitDesc:'Что текущая оценка показывает о вашей готовности сегодня.',
+  futureFitDesc:'Оценочный потенциал развития — не гарантия будущей эффективности.',
+  viewProfile:'Открыть мой профиль Aviation Matrix',
+  noGaps:'В этой оценке не выявлено серьёзных пробелов развития.'
+ }
 };
 
 let runtimeQuestions=[];
@@ -20,6 +146,7 @@ let assessment=null;
 let currentView=localStorage.getItem('am_view')||'landing';
 const app=document.getElementById('app');
 
+function ui(k){return (D[lang]&&D[lang][k])||(D.en&&D.en[k])||k;}
 function t(k){return D[lang][k]||k}
 function esc(s=''){return String(s).replace(/[&<>'"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[m]))}
 function save(){localStorage.setItem('am_state',JSON.stringify(state))}
@@ -35,7 +162,10 @@ function setLang(l){
 function header(){
  return `<header class="topbar"><div class="container topbar-inner">
   <div class="brand"><div class="brand-mark">✈</div><div>Aviation Matrix<small>Talent Intelligence & Development</small></div></div>
-  <div class="lang">${currentView==='assessment'?'':['en','fr','ru'].map(l=>`<button data-lang="${l}" class="${lang===l?'active':''}">${l.toUpperCase()}</button>`).join('')}</div>
+  <div style="display:flex;gap:10px;align-items:center">
+      ${currentView!=='landing'?`<button id="homeBtn" class="btn btn-outline" style="padding:8px 14px">${ui('home')}</button>`:''}
+      <div class="lang">${currentView==='assessment'?'':['en','fr','ru'].map(l=>`<button data-lang="${l}" class="${lang===l?'active':''}">${l.toUpperCase()}</button>`).join('')}</div>
+    </div>
  </div></header>`;
 }
 
@@ -48,7 +178,7 @@ function landing(){
     <span class="eyebrow">WELCOME ABOARD · AVIATION MATRIX</span>
     <div class="route-code">CHECK-IN → PRE-FLIGHT → FIT → FLIGHT PATH</div>
     <h1>${t('hero')}</h1><p class="lead">${t('sub')}</p>
-    <div class="cta-row"><button id="startBtn" class="btn btn-primary">✈ &nbsp; ${t('start')}</button><button id="continueBtn" class="btn btn-outline">Continue My Application</button><button class="btn btn-outline" data-scroll="journey">${t('journey')}</button></div>
+    <div class="cta-row"><button id="startBtn" class="btn btn-primary">✈ &nbsp; ${t('start')}</button><button id="continueBtn" class="btn btn-outline">${ui('continueApp')}</button><button class="btn btn-outline" data-scroll="journey">${t('journey')}</button></div>
     <div class="status-strip"><span class="status-dot"></span><strong>STATUS</strong><span>READY FOR CANDIDATE CHECK-IN</span></div>
    </div>
    <aside class="boarding-pass">
@@ -363,43 +493,47 @@ function results(){
  const strengths=r.strengths||[];
  const gaps=r.development_gaps||[];
  const statusLabel={
-   ready_now:'Ready Now',
-   ready_with_development:'Ready with Development',
-   development_required:'Development Required',
-   future_eligible:'Future Eligible'
+   ready_now:lang==='fr'?'Prêt maintenant':lang==='ru'?'Готов сейчас':'Ready Now',
+   ready_with_development:lang==='fr'?'Prêt avec développement':lang==='ru'?'Готов с развитием':'Ready with Development',
+   development_required:lang==='fr'?'Développement requis':lang==='ru'?'Требуется развитие':'Development Required',
+   future_eligible:lang==='fr'?'Potentiel futur':lang==='ru'?'Перспективен в будущем':'Future Eligible'
  }[r.readiness_status]||r.readiness_status||'Assessment Complete';
  return flowShell(`<div dir="ltr" style="text-align:left">
   <span class="eyebrow" style="color:#0b5279;border-color:#cfe8f5;background:#effaff">FIT ANALYSIS COMPLETE</span>
   <h1>Cabin Crew Career Fit</h1>
   <p class="section-lead">${esc(r.summary||'Your result is based on the behavior demonstrated across the assessment scenarios.')}</p>
   <div class="result-hero">
-   <div class="fit-card"><span class="muted">Current Fit</span><b>${Math.round(Number(r.current_fit)||0)}%</b><p>What your current assessment evidence shows today.</p></div>
-   <div class="fit-card"><span class="muted">Future Fit</span><b>${Math.round(Number(r.future_fit)||0)}%</b><p>Estimated development potential — not a guarantee of future performance.</p></div>
+   <div class="fit-card"><span class="muted">${ui('currentFitLabel')}</span><b>${Math.round(Number(r.current_fit)||0)}%</b><p>${ui('currentFitDesc')}</p></div>
+   <div class="fit-card"><span class="muted">${ui('futureFitLabel')}</span><b>${Math.round(Number(r.future_fit)||0)}%</b><p>${ui('futureFitDesc')}</p></div>
   </div>
   <div style="margin:18px 0;padding:16px;border-radius:18px;background:#f2f8fc;border:1px solid #dceaf3">
-    <strong>Readiness Status: ${esc(statusLabel)}</strong>
+    <strong>${ui('status')}: ${esc(statusLabel)}</strong>
   </div>
-  <h3>Why Cabin Crew?</h3>
-  <p class="muted">The recommendation is explained using the competency evidence below. Aviation Matrix does not use a hidden pass/fail score.</p>
+  <h3>${ui('strengths')}</h3>
+  <p class="muted">${ui('resultIntro')}</p>
   <div class="grid-3">${strengths.map(s=>`<div class="card info-card"><strong>${esc(s.name||s.code)}</strong><p><b>${Math.round(Number(s.score)||0)}%</b><br>Observed strength contributing to Cabin Crew fit.</p></div>`).join('')}</div>
-  <h3 style="margin-top:22px">Development Priorities</h3>
-  <div class="path-list">${gaps.length?gaps.map(g=>`<div class="path"><strong>${esc(g.name||g.code)}</strong><span style="float:right">${Math.round(Number(g.score)||0)}% → target ${Math.round(Number(g.target)||0)}%</span><br><small class="muted">${esc(g.reason||'Development recommended.')}${g.recommended_path?' · '+esc(g.recommended_path):''}</small></div>`).join(''):`<div class="path best"><strong>No major development gaps identified in this assessment.</strong></div>`}</div>
-  <div style="margin-top:22px"><button id="openJourney" class="btn btn-dark">View My Aviation Profile →</button></div>
+  <h3 style="margin-top:22px">${ui('development')}</h3>
+  <div class="path-list">${gaps.length?gaps.map(g=>`<div class="path"><strong>${esc(g.name||g.code)}</strong><span style="float:right">${Math.round(Number(g.score)||0)}% → target ${Math.round(Number(g.target)||0)}%</span><br><small class="muted">${esc(g.reason||'Development recommended.')}${g.recommended_path?' · '+esc(g.recommended_path):''}</small></div>`).join(''):`<div class="path best"><strong>${ui('noGaps')}</strong></div>`}</div>
+  <div style="margin-top:22px"><button id="openJourney" class="btn btn-dark">${ui('viewProfile')} →</button></div>
  </div>`,3,82);
 }
 function dashboard(){
  const r=state.assessment||{};
  const dims=r.dimensions||{};
  const d=(code)=>Math.round(Number(dims[code]?.score)||0);
+ const under18=(new Date().getFullYear()-new Date(state.date_of_birth||'1900-01-01').getFullYear()<18);
+ const sig=under18
+   ? (lang==='fr'?'Tuteur requis':lang==='ru'?'Требуется опекун':'Guardian required')
+   : (lang==='fr'?'Signature du candidat':lang==='ru'?'Подпись кандидата':'Candidate signature');
  return flowShell(`<section class="journey-hero" dir="ltr" style="text-align:left">
-  <small style="letter-spacing:.13em;color:#bce9ff;font-weight:900">MY AVIATION MATRIX PROFILE</small>
+  <small style="letter-spacing:.13em;color:#bce9ff;font-weight:900">${ui('profileTitle').toUpperCase()}</small>
   <h1 style="margin:10px 0 8px">${esc(state.full_name||'Candidate')}</h1>
-  <p style="color:#d8e9f4;margin:0">Application: <strong>${esc(state.application_number||'—')}</strong> · Assessment complete · Cabin Crew Current Fit: <strong>${Math.round(Number(r.current_fit)||0)}%</strong></p>
-  <div class="journey-path"><span class="done">Check-in ✓</span><span class="done">Assessment ✓</span><span class="done">Fit ✓</span><span>Formal Enrollment 🔒</span><span>Journey Activation 🔒</span></div>
+  <p style="color:#d8e9f4;margin:0">${ui('application')}: <strong>${esc(state.application_number||'—')}</strong> · ${ui('assessmentComplete')} · ${ui('currentFit')}: <strong>${Math.round(Number(r.current_fit)||0)}%</strong></p>
+  <div class="journey-path"><span class="done">${ui('checkin')} ✓</span><span class="done">${ui('assessment')} ✓</span><span class="done">${ui('fit')} ✓</span><span>${ui('formalEnrollment')} 🔒</span><span>${ui('journeyActivation')} 🔒</span></div>
  </section>
  <div class="dashboard-grid" dir="ltr" style="text-align:left">
   <div>
-   <div class="readiness"><h3>Aviation Readiness Panel</h3><p class="muted">Assessment evidence remains attached to your permanent Aviation Matrix profile.</p>
+   <div class="readiness"><h3>${ui('readiness')}</h3><p class="muted">${ui('evidence')}</p>
     <div class="meter"><div style="width:${Math.round(Number(r.current_fit)||0)}%"></div></div>
     <div class="mini-bars">
      ${[['Safety Mindset',d('safety_mindset')],['Communication',d('communication')],['Teamwork / CRM',d('teamwork_crm')],['English Readiness',d('english_readiness')]].map(x=>`<div class="mini-bar"><div class="head"><span>${x[0]}</span><strong>${x[1]}%</strong></div><div class="bar"><span style="width:${x[1]}%"></span></div></div>`).join('')}
@@ -407,16 +541,16 @@ function dashboard(){
    </div>
   </div>
   <aside class="card mission">
-   <div class="mission-head"><small>NEXT STAGE · FORMAL ENROLLMENT</small><h3>Your Learning Journey Is Locked</h3><p>Your assessment is complete, but training missions do not open until your formal Aviation Matrix file is activated.</p></div>
+   <div class="mission-head"><small>${ui('nextStage')}</small><h3>${ui('lockedTitle')}</h3><p>${ui('lockedBody')}</p></div>
    <div class="mission-body">
-    <span class="pill warn">🔒 ENROLLMENT REQUIRED</span>
+    <span class="pill warn">🔒 ${ui('enrollmentRequired')}</span>
     <div class="meta-grid">
-     <div class="meta"><label>Candidate Number</label><strong>Issued at formal enrollment</strong></div>
-     <div class="meta"><label>Signature</label><strong>${new Date().getFullYear()-new Date(state.date_of_birth||'1900-01-01').getFullYear()<18?'Guardian required':'Candidate signature'}</strong></div>
-     <div class="meta"><label>Payment</label><strong>Pending</strong></div>
-     <div class="meta"><label>Journey Code</label><strong>Not activated</strong></div>
+     <div class="meta"><label>${ui('candidateNo')}</label><strong>${ui('candidateNoPending')}</strong></div>
+     <div class="meta"><label>${ui('signature')}</label><strong>${sig}</strong></div>
+     <div class="meta"><label>${ui('payment')}</label><strong>${ui('pending')}</strong></div>
+     <div class="meta"><label>${ui('journeyCode')}</label><strong>${ui('notActivated')}</strong></div>
     </div>
-    <button class="btn btn-soft" disabled>START MISSION 🔒</button>
+    <button class="btn btn-soft" disabled>${ui('startMission')} 🔒</button>
    </div>
   </aside>
  </div>`,4,100);
@@ -455,6 +589,12 @@ async function submitRegistration(form){
 }
 
 function attach(){
+ document.getElementById('homeBtn')?.addEventListener('click',()=>{
+   clearInterval(questionTimer);
+   currentView='landing';
+   localStorage.setItem('am_view','landing');
+   render('landing');
+ });
  document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>setLang(b.dataset.lang));
  document.querySelector('[data-scroll]')?.addEventListener('click',e=>document.getElementById(e.currentTarget.dataset.scroll)?.scrollIntoView());
  const start=document.getElementById('startBtn');if(start)start.onclick=()=>{document.body.insertAdjacentHTML('beforeend',registration());attachModal()};
