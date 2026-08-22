@@ -208,6 +208,47 @@ button{cursor:pointer}
 .price-box strong{font-size:22px}
 footer{padding:30px;text-align:center;color:var(--muted)}
 
+/* v5 product gallery + personalization */
+.product-media{
+  aspect-ratio:4/3;border-radius:16px;overflow:hidden;margin-bottom:12px;
+  background:linear-gradient(135deg,#eaf7fd,#dceef8);border:1px solid var(--line);
+  display:grid;place-items:center;position:relative
+}
+.product-media svg{width:100%;height:100%;display:block}
+.product-media .photo-label{
+  position:absolute;left:10px;bottom:10px;padding:5px 8px;border-radius:999px;
+  background:rgba(6,25,43,.82);color:#fff;font-size:9px;font-weight:900;letter-spacing:.08em
+}
+.product-meta{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.meta-chip{padding:5px 8px;border-radius:999px;background:#f0f6f9;color:#456174;font-size:10px;font-weight:800}
+.product-detail{
+  display:grid;grid-template-columns:.95fr 1.05fr;gap:20px;align-items:start
+}
+.product-hero{
+  border:1px solid var(--line);border-radius:22px;padding:14px;background:#f8fbfd
+}
+.product-hero .product-media{margin:0;aspect-ratio:1/1}
+.detail-list{display:grid;gap:9px;margin:14px 0}
+.detail-line{display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px dashed var(--line)}
+.detail-line span:first-child{color:var(--muted);font-size:12px}
+.detail-line strong{font-size:13px;text-align:right}
+.personal-box{background:#f8fbfd;border:1px solid var(--line);border-radius:18px;padding:14px;margin-top:14px}
+.personal-box h5{margin:0 0 10px;font-size:15px}
+.dynamic-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.upload-box{
+  border:1px dashed #aac4d5;border-radius:16px;padding:14px;background:#fbfdfe;margin-top:12px
+}
+.upload-box input{width:100%}
+.student-preview{margin-top:10px;max-height:180px;overflow:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+.student-preview table{width:100%;border-collapse:collapse;font-size:12px}
+.student-preview th,.student-preview td{padding:8px;border-bottom:1px solid var(--line);text-align:left}
+.student-preview th{background:#f3f8fb;position:sticky;top:0}
+.cart-personal{margin-top:7px;color:var(--muted);font-size:11px;line-height:1.5}
+@media(max-width:760px){
+  .product-detail,.dynamic-fields{grid-template-columns:1fr}
+}
+
+
 @media(max-width:1020px){
   .gateway .wrap{grid-template-columns:1fr}
   .gateway h2{font-size:50px}
@@ -385,15 +426,15 @@ const addons=[
 ];
 
 const productCatalog=[
- {id:'notebook',name:'Aviation Matrix Notebook',price:220,tag:'STATIONERY'},
- {id:'mug',name:'Aviation Matrix Mug',price:180,tag:'MERCH'},
- {id:'lanyard',name:'Student ID + Lanyard',price:150,tag:'IDENTITY'},
- {id:'kit',name:'Student Aviation Kit',price:650,tag:'KIT'},
- {id:'tshirt',name:'Aviation T-Shirt',price:450,tag:'APPAREL'},
- {id:'cap',name:'Aviation Cap',price:280,tag:'APPAREL'},
- {id:'uniform',name:'Full Aviation Uniform',price:1850,tag:'UNIFORM'},
- {id:'backpack',name:'Aviation Backpack',price:760,tag:'BAG'},
- {id:'badge',name:'Personalized Name Badge',price:120,tag:'IDENTITY'}
+ {id:'notebook',name:'Aviation Matrix Notebook',price:220,tag:'STATIONERY',desc:'Premium aviation-themed notebook for students and institutional programs.',details:'Hard cover • Aviation Matrix branding • Suitable for student kits',sizes:[],personalize:['None','Student Name','Institution Name','Logo + Name']},
+ {id:'mug',name:'Aviation Matrix Mug',price:180,tag:'MERCH',desc:'Branded aviation mug suitable for student gifts, staff packs, and events.',details:'Ceramic • Full-color branding area • Gift-ready',sizes:[],personalize:['None','Student Name','Institution Name','Logo + Name']},
+ {id:'lanyard',name:'Student ID + Lanyard',price:150,tag:'IDENTITY',desc:'Student identity card and lanyard for programs, aviation clubs, and events.',details:'Printed ID card • Lanyard • Program identification',sizes:[],personalize:['Student Name','Institution Name','Logo + Name']},
+ {id:'kit',name:'Student Aviation Kit',price:650,tag:'KIT',desc:'A bundled student kit designed for Aviation Matrix learning experiences.',details:'Notebook • Badge • Lanyard • Activity materials',sizes:[],personalize:['None','Student Name','Institution Name','Logo + Name']},
+ {id:'tshirt',name:'Aviation T-Shirt',price:450,tag:'APPAREL',desc:'Aviation-themed T-shirt for students, teams, events, and school clubs.',details:'Comfort cotton blend • Front/back branding options',sizes:['6Y','8Y','10Y','12Y','14Y','S','M','L','XL'],personalize:['None','Student Name','Institution Name','Logo + Name']},
+ {id:'cap',name:'Aviation Cap',price:280,tag:'APPAREL',desc:'Aviation Matrix cap for activities, field days, clubs, and student kits.',details:'Adjustable size • Embroidery/print branding area',sizes:['Kids','Adult'],personalize:['None','Student Name','Institution Name','Logo + Name']},
+ {id:'uniform',name:'Full Aviation Uniform',price:1850,tag:'UNIFORM',desc:'Full aviation-inspired uniform for programs, events, and institutional packages.',details:'Shirt • Trousers/Skirt option • Jacket/Vest • Cap • Name badge',sizes:['6Y','8Y','10Y','12Y','14Y','XS','S','M','L','XL'],personalize:['Student Name','Institution Name','Logo + Name','Full Uniform Personalization']},
+ {id:'backpack',name:'Aviation Backpack',price:760,tag:'BAG',desc:'Aviation-themed backpack suitable for student bundles and branded programs.',details:'Multi-pocket • Student use • Branding area',sizes:[],personalize:['None','Student Name','Institution Name','Logo + Name']},
+ {id:'badge',name:'Personalized Name Badge',price:120,tag:'IDENTITY',desc:'Individual name badge for students, uniforms, aviation clubs, and events.',details:'Printed/engraved name • Aviation Matrix identity',sizes:[],personalize:['Student Name','Institution Name','Logo + Name']}
 ];
 
 let cart=[];
@@ -550,7 +591,7 @@ function openStore(k){
   <div class="total"><span>Estimated Products Total</span><span id="cartTotal">EGP 0</span></div>
 
   <div class="summary">
-   <strong>Personalization options:</strong> Student Name • Institution Name • Logo • Name Badge • Size / Uniform Details<br>
+   <strong>Personalization options:</strong> Student Name • Institution Name • Logo • Name Badge • Size / Uniform Details<br><strong>Bulk option:</strong> Upload a CSV/Excel student list for large groups.<br>
    <span class="muted">For large groups, a student list can later be uploaded by Excel/CSV instead of entering every student manually.</span>
   </div>
 
@@ -563,29 +604,58 @@ function openStore(k){
  renderCart();
 }
 
+function productSvg(p){
+ const icons={notebook:'📘',mug:'☕',lanyard:'🪪',kit:'🎒',tshirt:'👕',cap:'🧢',uniform:'🧑‍✈️',backpack:'🎒',badge:'🏷️'};
+ const icon=icons[p.id]||'✈️';
+ return `<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${p.name}">
+   <defs><linearGradient id="g${p.id}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#edf9ff"/><stop offset="1" stop-color="#cfeaf8"/></linearGradient></defs>
+   <rect width="400" height="300" rx="24" fill="url(#g${p.id})"/>
+   <path d="M24 238 C120 180 190 260 376 178" fill="none" stroke="#7bbddf" stroke-width="3" stroke-dasharray="8 10" opacity=".65"/>
+   <text x="200" y="150" text-anchor="middle" font-size="78">${icon}</text>
+   <text x="200" y="245" text-anchor="middle" font-size="18" font-family="Arial" font-weight="700" fill="#12334a">${p.name}</text>
+  </svg>`;
+}
 function renderProducts(k){
  const q=(document.getElementById('searchProduct')?.value||'').toLowerCase();
  const el=document.getElementById('products'); if(!el)return;
  el.innerHTML=productCatalog.filter(p=>p.name.toLowerCase().includes(q)).map(p=>`
   <div class="product">
+   <div class="product-media">${productSvg(p)}<span class="photo-label">PRODUCT IMAGE</span></div>
    <span class="badge">${p.tag}</span>
    <h4>${p.name}</h4>
-   <p>Can be included in institutional bundles and personalized where relevant.</p>
+   <p>${p.desc}</p>
+   <div class="product-meta">
+     <span class="meta-chip">Personalizable</span>
+     ${p.sizes.length?'<span class="meta-chip">Sizes Available</span>':''}
+   </div>
    <div class="price">EGP ${p.price.toLocaleString()}</div>
-   <button onclick="addToCart('${p.id}')">Add to Request</button>
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+     <button style="background:#eef4f7;color:#10263a" onclick="openProductDetail('${k}','${p.id}')">View Details</button>
+     <button onclick="addToCart('${p.id}')">Add to Request</button>
+   </div>
   </div>`).join('');
 }
 
-function addToCart(id){
+function addToCart(id, config={}){
  const p=productCatalog.find(x=>x.id===id); if(!p)return;
- const found=cart.find(x=>x.id===id);
- if(found)found.qty++;
- else cart.push({...p,qty:1,personalization:'None',studentName:'',size:''});
+ const found=cart.find(x=>x.id===id && x.personalization===(config.personalization||'None') && x.studentName===(config.studentName||''));
+ if(found)found.qty += Number(config.qty||1);
+ else cart.push({...p,qty:Number(config.qty||1),personalization:config.personalization||'None',studentName:config.studentName||'',institutionName:config.institutionName||'',size:config.size||'',logoName:config.logoName||'',studentList:config.studentList||[]});
  renderCart();
 }
-function updateQty(id,v){const x=cart.find(i=>i.id===id);if(x){x.qty=Math.max(1,Number(v||1));renderCart()}}
-function updatePers(id,v){const x=cart.find(i=>i.id===id);if(x){x.personalization=v;renderCart()}}
-function removeCart(id){cart=cart.filter(x=>x.id!==id);renderCart()}
+function updateQty(id,idx,v){const x=cart[idx];if(x&&x.id===id){x.qty=Math.max(1,Number(v||1));renderCart()}}
+function removeCart(idx){cart.splice(idx,1);renderCart()}
+
+function cartPersonalText(x){
+ const bits=[];
+ if(x.personalization && x.personalization!=='None') bits.push(x.personalization);
+ if(x.studentName) bits.push(`Student: ${x.studentName}`);
+ if(x.institutionName) bits.push(`Institution: ${x.institutionName}`);
+ if(x.size) bits.push(`Size: ${x.size}`);
+ if(x.logoName) bits.push(`Logo: ${x.logoName}`);
+ if(x.studentList?.length) bits.push(`${x.studentList.length} students uploaded`);
+ return bits.join(' • ') || 'No personalization';
+}
 
 function renderCart(){
  const rows=document.getElementById('cartRows'), total=document.getElementById('cartTotal');
@@ -594,23 +664,152 @@ function renderCart(){
   rows.innerHTML='<div class="muted">No products selected yet.</div>';
   total.textContent='EGP 0'; return;
  }
- rows.innerHTML=cart.map(x=>`
+ rows.innerHTML=cart.map((x,idx)=>`
   <div class="cart-row">
-   <div><strong>${x.name}</strong><div class="muted">EGP ${x.price.toLocaleString()} each</div></div>
-   <input type="number" min="1" value="${x.qty}" onchange="updateQty('${x.id}',this.value)">
    <div>
-    <select onchange="updatePers('${x.id}',this.value)">
-     <option ${x.personalization==='None'?'selected':''}>None</option>
-     <option ${x.personalization==='Student Name'?'selected':''}>Student Name</option>
-     <option ${x.personalization==='Institution Name'?'selected':''}>Institution Name</option>
-     <option ${x.personalization==='Logo + Name'?'selected':''}>Logo + Name</option>
-     ${x.id==='uniform'?`<option ${x.personalization==='Full Uniform Personalization'?'selected':''}>Full Uniform Personalization</option>`:''}
-    </select>
-    <button style="margin-top:6px;border:0;background:#fff;color:#b42318;font-weight:900" onclick="removeCart('${x.id}')">Remove</button>
+    <strong>${x.name}</strong>
+    <div class="muted">EGP ${x.price.toLocaleString()} each</div>
+    <div class="cart-personal">${cartPersonalText(x)}</div>
+   </div>
+   <input type="number" min="1" value="${x.qty}" onchange="updateQty('${x.id}',${idx},this.value)">
+   <div>
+    <button style="width:100%;border:1px solid var(--line);background:#f7fbfd;color:#10263a;padding:9px;border-radius:10px;font-weight:800" onclick="editCartItem('${x.id}',${idx})">Edit Personalization</button>
+    <button style="margin-top:6px;border:0;background:#fff;color:#b42318;font-weight:900" onclick="removeCart(${idx})">Remove</button>
    </div>
   </div>`).join('');
  const sum=cart.reduce((s,x)=>s+x.price*x.qty,0);
  total.textContent=`EGP ${sum.toLocaleString()}`;
+}
+
+function openProductDetail(k,id,idx=null){
+ const p=productCatalog.find(x=>x.id===id); if(!p)return;
+ const existing=idx!==null?cart[idx]:null;
+ const pers=(existing?.personalization)||'None';
+ const size=(existing?.size)||'';
+ show(p.name,`${label(k)} • Product Details`,
+ `<div class="product-detail">
+   <div class="product-hero">
+     <div class="product-media">${productSvg(p)}<span class="photo-label">PRODUCT IMAGE AREA</span></div>
+   </div>
+   <div>
+     <span class="badge">${p.tag}</span>
+     <h3 style="margin:10px 0 6px">${p.name}</h3>
+     <p style="color:var(--muted);line-height:1.7;margin:0">${p.desc}</p>
+     <div class="detail-list">
+       <div class="detail-line"><span>Unit Price</span><strong>EGP ${p.price.toLocaleString()}</strong></div>
+       <div class="detail-line"><span>Product Details</span><strong>${p.details}</strong></div>
+       <div class="detail-line"><span>Personalization</span><strong>${p.personalize.join(' / ')}</strong></div>
+     </div>
+
+     <div class="personal-box">
+       <h5>Personalize this product</h5>
+       <div class="form-grid">
+         <div class="field">
+           <label>QUANTITY</label>
+           <input id="pdQty" type="number" min="1" value="${existing?.qty||1}">
+         </div>
+         <div class="field">
+           <label>PERSONALIZATION TYPE</label>
+           <select id="pdPers" onchange="renderDynamicPersonalization('${p.id}')">
+             ${p.personalize.map(x=>`<option ${x===pers?'selected':''}>${x}</option>`).join('')}
+           </select>
+         </div>
+         ${p.sizes.length?`<div class="field"><label>SIZE</label><select id="pdSize"><option value="">Select size</option>${p.sizes.map(s=>`<option ${s===size?'selected':''}>${s}</option>`).join('')}</select></div>`:''}
+       </div>
+       <div id="dynamicFields" class="dynamic-fields"></div>
+
+       <div class="upload-box">
+         <strong>Bulk Student Personalization</strong>
+         <div class="muted">For schools, nurseries, universities, and institutions: upload a student list instead of entering names one by one.</div>
+         <input id="studentFile" type="file" accept=".csv,.xlsx,.xls" onchange="handleStudentFile(this)">
+         <div class="muted" style="margin-top:6px">Recommended columns: Student Name, Size, Product, Personalization.</div>
+         <div id="studentPreview" class="student-preview" style="display:none"></div>
+       </div>
+     </div>
+
+     <div class="sheet-actions">
+       <button class="back" onclick="openStore('${k}')">Back to Store</button>
+       <button class="submit" onclick="saveProductConfig('${k}','${p.id}',${idx===null?'null':idx})">${idx===null?'Add Configured Product':'Save Changes'}</button>
+     </div>
+   </div>
+ </div>`);
+ window.currentStudentList=existing?.studentList||[];
+ renderDynamicPersonalization(p.id, existing);
+ if(existing?.studentList?.length) renderStudentPreview(existing.studentList);
+}
+
+function renderDynamicPersonalization(id,existing=null){
+ const type=document.getElementById('pdPers')?.value||'None';
+ const box=document.getElementById('dynamicFields'); if(!box)return;
+ const ex=existing||{};
+ let fields='';
+ if(type==='Student Name' || type==='Logo + Name' || type==='Full Uniform Personalization'){
+   fields += `<div class="field"><label>STUDENT NAME</label><input id="pdStudentName" placeholder="e.g. Ahmed Mohamed" value="${ex.studentName||''}"></div>`;
+ }
+ if(type==='Institution Name' || type==='Logo + Name' || type==='Full Uniform Personalization'){
+   fields += `<div class="field"><label>INSTITUTION NAME</label><input id="pdInstitutionName" placeholder="School / Nursery / University" value="${ex.institutionName||''}"></div>`;
+ }
+ if(type==='Logo + Name' || type==='Full Uniform Personalization'){
+   fields += `<div class="field"><label>LOGO FILE / REFERENCE</label><input id="pdLogo" type="file" accept="image/*"></div>`;
+ }
+ if(type==='Full Uniform Personalization'){
+   fields += `<div class="field"><label>NAME BADGE TEXT</label><input id="pdBadge" placeholder="Badge name"></div>
+              <div class="field"><label>UNIFORM NOTES</label><input id="pdUniformNotes" placeholder="e.g. trousers, skirt, jacket notes"></div>`;
+ }
+ box.innerHTML=fields || `<div class="muted">No additional fields required for this personalization option.</div>`;
+}
+
+function handleStudentFile(input){
+ const file=input.files?.[0]; if(!file)return;
+ if(file.name.toLowerCase().endsWith('.csv')){
+   const reader=new FileReader();
+   reader.onload=e=>{
+     const text=e.target.result;
+     const lines=text.split(/\r?\n/).filter(Boolean);
+     const rows=lines.map(line=>line.split(',').map(x=>x.trim().replace(/^"|"$/g,'')));
+     const headers=rows[0]||[];
+     window.currentStudentList=rows.slice(1).map(r=>Object.fromEntries(headers.map((h,i)=>[h||`Column ${i+1}`,r[i]||''])));
+     renderStudentPreview(window.currentStudentList);
+   };
+   reader.readAsText(file);
+ } else {
+   window.currentStudentList=[{File:file.name,Status:'Excel file selected — ready for live backend processing'}];
+   renderStudentPreview(window.currentStudentList);
+ }
+}
+
+function renderStudentPreview(list){
+ const el=document.getElementById('studentPreview'); if(!el)return;
+ if(!list?.length){el.style.display='none';el.innerHTML='';return}
+ const headers=Object.keys(list[0]);
+ el.style.display='block';
+ el.innerHTML=`<table><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>
+ ${list.slice(0,20).map(r=>`<tr>${headers.map(h=>`<td>${r[h]??''}</td>`).join('')}</tr>`).join('')}
+ </tbody></table>${list.length>20?`<div class="muted" style="padding:8px">Showing first 20 of ${list.length} rows.</div>`:''}`;
+}
+
+function saveProductConfig(k,id,idx){
+ const p=productCatalog.find(x=>x.id===id); if(!p)return;
+ const cfg={
+   qty:Number(document.getElementById('pdQty')?.value||1),
+   personalization:document.getElementById('pdPers')?.value||'None',
+   studentName:document.getElementById('pdStudentName')?.value||'',
+   institutionName:document.getElementById('pdInstitutionName')?.value||'',
+   size:document.getElementById('pdSize')?.value||'',
+   logoName:document.getElementById('pdLogo')?.files?.[0]?.name||'',
+   studentList:window.currentStudentList||[]
+ };
+ if(idx!==null && cart[idx]){
+   cart[idx]={...cart[idx],...cfg};
+   openStore(k);
+ } else {
+   addToCart(id,cfg);
+   openStore(k);
+ }
+}
+
+function editCartItem(id,idx){
+ openProductDetail('institution',id,idx);
 }
 
 function storeCheckout(k){
@@ -621,7 +820,7 @@ function storeCheckout(k){
  const total=cart.reduce((s,x)=>s+x.price*x.qty,0);
  show('Product Request Summary',`${label(k)} • Aviation Store`,
  `<div class="summary">
-  ${cart.map(x=>`<strong>${x.name}</strong> × ${x.qty} — ${x.personalization}<br>`).join('')}
+  ${cart.map(x=>`<strong>${x.name}</strong> × ${x.qty}<br><span class="muted">${cartPersonalText(x)}</span><br>`).join('')}
   <br><strong>Estimated Total: EGP ${total.toLocaleString()}</strong><br>
   <span class="muted">Prototype estimate only. Final price can change based on quantity, branding, sizing, production, and delivery.</span>
  </div>
