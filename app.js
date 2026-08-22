@@ -5,7 +5,6 @@ const SUPABASE_KEY='sb_publishable_sRvoFKXyDEzQPLaAk3xZOQ_RLVxh5g3';
 const supabase=createClient(SUPABASE_URL,SUPABASE_KEY);
 
 const D={
- ar:{dir:'rtl',hero:'أهلًا بك على متن رحلتك في عالم الطيران',sub:'من أول قرار مهني لحد المسار اللي يناسبك، Aviation Matrix بيبني رحلتك خطوة بخطوة داخل عالم الطيران.',start:'ابدأ الـ Check-in',journey:'رحلتك تبدأ قبل التخصص',journeySub:'مش بنبيع كورس واحد للجميع. بنبني صورة مهنية حقيقية ثم نفتح لك المسار الأنسب.',reg:'Aviation Candidate Check-in',fit:'Current Fit + Future Fit',learn:'My Flight Path',privacy:'بياناتك تستخدم لبدء التقييم وبناء ملفك المهني والتواصل فقط.',welcome:'تم فتح ملف رحلتك المهنية',confirm:'Confirm Profile',assess:'Pre-Flight Assessment',results:'Fit Results',dashboard:'My Flight Path',continue:'متابعة',next:'السؤال التالي',finish:'عرض النتيجة',mission:'المهمة الأولى'},
  en:{dir:'ltr',hero:'Welcome Aboard Your Aviation Journey',sub:'From your first career decision to the aviation path that fits you, Aviation Matrix builds your journey step by step.',start:'Start Candidate Check-in',journey:'Your journey starts before specialization',journeySub:'We do not sell one course to everyone. We build a verified professional picture, then open the right path.',reg:'Aviation Candidate Check-in',fit:'Current Fit + Future Fit',learn:'My Flight Path',privacy:'Your data is used to start assessment, build your professional profile, and communicate with you.',welcome:'Your aviation career file is now active',confirm:'Confirm Profile',assess:'Pre-Flight Assessment',results:'Fit Results',dashboard:'My Flight Path',continue:'Continue',next:'Next Question',finish:'View Results',mission:'First Mission'},
  fr:{dir:'ltr',hero:'Bienvenue à bord de votre parcours aviation',sub:'De votre première décision de carrière au parcours aviation qui vous correspond, Aviation Matrix construit votre trajectoire étape par étape.',start:'Commencer le check-in',journey:'Votre parcours commence avant la spécialisation',journeySub:'Nous construisons d’abord un profil professionnel vérifié, puis ouvrons le parcours le plus adapté.',reg:'Check-in du candidat aviation',fit:'Adéquation actuelle + future',learn:'Ma trajectoire',privacy:'Vos données servent à démarrer l’évaluation, construire votre profil et communiquer avec vous.',welcome:'Votre dossier aviation est actif',confirm:'Confirmer le profil',assess:'Évaluation pré-vol',results:'Résultats de compatibilité',dashboard:'Ma trajectoire',continue:'Continuer',next:'Question suivante',finish:'Voir les résultats',mission:'Première mission'},
  ru:{dir:'ltr',hero:'Добро пожаловать на борт вашей авиационной карьеры',sub:'От первого карьерного решения до подходящего авиационного направления — Aviation Matrix строит ваш путь шаг за шагом.',start:'Начать check-in',journey:'Ваш путь начинается до специализации',journeySub:'Сначала мы формируем подтверждённый профессиональный профиль, затем открываем подходящий путь.',reg:'Check-in авиационного кандидата',fit:'Текущая + будущая пригодность',learn:'Мой маршрут',privacy:'Данные используются для оценки, формирования профиля и связи с вами.',welcome:'Ваш авиационный профиль активирован',confirm:'Подтвердить профиль',assess:'Предполётная оценка',results:'Результаты соответствия',dashboard:'Мой маршрут',continue:'Продолжить',next:'Следующий вопрос',finish:'Показать результаты',mission:'Первая миссия'}
@@ -15,20 +14,28 @@ let runtimeQuestions=[];
 let questionTimer=null;
 let questionStartedAt=0;
 
-let lang=localStorage.getItem('am_lang')||'ar';
+let lang=['en','fr','ru'].includes(localStorage.getItem('am_lang'))?localStorage.getItem('am_lang'):'en';
 let state=JSON.parse(localStorage.getItem('am_state')||'{}');
 let assessment=null;
+let currentView=localStorage.getItem('am_view')||'landing';
 const app=document.getElementById('app');
 
 function t(k){return D[lang][k]||k}
 function esc(s=''){return String(s).replace(/[&<>'"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[m]))}
 function save(){localStorage.setItem('am_state',JSON.stringify(state))}
-function setLang(l){lang=l;localStorage.setItem('am_lang',l);document.documentElement.lang=l;document.documentElement.dir=D[l].dir;render()}
+function setLang(l){
+ if(!['en','fr','ru'].includes(l) || currentView==='assessment') return;
+ lang=l;
+ localStorage.setItem('am_lang',l);
+ document.documentElement.lang=l;
+ document.documentElement.dir='ltr';
+ render(currentView);
+}
 
 function header(){
  return `<header class="topbar"><div class="container topbar-inner">
   <div class="brand"><div class="brand-mark">✈</div><div>Aviation Matrix<small>Talent Intelligence & Development</small></div></div>
-  <div class="lang">${['ar','en','fr','ru'].map(l=>`<button data-lang="${l}" class="${lang===l?'active':''}">${l.toUpperCase()}</button>`).join('')}</div>
+  <div class="lang">${currentView==='assessment'?'':['en','fr','ru'].map(l=>`<button data-lang="${l}" class="${lang===l?'active':''}">${l.toUpperCase()}</button>`).join('')}</div>
  </div></header>`;
 }
 
@@ -41,12 +48,12 @@ function landing(){
     <span class="eyebrow">WELCOME ABOARD · AVIATION MATRIX</span>
     <div class="route-code">CHECK-IN → PRE-FLIGHT → FIT → FLIGHT PATH</div>
     <h1>${t('hero')}</h1><p class="lead">${t('sub')}</p>
-    <div class="cta-row"><button id="startBtn" class="btn btn-primary">✈ &nbsp; ${t('start')}</button><button class="btn btn-outline" data-scroll="journey">${t('journey')}</button></div>
+    <div class="cta-row"><button id="startBtn" class="btn btn-primary">✈ &nbsp; ${t('start')}</button><button id="continueBtn" class="btn btn-outline">Continue My Application</button><button class="btn btn-outline" data-scroll="journey">${t('journey')}</button></div>
     <div class="status-strip"><span class="status-dot"></span><strong>STATUS</strong><span>READY FOR CANDIDATE CHECK-IN</span></div>
    </div>
    <aside class="boarding-pass">
     <div class="boarding-head"><span class="mono">BOARDING PASS</span><span class="mono">AMX · 001</span></div>
-    <h3>${t('reg')}</h3><p>${lang==='ar'?'ابدأ كمرشح طيران، مش مجرد طالب كورس.':lang==='fr'?'Commencez comme candidat aviation, pas simplement comme stagiaire.':lang==='ru'?'Начните как авиационный кандидат, а не просто слушатель курса.':'Start as an aviation candidate, not just a course applicant.'}</p>
+    <h3>${t('reg')}</h3><p>${lang==='fr'?'Commencez comme candidat aviation, pas simplement comme stagiaire.':lang==='ru'?'Начните как авиационный кандидат, а не просто слушатель курса.':'Start as an aviation candidate, not just a course applicant.'}</p>
     <div class="ticket-list">
      <div class="ticket"><b>01</b><span>Candidate Check-in</span><em>OPEN</em></div>
      <div class="ticket"><b>02</b><span>Pre-Flight Assessment</span><em>NEXT</em></div>
@@ -81,11 +88,80 @@ function registration(){
    <div class="field"><label>Education stage</label><select name="education_stage"><option value="school">School</option><option value="secondary">Secondary</option><option value="university">University</option><option value="graduate">Graduate</option><option value="other">Other</option></select></div>
    <div class="field"><label>Current city</label><input name="current_city" required value="${esc(state.current_city||'')}"></div>
    <div class="field"><label>Aviation interest</label><select name="aviation_interest"><option value="cabin_crew">Cabin Crew</option><option value="passenger_services">Passenger Services</option><option value="cargo">Cargo</option><option value="ground_operations">Ground Operations</option><option value="flight_ops">Flight Operations</option><option value="not_sure">Not sure yet</option></select></div>
-   <div class="field"><label>Preferred language</label><select name="preferred_language"><option value="ar">Arabic</option><option value="en">English</option><option value="ar_en">Arabic / English</option></select></div>
+   <div class="field"><label>Interface language</label><select name="preferred_language"><option value="en">English</option><option value="fr">French</option><option value="ru">Russian</option></select></div>
    <div class="field full"><div class="check"><input type="checkbox" id="consent" name="consent" required><label for="consent">${t('privacy')}</label></div></div>
    <div class="field full"><div id="regMsg" class="helper"></div><button class="btn btn-dark" type="submit">${t('continue')}</button></div>
   </div></form>
  </div></div>`;
+}
+
+
+function resumeApplicationModal(){
+ return `<div class="overlay" id="resumeOverlay"><div class="modal">
+  <div class="modal-kicker">EXISTING APPLICATION · AVIATION MATRIX</div>
+  <div class="modal-head"><div><h2>Continue My Application</h2><p class="muted">Enter the details linked to your first registration.</p></div><button class="close" id="closeResume">×</button></div>
+  <form id="resumeForm"><div class="form-grid">
+   <div class="field full"><label>Application Number</label><input name="application_number" placeholder="AM-A-2026-000001" required></div>
+   <div class="field"><label>Email</label><input type="email" name="email" required></div>
+   <div class="field"><label>Date of birth</label><input type="date" name="date_of_birth" required></div>
+   <div class="field full"><div id="resumeMsg" class="helper"></div><button class="btn btn-dark" type="submit">Continue Application →</button></div>
+  </div></form>
+ </div></div>`;
+}
+
+async function resumeApplication(form){
+ const fd=new FormData(form);
+ const args={
+  p_application_number:String(fd.get('application_number')||'').trim().toUpperCase(),
+  p_email:String(fd.get('email')||'').trim(),
+  p_date_of_birth:fd.get('date_of_birth')
+ };
+ const msg=document.getElementById('resumeMsg');
+ if(msg){msg.className='helper';msg.textContent='Finding your Aviation Matrix application...';}
+ try{
+  const {data,error}=await supabase.rpc('public_resume_application',args);
+  if(error) throw error;
+  state={...state,...data};
+  if(data.assessment_result){
+   const er=data.assessment_result.evidence_payload||{};
+   state.assessment={
+    current_fit:data.assessment_result.current_fit,
+    future_fit:data.assessment_result.future_fit,
+    readiness_status:data.assessment_result.readiness_status,
+    summary:data.assessment_result.summary,
+    ...er
+   };
+  }
+  save();
+
+  const {data:resumeData,error:resumeError}=await supabase.rpc('public_resume_assessment',args);
+  if(resumeError) throw resumeError;
+  document.getElementById('resumeOverlay')?.remove();
+
+  if(resumeData.status==='in_progress'){
+   await loadPublishedQuestions();
+   assessment={
+    index:Math.min(Number(resumeData.answered_count)||0,runtimeQuestions.length-1),
+    attempt_id:resumeData.attempt_id,
+    access_token:resumeData.access_token,
+    candidate_id:resumeData.candidate_id,
+    locked:false,
+    result:null
+   };
+   render('assessment');
+  }else if(resumeData.status==='completed' && state.assessment){
+   render('results');
+  }else if(data.assessment_result){
+   render('results');
+  }else if(data.profile_status){
+   render('confirm');
+  }else{
+   render('welcome');
+  }
+ }catch(e){
+  console.error(e);
+  if(msg){msg.className='helper error';msg.textContent=e.message?.includes('APPLICATION_NOT_FOUND')?'Application not found. Check the number, email and date of birth.':'Unable to continue this application: '+(e.message||'Unknown error');}
+ }
 }
 
 function flowShell(content,step,pct){
@@ -98,7 +174,13 @@ function flowShell(content,step,pct){
 
 function welcome(){
  return flowShell(`<span class="eyebrow" style="color:#0b5279;border-color:#cfe8f5;background:#effaff">JOURNEY STARTED</span>
- <h1>${t('welcome')}</h1><p class="section-lead">${esc(state.full_name||'Candidate')}, your application is active. We will confirm your profile, run a short pre-flight assessment, then open your aviation path.</p>
+ <h1>${t('welcome')}</h1>
+ <div style="margin:14px 0;padding:16px 18px;border:1px solid #cfe6f3;background:#effaff;border-radius:18px">
+  <span class="muted">Your Application Number</span><br>
+  <strong style="font-size:28px;letter-spacing:.06em">${esc(state.application_number||'Pending')}</strong><br>
+  <small class="muted">Keep this number. You will use it to continue online and when you visit the branch.</small>
+ </div>
+ <p class="section-lead">${esc(state.full_name||'Candidate')}, your application is active. We will confirm your profile, run a short pre-flight assessment, then open your aviation path.</p>
  <div class="grid-3">
   <div class="info-card card"><strong>01 · Check-in</strong><p>Profile and declared data</p></div>
   <div class="info-card card"><strong>02 · Pre-Flight</strong><p>Decision quality and readiness</p></div>
@@ -312,7 +394,7 @@ function dashboard(){
  return flowShell(`<section class="journey-hero" dir="ltr" style="text-align:left">
   <small style="letter-spacing:.13em;color:#bce9ff;font-weight:900">MY AVIATION MATRIX PROFILE</small>
   <h1 style="margin:10px 0 8px">${esc(state.full_name||'Candidate')}</h1>
-  <p style="color:#d8e9f4;margin:0">Assessment complete · Cabin Crew Current Fit: <strong>${Math.round(Number(r.current_fit)||0)}%</strong></p>
+  <p style="color:#d8e9f4;margin:0">Application: <strong>${esc(state.application_number||'—')}</strong> · Assessment complete · Cabin Crew Current Fit: <strong>${Math.round(Number(r.current_fit)||0)}%</strong></p>
   <div class="journey-path"><span class="done">Check-in ✓</span><span class="done">Assessment ✓</span><span class="done">Fit ✓</span><span>Formal Enrollment 🔒</span><span>Journey Activation 🔒</span></div>
  </section>
  <div class="dashboard-grid" dir="ltr" style="text-align:left">
@@ -349,16 +431,26 @@ async function submitRegistration(form){
   full_name:fd.get('full_name'),mobile:fd.get('mobile'),email:fd.get('email'),
   date_of_birth:fd.get('date_of_birth'),education_stage:fd.get('education_stage'),
   current_city:fd.get('current_city'),aviation_interest:fd.get('aviation_interest'),
-  preferred_language:fd.get('preferred_language'),consent:true,source:'landing_pilot'
+  preferred_language:fd.get('preferred_language'),consent:true
  };
- const msg=document.getElementById('regMsg');msg.textContent='Registering candidate...';msg.className='helper';
+ const msg=document.getElementById('regMsg');msg.textContent='Creating your Aviation Matrix application...';msg.className='helper';
  try{
-  const {error}=await supabase.from('aviation_interest_leads').insert([{...payload,status:'new'}]);
+  const {data,error}=await supabase.rpc('public_register_application',{
+   p_full_name:payload.full_name,p_mobile:payload.mobile,p_email:payload.email,
+   p_date_of_birth:payload.date_of_birth,p_education_stage:payload.education_stage,
+   p_current_city:payload.current_city,p_aviation_interest:payload.aviation_interest,
+   p_preferred_language:payload.preferred_language,p_consent:true
+  });
   if(error)throw error;
-  state={...state,...payload};save();
+  state={...state,...payload,...data};save();
   document.getElementById('regOverlay')?.remove();render('welcome');
  }catch(e){
-  console.error(e);msg.className='helper error';msg.textContent='Supabase registration error: '+(e.message||'Please check database table/RLS.');
+  console.error(e);msg.className='helper error';
+  if(e.message?.includes('EMAIL_ALREADY_REGISTERED')||e.message?.includes('MOBILE_ALREADY_REGISTERED')){
+   msg.textContent='An application already exists with this mobile number or email. Use “Continue My Application” instead.';
+  }else{
+   msg.textContent='Registration error: '+(e.message||'Please try again.');
+  }
  }
 }
 
@@ -366,6 +458,7 @@ function attach(){
  document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>setLang(b.dataset.lang));
  document.querySelector('[data-scroll]')?.addEventListener('click',e=>document.getElementById(e.currentTarget.dataset.scroll)?.scrollIntoView());
  const start=document.getElementById('startBtn');if(start)start.onclick=()=>{document.body.insertAdjacentHTML('beforeend',registration());attachModal()};
+ const cont=document.getElementById('continueBtn');if(cont)cont.onclick=()=>{document.body.insertAdjacentHTML('beforeend',resumeApplicationModal());attachResumeModal()};
  document.getElementById('confirmBtn')?.addEventListener('click',()=>render('confirm'));
  document.getElementById('beginAssessment')?.addEventListener('click',beginLiveAssessment);
  document.querySelectorAll('.option').forEach(b=>b.onclick=()=>submitTimedAnswer(b.dataset.optionId,false));
@@ -376,16 +469,25 @@ function attachModal(){
  document.getElementById('closeModal')?.addEventListener('click',()=>document.getElementById('regOverlay')?.remove());
  document.getElementById('regForm')?.addEventListener('submit',e=>{e.preventDefault();submitRegistration(e.currentTarget)});
 }
-function render(view='landing'){
- clearInterval(questionTimer);
- document.documentElement.lang=lang;document.documentElement.dir=D[lang].dir;
- if(view==='welcome')app.innerHTML=welcome();
- else if(view==='confirm')app.innerHTML=confirmProfile();
- else if(view==='assessment')app.innerHTML=assessmentScreen();
- else if(view==='results')app.innerHTML=results();
- else if(view==='dashboard')app.innerHTML=dashboard();
- else app.innerHTML=landing();
- attach();
- if(view==='assessment') setTimeout(startQuestionTimer,0);
+function attachResumeModal(){
+ document.getElementById('closeResume')?.addEventListener('click',()=>document.getElementById('resumeOverlay')?.remove());
+ document.getElementById('resumeForm')?.addEventListener('submit',e=>{e.preventDefault();resumeApplication(e.currentTarget)});
 }
-render();
+function render(view=currentView||'landing'){
+ clearInterval(questionTimer);
+ currentView=view||'landing';
+ localStorage.setItem('am_view',currentView);
+ document.documentElement.lang=lang;
+ document.documentElement.dir='ltr';
+ if(currentView==='welcome')app.innerHTML=welcome();
+ else if(currentView==='confirm')app.innerHTML=confirmProfile();
+ else if(currentView==='assessment')app.innerHTML=assessmentScreen();
+ else if(currentView==='results')app.innerHTML=results();
+ else if(currentView==='dashboard')app.innerHTML=dashboard();
+ else {currentView='landing';localStorage.setItem('am_view','landing');app.innerHTML=landing();}
+ attach();
+ if(currentView==='assessment') setTimeout(startQuestionTimer,0);
+}
+if(currentView==='assessment') currentView=state.assessment?'results':(state.application_number?'welcome':'landing');
+if(currentView==='results' && !state.assessment) currentView=state.application_number?'welcome':'landing';
+render(currentView);
