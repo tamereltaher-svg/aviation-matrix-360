@@ -26,6 +26,30 @@ button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 .wrap{width:min(1180px,calc(100% - 28px));margin:auto}
 
+/* admin preview */
+.admin-preview{
+  display:none;position:sticky;top:0;z-index:80;
+  background:#06192b;color:#fff;border-bottom:1px solid rgba(255,255,255,.12)
+}
+.admin-preview.show{display:block}
+.admin-preview .admin-wrap{
+  width:min(1180px,calc(100% - 28px));margin:auto;min-height:48px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px
+}
+.admin-preview .left{display:flex;gap:9px;align-items:center;font-size:12px;font-weight:800}
+.admin-preview .mode{
+  padding:5px 8px;border-radius:999px;background:#4cc4ff;color:#06243c;
+  font-size:9px;font-weight:900;letter-spacing:.08em
+}
+.admin-preview .admin-actions{display:flex;gap:8px;align-items:center}
+.admin-preview a,.admin-preview button{
+  border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);
+  color:#fff;padding:8px 10px;border-radius:10px;font-weight:900;font-size:11px;text-decoration:none
+}
+.preview-target{outline:3px solid #4cc4ff;outline-offset:4px}
+.preview-label{display:none;margin-top:8px;color:#0a6f9e;font-size:11px;font-weight:900}
+.preview-target .preview-label{display:block}
+
 /* top */
 .top{
   position:sticky;top:0;z-index:40;
@@ -268,6 +292,19 @@ footer{padding:30px;text-align:center;color:var(--muted)}
 </head>
 <body>
 
+<div id="adminPreviewBar" class="admin-preview">
+  <div class="admin-wrap">
+    <div class="left">
+      <span class="mode">ADMIN PREVIEW MODE</span>
+      <span id="previewText">Viewing Customer Gateway</span>
+    </div>
+    <div class="admin-actions">
+      <a href="store_admin.html">← Back to Control Tower</a>
+      <a href="aviation_store_live.html?admin=1">Live Store</a>
+    </div>
+  </div>
+</div>
+
 <header class="top">
   <div class="wrap">
     <div class="brand">
@@ -448,7 +485,7 @@ audiences.forEach(a=>{
   <div class="ico">${a.icon}</div>
   <h4>${a.title}</h4>
   <p>${a.desc}</p>
-  <div class="actions">
+  <div class="preview-label">ADMIN PREVIEW TARGET</div><div class="actions">
    <button class="primary" onclick="openReady('${a.key}')">Explore Available Programs →</button>
    ${institutional?`
    <button onclick="openCustomize('${a.key}')">Customize a Program</button>
@@ -902,6 +939,28 @@ function demoDone(type){
  <div class="summary">In the live version, this step will create the appropriate Aviation Matrix lead/request and pricing record.</div>
  <div class="sheet-actions"><button class="submit" onclick="closeModal()">Done</button></div>`)
 }
+
+(function initAdminPreview(){
+  const params=new URLSearchParams(location.search);
+  const isAdmin=params.get('admin')==='1' || !!localStorage.getItem('am_staff_token');
+  const preview=params.get('preview');
+  if(isAdmin){
+    document.getElementById('adminPreviewBar')?.classList.add('show');
+    const text=document.getElementById('previewText');
+    if(text) text.textContent=preview ? `Previewing as: ${preview[0].toUpperCase()+preview.slice(1)}` : 'Viewing Customer Gateway';
+  }
+  if(preview){
+    setTimeout(()=>{
+      const cards=[...document.querySelectorAll('.path')];
+      const idx=audiences.findIndex(a=>a.key===preview);
+      if(idx>=0 && cards[idx]){
+        cards[idx].classList.add('preview-target');
+        cards[idx].scrollIntoView({behavior:'smooth',block:'center'});
+      }
+    },150);
+  }
+})();
+
 </script>
 </body>
 </html>

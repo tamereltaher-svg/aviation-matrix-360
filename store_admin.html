@@ -41,6 +41,11 @@ button{cursor:pointer}
 }
 .page-title h2{margin:0;font-size:21px}.page-title small{color:var(--muted)}
 .top-actions{display:flex;gap:9px;align-items:center}
+.portal-switch{position:relative}
+.portal-switch select{
+  border:1px solid var(--line);background:#fff;color:var(--ink);
+  border-radius:12px;padding:10px 38px 10px 12px;font-weight:900;cursor:pointer
+}
 .btn{border:0;border-radius:12px;padding:10px 14px;font-weight:900}
 .btn.primary{background:var(--navy);color:#fff}.btn.secondary{background:#edf3f7;color:var(--ink);border:1px solid var(--line)}
 .btn.sky{background:var(--sky);color:#06243c}.btn.danger{background:#fff;color:var(--danger);border:1px solid #f2c7c1}
@@ -153,6 +158,19 @@ td{padding:12px 10px;border-bottom:1px solid #edf2f5;vertical-align:middle}
     <header class="topbar">
       <div class="page-title"><h2 id="pageTitle">Dashboard</h2><small id="pageSub">Aviation Matrix operational overview</small></div>
       <div class="top-actions">
+        <div class="portal-switch">
+          <select id="portalSwitcher" onchange="switchPortal(this.value)">
+            <option value="">View As / Open Portal…</option>
+            <option value="gateway">Customer Gateway</option>
+            <option value="store">Live Store</option>
+            <option value="nursery">Preview: Nursery</option>
+            <option value="school">Preview: School</option>
+            <option value="university">Preview: University</option>
+            <option value="individual">Preview: Individual</option>
+            <option value="institution">Preview: Institution</option>
+            <option value="government">Preview: Government</option>
+          </select>
+        </div>
         <button class="btn secondary" onclick="refreshCurrent()">Refresh</button>
         <button class="btn secondary" onclick="signOut()">Sign out</button>
       </div>
@@ -185,6 +203,7 @@ td{padding:12px 10px;border-bottom:1px solid #edf2f5;vertical-align:middle}
               <button class="btn secondary" onclick="newProgram()">+ Add Program</button>
               <button class="btn secondary" onclick="newInstitution()">+ Add Institution</button>
               <button class="btn secondary" onclick="openPage('pricing',document.querySelector('[data-page=pricing]'))">Manage Add-ons</button>
+              <button class="btn sky" onclick="switchPortal('gateway')">Preview Customer Gateway</button>
             </div>
           </div>
         </div>
@@ -374,6 +393,18 @@ function openModal(title,sub,body){$id('modalTitle').textContent=title;$id('moda
 function closeModal(){$id('modal').classList.remove('open')}
 $id('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()})
 $id('loginPassword').addEventListener('keydown',e=>{if(e.key==='Enter')login()})
+
+
+function switchPortal(value){
+  if(!value)return;
+  const root='https://tamereltaher-svg.github.io/aviation-matrix-360/';
+  let url='';
+  if(value==='gateway') url=root+'aviation_gateway_full.html?admin=1';
+  else if(value==='store') url=root+'aviation_store_live.html?admin=1';
+  else url=root+'aviation_gateway_full.html?admin=1&preview='+encodeURIComponent(value);
+  document.getElementById('portalSwitcher').value='';
+  window.location.href=url;
+}
 
 boot();
 </script>

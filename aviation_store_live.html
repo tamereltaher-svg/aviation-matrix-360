@@ -17,6 +17,15 @@ h1{margin:0}.sub{color:#c7ddeb;margin-top:5px}
 @media(max-width:900px){.products{grid-template-columns:1fr 1fr}}@media(max-width:600px){.products{grid-template-columns:1fr}}
 </style></head>
 <body>
+<div id="adminBar" style="display:none;background:#06192b;color:#fff;padding:10px 20px;font-family:Inter,Segoe UI,Arial,sans-serif">
+  <div style="max-width:1180px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px">
+    <strong style="font-size:12px">ADMIN PREVIEW MODE • Live Store</strong>
+    <div style="display:flex;gap:8px">
+      <a href="aviation_gateway_full.html?admin=1" style="color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.18);padding:7px 10px;border-radius:9px;font-size:11px;font-weight:800">Customer Gateway</a>
+      <a href="store_admin.html" style="color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.18);padding:7px 10px;border-radius:9px;font-size:11px;font-weight:800">← Control Tower</a>
+    </div>
+  </div>
+</div>
 <header><div class="wrap"><h1>Aviation Matrix Store</h1><div class="sub">Live products loaded from Supabase</div></div></header>
 <main class="wrap">
 <div class="filters" id="filters"></div>
@@ -54,6 +63,9 @@ function render(){
    <div class="price">${p.currency} ${Number(p.base_price).toLocaleString()}${p.price_is_estimate?'*':''}</div>
   </article>`
  }).join('');
+}
+if(new URLSearchParams(location.search).get('admin')==='1' || localStorage.getItem('am_staff_token')){
+  document.getElementById('adminBar').style.display='block';
 }
 load();
 </script></body></html>
