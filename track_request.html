@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aviation Matrix — Track Request</title>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
+<style>
+:root{--navy:#06192b;--sky:#4cc4ff;--ink:#10263a;--muted:#6d8192;--line:#dfe8ef;--bg:#f3f7fa;--ok:#0d8a6b;--warn:#b66c0d;--danger:#b42318}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}button,input{font:inherit}.top{background:#fff;border-bottom:1px solid var(--line)}.topin{max-width:1080px;margin:auto;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}.brand{display:flex;gap:10px;align-items:center}.mark{width:40px;height:40px;border-radius:13px;background:var(--navy);color:#fff;display:grid;place-items:center}.brand strong{display:block}.brand small{color:var(--muted)}.wrap{max-width:1080px;margin:auto;padding:28px 20px}.hero{background:linear-gradient(135deg,#06192b,#0b3d64);color:#fff;border-radius:26px;padding:26px;display:flex;justify-content:space-between;gap:18px;align-items:center}.hero h1{margin:0 0 6px;font-size:30px}.hero p{margin:0;color:#d7e8f3}.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;margin-top:16px;box-shadow:0 14px 38px rgba(6,25,43,.06)}.lookup{display:grid;grid-template-columns:1fr 1fr auto;gap:10px}.field label{display:block;font-size:10px;font-weight:900;color:#536d7f;margin-bottom:6px}.field input{width:100%;padding:12px;border:1px solid #cfdae4;border-radius:12px}.btn{border:0;border-radius:12px;padding:11px 14px;font-weight:900;cursor:pointer}.primary{background:var(--navy);color:#fff}.secondary{background:#edf3f7;color:var(--ink);border:1px solid var(--line)}.sky{background:var(--sky);color:#06243c}.danger{background:#fff0ef;color:var(--danger);border:1px solid #f0c6c1}.hidden{display:none}.status{display:inline-flex;padding:6px 9px;border-radius:999px;background:#eef4f7;font-size:10px;font-weight:900}.status.approved,.status.completed,.status.accepted{background:#e7f8f2;color:#0b6b55}.status.quotation_sent,.status.sent,.status.execution{background:#eaf7ff;color:#0b6f9f}.status.rejected{background:#fff0ef;color:#a02b21}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.box{background:#f7fafc;border:1px solid var(--line);border-radius:14px;padding:13px}.box small{color:var(--muted);font-weight:800}.box strong{display:block;margin-top:5px;font-size:16px}.timeline{display:grid;gap:12px}.event{display:grid;grid-template-columns:16px 1fr;gap:10px}.dot{width:10px;height:10px;border-radius:50%;background:var(--sky);margin-top:4px;box-shadow:0 0 0 4px #e8f8ff}.event strong{display:block}.event small{color:var(--muted)}.quote{border:2px solid #cdefff;background:#fbfeff}.quote-head{display:flex;justify-content:space-between;gap:12px;align-items:center}.quote-total{font-size:28px;font-weight:900}.table{width:100%;border-collapse:collapse}.table th,.table td{padding:10px;border-bottom:1px solid #edf2f5;text-align:left;font-size:12px}.table th{font-size:9px;color:var(--muted)}.notice{padding:11px 13px;border-radius:12px;background:#fff0ef;color:#a02b21;margin-top:10px}.admin{display:none;background:#06192b;color:#fff;padding:9px 20px;text-align:center}.admin.show{display:block}.admin a{color:#fff;font-weight:900}
+@media(max-width:760px){.lookup{grid-template-columns:1fr}.summary{grid-template-columns:1fr 1fr}.hero{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<div id="adminBar" class="admin">ADMIN PREVIEW MODE • <a href="store_admin.html">Back to Control Tower</a></div>
+<div class="top"><div class="topin"><div class="brand"><div class="mark">✈</div><div><strong>Aviation Matrix</strong><small>Talent Intelligence & Development</small></div></div><a href="aviation_gateway_full.html" style="text-decoration:none;color:var(--ink);font-weight:900">Customer Gateway</a></div></div>
+<main class="wrap">
+<div class="hero"><div><h1>Track Your Request</h1><p>Follow your request, quotation and approval status in one place.</p></div><span style="font-weight:900">REQUEST TRACKING</span></div>
+<section class="card">
+ <div class="lookup">
+  <div class="field"><label>REQUEST NUMBER</label><input id="rq" placeholder="AM-RQ-2026-000001"></div>
+  <div class="field"><label>EMAIL OR MOBILE</label><input id="contact" placeholder="Email or mobile used in the request"></div>
+  <button class="btn primary" onclick="track()">Track Request</button>
+ </div>
+ <div id="msg"></div>
+</section>
+<div id="result" class="hidden"></div>
+</main>
+<script>
+const API='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/request-track';let lastData=null,lastContact='';
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const money=(v,c='EGP')=>`${c} ${Number(v||0).toLocaleString()}`;const date=v=>v?new Date(v).toLocaleString('en-GB'):'—';
+function badge(s){return `<span class="status ${esc(s)}">${esc(String(s||'').replaceAll('_',' '))}</span>`}
+async function call(action='track',extra={}){
+ const v=lastContact||document.getElementById('contact').value.trim();const payload={action,request_number:document.getElementById('rq').value.trim(),...extra};if(v.includes('@'))payload.email=v;else payload.mobile=v;
+ const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const d=await r.json();if(!r.ok)throw new Error(d.error||'Unable to track');lastContact=v;return d;
+}
+async function track(){
+ document.getElementById('msg').innerHTML='';
+ try{lastData=await call();render()}catch(e){document.getElementById('msg').innerHTML='<div class="notice">Request not found or the contact detail does not match.</div>'}
+}
+function render(){
+ const d=lastData,r=d.request,q=d.quotation;document.getElementById('result').classList.remove('hidden');
+ document.getElementById('result').innerHTML=`<section class="card"><div class="quote-head"><div><small style="color:var(--muted)">REQUEST NUMBER</small><h2 style="margin:4px 0">${esc(r.request_number)}</h2></div>${badge(r.status)}</div>
+ <div class="summary"><div class="box"><small>Request Type</small><strong>${esc(r.request_type)}</strong></div><div class="box"><small>Audience</small><strong>${esc(r.audience_code)}</strong></div><div class="box"><small>Institution</small><strong>${esc(r.institution_name||'—')}</strong></div><div class="box"><small>Submitted</small><strong style="font-size:13px">${date(r.created_at)}</strong></div></div></section>
+ <section class="card"><h3>Request Timeline</h3><div class="timeline">${(d.events||[]).map(e=>`<div class="event"><div class="dot"></div><div><strong>${esc(e.title)}</strong><small>${date(e.created_at)}</small>${e.detail?`<p>${esc(e.detail)}</p>`:''}</div></div>`).join('')||'<p>No timeline updates yet.</p>'}</div></section>
+ ${q?`<section class="card quote"><div class="quote-head"><div><small style="color:var(--muted)">LATEST QUOTATION</small><h2 style="margin:4px 0">${esc(q.quotation_number)} • v${q.version_no}</h2>${badge(q.status)}</div><div class="quote-total">${money(q.total_amount,q.currency)}</div></div>
+ <div style="overflow:auto;margin-top:12px"><table class="table"><thead><tr><th>ITEM</th><th>QTY</th><th>UNIT PRICE</th><th>AMOUNT</th></tr></thead><tbody>${(q.items||[]).map(x=>`<tr><td><strong>${esc(x.name)}</strong><br><small>${esc(x.description||'')}</small></td><td>${x.quantity}</td><td>${money(x.unit_price,q.currency)}</td><td><strong>${money(x.amount,q.currency)}</strong></td></tr>`).join('')}</tbody></table></div>
+ <div style="display:flex;gap:9px;justify-content:flex-end;flex-wrap:wrap;margin-top:14px"><button class="btn secondary" onclick="downloadQuotePdf()">Download Quotation PDF</button>${q.status==='sent'?`<button class="btn danger" onclick="decision('reject_quotation')">Request Revision</button><button class="btn sky" onclick="decision('accept_quotation')">Accept Quotation</button>`:''}</div></section>`:''}`;
+}
+async function decision(action){
+ if(!lastData?.quotation)return;if(!confirm(action==='accept_quotation'?'Accept this quotation?':'Request a revision of this quotation?'))return;
+ try{lastData=await call(action,{quotation_number:lastData.quotation.quotation_number});render()}catch(e){alert('Unable to update quotation. Please refresh and try again.')}
+}
+function downloadQuotePdf(){
+ const d=lastData,q=d?.quotation,r=d?.request;if(!q||!window.jspdf?.jsPDF)return;
+ const {jsPDF}=window.jspdf,doc=new jsPDF({unit:'mm',format:'a4'}),W=doc.internal.pageSize.getWidth(),m=14;let y=14;
+ doc.setFillColor(6,25,43);doc.roundedRect(m,y,W-m*2,28,5,5,'F');doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(18);doc.text('AVIATION MATRIX',m+8,y+11);doc.setFontSize(8);doc.text('COMMERCIAL QUOTATION',m+8,y+18);doc.setFillColor(76,196,255);doc.roundedRect(W-m-47,y+6,39,10,4,4,'F');doc.setTextColor(6,25,43);doc.text(q.quotation_number,W-m-27.5,y+12,{align:'center'});y+=36;
+ doc.setTextColor(16,38,58);doc.setFontSize(10);doc.text(`Request: ${r.request_number}`,m,y);doc.text(`Client: ${r.institution_name||r.contact_person||'—'}`,m,y+6);doc.text(`Valid Until: ${q.valid_until||'—'}`,m,y+12);y+=20;
+ doc.autoTable({startY:y,head:[['#','Item','Qty','Unit Price','Amount']],body:(q.items||[]).map((x,i)=>[i+1,x.name,x.quantity,money(x.unit_price,q.currency),money(x.amount,q.currency)]),theme:'grid',styles:{fontSize:8,cellPadding:2},headStyles:{fillColor:[6,25,43]}});y=doc.lastAutoTable.finalY+8;
+ doc.setFont('helvetica','bold');doc.setFontSize(14);doc.text(`TOTAL: ${money(q.total_amount,q.currency)}`,W-m,y,{align:'right'});if(q.terms){doc.setFontSize(8);doc.text('Terms',m,y+12);doc.setFont('helvetica','normal');doc.setFontSize(7);doc.text(doc.splitTextToSize(q.terms,W-m*2),m,y+17)}
+ doc.save(`Aviation_Matrix_Quotation_${q.quotation_number}.pdf`);
+}
+const params=new URLSearchParams(location.search);const rn=params.get('request');if(rn)document.getElementById('rq').value=rn;
+try{const rec=JSON.parse(localStorage.getItem('am_last_request_receipt')||'null');if(rec&&(!rn||rec.request_number===rn)){document.getElementById('rq').value=rec.request_number||rn||'';document.getElementById('contact').value=rec.email||rec.mobile||''}}catch(e){}
+if(params.get('admin')==='1'||localStorage.getItem('am_staff_token'))document.getElementById('adminBar').classList.add('show');
+if(document.getElementById('rq').value&&document.getElementById('contact').value)track();
+</script>
+</body></html>

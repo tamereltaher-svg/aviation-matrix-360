@@ -1054,6 +1054,7 @@ async function submitGatewayPayload(payload,button){
      </div>
      <div class="sheet-actions" style="flex-wrap:wrap">
        <button class="back" onclick="closeModal()">Done</button>
+       <button class="back" onclick="window.location.href=\'track_request.html?request=${encodeURIComponent(data.request_number)}\'">Track Request</button>
        <button class="back" onclick="requestAnotherService()">Request Another Service</button>
        <button class="submit" onclick="downloadRequestPdf()">Download Request PDF</button>
      </div>`);
