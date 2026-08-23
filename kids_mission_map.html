@@ -1,0 +1,44 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Mission Map</title><link rel="stylesheet" href="kids_cartoon_premium.css"></head>
+<body class="cp-page">
+<header class="kids-top"><div class="wrap top-inner">
+  <a class="logo" href="kids_world.html">AVIATION MATRIX<span>KIDS AVIATION WORLD</span></a>
+  <nav class="kids-nav">
+    <a class="nav-pill" href="kids_world.html">Aviation World</a>
+    <a class="nav-pill" href="kids_experience.html">My Passport</a>
+    <a class="nav-pill" href="kids_mission_map.html">Mission Map</a>
+    <a class="nav-pill" href="kids_badges.html">My Badges</a>
+    <a class="nav-pill" href="kids_story_hangar.html">Stories</a>
+    <a class="nav-pill" href="kids_wings_shop.html">Wings Shop</a>
+  </nav>
+</div></header>
+
+<section id="locked" class="wrap login-shell"><div class="login-card"><span class="kicker">🗺️ MISSION MAP</span><h1 class="section-title" style="font-size:34px;margin-top:12px">Open your Passport first</h1><p class="section-sub">Your mission path appears after you open your Explorer Passport.</p><a class="kbtn primary" href="kids_experience.html">Open My Passport</a></div></section>
+<main id="app" class="hide">
+<section class="wrap" style="padding-top:24px"><div class="hero-sky"><div class="hero-content">
+ <div><span class="kicker">🗺️ MY MISSION MAP</span><h1 class="hero-title" style="font-size:44px">Your next adventure is ready.</h1><p id="mapIntro" class="hero-copy">Follow the flight path and discover what comes next.</p></div>
+ <div class="aviation-scene"><div class="cloud c1"></div><div class="cloud c2"></div><div class="plane">✈️</div></div>
+</div></div></section>
+<section class="section"><div class="wrap"><h2 id="seasonTitle" class="section-title">My Current Season</h2><p class="section-sub">Fly through each stop and watch the next adventure appear.</p><div id="map" class="map-wrap"><div class="route-line"></div></div></div></section>
+</main><footer>Kids Aviation Matrix 360 • Mission Map</footer>
+<script>
+const API='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/kids-experience-api',token=localStorage.getItem('am_kids_portal_token')||'';let data;
+async function api(action,payload={}){const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({action,...payload})});const d=await r.json();if(!r.ok)throw new Error();return d}
+async function load(){if(!token)return;data=await api('me');document.getElementById('locked').classList.add('hide');document.getElementById('app').classList.remove('hide');render()}
+function render(){const p=data.passport,season=(data.seasons||[]).find(x=>x.id===p.current_season_id);document.getElementById('seasonTitle').textContent=season?.name||'My Current Season';const prog=Object.fromEntries((data.mission_progress||[]).map(x=>[x.mission_id,x]));
+ const list=(data.missions||[]).filter(x=>x.season_id===p.current_season_id).sort((a,b)=>a.sort_order-b.sort_order);
+ document.getElementById('map').innerHTML='<div class="route-line"></div>'+list.map((m,i)=>{const st=prog[m.id]?.status||'locked',done=st==='completed',ready=st==='in_progress';const cls=done?'done':ready?'ready':'locked';const label=done?'Adventure complete':ready?'Ready to explore':'Waiting in the clouds';return `<div class="mission-stop"><div class="mission-card ${st==='locked'?'locked':''}"><h4>${m.title||m.name}</h4><p>${m.big_question||m.learning_goal||''}</p><div style="margin-top:9px;font-size:10px;font-weight:900;color:${done?'#1f7a50':ready?'#14719c':'#81909a'}">${label}</div></div><div class="route-icon ${cls}">${done?'⭐':ready?'✈️':'☁️'}</div></div>`}).join('');
+}
+load().catch(()=>{});
+</script>
+<nav class="mobile-kids-nav" aria-label="Kids navigation">
+ <a href="kids_world.html"><b>☁️</b>World</a>
+ <a href="kids_experience.html"><b>🛂</b>Passport</a>
+ <a href="kids_mission_map.html"><b>✈️</b>Missions</a>
+ <a href="kids_badges.html"><b>🏅</b>Badges</a>
+ <a href="kids_story_hangar.html"><b>📚</b>Stories</a>
+</nav>
+<div class="page-sparkles"></div>
+<a class="kids-back-home" href="kids_world.html" aria-label="Back to Aviation World">☁️</a>
+
+</body></html>

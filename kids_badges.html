@@ -1,0 +1,45 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Badge Gallery</title><link rel="stylesheet" href="kids_cartoon_premium.css"></head>
+<body class="cp-page">
+<header class="kids-top"><div class="wrap top-inner">
+  <a class="logo" href="kids_world.html">AVIATION MATRIX<span>KIDS AVIATION WORLD</span></a>
+  <nav class="kids-nav">
+    <a class="nav-pill" href="kids_world.html">Aviation World</a>
+    <a class="nav-pill" href="kids_experience.html">My Passport</a>
+    <a class="nav-pill" href="kids_mission_map.html">Mission Map</a>
+    <a class="nav-pill" href="kids_badges.html">My Badges</a>
+    <a class="nav-pill" href="kids_story_hangar.html">Stories</a>
+    <a class="nav-pill" href="kids_wings_shop.html">Wings Shop</a>
+  </nav>
+</div></header>
+
+<section id="locked" class="wrap login-shell"><div class="login-card"><span class="kicker">🏅 BADGE GALLERY</span><h1 class="section-title" style="font-size:34px;margin-top:12px">Your badges are waiting</h1><p class="section-sub">Open your Passport first to see the rewards you have collected.</p><a class="kbtn primary" href="kids_experience.html">Open My Passport</a></div></section>
+<main id="app" class="hide">
+<section class="wrap" style="padding-top:24px"><div class="hero-sky"><div class="hero-content">
+ <div><span class="kicker">🏅 MY BADGE GALLERY</span><h1 class="hero-title" style="font-size:44px">Every badge tells your story.</h1><p class="hero-copy">Celebrate every mission, every season and every level you complete.</p></div>
+ <div class="aviation-scene"><div class="cloud c1"></div><div class="cloud c2"></div><div class="plane">🏅</div></div>
+</div></div></section>
+<section class="section"><div class="wrap"><h2 class="section-title">My Season Badges</h2><p class="section-sub">Complete the season adventure and your badge will appear here.</p><div id="badgeGrid" class="badge-grid"></div></div></section>
+<section class="section"><div class="wrap"><div class="panel"><h2 class="section-title" style="font-size:23px">My Reward Shelf</h2><div class="stat-grid"><div class="stat"><div class="icon">🛂</div><strong id="stamps">0</strong><small>Stamps</small></div><div class="stat"><div class="icon">🏅</div><strong id="badges">0</strong><small>Season Badges</small></div><div class="stat"><div class="icon">🎓</div><strong id="certs">0</strong><small>Certificates</small></div><div class="stat"><div class="icon">⭐</div><strong id="missions">0</strong><small>Missions</small></div></div></div></div></section>
+</main><footer>Kids Aviation Matrix 360 • Badge Gallery</footer>
+<script>
+const API='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/kids-experience-api',token=localStorage.getItem('am_kids_portal_token')||'';let data;
+async function api(action){const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({action})});const d=await r.json();if(!r.ok)throw new Error();return d}
+async function load(){if(!token)return;data=await api('me');document.getElementById('locked').classList.add('hide');document.getElementById('app').classList.remove('hide');render()}
+function render(){const p=data.passport,s=data.summary||{},sp=Object.fromEntries((data.season_progress||[]).map(x=>[x.season_id,x])),seasons=(data.seasons||[]).filter(x=>x.level_id===p.current_level_id);
+ document.getElementById('badgeGrid').innerHTML=seasons.map((x,i)=>{const done=sp[x.id]?.status==='completed';return `<div class="badge-card ${done?'':'locked'}"><div class="badge-medal">${done?'🏅':'☁️'}</div><h4>${x.name}</h4><p>${done?'Badge unlocked! Amazing work.':'Keep flying — this badge is waiting for you.'}</p></div>`}).join('');
+ document.getElementById('stamps').textContent=s.collected_stamps||0;document.getElementById('badges').textContent=s.season_badges||0;document.getElementById('certs').textContent=s.certificates||0;document.getElementById('missions').textContent=s.completed_missions||0;
+}
+load().catch(()=>{});
+</script>
+<nav class="mobile-kids-nav" aria-label="Kids navigation">
+ <a href="kids_world.html"><b>☁️</b>World</a>
+ <a href="kids_experience.html"><b>🛂</b>Passport</a>
+ <a href="kids_mission_map.html"><b>✈️</b>Missions</a>
+ <a href="kids_badges.html"><b>🏅</b>Badges</a>
+ <a href="kids_story_hangar.html"><b>📚</b>Stories</a>
+</nav>
+<div class="page-sparkles"></div>
+<a class="kids-back-home" href="kids_world.html" aria-label="Back to Aviation World">☁️</a>
+
+</body></html>

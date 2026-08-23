@@ -1,96 +1,83 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kids Aviation Explorer Passport</title>
-<style>
-:root{--navy:#08233b;--sky:#0b6f9f;--muted:#6d8190;--line:#dbe8ee;--bg:#f5fbfe;--card:#fff}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:radial-gradient(circle at 10% 0,#e7f8ff,transparent 30%),linear-gradient(#f7fcff,#fff);color:#15364d}
-.wrap{max-width:1180px;margin:auto;padding:0 20px}.top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.top .wrap{height:74px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{font-weight:950;color:var(--navy);letter-spacing:-.02em}.brand small{display:block;color:var(--sky);font-size:10px;letter-spacing:.12em}
-.btn{border:0;border-radius:13px;padding:11px 15px;font-weight:900;cursor:pointer}.primary{background:var(--navy);color:#fff}.soft{background:#edf7fb;color:#0b5d85;border:1px solid #d2e9f4}
-.hero{padding:36px 0 20px}.passport{border-radius:28px;padding:27px;background:linear-gradient(135deg,#06223a,#0b6f9f 62%,#7357c5);color:#fff;box-shadow:0 22px 54px rgba(5,31,51,.16);display:grid;grid-template-columns:1.5fr .7fr;gap:24px;align-items:center}
-.passport-main{display:flex;align-items:center;gap:18px}.profile-photo{width:104px;height:104px;border-radius:24px;object-fit:cover;border:3px solid rgba(255,255,255,.65);background:rgba(255,255,255,.12);box-shadow:0 10px 24px rgba(0,0,0,.16);flex:0 0 auto}.profile-placeholder{width:104px;height:104px;border-radius:24px;border:2px dashed rgba(255,255,255,.35);display:grid;place-items:center;font-size:38px;background:rgba(255,255,255,.08);flex:0 0 auto}.passport h1{font-size:38px;line-height:1;margin:7px 0 11px}.passport p{color:#d7edf8;line-height:1.6;margin:0}.passport-badge{display:inline-flex;padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);font-size:10px;font-weight:950}
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:13px}.stat small{font-size:9px;text-transform:uppercase;font-weight:900;color:#cfe7f5}.stat strong{display:block;font-size:26px;margin-top:4px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:18px 0}.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 10px 28px rgba(5,31,51,.06)}.card h3{margin:0 0 5px;color:var(--navy)}.sub{color:var(--muted);font-size:12px;line-height:1.55}
-.levels{display:grid;gap:9px;margin-top:14px}.level{padding:12px;border:1px solid var(--line);border-radius:15px;display:flex;justify-content:space-between;gap:10px;align-items:center}.level.locked{opacity:.48}.level.active{border-color:#8dcce6;background:#f0faff}
-.seasons{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:14px}.season{padding:12px;border:1px solid var(--line);border-radius:14px;background:#fbfdfe}.season strong{font-size:12px}.season small{display:block;color:var(--muted);margin-top:3px}.progress{height:7px;background:#e8f1f5;border-radius:999px;overflow:hidden;margin-top:8px}.progress span{display:block;height:100%;background:#0b7daf}
-.missions{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}.mission{position:relative;padding:15px;border:1px solid var(--line);border-radius:17px;background:#fff;min-height:132px}.mission.locked{opacity:.48;background:#f6f8f9}.mission.active{border-color:#66b9dc;box-shadow:0 10px 24px rgba(19,115,158,.1)}.mission.done{background:#f4fbf7}.mission .code{font-size:9px;font-weight:950;color:#7b8f9c}.mission h4{margin:7px 0;font-size:14px;color:#17384f}.mission p{font-size:11px;color:var(--muted);line-height:1.45;margin:0}.status{position:absolute;top:10px;right:10px;font-size:9px;font-weight:950;padding:5px 7px;border-radius:999px;background:#edf5f8}
-.rewards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}.reward{padding:13px;border:1px solid var(--line);border-radius:15px;text-align:center;background:#fff}.reward .icon{font-size:30px}.reward strong{display:block;font-size:11px;margin-top:6px}.reward small{color:var(--muted);font-size:9px}
-.content-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}.content{border:1px solid var(--line);border-radius:17px;overflow:hidden;background:#fff}.cover{height:120px;background:linear-gradient(135deg,#0c2f4a,#147caf);display:grid;place-items:center;font-size:34px;color:#fff}.content .body{padding:13px}.content h4{margin:0 0 5px;font-size:14px}.content p{font-size:10px;color:var(--muted);min-height:28px}.locked-chip{font-size:9px;font-weight:900;color:#8a5b00;background:#fff6d8;padding:5px 7px;border-radius:999px;display:inline-block}
-.login{max-width:520px;margin:70px auto;background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:0 18px 50px rgba(6,30,48,.08)}.login h2{margin-top:0}.field{display:grid;gap:6px;margin:13px 0}.field label{font-size:10px;font-weight:950;color:#516b7c}.field input{padding:13px;border:1px solid var(--line);border-radius:12px;font:inherit}.msg{font-size:11px;color:#b23b3b;margin-top:10px}
-.hide{display:none!important}
-@media(max-width:850px){.passport,.grid{grid-template-columns:1fr}.missions,.content-grid{grid-template-columns:repeat(2,1fr)}.rewards{grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){.missions,.content-grid,.seasons{grid-template-columns:1fr}.passport h1{font-size:30px}.passport-main{align-items:flex-start}.profile-photo,.profile-placeholder{width:82px;height:82px;border-radius:18px}}
-</style>
-</head>
-<body>
-<header class="top"><div class="wrap"><div class="brand">AVIATION MATRIX <small>KIDS AVIATION • EXPLORER PASSPORT</small></div><button id="logoutBtn" class="btn soft hide" onclick="logout()">Sign out</button></div></header>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Aviation Passport</title><link rel="stylesheet" href="kids_cartoon_premium.css"></head>
+<body class="cp-page">
+<header class="kids-top"><div class="wrap top-inner">
+  <a class="logo" href="kids_world.html">AVIATION MATRIX<span>KIDS AVIATION WORLD</span></a>
+  <nav class="kids-nav">
+    <a class="nav-pill" href="kids_world.html">Aviation World</a>
+    <a class="nav-pill" href="kids_experience.html">My Passport</a>
+    <a class="nav-pill" href="kids_mission_map.html">Mission Map</a>
+    <a class="nav-pill" href="kids_badges.html">My Badges</a>
+    <a class="nav-pill" href="kids_story_hangar.html">Stories</a>
+    <a class="nav-pill" href="kids_wings_shop.html">Wings Shop</a>
+  </nav>
+</div></header>
 
-<section id="loginView" class="login">
- <span class="passport-badge" style="color:#0b5d85;background:#edf8fd">EXPLORER ACCESS</span>
- <h2>Open My Aviation Passport</h2>
- <p class="sub">Paste the private access code issued by Aviation Matrix. The code opens only this learner journey.</p>
- <div class="field"><label>PRIVATE ACCESS CODE</label><input id="tokenInput" placeholder="Paste access code"></div>
- <button class="btn primary" onclick="login()">Open Passport</button>
- <div id="loginMsg" class="msg"></div>
+<section id="loginView" class="wrap login-shell">
+ <div class="login-card">
+  <span class="kicker">🛂 MY AVIATION PASSPORT</span>
+  <h1 class="section-title" style="font-size:34px;margin-top:12px">Ready for your next adventure?</h1>
+  <p class="section-sub">Enter your Secret Flight Key and open your personal aviation world.</p>
+  <div class="field"><label>MY SECRET FLIGHT KEY</label><input id="tokenInput" placeholder="Enter your Secret Flight Key"></div>
+  <button class="kbtn primary" onclick="login()">Open My Passport ✈️</button>
+  <div id="loginMsg" style="font-size:11px;color:#b23b3b;margin-top:10px"></div>
+ </div>
+</section>
+<main id="app" class="hide">
+<section class="wrap" style="padding-top:24px">
+ <div class="hero-sky">
+  <div class="hero-content" style="min-height:330px">
+   <div class="profile-card" style="background:transparent;border:0;box-shadow:none;padding:0">
+    <img id="profilePhoto" class="avatar hide" alt="Explorer photo"><div id="profilePlaceholder" class="avatar-placeholder">✈️</div>
+    <div><span class="kicker">MY AVIATION PASSPORT</span><h1 id="learnerName" class="welcome">Welcome back, Explorer!</h1><p id="currentPath" class="hero-copy"></p>
+      <div class="hero-actions"><a class="kbtn primary" href="kids_mission_map.html">Start Next Mission</a><a class="kbtn sky" href="kids_badges.html">See My Badges</a></div>
+    </div>
+   </div>
+   <div class="aviation-scene"><div class="cloud c1"></div><div class="cloud c2"></div><div class="plane">✈️</div></div>
+  </div>
+ </div>
 </section>
 
-<main id="app" class="hide">
-<section class="hero"><div class="wrap">
- <div class="passport">
-  <div class="passport-main">
-   <img id="profilePhoto" class="profile-photo hide" alt="Learner profile photo">
-   <div id="profilePlaceholder" class="profile-placeholder">✈️</div>
-   <div><span class="passport-badge">AVIATION EXPLORER PASSPORT</span><h1 id="learnerName">Explorer</h1><p><strong id="journeyRef"></strong><br><span id="currentPath"></span></p></div>
-  </div>
-  <div class="stats">
-   <div class="stat"><small>Missions</small><strong id="sMissions">0</strong></div>
-   <div class="stat"><small>Stamps</small><strong id="sStamps">0</strong></div>
-   <div class="stat"><small>Badges</small><strong id="sBadges">0</strong></div>
-   <div class="stat"><small>Certificates</small><strong id="sCertificates">0</strong></div>
-  </div>
+<section class="section"><div class="wrap">
+ <h2 class="section-title">Look how far you've flown</h2><p class="section-sub">Every mission brings you one step closer to your next badge.</p>
+ <div class="stat-grid">
+  <div class="stat"><div class="icon">✈️</div><strong id="sMissions">0</strong><small>Missions Completed</small></div>
+  <div class="stat"><div class="icon">🛂</div><strong id="sStamps">0</strong><small>Stamps Collected</small></div>
+  <div class="stat"><div class="icon">🏅</div><strong id="sBadges">0</strong><small>Badges Earned</small></div>
+  <div class="stat"><div class="icon">🎓</div><strong id="sCertificates">0</strong><small>Certificates</small></div>
  </div>
 </div></section>
 
-<section><div class="wrap">
- <div class="grid">
-  <div class="card"><h3>My Levels</h3><div class="sub">Five stages from Junior Explorer to Aviation Career Passport.</div><div id="levels" class="levels"></div></div>
-  <div class="card"><h3>Current Level Seasons</h3><div class="sub">Complete 12 missions to finish a season and collect its badge.</div><div id="seasons" class="seasons"></div></div>
- </div>
- <div class="card"><h3>Mission Map</h3><div class="sub">Only the current and completed missions are open. Future missions stay locked until the journey reaches them.</div><div id="missions" class="missions"></div></div>
- <div class="grid">
-  <div class="card"><h3>My Rewards</h3><div class="sub">Stamps, season badges and level certificates collected through the Explorer Passport.</div><div id="rewards" class="rewards"></div></div>
-  <div class="card"><h3>My Learning Content</h3><div class="sub">Free, entitled and current program content appears unlocked. Paid content remains locked until access is granted.</div><div id="content" class="content-grid"></div></div>
- </div>
+<section class="section"><div class="wrap">
+ <div class="panel"><h2 class="section-title" style="font-size:23px">My current journey</h2><p class="section-sub" id="journeySentence">Your next adventure is waiting.</p><div class="progress-shell"><span id="journeyProgress" style="width:0%"></span></div></div>
 </div></section>
 </main>
-
+<footer id="footer" class="hide">Kids Aviation Matrix 360 • My Passport</footer>
 <script>
-const API='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/kids-experience-api';
-let token=localStorage.getItem('am_kids_portal_token')||'',data=null;
+const API='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/kids-experience-api';let token=localStorage.getItem('am_kids_portal_token')||'',data=null;
 async function api(action,payload={}){const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({action,...payload})});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||'Request failed');return d}
-async function login(){token=document.getElementById('tokenInput').value.trim();if(!token)return;localStorage.setItem('am_kids_portal_token',token);try{await load()}catch(e){localStorage.removeItem('am_kids_portal_token');token='';document.getElementById('loginMsg').textContent='Access code is invalid or expired.'}}
-function logout(){localStorage.removeItem('am_kids_portal_token');location.reload()}
-function pct(n,d){return d?Math.min(100,Math.round(n/d*100)):0}
-function mpMap(){return Object.fromEntries((data.mission_progress||[]).map(x=>[x.mission_id,x]))}
-function spMap(){return Object.fromEntries((data.season_progress||[]).map(x=>[x.season_id,x]))}
-function lpMap(){return Object.fromEntries((data.level_progress||[]).map(x=>[x.level_id,x]))}
-async function load(){data=await api('me');document.getElementById('loginView').classList.add('hide');document.getElementById('app').classList.remove('hide');document.getElementById('logoutBtn').classList.remove('hide');render()}
-function render(){
- const p=data.passport,s=data.summary||{};
- const photo=document.getElementById('profilePhoto'),ph=document.getElementById('profilePlaceholder');
- if(p.profile_photo_url){photo.src=p.profile_photo_url;photo.classList.remove('hide');ph.classList.add('hide')}else{photo.classList.add('hide');ph.classList.remove('hide')}
- document.getElementById('learnerName').textContent=p.learner_display_name||'Aviation Explorer';document.getElementById('journeyRef').textContent=p.journey_ref;
- document.getElementById('currentPath').textContent=[s.current_level_code,s.current_season_code,s.current_mission_code].filter(Boolean).join(' • ');
+async function login(){token=document.getElementById('tokenInput').value.trim();if(!token)return;localStorage.setItem('am_kids_portal_token',token);try{await load()}catch(e){localStorage.removeItem('am_kids_portal_token');token='';document.getElementById('loginMsg').textContent='That key did not open your Passport. Check it and try again ✈️'}}
+async function load(){data=await api('me');document.getElementById('loginView').classList.add('hide');document.getElementById('app').classList.remove('hide');document.getElementById('footer').classList.remove('hide');render()}
+function render(){const p=data.passport,s=data.summary||{},levels=data.levels||[],seasons=data.seasons||[],missions=data.missions||[];
+ const level=levels.find(x=>x.id===p.current_level_id),season=seasons.find(x=>x.id===p.current_season_id),mission=missions.find(x=>x.id===p.current_mission_id);
+ const photo=document.getElementById('profilePhoto'),ph=document.getElementById('profilePlaceholder');if(p.profile_photo_url){photo.src=p.profile_photo_url;photo.classList.remove('hide');ph.classList.add('hide')}else{photo.classList.add('hide');ph.classList.remove('hide')}
+ document.getElementById('learnerName').textContent='Welcome back, '+(p.learner_display_name||'Explorer')+'!';
+ document.getElementById('currentPath').textContent='You are exploring '+(level?.name||'your aviation journey')+'.';
  document.getElementById('sMissions').textContent=s.completed_missions||0;document.getElementById('sStamps').textContent=s.collected_stamps||0;document.getElementById('sBadges').textContent=s.season_badges||0;document.getElementById('sCertificates').textContent=s.certificates||0;
- const lm=lpMap();document.getElementById('levels').innerHTML=(data.levels||[]).map(l=>{const x=lm[l.id],active=p.current_level_id===l.id,done=x?.status==='completed';return `<div class="level ${active?'active':done?'':'locked'}"><div><strong>${l.code} • ${l.name}</strong><div class="sub">${l.age_range||''}</div></div><span class="status">${done?'Completed':active?'Current':'Locked'}</span></div>`}).join('');
- const sm=spMap(),curLevel=p.current_level_id;document.getElementById('seasons').innerHTML=(data.seasons||[]).filter(x=>x.level_id===curLevel).map(x=>{const q=sm[x.id]||{},n=q.completed_missions||0;return `<div class="season"><strong>${x.code} • ${x.name}</strong><small>${n}/12 missions • ${q.status||'locked'}</small><div class="progress"><span style="width:${pct(n,12)}%"></span></div></div>`}).join('');
- const mm=mpMap(),curSeason=p.current_season_id;document.getElementById('missions').innerHTML=(data.missions||[]).filter(x=>x.season_id===curSeason).map(m=>{const q=mm[m.id],st=q?.status||'locked',cl=st==='completed'?'done':st==='in_progress'?'active':'locked';return `<article class="mission ${cl}" ${st!=='locked'?`onclick="openMission('${m.id}')"`:''}><span class="status">${st}</span><div class="code">${m.code}</div><h4>${m.title||m.name}</h4><p>${m.big_question||m.learning_goal||''}</p></article>`}).join('');
- document.getElementById('rewards').innerHTML=`<div class="reward"><div class="icon">🛂</div><strong>${s.collected_stamps||0} Stamps</strong><small>Mission rewards</small></div><div class="reward"><div class="icon">🏅</div><strong>${s.season_badges||0} Badges</strong><small>Season completion</small></div><div class="reward"><div class="icon">🎓</div><strong>${s.certificates||0} Certificates</strong><small>Level completion</small></div><div class="reward"><div class="icon">✈️</div><strong>${s.completed_missions||0}/600</strong><small>Total mission journey</small></div>`;
- const items=(data.content||[]).filter(x=>x.accessible||x.level_id===p.current_level_id).slice(0,12);document.getElementById('content').innerHTML=items.length?items.map(x=>`<article class="content"><div class="cover">${x.content_type==='story'?'📖':x.content_type==='coloring'?'🎨':x.content_type==='song'?'🎵':'✈️'}</div><div class="body"><h4>${x.title}</h4><p>${x.short_description||''}</p>${x.accessible?`<button class="btn soft" onclick="openContent('${x.id}')">Open</button>`:`<span class="locked-chip">🔒 ${x.commercial_mode.replaceAll('_',' ')}</span>`}</div></article>`).join(''):'<div class="sub">No published learner content is linked yet.</div>';
+ const sm=(data.season_progress||[]).find(x=>x.season_id===p.current_season_id),done=sm?.completed_missions||0;
+ document.getElementById('journeySentence').textContent=(mission?'Next adventure: '+(mission.title||mission.name)+'. ':'')+(season?'You are flying through '+season.name+'.':'');
+ document.getElementById('journeyProgress').style.width=Math.min(100,Math.round(done/12*100))+'%';
 }
-async function openMission(id){const d=await api('mission',{mission_id:id});alert(`${d.mission.code}\\n\\n${d.mission.title||d.mission.name}\\n\\n${d.mission.big_question||''}\\n${d.mission.learning_goal||''}`)}
-async function openContent(id){const d=await api('content_assets',{content_item_id:id});if(!d.accessible)return alert('This content is locked.');if(!d.assets.length)return alert('Content is unlocked, but no learner file has been published yet.');const a=d.assets[0],u=await api('asset_url',{asset_id:a.id});window.open(u.url,'_blank')}
-if(token)load().catch(()=>logout());
+if(token)load().catch(()=>{localStorage.removeItem('am_kids_portal_token');token=''});
 </script>
+<nav class="mobile-kids-nav" aria-label="Kids navigation">
+ <a href="kids_world.html"><b>☁️</b>World</a>
+ <a href="kids_experience.html"><b>🛂</b>Passport</a>
+ <a href="kids_mission_map.html"><b>✈️</b>Missions</a>
+ <a href="kids_badges.html"><b>🏅</b>Badges</a>
+ <a href="kids_story_hangar.html"><b>📚</b>Stories</a>
+</nav>
+<div class="page-sparkles"></div>
+<a class="kids-back-home" href="kids_world.html" aria-label="Back to Aviation World">☁️</a>
+
 </body></html>
