@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+<defs>
+ <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#8edcff"/><stop offset=".58" stop-color="#dff7ff"/><stop offset="1" stop-color="#fff7d7"/></linearGradient>
+ <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c9efff" stop-opacity=".9"/><stop offset="1" stop-color="#7fcbe9" stop-opacity=".7"/></linearGradient>
+ <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#edf7fb"/><stop offset="1" stop-color="#cbdbe4"/></linearGradient>
+</defs>
+<rect width="1600" height="900" fill="url(#sky)"/>
+<g fill="#fff" opacity=".88">
+ <ellipse cx="220" cy="160" rx="180" ry="52"/><ellipse cx="360" cy="180" rx="150" ry="45"/>
+ <ellipse cx="1290" cy="145" rx="170" ry="48"/><ellipse cx="1420" cy="165" rx="145" ry="42"/>
+</g>
+<!-- terminal glass -->
+<path d="M0 470 H1600 V900 H0Z" fill="url(#floor)"/>
+<g stroke="#7daec5" stroke-width="10">
+ <rect x="120" y="295" width="1360" height="320" rx="28" fill="url(#glass)"/>
+ <path d="M390 295V615M660 295V615M930 295V615M1200 295V615"/>
+</g>
+<!-- runway outside -->
+<path d="M820 615 L1590 615 L1450 725 L670 725Z" fill="#879aa5"/>
+<path d="M900 664 H1450" stroke="#fff" stroke-width="12" stroke-dasharray="42 30"/>
+<!-- plane -->
+<g transform="translate(1060 390) rotate(-7)" fill="#fff" stroke="#24506d" stroke-width="5">
+ <path d="M0 45 C145 5 270 10 395 55 L350 82 C230 63 135 65 10 96Z"/>
+ <path d="M165 56 L235 0 L270 4 L225 63Z"/>
+ <path d="M172 72 L235 130 L270 129 L222 68Z"/>
+ <circle cx="64" cy="74" r="7" fill="#24506d"/><circle cx="90" cy="69" r="7" fill="#24506d"/><circle cx="116" cy="64" r="7" fill="#24506d"/>
+</g>
+<!-- sign -->
+<g transform="translate(155 505)">
+ <rect width="330" height="120" rx="24" fill="#12345a"/>
+ <text x="34" y="50" fill="#fff" font-family="Arial" font-size="30" font-weight="700">KIDS AVIATION WORLD</text>
+ <text x="34" y="88" fill="#bfeeff" font-family="Arial" font-size="20">DISCOVER • LEARN • EXPLORE • FLY</text>
+</g>
+<!-- decorative route -->
+<path d="M180 235 C430 140 560 250 775 185 C1000 115 1120 245 1390 210" fill="none" stroke="#fff" stroke-width="5" stroke-dasharray="14 16" opacity=".7"/>
+</svg>

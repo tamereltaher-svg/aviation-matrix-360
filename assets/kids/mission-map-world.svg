@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#dff8ff"/><stop offset=".55" stop-color="#f4f0ff"/><stop offset="1" stop-color="#fff6ce"/></linearGradient></defs>
+<rect width="1600" height="900" fill="url(#bg)"/>
+<g opacity=".75" fill="#fff"><ellipse cx="250" cy="170" rx="190" ry="55"/><ellipse cx="1320" cy="190" rx="210" ry="62"/></g>
+<path d="M220 690 C360 500 520 610 650 430 C790 240 940 475 1080 325 C1210 190 1320 295 1430 190" fill="none" stroke="#64bddd" stroke-width="24" stroke-linecap="round" stroke-dasharray="10 42"/>
+<g fill="#fff" stroke="#2f83a8" stroke-width="8">
+ <circle cx="235" cy="675" r="55"/><circle cx="515" cy="580" r="55"/><circle cx="725" cy="390" r="55"/><circle cx="1030" cy="355" r="55"/><circle cx="1305" cy="250" r="55"/>
+</g>
+<g font-family="Arial" font-size="44" text-anchor="middle">
+ <text x="235" y="690">🧳</text><text x="515" y="595">🛂</text><text x="725" y="405">🛫</text><text x="1030" y="370">☁</text><text x="1305" y="265">🏅</text>
+</g>
+<g transform="translate(840 220) rotate(-12)" fill="#12345a"><path d="M0 30 L150 0 110 50 150 100 0 70 48 50Z"/></g>
+</svg>
