@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kids Aviation Final Control Tower</title>
+<style>
+:root{--navy:#08233b;--sky:#0b6f9f;--muted:#6c8190;--line:#dbe7ed;--bg:#f4f9fb;--good:#1f7a50;--warn:#a66c00;--bad:#b13d3d}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:#17384f}.wrap{max-width:1250px;margin:auto;padding:22px}
+.hero{background:linear-gradient(135deg,#061f35,#0a608c 65%,#513b9e);color:#fff;border-radius:26px;padding:25px;box-shadow:0 20px 55px rgba(5,30,48,.14)}
+.hero-top{display:flex;justify-content:space-between;gap:20px;align-items:center}.hero small{font-weight:900;letter-spacing:.12em;color:#cce9f6}.hero h1{font-size:34px;margin:7px 0}.hero p{margin:0;color:#d7edf7;max-width:760px;line-height:1.55}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:12px;padding:11px 14px;font-weight:900;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}.white{background:#fff;color:#0a567d}.soft{background:#edf7fb;color:#0b5d85;border:1px solid #d5e9f2}.navy{background:var(--navy);color:#fff}
+.healthbar{margin-top:18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}.health{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);font-size:11px;font-weight:950}.dot{width:9px;height:9px;border-radius:50%;background:#cbd5da}.dot.healthy{background:#65e3a1}.dot.warning{background:#ffd36c}.dot.critical{background:#ff8585}
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:11px;margin:18px 0}.kpi{background:#fff;border:1px solid var(--line);border-radius:18px;padding:15px;box-shadow:0 8px 26px rgba(5,30,48,.05)}.kpi small{font-size:9px;font-weight:950;color:var(--muted);text-transform:uppercase}.kpi strong{display:block;font-size:25px;color:var(--navy);margin-top:5px}
+.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-top:16px}.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:17px;box-shadow:0 8px 24px rgba(5,30,48,.04)}.card h3{margin:0 0 5px;color:var(--navy)}.sub{font-size:11px;color:var(--muted);line-height:1.5}
+.checks{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:13px}.check{border:1px solid var(--line);border-radius:13px;padding:10px;display:flex;gap:9px;align-items:flex-start}.ico{width:25px;height:25px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:950;background:#eef3f5}.ico.pass{background:#e5f6ec;color:var(--good)}.ico.warning{background:#fff5d9;color:var(--warn)}.ico.fail{background:#fde8e8;color:var(--bad)}.check strong{font-size:11px;display:block}.check small{font-size:9px;color:var(--muted);display:block;margin-top:3px}
+.level-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-top:13px}.level{border:1px solid var(--line);border-radius:15px;padding:12px;background:#fbfdfe}.level b{font-size:12px}.level small{display:block;color:var(--muted);margin-top:3px}.metricrow{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:9px}.metric{background:#f0f6f9;border-radius:9px;padding:7px}.metric strong{font-size:14px}.metric small{font-size:8px}
+.alert{border-left:4px solid var(--line);background:#fbfdfe;padding:11px;border-radius:10px;margin-top:8px}.alert.critical{border-color:var(--bad)}.alert.warning{border-color:#e4a42f}.alert strong{font-size:11px}.alert p{font-size:10px;color:var(--muted);margin:4px 0}
+.rules{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}.rule{border:1px solid var(--line);border-radius:13px;padding:10px}.rule .code{font-size:8px;font-weight:950;color:#0b6f9f}.rule strong{display:block;font-size:11px;margin:4px 0}.rule p{font-size:9px;color:var(--muted);line-height:1.45;margin:0}
+.table{width:100%;border-collapse:collapse;margin-top:11px;font-size:10px}.table th,.table td{text-align:left;padding:8px;border-bottom:1px solid #edf2f5}.table th{font-size:8px;text-transform:uppercase;color:var(--muted)}
+.empty{color:var(--muted);font-size:11px;padding:15px 0}.error{color:var(--bad);font-size:11px;margin-top:10px}
+@media(max-width:1000px){.kpis{grid-template-columns:repeat(3,1fr)}.grid{grid-template-columns:1fr}.level-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:620px){.kpis{grid-template-columns:repeat(2,1fr)}.checks,.rules,.level-grid{grid-template-columns:1fr}.hero-top{flex-direction:column;align-items:flex-start}}
+</style></head>
+<body><div class="wrap">
+<section class="hero">
+ <div class="hero-top"><div><small>KIDS AVIATION MATRIX 360 • PHASE 8/8</small><h1>Final Control Tower</h1><p>One screen for curriculum integrity, learner experience, publishing, commercial readiness, automation and launch health.</p></div>
+ <div class="actions"><button class="btn white" onclick="runHealth()">Run Health Check</button><a class="btn white" href="kids_passports_admin.html">Passport Manager</a><a class="btn white" href="store_admin.html">Main Control Tower</a></div></div>
+ <div class="healthbar"><span class="health"><span id="healthDot" class="dot"></span><span id="healthText">Loading system health…</span></span><span id="healthTime" style="font-size:10px;color:#d4eaf5"></span></div>
+</section>
+
+<div class="kpis">
+ <div class="kpi"><small>Levels</small><strong id="kLevels">—</strong></div><div class="kpi"><small>Seasons</small><strong id="kSeasons">—</strong></div><div class="kpi"><small>Missions</small><strong id="kMissions">—</strong></div><div class="kpi"><small>Script Pages</small><strong id="kScripts">—</strong></div><div class="kpi"><small>Artwork Pages</small><strong id="kArtwork">—</strong></div><div class="kpi"><small>Books</small><strong id="kBooks">—</strong></div>
+</div>
+
+<div class="grid">
+ <section class="card"><h3>Launch Readiness</h3><div class="sub">18 hard checks across curriculum, production, rewards, security, publishing, experience, governance and operations.</div><div id="checks" class="checks"></div></section>
+ <section class="card"><h3>Open Alerts</h3><div class="sub">Only current unresolved issues appear here.</div><div id="alerts"></div></section>
+</div>
+
+<section class="card" style="margin-top:16px"><h3>Level Analytics</h3><div class="sub">Structural coverage for all five KAM learning stages.</div><div id="levels" class="level-grid"></div></section>
+
+<div class="grid">
+ <section class="card"><h3>Explorer Experience</h3><table class="table"><tbody id="experience"></tbody></table></section>
+ <section class="card"><h3>Publishing & Commercial</h3><table class="table"><tbody id="commercial"></tbody></table></section>
+</div>
+
+<section class="card" style="margin-top:16px"><h3>Active Automation Rules</h3><div class="sub">Rules that keep the Kids system controlled without manual checking of every record.</div><div id="rules" class="rules"></div></section>
+<div id="err" class="error"></div>
+</div>
+<script>
+const API='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/kids-control-tower-api';const token=localStorage.getItem('am_staff_token')||'';
+async function api(action){const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({action})});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.detail||d.error||'Request failed');return d}
+const n=v=>Number(v||0).toLocaleString();const row=(a,b)=>`<tr><th>${a}</th><td><strong>${n(b)}</strong></td></tr>`;
+async function load(action='dashboard'){try{if(!token)throw new Error('Open this page after Staff Login in the Main Control Tower.');const d=await api(action),e=d.executive||{},h=d.health||{};
+ ['Levels','Seasons','Missions','Scripts','Artwork','Books'].forEach(x=>{});document.getElementById('kLevels').textContent=n(e.levels);document.getElementById('kSeasons').textContent=n(e.seasons);document.getElementById('kMissions').textContent=n(e.missions);document.getElementById('kScripts').textContent=n(e.script_pages);document.getElementById('kArtwork').textContent=n(e.artwork_pages);document.getElementById('kBooks').textContent=n(e.books);
+ const st=h.overall_status||'unknown';document.getElementById('healthDot').className='dot '+st;document.getElementById('healthText').textContent=st==='healthy'?`HEALTHY • ${h.checks_passed||0}/${h.checks_total||0} checks passed`:st.toUpperCase()+` • ${h.checks_failed||0} failed`;document.getElementById('healthTime').textContent=h.snapshot_at?`Last check: ${new Date(h.snapshot_at).toLocaleString()}`:'';
+ document.getElementById('checks').innerHTML=(d.checks||[]).map(c=>{const s=c.result?.status||'warning';return `<div class="check"><span class="ico ${s}">${s==='pass'?'✓':s==='fail'?'!':'•'}</span><div><strong>${c.code} • ${c.title}</strong><small>${c.result?.detail||c.requirement}</small></div></div>`}).join('');
+ document.getElementById('alerts').innerHTML=(d.alerts||[]).length?(d.alerts||[]).map(a=>`<div class="alert ${a.severity}"><strong>${a.severity.toUpperCase()} • ${a.title}</strong><p>${a.detail||''}</p></div>`).join(''):'<div class="empty">✓ No open alerts.</div>';
+ document.getElementById('levels').innerHTML=(d.levels||[]).map(l=>`<div class="level"><b>${l.code} • ${l.name}</b><small>${l.age_range||''}</small><div class="metricrow"><div class="metric"><strong>${l.seasons}</strong><small>SEASONS</small></div><div class="metric"><strong>${l.missions}</strong><small>MISSIONS</small></div><div class="metric"><strong>${l.books}</strong><small>BOOKS</small></div></div><div class="metricrow"><div class="metric"><strong>${l.script_pages}</strong><small>SCRIPT</small></div><div class="metric"><strong>${l.artwork_pages}</strong><small>ARTWORK</small></div><div class="metric"><strong>${l.stamps}</strong><small>STAMPS</small></div></div></div>`).join('');
+ const x=d.experience||{};document.getElementById('experience').innerHTML=row('Total Passports',x.passports_total)+row('Active Passports',x.passports_active)+row('Completed Missions',x.missions_completed)+row('Stamps Awarded',x.stamps_awarded)+row('Completed Seasons',x.seasons_completed)+row('Completed Levels',x.levels_completed)+row('Certificates Issued',x.certificates_issued)+row('Active Entitlements',x.active_entitlements)+row('Events • 30 Days',x.events_30d);
+ const c=d.commercial||{};document.getElementById('commercial').innerHTML=row('Books',c.books_total)+row('Books Linked to Store',c.books_store_linked)+row('Kids Store Products',c.kids_store_products)+row('Active Kids Products',c.kids_store_active)+row('Ready for Sale',c.ready_for_sale)+row('Active Zero Price',c.active_zero_price);
+ document.getElementById('rules').innerHTML=(d.automation_rules||[]).map(r=>`<div class="rule"><span class="code">${r.code} • ${r.domain}</span><strong>${r.name}</strong><p>${r.action_description}</p></div>`).join('');document.getElementById('err').textContent='';
+ }catch(e){document.getElementById('err').textContent=e.message}}
+async function runHealth(){await load('run_health')}
+load();
+</script></body></html>
