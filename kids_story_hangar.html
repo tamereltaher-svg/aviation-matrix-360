@@ -1,45 +1,14 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Story Hangar</title><link rel="stylesheet" href="kids_cartoon_premium.css"></head>
-<body class="cp-page">
-<header class="kids-top"><div class="wrap top-inner">
-  <a class="logo" href="kids_world.html">AVIATION MATRIX<span>KIDS AVIATION WORLD</span></a>
-  <nav class="kids-nav">
-    <a class="nav-pill" href="kids_world.html">Aviation World</a>
-    <a class="nav-pill" href="kids_experience.html">My Passport</a>
-    <a class="nav-pill" href="kids_mission_map.html">Mission Map</a>
-    <a class="nav-pill" href="kids_badges.html">My Badges</a>
-    <a class="nav-pill" href="kids_story_hangar.html">Stories</a>
-    <a class="nav-pill" href="kids_wings_shop.html">Wings Shop</a>
-  </nav>
-</div></header>
-
-<main>
-<section class="wrap" style="padding-top:24px">
- <div class="zone-hero"><div class="zone-hero-grid">
-  <div><span class="kicker">📖 STORY HANGAR</span><h1 class="zone-title">Story Hangar</h1><p class="zone-copy">Fly into a world of aviation stories, characters and discoveries. Every story is designed to make learning feel like an adventure.</p>
-   <div class="zone-tabs"><a class="zone-tab" href="kids_story_hangar.html">📖 Stories</a><a class="zone-tab" href="kids_coloring_corner.html">🎨 Coloring</a><a class="zone-tab" href="kids_music_cabin.html">🎵 Music</a><a class="zone-tab" href="kids_activities.html">🧩 Activities</a></div>
-  </div><div style="text-align:center"><div class="zone-icon">📚</div></div>
- </div></div>
-</section>
-<section class="section"><div class="wrap"><h2 class="section-title">Ready for something fun?</h2><p class="section-sub">New adventures appear here whenever they are ready.</p><div id="grid" class="library-grid"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div></div></section>
-</main><footer>Kids Aviation Matrix 360 • Story Hangar</footer>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Story Hangar</title><link rel="stylesheet" href="kids_cartoon_premium.css"></head><body><header class="kids-top"><div class="wrap top-inner">
+<a class="logo" href="kids_world.html">AVIATION MATRIX<span>KIDS AVIATION WORLD</span></a>
+<nav class="kids-nav">
+<a class="nav-pill" href="kids_world.html">Aviation World</a><a class="nav-pill" href="kids_experience.html">My Passport</a><a class="nav-pill" href="kids_mission_map.html">Mission Map</a><a class="nav-pill" href="kids_badges.html">My Badges</a><a class="nav-pill" href="kids_story_hangar.html">Stories</a><a class="nav-pill" href="kids_wings_shop.html">Wings Shop</a>
+</nav></div></header>
+<section class="page-hero library-hero"><div class="overlay"></div><div class="wrap inner"><span class="eyebrow">STORY HANGAR</span><h1 class="page-title">Stories that make aviation feel alive.</h1><p class="page-lead">Aviation learning designed to feel like part of the story, not a lesson screen.</p></div></section>
+<section class="section"><div class="wrap"><div style="display:grid;grid-template-columns:1fr 170px;gap:18px;align-items:end"><div><h2 class="section-title">Ready for something fun?</h2><p class="section-sub">New adventures appear here whenever they are ready.</p></div><img src="assets/kids/ava-wings.png" style="height:180px;justify-self:center;margin-bottom:-16px" alt=""></div><div id="grid" class="library-grid"><div class="empty"><strong>Loading your aviation adventures…</strong></div></div></div></section>
+<footer>Kids Aviation Matrix 360° • Story Hangar</footer>
 <script>
-const API='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/kids-public-catalog',ASSET='https://vsuekfzyebqnhthyvwpf.supabase.co/storage/v1/object/public/kids-assets/',TYPES=['story', 'around_the_world'];
-const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-const FRIENDLY={"story": "Aviation Story", "around_the_world": "Around the World", "coloring": "Color & Create", "printable": "Print & Play", "worksheet": "Activity Sheet", "song": "Aviation Song", "audio": "Listen & Learn", "video": "Watch & Discover", "activity": "Aviation Activity", "mission": "Mission Activity", "quiz": "Quick Challenge", "character_activity": "Character Adventure"};const friendly=t=>FRIENDLY[t]||'Aviation Adventure';const icon=t=>t==='story'?'📖':t==='coloring'?'🎨':t==='song'||t==='audio'?'🎵':t==='video'?'🎬':t==='worksheet'||t==='printable'?'✏️':'🧩';
-async function load(){try{const r=await fetch(API);const d=await r.json();const items=(d.items||[]).filter(x=>TYPES.includes(x.content_type));render(items)}catch(e){render([])}}
-function render(items){const g=document.getElementById('grid');if(!items.length){g.innerHTML=`<div class="empty-world" style="grid-column:1/-1"><div class="big">📚</div><strong>Your Story Hangar is getting ready</strong><div>New adventures will appear here as soon as they are published.</div></div>`;return}
-g.innerHTML=items.map(x=>{const cover=x.cover_image_path?ASSET+x.cover_image_path:'';const ages=(x.age_groups||[]).map(a=>a.label).join(' • ');return `<article class="library-card "><div class="library-cover">${cover?`<img src="${cover}" alt="${esc(x.title)}">`:icon(x.content_type)}</div><div class="library-body"><span class="friendly-label">${friendly(x.content_type)}</span><h3>${esc(x.title)}</h3><p>${esc(x.short_description||'A new aviation adventure is waiting for you.')}</p><div class="library-meta">${ages?`<span class="meta-chip">👧 ${esc(ages)}</span>`:''}${x.duration_minutes?`<span class="meta-chip">⏱️ ${x.duration_minutes} min</span>`:''}<div class="card-action"><span class="tiny-action">✨ Explore</span><a class="tiny-action" href="kids_experience.html">Open My Passport →</a></div></div></article>`}).join('')}
+const API='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/kids-public-catalog',ASSET='https://vsuekfzyebqnhthyvwpf.supabase.co/storage/v1/object/public/kids-assets/',TYPES=["story", "around_the_world"],FRIENDLY={"story": "Aviation Story", "around_the_world": "Around the World", "coloring": "Color & Create", "printable": "Print & Play", "worksheet": "Activity Sheet", "song": "Aviation Song", "audio": "Listen & Learn", "video": "Watch & Discover", "activity": "Aviation Activity", "mission": "Mission Activity", "quiz": "Quick Challenge", "character_activity": "Character Adventure"};const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));const friendly=t=>FRIENDLY[t]||'Aviation Adventure';
+async function load(){try{const r=await fetch(API);const d=await r.json();render((d.items||[]).filter(x=>TYPES.includes(x.content_type)))}catch{render([])}}
+function render(items){const g=document.getElementById('grid');if(!items.length){g.innerHTML='<div class="empty" style="grid-column:1/-1"><strong>This hangar is getting ready</strong>New adventures will appear here as soon as they are published.</div>';return}g.innerHTML=items.map(x=>{const cover=x.cover_image_path?ASSET+x.cover_image_path:'';const ages=(x.age_groups||[]).map(a=>a.label).join(' • ');return `<article class="library-card"><div class="library-cover">${cover?`<img src="${cover}" alt="${esc(x.title)}">`:'<img src="assets/kids/ava-portrait.png" alt="">'}</div><div class="library-body"><span class="pill">${friendly(x.content_type)}</span><h3>${esc(x.title)}</h3><p>${esc(x.short_description||'A new aviation adventure is waiting for you.')}</p><div class="meta">${ages?`<span>${esc(ages)}</span>`:''}${x.duration_minutes?`<span>${x.duration_minutes} min</span>`:''}</div></div></article>`}).join('')}
 load();
-</script>
-<nav class="mobile-kids-nav" aria-label="Kids navigation">
- <a href="kids_world.html"><b>☁️</b>World</a>
- <a href="kids_experience.html"><b>🛂</b>Passport</a>
- <a href="kids_mission_map.html"><b>✈️</b>Missions</a>
- <a href="kids_badges.html"><b>🏅</b>Badges</a>
- <a href="kids_story_hangar.html"><b>📚</b>Stories</a>
-</nav>
-<div class="page-sparkles"></div>
-<a class="kids-back-home" href="kids_world.html" aria-label="Back to Aviation World">☁️</a>
-
-</body></html>
+</script><nav class="mobile-kids-nav"><a href="kids_world.html"><b>☁</b>World</a><a href="kids_experience.html"><b>🛂</b>Passport</a><a href="kids_mission_map.html"><b>✈</b>Missions</a><a href="kids_badges.html"><b>★</b>Badges</a><a href="kids_story_hangar.html"><b>▤</b>Stories</a></nav><a class="kids-back-home" href="kids_world.html">☁</a></body></html>
