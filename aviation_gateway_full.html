@@ -288,9 +288,151 @@ footer{padding:30px;text-align:center;color:var(--muted)}
   .banner{display:block}
   .banner .btn{margin-top:15px}
 }
+
+/* Kids Aviation Gateway • Phase 3 */
+.kids-zone{
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(circle at 12% 8%,rgba(125,211,252,.22),transparent 26%),
+    radial-gradient(circle at 88% 14%,rgba(244,114,182,.16),transparent 27%),
+    linear-gradient(180deg,#f7fcff 0%,#ffffff 100%);
+}
+.kids-zone:before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;
+  background-image:radial-gradient(#b8dceb 1px,transparent 1px);
+  background-size:24px 24px;
+}
+.kids-zone .wrap{position:relative;z-index:1}
+.kids-zone-head{
+  display:grid;grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);
+  gap:28px;align-items:center;margin-bottom:26px
+}
+.kids-zone-copy .eyebrow{
+  display:inline-flex;background:#e9f7ff;color:#0b5c87;border:1px solid #cbe9f6;
+  padding:7px 10px;border-radius:999px;font-size:10px;font-weight:950;letter-spacing:.08em
+}
+.kids-zone-copy h3{
+  font-size:42px;line-height:1.04;margin:12px 0 12px;letter-spacing:-.035em;color:#08233b
+}
+.kids-zone-copy p{font-size:15px;line-height:1.75;color:#5d7282;max-width:760px}
+.kids-zone-panel{
+  border:1px solid #d8e7ef;background:rgba(255,255,255,.86);
+  border-radius:24px;padding:18px;box-shadow:0 18px 42px rgba(6,25,43,.08);backdrop-filter:blur(10px)
+}
+.kids-zone-panel strong{display:block;font-size:15px;margin-bottom:7px;color:#08233b}
+.kids-zone-panel p{font-size:12px;color:#6b7f8d;line-height:1.55;margin:0 0 12px}
+.kids-shortcuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.kids-shortcuts button{
+  border:1px solid #d8e7ef;background:#f8fcfe;color:#12354d;border-radius:12px;
+  padding:10px 8px;font-weight:900;font-size:11px;cursor:pointer
+}
+.kids-shortcuts button:hover{background:#eaf7fd;border-color:#bbe3f4}
+.kids-tabs{
+  display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 20px
+}
+.kids-tabs button{
+  border:1px solid #d8e5ec;background:#fff;color:#34556b;padding:9px 13px;
+  border-radius:999px;font-weight:900;font-size:11px;cursor:pointer
+}
+.kids-tabs button.active,.kids-tabs button:hover{
+  background:#0b5c87;color:#fff;border-color:#0b5c87
+}
+.kids-public-grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px
+}
+.kids-public-card{
+  overflow:hidden;border:1px solid #d9e7ee;background:#fff;border-radius:23px;
+  box-shadow:0 12px 34px rgba(6,25,43,.07);
+  transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease
+}
+.kids-public-card:hover{
+  transform:translateY(-5px);box-shadow:0 24px 52px rgba(6,25,43,.14);border-color:#b8ddeb
+}
+.kids-public-media{
+  height:210px;position:relative;overflow:hidden;
+  background:
+    radial-gradient(circle at 75% 20%,rgba(92,200,255,.28),transparent 28%),
+    linear-gradient(135deg,#08233b,#0d6b9b)
+}
+.kids-public-media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+.kids-public-card:hover .kids-public-media img{transform:scale(1.03)}
+.kids-public-media:after{
+  content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,21,35,.02) 20%,rgba(4,21,35,.78) 100%)
+}
+.kids-public-icon{
+  height:100%;display:grid;place-items:center;font-size:58px;color:#e6f7ff
+}
+.kids-type-badge{
+  position:absolute;z-index:3;top:13px;left:13px;background:rgba(255,255,255,.95);color:#0b5c87;
+  padding:6px 9px;border-radius:999px;font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.04em
+}
+.kids-media-title{
+  position:absolute;z-index:3;left:15px;right:15px;bottom:14px;color:#fff;font-size:21px;
+  line-height:1.08;font-weight:950;text-shadow:0 3px 14px rgba(0,0,0,.4)
+}
+.kids-public-body{padding:16px}
+.kids-public-body p{font-size:12px;color:#657b8b;line-height:1.58;margin:0 0 12px;min-height:38px}
+.kids-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:13px}
+.kids-meta span{
+  display:inline-flex;padding:5px 8px;border-radius:999px;background:#f0f6f9;color:#4f6878;
+  font-size:9px;font-weight:900
+}
+.kids-card-footer{
+  padding-top:12px;border-top:1px solid #eef3f6;display:flex;justify-content:space-between;gap:10px;align-items:center
+}
+.kids-card-footer .kids-price small{display:block;color:#8796a0;font-size:8px;font-weight:950;text-transform:uppercase}
+.kids-card-footer .kids-price strong{font-size:17px;color:#08233b}
+.kids-card-footer button{
+  border:0;border-radius:12px;background:#0b5c87;color:#fff;padding:10px 13px;font-weight:900;font-size:11px;cursor:pointer
+}
+.kids-card-footer button.alt{background:#eef6fa;color:#0b5279;border:1px solid #d5e7f0}
+.kids-character-strip{
+  display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:11px;margin:22px 0 26px
+}
+.kids-character{
+  text-align:center;border:1px solid #dce8ee;background:#fff;border-radius:18px;padding:13px 8px;
+  box-shadow:0 8px 22px rgba(6,25,43,.05)
+}
+.kids-character-photo{
+  width:72px;height:72px;margin:0 auto 9px;border-radius:50%;overflow:hidden;display:grid;place-items:center;
+  background:linear-gradient(135deg,#dff5ff,#eceaff);font-size:32px;border:3px solid #fff;box-shadow:0 5px 16px rgba(6,25,43,.09)
+}
+.kids-character-photo img{width:100%;height:100%;object-fit:cover}
+.kids-character strong{display:block;font-size:11px;color:#17384f}
+.kids-character small{display:block;margin-top:3px;color:#82939e;font-size:8.5px;line-height:1.25}
+.kids-empty-public{
+  grid-column:1/-1;border:1px dashed #c9dce6;background:rgba(255,255,255,.82);border-radius:20px;
+  padding:34px;text-align:center;color:#6b7f8d
+}
+.kids-empty-public strong{display:block;font-size:17px;color:#17384f;margin-bottom:5px}
+.kids-detail-hero{
+  display:grid;grid-template-columns:minmax(220px,.8fr) minmax(0,1.2fr);gap:18px;align-items:start
+}
+.kids-detail-cover{
+  min-height:260px;border-radius:18px;overflow:hidden;background:linear-gradient(135deg,#08233b,#0d6b9b);display:grid;place-items:center;font-size:70px
+}
+.kids-detail-cover img{width:100%;height:100%;max-height:330px;object-fit:cover}
+.kids-detail-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.kids-detail-actions button,.kids-detail-actions a{
+  border:0;border-radius:12px;background:#0b5c87;color:#fff;padding:11px 14px;font-weight:900;font-size:11px;cursor:pointer;text-decoration:none
+}
+.kids-detail-actions .secondary{background:#eef6fa;color:#0b5279;border:1px solid #d5e7f0}
+@media(max-width:1000px){
+  .kids-public-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kids-character-strip{grid-template-columns:repeat(4,1fr)}
+  .kids-zone-head{grid-template-columns:1fr}
+}
+@media(max-width:680px){
+  .kids-public-grid,.kids-detail-hero{grid-template-columns:1fr}
+  .kids-character-strip{grid-template-columns:repeat(2,1fr)}
+  .kids-zone-copy h3{font-size:32px}
+}
+
 </style>
 
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js">
+window.addEventListener('DOMContentLoaded',()=>{loadKidsPublic()});
+</script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
 
 </head>
@@ -299,7 +441,7 @@ footer{padding:30px;text-align:center;color:var(--muted)}
 <div id="adminPreviewBar" class="admin-preview">
   <div class="admin-wrap">
     <div class="left">
-      <span class="mode">ADMIN PREVIEW MODE • STABLE BUILD 2026.08.22.5 • PREMIUM PROGRAM CARDS</span>
+      <span class="mode">ADMIN PREVIEW MODE • STABLE BUILD 2026.08.23.2 • KIDS GATEWAY</span>
       <span id="previewText">Viewing Customer Gateway</span>
     </div>
     <div class="admin-actions">
@@ -322,6 +464,7 @@ footer{padding:30px;text-align:center;color:var(--muted)}
       <a href="#gateway">Gateway</a>
       <a href="#paths">Paths</a>
       <a href="#programs">Programs</a>
+      <a href="#kids-aviation">Kids Aviation</a>
       <a href="#contact">Talk to Us</a>
       <a class="cta" href="#paths">Get Started</a>
     </nav>
@@ -378,6 +521,64 @@ footer{padding:30px;text-align:center;color:var(--muted)}
       <div class="offer"><h4>Multi-Select Add-ons</h4><p>Select multiple extras together: assessments, certificates, reports, parent sessions, branding, and more.</p></div>
       <div class="offer"><h4>Aviation Store</h4><p>Add notebooks, mugs, kits, uniforms, badges, backpacks, and personalized student products.</p></div>
       <div class="offer"><h4>Consultation & Meetings</h4><p>Book an online meeting or request a call back with your preferred contact time.</p></div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section kids-zone" id="kids-aviation">
+  <div class="wrap">
+    <div class="kids-zone-head">
+      <div class="kids-zone-copy">
+        <span class="eyebrow">KIDS AVIATION MATRIX • DISCOVER • LEARN • CREATE</span>
+        <h3>A whole aviation world built for young explorers.</h3>
+        <p>
+          Meet the Aviation Matrix characters, discover stories, coloring, songs, activities and Around The World experiences,
+          then continue into nursery or school programs and selected Kids Aviation products.
+        </p>
+        <div class="ctas" style="margin-top:18px">
+          <button class="btn sky" onclick="scrollKidsContent()">Explore Kids Content</button>
+          <button class="btn ghost" style="color:#0b5279;border-color:#cce6f1;background:#fff" onclick="openReady('nursery')">View Kids Programs</button>
+        </div>
+      </div>
+      <aside class="kids-zone-panel">
+        <strong>Choose what you want to explore</strong>
+        <p>Everything shown here is controlled live from the Kids Content Library in the Control Tower.</p>
+        <div class="kids-shortcuts">
+          <button onclick="setKidsFilter('story')">📖 Stories</button>
+          <button onclick="setKidsFilter('coloring')">🎨 Coloring</button>
+          <button onclick="setKidsFilter('song')">🎵 Songs</button>
+          <button onclick="setKidsFilter('activity')">🧩 Activities</button>
+          <button onclick="setKidsFilter('around_the_world')">🌍 Around the World</button>
+          <button onclick="openStore('nursery')">🛍 Kids Store</button>
+        </div>
+      </aside>
+    </div>
+
+    <div class="title" style="margin-bottom:12px">
+      <h3 style="font-size:25px">Meet the Characters</h3>
+      <p>Stories and learning experiences can be connected to one or more Aviation Matrix characters.</p>
+    </div>
+    <div id="kidsCharacters" class="kids-character-strip">
+      <div class="kids-empty-public">Loading Aviation Matrix characters…</div>
+    </div>
+
+    <div id="kidsContentStart"></div>
+    <div class="title" style="margin-bottom:12px">
+      <h3 style="font-size:25px">Kids Content Library</h3>
+      <p>Only published content appears here. Use the filters to explore the current live library.</p>
+    </div>
+    <div class="kids-tabs" id="kidsPublicTabs">
+      <button class="active" data-filter="all" onclick="setKidsFilter('all',this)">All</button>
+      <button data-filter="story" onclick="setKidsFilter('story',this)">📖 Stories</button>
+      <button data-filter="coloring" onclick="setKidsFilter('coloring',this)">🎨 Coloring</button>
+      <button data-filter="song" onclick="setKidsFilter('song',this)">🎵 Songs</button>
+      <button data-filter="activity" onclick="setKidsFilter('activity',this)">🧩 Activities</button>
+      <button data-filter="around_the_world" onclick="setKidsFilter('around_the_world',this)">🌍 Around The World</button>
+      <button data-filter="printable" onclick="setKidsFilter('printable',this)">🖨 Printables</button>
+    </div>
+    <div id="kidsPublicGrid" class="kids-public-grid">
+      <div class="kids-empty-public"><strong>Loading Kids Aviation…</strong>Please wait a moment.</div>
     </div>
   </div>
 </section>
@@ -476,7 +677,12 @@ const STORE_SUPABASE_KEY='sb_publishable_sRvoFKXyDEzQPLaAk3xZOQ_RLVxh5g3';
 const STORE_IMAGE_BASE=STORE_SUPABASE_URL+'/storage/v1/object/public/product-images/';
 const PROGRAM_CATALOG_API=STORE_SUPABASE_URL+'/functions/v1/program-catalog';
 const PROGRAM_IMAGE_BASE=STORE_SUPABASE_URL+'/storage/v1/object/public/program-images/';
+const KIDS_PUBLIC_API=STORE_SUPABASE_URL+'/functions/v1/kids-public-catalog';
+const KIDS_ASSET_BASE=STORE_SUPABASE_URL+'/storage/v1/object/public/kids-assets/';
 let liveProgramsLoaded=false;
+let kidsPublic={items:[],characters:[],categories:[],relations:{assets:[],age_groups:[],characters:[],programs:[],products:[]}};
+let kidsPublicLoaded=false;
+let kidsPublicFilter='all';
 const GATEWAY_SUBMIT_API='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/gateway-submit';
 let requestContext={};
 let lastRequestReceipt=null;
@@ -515,6 +721,140 @@ audiences.forEach(a=>{
   </div>`;
  grid.appendChild(el);
 });
+
+
+function kidsPublicEmoji(type){
+ return ({story:'📖',coloring:'🎨',song:'🎵',activity:'🧩',mission:'🚀',printable:'🖨️',worksheet:'📝',quiz:'❓',certificate:'🏅',video:'🎬',audio:'🎧',around_the_world:'🌍',character_activity:'⭐'})[type]||'✈️';
+}
+function kidsCommercialText(x){
+ if(x.commercial_mode==='free')return 'Free';
+ if(x.commercial_mode==='paid')return `${x.currency||'EGP'} ${Number(x.base_price||0).toLocaleString()}`;
+ if(x.commercial_mode==='included_program')return 'Included in Program';
+ if(x.commercial_mode==='product_linked')return 'Linked Product';
+ if(x.commercial_mode==='institution_licensed')return 'Institution License';
+ if(x.commercial_mode==='mixed')return Number(x.base_price||0)>0?`${x.currency||'EGP'} ${Number(x.base_price||0).toLocaleString()}`:'Mixed Access';
+ return 'Explore';
+}
+function kidsItemRelations(id){
+ const r=kidsPublic.relations||{};
+ return {
+  assets:(r.assets||[]).filter(x=>x.content_item_id===id),
+  ages:(r.age_groups||[]).filter(x=>x.content_item_id===id),
+  characters:(r.characters||[]).filter(x=>x.content_item_id===id),
+  programs:(r.programs||[]).filter(x=>x.content_item_id===id),
+  products:(r.products||[]).filter(x=>x.content_item_id===id)
+ };
+}
+async function loadKidsPublic(){
+ if(kidsPublicLoaded)return true;
+ try{
+  const r=await fetch(KIDS_PUBLIC_API,{method:'GET'});
+  if(!r.ok)throw new Error('Kids catalog unavailable');
+  kidsPublic=await r.json();kidsPublicLoaded=true;
+  renderKidsCharacters();renderKidsPublic();
+  return true;
+ }catch(e){
+  console.error('Kids public load failed',e);
+  const g=document.getElementById('kidsPublicGrid');
+  if(g)g.innerHTML='<div class="kids-empty-public"><strong>Kids Aviation is getting ready.</strong>The live content library could not be loaded right now.</div>';
+  return false;
+ }
+}
+function renderKidsCharacters(){
+ const el=document.getElementById('kidsCharacters');if(!el)return;
+ const chars=kidsPublic.characters||[];
+ if(!chars.length){el.innerHTML='<div class="kids-empty-public"><strong>Characters are being prepared.</strong>Meet the Aviation Matrix crew soon.</div>';return}
+ el.innerHTML=chars.map(c=>{
+  const p=c.profile_image_path||c.primary_image_path;
+  return `<article class="kids-character">
+   <div class="kids-character-photo">${p?`<img src="${KIDS_ASSET_BASE+p}" alt="${c.name}">`:'✈️'}</div>
+   <strong>${c.name}</strong><small>${c.role_title||c.code}</small>
+  </article>`;
+ }).join('');
+}
+function renderKidsPublic(){
+ const el=document.getElementById('kidsPublicGrid');if(!el)return;
+ const items=(kidsPublic.items||[]).filter(x=>kidsPublicFilter==='all'||x.content_type===kidsPublicFilter);
+ if(!items.length){
+  el.innerHTML=`<div class="kids-empty-public"><strong>No published ${kidsPublicFilter==='all'?'Kids Aviation content':kidsPublicFilter.replaceAll('_',' ')} yet.</strong>Once content is published from the Control Tower, it will appear here automatically.</div>`;
+  return;
+ }
+ el.innerHTML=items.map(x=>{
+  const rel=kidsItemRelations(x.id);
+  const ages=rel.ages.map(a=>a.kids_age_groups?.label).filter(Boolean).slice(0,3);
+  const img=x.cover_image_path?`<img src="${KIDS_ASSET_BASE+x.cover_image_path}" alt="${x.title}">`:`<div class="kids-public-icon">${kidsPublicEmoji(x.content_type)}</div>`;
+  const action=x.commercial_mode==='free'?'View':x.commercial_mode==='paid'?'Buy / Request':x.commercial_mode==='included_program'?'View Program':x.commercial_mode==='product_linked'?'View Product':x.commercial_mode==='institution_licensed'?'Request Access':'Explore';
+  return `<article class="kids-public-card">
+   <div class="kids-public-media">${img}<span class="kids-type-badge">${x.content_type.replaceAll('_',' ')}</span><div class="kids-media-title">${x.title}</div></div>
+   <div class="kids-public-body">
+    <p>${x.short_description||'A Kids Aviation learning experience from Aviation Matrix.'}</p>
+    <div class="kids-meta"><span>${x.language_code||'en'}</span>${ages.map(a=>`<span>${a}</span>`).join('')}${x.duration_minutes?`<span>${x.duration_minutes} min</span>`:''}</div>
+    <div class="kids-card-footer">
+     <div class="kids-price"><small>Access</small><strong>${kidsCommercialText(x)}</strong></div>
+     <button onclick="openKidsItem('${x.id}')">${action}</button>
+    </div>
+   </div>
+  </article>`;
+ }).join('');
+}
+function setKidsFilter(filter,btn=null){
+ kidsPublicFilter=filter||'all';
+ document.querySelectorAll('#kidsPublicTabs button').forEach(b=>b.classList.toggle('active',b.dataset.filter===kidsPublicFilter));
+ renderKidsPublic();
+ document.getElementById('kidsContentStart')?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function scrollKidsContent(){document.getElementById('kidsContentStart')?.scrollIntoView({behavior:'smooth',block:'start'})}
+async function openKidsItem(id){
+ await loadKidsPublic();
+ const x=(kidsPublic.items||[]).find(v=>v.id===id);if(!x)return;
+ const rel=kidsItemRelations(id);
+ const cover=x.cover_image_path?`<img src="${KIDS_ASSET_BASE+x.cover_image_path}" alt="${x.title}">`:`<div>${kidsPublicEmoji(x.content_type)}</div>`;
+ const ages=rel.ages.map(a=>a.kids_age_groups?.label).filter(Boolean);
+ const chars=rel.characters.map(c=>c.kids_characters?.name).filter(Boolean);
+ const programs=rel.programs.map(p=>p.am_programs).filter(Boolean);
+ const products=rel.products.map(p=>p.store_products).filter(Boolean);
+ const publicAssets=rel.assets.filter(a=>['public_preview','free'].includes(x.access_level)||a.is_downloadable);
+ const assetBtns=publicAssets.slice(0,4).map(a=>`<a target="_blank" href="${KIDS_ASSET_BASE+a.storage_path}">${a.asset_type==='audio'?'▶ Listen':a.asset_type==='video'?'▶ Watch':a.is_downloadable?'Open / Download':'Open'}</a>`).join('');
+ const programBtns=programs.slice(0,3).map(p=>`<button class="secondary" onclick="openKidsLinkedProgram('${p.audience_code}','${String(p.name).replaceAll("'","\\'")}',${Number(p.base_price||0)})">${p.name}</button>`).join('');
+ const productBtns=products.slice(0,3).map(p=>`<button class="secondary" onclick="openKidsLinkedProduct('${p.id}')">${p.name}</button>`).join('');
+ const commercialAction=kidsCommercialAction(x,programs,products);
+ show(x.title,`${x.content_type.replaceAll('_',' ')} • Kids Aviation`,
+ `<div class="kids-detail-hero">
+   <div class="kids-detail-cover">${cover}</div>
+   <div>
+    <span class="badge">${x.content_type.replaceAll('_',' ').toUpperCase()}</span>
+    <h3 style="font-size:28px;margin:10px 0 8px">${x.title}</h3>
+    <p style="color:var(--muted);line-height:1.7">${x.description||x.short_description||'Kids Aviation learning content.'}</p>
+    <div class="kids-meta">${ages.map(a=>`<span>${a}</span>`).join('')}${chars.map(c=>`<span>${c}</span>`).join('')}${x.duration_minutes?`<span>${x.duration_minutes} min</span>`:''}</div>
+    <div class="summary"><strong>Access:</strong> ${kidsCommercialText(x)}${x.commercial_notes?`<br><span class="muted">${x.commercial_notes}</span>`:''}</div>
+    <div class="kids-detail-actions">${assetBtns}${programBtns}${productBtns}${commercialAction}</div>
+   </div>
+  </div>`);
+}
+function kidsCommercialAction(x,programs,products){
+ if(x.commercial_mode==='free'){
+  const has=(kidsItemRelations(x.id).assets||[]).some(a=>['public_preview','free'].includes(x.access_level)||a.is_downloadable);
+  return has?'':'<button class="secondary" onclick="openGeneralCallback()">Ask About This Content</button>';
+ }
+ if(x.commercial_mode==='paid'){
+  if(products.length)return `<button onclick="openKidsLinkedProduct('${products[0].id}')">Buy / Request</button>`;
+  return `<button onclick="requestKidsContent('${x.id}')">Request This Content</button>`;
+ }
+ if(x.commercial_mode==='included_program'&&programs.length)return `<button onclick="openKidsLinkedProgram('${programs[0].audience_code}','${String(programs[0].name).replaceAll("'","\\'")}',${Number(programs[0].base_price||0)})">View Included Program</button>`;
+ if(x.commercial_mode==='product_linked'&&products.length)return `<button onclick="openKidsLinkedProduct('${products[0].id}')">View Linked Product</button>`;
+ if(x.commercial_mode==='institution_licensed')return `<button onclick="requestKidsContent('${x.id}')">Request Institutional Access</button>`;
+ return `<button onclick="requestKidsContent('${x.id}')">Ask Aviation Matrix</button>`;
+}
+function openKidsLinkedProgram(audience,name,base){selectProgram(audience,name,base)}
+async function openKidsLinkedProduct(productId){
+ await openStore('nursery');
+ if(productCatalog.some(p=>p.id===productId))openProductDetail('nursery',productId);
+}
+function requestKidsContent(id){
+ const x=(kidsPublic.items||[]).find(v=>v.id===id);if(!x)return;
+ requestContext={request_type:'product_request',audience_code:'individual',estimated_total:Number(x.base_price||0),currency:x.currency||'EGP',kids_content_id:x.id,kids_content_title:x.title};
+ show('Kids Aviation Request',x.title,contactForm('individual',`Kids Aviation content: ${x.title}`));
+}
 
 function customerProgramTheme(p){return ['aviation_blue','kids_colorful','dark','light'].includes(p.card_theme)?p.card_theme:'aviation_blue'}
 async function loadLivePrograms(){
