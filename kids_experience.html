@@ -10,7 +10,7 @@
 .top .wrap{height:74px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{font-weight:950;color:var(--navy);letter-spacing:-.02em}.brand small{display:block;color:var(--sky);font-size:10px;letter-spacing:.12em}
 .btn{border:0;border-radius:13px;padding:11px 15px;font-weight:900;cursor:pointer}.primary{background:var(--navy);color:#fff}.soft{background:#edf7fb;color:#0b5d85;border:1px solid #d2e9f4}
 .hero{padding:36px 0 20px}.passport{border-radius:28px;padding:27px;background:linear-gradient(135deg,#06223a,#0b6f9f 62%,#7357c5);color:#fff;box-shadow:0 22px 54px rgba(5,31,51,.16);display:grid;grid-template-columns:1.5fr .7fr;gap:24px;align-items:center}
-.passport h1{font-size:38px;line-height:1;margin:7px 0 11px}.passport p{color:#d7edf8;line-height:1.6;margin:0}.passport-badge{display:inline-flex;padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);font-size:10px;font-weight:950}
+.passport-main{display:flex;align-items:center;gap:18px}.profile-photo{width:104px;height:104px;border-radius:24px;object-fit:cover;border:3px solid rgba(255,255,255,.65);background:rgba(255,255,255,.12);box-shadow:0 10px 24px rgba(0,0,0,.16);flex:0 0 auto}.profile-placeholder{width:104px;height:104px;border-radius:24px;border:2px dashed rgba(255,255,255,.35);display:grid;place-items:center;font-size:38px;background:rgba(255,255,255,.08);flex:0 0 auto}.passport h1{font-size:38px;line-height:1;margin:7px 0 11px}.passport p{color:#d7edf8;line-height:1.6;margin:0}.passport-badge{display:inline-flex;padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);font-size:10px;font-weight:950}
 .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:13px}.stat small{font-size:9px;text-transform:uppercase;font-weight:900;color:#cfe7f5}.stat strong{display:block;font-size:26px;margin-top:4px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:18px 0}.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 10px 28px rgba(5,31,51,.06)}.card h3{margin:0 0 5px;color:var(--navy)}.sub{color:var(--muted);font-size:12px;line-height:1.55}
 .levels{display:grid;gap:9px;margin-top:14px}.level{padding:12px;border:1px solid var(--line);border-radius:15px;display:flex;justify-content:space-between;gap:10px;align-items:center}.level.locked{opacity:.48}.level.active{border-color:#8dcce6;background:#f0faff}
@@ -20,7 +20,7 @@
 .content-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}.content{border:1px solid var(--line);border-radius:17px;overflow:hidden;background:#fff}.cover{height:120px;background:linear-gradient(135deg,#0c2f4a,#147caf);display:grid;place-items:center;font-size:34px;color:#fff}.content .body{padding:13px}.content h4{margin:0 0 5px;font-size:14px}.content p{font-size:10px;color:var(--muted);min-height:28px}.locked-chip{font-size:9px;font-weight:900;color:#8a5b00;background:#fff6d8;padding:5px 7px;border-radius:999px;display:inline-block}
 .login{max-width:520px;margin:70px auto;background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:0 18px 50px rgba(6,30,48,.08)}.login h2{margin-top:0}.field{display:grid;gap:6px;margin:13px 0}.field label{font-size:10px;font-weight:950;color:#516b7c}.field input{padding:13px;border:1px solid var(--line);border-radius:12px;font:inherit}.msg{font-size:11px;color:#b23b3b;margin-top:10px}
 .hide{display:none!important}
-@media(max-width:850px){.passport,.grid{grid-template-columns:1fr}.missions,.content-grid{grid-template-columns:repeat(2,1fr)}.rewards{grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){.missions,.content-grid,.seasons{grid-template-columns:1fr}.passport h1{font-size:30px}}
+@media(max-width:850px){.passport,.grid{grid-template-columns:1fr}.missions,.content-grid{grid-template-columns:repeat(2,1fr)}.rewards{grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){.missions,.content-grid,.seasons{grid-template-columns:1fr}.passport h1{font-size:30px}.passport-main{align-items:flex-start}.profile-photo,.profile-placeholder{width:82px;height:82px;border-radius:18px}}
 </style>
 </head>
 <body>
@@ -38,7 +38,11 @@
 <main id="app" class="hide">
 <section class="hero"><div class="wrap">
  <div class="passport">
-  <div><span class="passport-badge">AVIATION EXPLORER PASSPORT</span><h1 id="learnerName">Explorer</h1><p><strong id="journeyRef"></strong><br><span id="currentPath"></span></p></div>
+  <div class="passport-main">
+   <img id="profilePhoto" class="profile-photo hide" alt="Learner profile photo">
+   <div id="profilePlaceholder" class="profile-placeholder">✈️</div>
+   <div><span class="passport-badge">AVIATION EXPLORER PASSPORT</span><h1 id="learnerName">Explorer</h1><p><strong id="journeyRef"></strong><br><span id="currentPath"></span></p></div>
+  </div>
   <div class="stats">
    <div class="stat"><small>Missions</small><strong id="sMissions">0</strong></div>
    <div class="stat"><small>Stamps</small><strong id="sStamps">0</strong></div>
@@ -73,7 +77,10 @@ function spMap(){return Object.fromEntries((data.season_progress||[]).map(x=>[x.
 function lpMap(){return Object.fromEntries((data.level_progress||[]).map(x=>[x.level_id,x]))}
 async function load(){data=await api('me');document.getElementById('loginView').classList.add('hide');document.getElementById('app').classList.remove('hide');document.getElementById('logoutBtn').classList.remove('hide');render()}
 function render(){
- const p=data.passport,s=data.summary||{};document.getElementById('learnerName').textContent=p.learner_display_name||'Aviation Explorer';document.getElementById('journeyRef').textContent=p.journey_ref;
+ const p=data.passport,s=data.summary||{};
+ const photo=document.getElementById('profilePhoto'),ph=document.getElementById('profilePlaceholder');
+ if(p.profile_photo_url){photo.src=p.profile_photo_url;photo.classList.remove('hide');ph.classList.add('hide')}else{photo.classList.add('hide');ph.classList.remove('hide')}
+ document.getElementById('learnerName').textContent=p.learner_display_name||'Aviation Explorer';document.getElementById('journeyRef').textContent=p.journey_ref;
  document.getElementById('currentPath').textContent=[s.current_level_code,s.current_season_code,s.current_mission_code].filter(Boolean).join(' • ');
  document.getElementById('sMissions').textContent=s.completed_missions||0;document.getElementById('sStamps').textContent=s.collected_stamps||0;document.getElementById('sBadges').textContent=s.season_badges||0;document.getElementById('sCertificates').textContent=s.certificates||0;
  const lm=lpMap();document.getElementById('levels').innerHTML=(data.levels||[]).map(l=>{const x=lm[l.id],active=p.current_level_id===l.id,done=x?.status==='completed';return `<div class="level ${active?'active':done?'':'locked'}"><div><strong>${l.code} • ${l.name}</strong><div class="sub">${l.age_range||''}</div></div><span class="status">${done?'Completed':active?'Current':'Locked'}</span></div>`}).join('');

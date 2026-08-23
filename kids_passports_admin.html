@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kids Passport Manager</title>
 <style>
-:root{--n:#08233b;--s:#0b6f9f;--m:#6d8190;--l:#dbe8ee}*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:#f5fafc;color:#17384f}.wrap{max-width:1150px;margin:auto;padding:22px}.hero{background:linear-gradient(135deg,#071f35,#0b6e9d);color:#fff;border-radius:24px;padding:24px;display:flex;justify-content:space-between;gap:20px;align-items:center}.hero h1{margin:5px 0}.hero p{margin:0;color:#d3eaf5}.btn{border:0;border-radius:12px;padding:10px 13px;font-weight:900;cursor:pointer}.primary{background:#fff;color:#0b5d86}.navy{background:var(--n);color:#fff}.soft{background:#edf7fb;color:#0b5d86}.card{background:#fff;border:1px solid var(--l);border-radius:18px;padding:16px;margin-top:16px}.toolbar{display:flex;gap:10px;flex-wrap:wrap}.toolbar input,.toolbar select{padding:11px;border:1px solid var(--l);border-radius:11px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}.item{border:1px solid var(--l);border-radius:15px;padding:13px}.item strong{display:block}.item small{display:block;color:var(--m);margin-top:4px}.token{word-break:break-all;background:#f3f8fb;padding:10px;border-radius:10px;margin-top:8px;font-size:11px}.msg{font-size:11px;margin-top:9px;color:#b23b3b}@media(max-width:760px){.grid{grid-template-columns:1fr}.hero{align-items:flex-start;flex-direction:column}}
+:root{--n:#08233b;--s:#0b6f9f;--m:#6d8190;--l:#dbe8ee}*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:#f5fafc;color:#17384f}.wrap{max-width:1150px;margin:auto;padding:22px}.hero{background:linear-gradient(135deg,#071f35,#0b6e9d);color:#fff;border-radius:24px;padding:24px;display:flex;justify-content:space-between;gap:20px;align-items:center}.hero h1{margin:5px 0}.hero p{margin:0;color:#d3eaf5}.btn{border:0;border-radius:12px;padding:10px 13px;font-weight:900;cursor:pointer}.primary{background:#fff;color:#0b5d86}.navy{background:var(--n);color:#fff}.soft{background:#edf7fb;color:#0b5d86}.card{background:#fff;border:1px solid var(--l);border-radius:18px;padding:16px;margin-top:16px}.toolbar{display:flex;gap:10px;flex-wrap:wrap}.toolbar input,.toolbar select{padding:11px;border:1px solid var(--l);border-radius:11px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}.item{border:1px solid var(--l);border-radius:15px;padding:13px}.profile-row{display:flex;gap:11px;align-items:center}.avatar{width:62px;height:62px;border-radius:16px;object-fit:cover;background:#edf6fa;border:1px solid var(--l)}.avatar-placeholder{width:62px;height:62px;border-radius:16px;display:grid;place-items:center;background:#edf6fa;border:1px solid var(--l);font-size:24px}.photo-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.filebtn{position:relative;overflow:hidden}.filebtn input{position:absolute;inset:0;opacity:0;cursor:pointer}.item strong{display:block}.item small{display:block;color:var(--m);margin-top:4px}.token{word-break:break-all;background:#f3f8fb;padding:10px;border-radius:10px;margin-top:8px;font-size:11px}.msg{font-size:11px;margin-top:9px;color:#b23b3b}@media(max-width:760px){.grid{grid-template-columns:1fr}.hero{align-items:flex-start;flex-direction:column}}
 </style></head>
 <body><div class="wrap">
 <div class="hero"><div><small>KIDS AVIATION • CONTROL TOWER</small><h1>Explorer Passport Manager</h1><p>Create learner journeys and issue private portal access codes.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn primary" href="kids_control_tower.html">Final Control Tower</a><a class="btn primary" href="store_admin.html">Main Control Tower</a></div></div>
@@ -11,9 +11,34 @@
 <script>
 const API='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/kids-experience-admin';const token=localStorage.getItem('am_staff_token')||'';
 async function api(action,payload={}){const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({action,...payload})});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.detail||d.error||'Request failed');return d}
-async function load(){try{const d=await api('list_passports');document.getElementById('list').innerHTML=(d.items||[]).map(x=>`<div class="item"><strong>${x.learner_display_name||'Explorer'}</strong><small>${x.journey_ref}</small><small>${[x.current_level_code,x.current_season_code,x.current_mission_code].filter(Boolean).join(' • ')}</small><small>${x.completed_missions||0} missions • ${x.collected_stamps||0} stamps • ${x.season_badges||0} badges</small><button class="btn soft" style="margin-top:9px" onclick="issue('${x.passport_id}')">Issue New Access Code</button></div>`).join('')||'<div style="color:#6d8190">No passports yet.</div>'}catch(e){document.getElementById('msg').textContent=e.message}}
+async function load(){try{
+ const d=await api('list_passports');
+ const items=d.items||[];
+ for(const x of items){if(x.profile_photo_path){try{const u=await api('profile_photo_url',{passport_id:x.passport_id});x.profile_photo_url=u.url}catch{}}}
+ document.getElementById('list').innerHTML=items.map(x=>`<div class="item">
+   <div class="profile-row">
+    ${x.profile_photo_url?`<img class="avatar" src="${x.profile_photo_url}" alt="Learner photo">`:`<div class="avatar-placeholder">✈️</div>`}
+    <div><strong>${x.learner_display_name||'Explorer'}</strong><small>${x.journey_ref}</small><small>${[x.current_level_code,x.current_season_code,x.current_mission_code].filter(Boolean).join(' • ')}</small><small>${x.completed_missions||0} missions • ${x.collected_stamps||0} stamps • ${x.season_badges||0} badges</small></div>
+   </div>
+   <div class="photo-actions">
+    <label class="btn soft filebtn">📷 ${x.profile_photo_path?'Change Photo':'Upload Photo'}<input type="file" accept="image/jpeg,image/png,image/webp" onchange="uploadPhoto('${x.passport_id}',this)"></label>
+    ${x.profile_photo_path?`<button class="btn soft" onclick="removePhoto('${x.passport_id}')">Remove Photo</button>`:''}
+    <button class="btn soft" onclick="issue('${x.passport_id}')">Issue New Access Code</button>
+   </div>
+  </div>`).join('')||'<div style="color:#6d8190">No passports yet.</div>'
+ }catch(e){document.getElementById('msg').textContent=e.message}}
 async function createPassport(){document.getElementById('msg').textContent='';try{const d=await api('create_passport',{journey_ref:document.getElementById('journey').value,learner_display_name:document.getElementById('name').value,level_code:document.getElementById('level').value});showToken(d.access.token,d.access.expires_at);await load()}catch(e){document.getElementById('msg').textContent=e.message}}
 async function issue(id){try{const d=await api('issue_access_token',{passport_id:id,days:90});showToken(d.access.token,d.access.expires_at)}catch(e){alert(e.message)}}
+async function uploadPhoto(id,input){
+ const f=input.files?.[0]; if(!f)return;
+ if(!['image/jpeg','image/png','image/webp'].includes(f.type))return alert('Use JPG, PNG or WEBP.');
+ if(f.size>5*1024*1024)return alert('Image must be 5 MB or less.');
+ const data=await fileToBase64(f);
+ try{await api('upload_profile_photo',{passport_id:id,filename:f.name,content_type:f.type,data_base64:data});await load()}catch(e){alert(e.message)}
+}
+async function removePhoto(id){if(!confirm('Remove this learner photo?'))return;try{await api('remove_profile_photo',{passport_id:id});await load()}catch(e){alert(e.message)}}
+function fileToBase64(f){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(',')[1]);r.onerror=rej;r.readAsDataURL(f)})}
+
 function showToken(t,exp){document.getElementById('created').innerHTML=`<div class="token"><strong>PRIVATE ACCESS CODE — COPY NOW</strong><br>${t}<br><small>Expires: ${new Date(exp).toLocaleString()}</small></div>`}
 if(!token)document.getElementById('msg').textContent='Open this page after Staff Login in the Control Tower.';else load();
 </script></body></html>
