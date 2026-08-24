@@ -1,0 +1,4 @@
+{
+  "version": "AM-STABLE-PORTAL-SELFCONTAINED-3.0",
+  "note": "All portal and hub HTML files contain their own CSS and auth JavaScript; no portal_final.css or portal_auth.js dependency."
+}

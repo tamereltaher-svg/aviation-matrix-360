@@ -1,44 +1,32 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Aviation Matrix Portal</title><link rel="stylesheet" href="portal_final.css"></head>
-<body>
-<div id="authCover" class="auth-cover">
-  <div class="auth-card">
-    <div class="auth-brand">AVIATION MATRIX</div>
-    <h1>Staff Sign In</h1>
-    <p>Sign in once, then move between Portal → Hub → Tool without repeated login screens.</p>
-    <form id="loginForm">
-      <div class="field"><label>EMAIL</label><input id="email" type="email" autocomplete="username" required></div>
-      <div class="field"><label>PASSWORD</label><input id="password" type="password" autocomplete="current-password" required></div>
-      <button id="loginBtn" class="login-btn" type="submit">Sign in to Aviation Matrix</button>
-      <div id="loginError" class="auth-error"></div>
-      <div id="authStatus" class="auth-status">Checking existing staff session…</div>
-    </form>
-  </div>
-</div>
-
-<div id="portalApp" class="wrap" style="display:none">
-  <div class="top">
-    <div class="brand">AVIATION MATRIX<small>ENTERPRISE OPERATING PORTAL</small></div>
-    <div class="sessionbar"><span id="staffName" class="session-pill">Staff session</span><button class="logout-btn" onclick="amLogout()">Sign out</button></div>
-  </div>
-  <section class="hero"><h1>Welcome to Aviation Matrix</h1><p>Choose the area you want to work in. Each domain contains its own tools, dashboards and workflows while all engines remain connected underneath.</p></section>
-  <section class="section"><h2>Choose where you want to work today</h2><p>Six clear business areas. Dashboards and reports live inside the correct domain, not on the first screen.</p>
-  <div class="grid">
-    <a class="card" href="business_hub.html"><span class="tag live">OPEN</span><div class="icon">💼</div><h3>Business & Commercial</h3><p>Programs, products, pricing, requests, quotations, institutions and commercial operations.</p><span class="open">Open Business & Commercial</span></a>
-    <a class="card" href="kids_hub.html"><span class="tag live">OPEN</span><div class="icon">🛫</div><h3>Kids Aviation</h3><p>Kids universe, missions, content, AI production, passport, rewards, publishing and products.</p><span class="open">Open Kids Aviation</span></a>
-    <a class="card" href="talent_hub.html"><span class="tag live">OPEN</span><div class="icon">🧠</div><h3>Talent Intelligence</h3><p>Applicant, candidate, evidence, development, readiness and Candidate 360 intelligence.</p><span class="open">Open Talent Intelligence</span></a>
-    <a class="card" href="learning_hub.html"><span class="tag live">OPEN</span><div class="icon">🎓</div><h3>Learning & Assessment</h3><p>Curriculum, courses, question bank, exam builder, results, transcripts and credentials.</p><span class="open">Open Learning & Assessment</span></a>
-    <a class="card" href="airline_hub.html"><span class="tag live">OPEN</span><div class="icon">✈️</div><h3>Airline & Employer</h3><p>Employers, job roles, requirements, campaigns, matching, shortlists, interviews and hiring.</p><span class="open">Open Airline & Employer</span></a>
-    <a class="card" href="platform_hub.html"><span class="tag live">OPEN</span><div class="icon">⚙️</div><h3>Platform & Governance</h3><p>Staff, permissions, master data, workflows, decisions, system health and reporting.</p><span class="open">Open Platform & Governance</span></a>
-  </div></section>
-  <div class="rule"><b>Navigation rule:</b> Login once → Portal → Domain Hub → Tool. Business submodules no longer pretend to be separate pages when they are still managed inside Main Admin.</div>
-  <footer>Aviation Matrix • Portal Login Gate + Navigation Fix v2</footer>
-</div>
-<script src="portal_auth.js"></script>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Aviation Matrix Portal</title><style>
+:root{--navy:#0b2f4e;--blue:#177ca7;--ink:#29475a;--muted:#748895;--line:#dbeaf1;--bg:#f7fbfd;--shadow:0 16px 40px rgba(34,76,101,.08)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;background:radial-gradient(circle at 12% 0,#e8f9ff,transparent 25%),radial-gradient(circle at 90% 5%,#eeeaff,transparent 28%),var(--bg);color:var(--ink)}
+a{text-decoration:none;color:inherit}.wrap{max-width:1380px;margin:auto;padding:22px}.top{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:6px 0 20px}.brand{font-size:18px;font-weight:1000;color:var(--navy)}.brand small{display:block;font-size:8px;color:#7e929f;letter-spacing:.15em;margin-top:3px}.back{font-size:10px;font-weight:1000;color:var(--blue)}
+.hero{padding:34px;border-radius:30px;background:linear-gradient(135deg,#0b3152,#197ca6 58%,#7169d7);color:#fff;box-shadow:var(--shadow)}.hero h1{font-size:39px;letter-spacing:-.045em;margin:0 0 10px}.hero p{margin:0;max-width:950px;color:#def2f9;font-size:13px;line-height:1.65}
+.section{margin-top:28px}.section h2{margin:0;color:var(--navy);font-size:24px}.section>p{margin:6px 0 0;color:var(--muted);font-size:10px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:15px}
+.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px;min-height:190px;box-shadow:var(--shadow);position:relative;transition:.2s}.card:hover{transform:translateY(-4px)}.icon{width:58px;height:58px;border-radius:18px;background:#eef7fb;display:grid;place-items:center;font-size:28px;margin-bottom:14px}.card h3{margin:0;color:var(--navy);font-size:15px}.card p{margin:8px 0 34px;color:var(--muted);font-size:10px;line-height:1.5}.open{position:absolute;left:18px;bottom:17px;font-size:9px;font-weight:1000;color:var(--blue)}.open:after{content:" →"}.disabled{opacity:.72}.disabled:hover{transform:none}.tag{position:absolute;right:14px;top:14px;border-radius:999px;padding:5px 7px;background:#eef2ff;color:#5d65ae;font-size:7px;font-weight:1000}.live{background:#e9f8ef;color:#1f7650}.planned{background:#fff4dc;color:#826016}
+.rule{margin-top:22px;background:#fff7dd;border:1px solid #eedb97;border-radius:16px;padding:13px 15px;color:#725816;font-size:9.5px;line-height:1.55}footer{text-align:center;padding:38px 0 12px;color:#899aa5;font-size:8px}
+.auth-cover{position:fixed;inset:0;background:linear-gradient(135deg,#082944,#0d628c 58%,#6258c7);z-index:9999;display:grid;place-items:center;padding:20px}.auth-card{width:min(460px,100%);background:#fff;border-radius:26px;padding:28px;box-shadow:0 30px 90px rgba(0,0,0,.25)}.auth-brand{font-size:12px;font-weight:1000;color:#177ca7;letter-spacing:.12em}.auth-card h1{margin:8px 0 7px;color:#0b2f4e;font-size:28px}.auth-card p{font-size:10px;color:#748895;line-height:1.5;margin:0 0 18px}
+.field{margin-top:11px}.field label{display:block;font-size:8px;font-weight:1000;color:#607987;margin-bottom:5px}.field input{width:100%;padding:12px 13px;border:1px solid #dbeaf1;border-radius:12px;font:inherit;color:#29475a;outline:none}.field input:focus{border-color:#177ca7}.login-btn{width:100%;margin-top:16px;padding:12px;border:0;border-radius:12px;background:#0b2f4e;color:#fff;font-weight:1000;cursor:pointer}.auth-error{display:none;margin-top:11px;border-radius:10px;background:#fff0ef;color:#963e38;padding:10px;font-size:9px}.auth-status{font-size:8px;color:#7b909c;margin-top:10px}.sessionbar{display:flex;gap:8px;align-items:center}.session-pill{padding:7px 10px;border:1px solid #dbeaf1;background:white;border-radius:999px;font-size:8px;color:#607987;font-weight:900}.logout-btn{border:0;background:#eef4f7;color:#0b2f4e;border-radius:10px;padding:8px 10px;font-size:8px;font-weight:1000;cursor:pointer}
+@media(max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:620px){.wrap{padding:14px}.grid{grid-template-columns:1fr}.hero{padding:24px}.hero h1{font-size:30px}}
+</style></head><body>
+<div id="authCover" class="auth-cover"><div class="auth-card"><div class="auth-brand">AVIATION MATRIX</div><h1>Staff Sign In</h1><p>Sign in once, then move between Portal → Hub → Tool without repeated login screens.</p><form id="loginForm"><div class="field"><label>EMAIL</label><input id="email" type="email" autocomplete="username" required></div><div class="field"><label>PASSWORD</label><input id="password" type="password" autocomplete="current-password" required></div><button id="loginBtn" class="login-btn" type="submit">Sign in to Aviation Matrix</button><div id="loginError" class="auth-error"></div><div id="authStatus" class="auth-status">Checking existing staff session…</div></form></div></div>
+<div id="portalApp" class="wrap" style="display:none"><div class="top"><div class="brand">AVIATION MATRIX<small>ENTERPRISE OPERATING PORTAL</small></div><div class="sessionbar"><span id="staffName" class="session-pill">Staff session</span><button class="logout-btn" onclick="amLogout()">Sign out</button></div></div><section class="hero"><h1>Welcome to Aviation Matrix</h1><p>Choose the area you want to work in. Each domain contains its own tools, dashboards and workflows while all engines remain connected underneath.</p></section><section class="section"><h2>Choose where you want to work today</h2><p>Six clear business areas. Dashboards and reports live inside the correct domain, not on the first screen.</p><div class="grid"><a class="card" href="business_hub.html"><span class="tag live">OPEN</span><div class="icon">💼</div><h3>Business & Commercial</h3><p>Programs, products, pricing, requests, quotations, institutions and commercial operations.</p><span class="open">Open Business & Commercial</span></a><a class="card" href="kids_hub.html"><span class="tag live">OPEN</span><div class="icon">🛫</div><h3>Kids Aviation</h3><p>Kids universe, missions, content, AI production, passport, rewards, publishing and products.</p><span class="open">Open Kids Aviation</span></a><a class="card" href="talent_hub.html"><span class="tag live">OPEN</span><div class="icon">🧠</div><h3>Talent Intelligence</h3><p>Applicant, candidate, evidence, development, readiness and Candidate 360 intelligence.</p><span class="open">Open Talent Intelligence</span></a><a class="card" href="learning_hub.html"><span class="tag live">OPEN</span><div class="icon">🎓</div><h3>Learning & Assessment</h3><p>Curriculum, courses, question bank, exam builder, results, transcripts and credentials.</p><span class="open">Open Learning & Assessment</span></a><a class="card" href="airline_hub.html"><span class="tag live">OPEN</span><div class="icon">✈️</div><h3>Airline & Employer</h3><p>Employers, job roles, requirements, campaigns, matching, shortlists, interviews and hiring.</p><span class="open">Open Airline & Employer</span></a><a class="card" href="platform_hub.html"><span class="tag live">OPEN</span><div class="icon">⚙️</div><h3>Platform & Governance</h3><p>Staff, permissions, master data, workflows, decisions, system health and reporting.</p><span class="open">Open Platform & Governance</span></a></div></section><div class="rule"><b>Navigation rule:</b> Login once → Portal → Domain Hub → Tool.</div><footer>Aviation Matrix • Stable Self-Contained Portal v3</footer></div>
 <script>
-const cover=document.getElementById('authCover'), app=document.getElementById('portalApp'), statusEl=document.getElementById('authStatus'), errEl=document.getElementById('loginError'), btn=document.getElementById('loginBtn');
+const AM_STAFF_API='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/staff-admin-api';
+const AM_TOKEN_KEY='am_staff_token';
+function amToken(){return localStorage.getItem(AM_TOKEN_KEY)||''}
+async function amStaffCall(action,body={}){
+ const headers={'Content-Type':'application/json'}; const t=amToken(); if(t)headers['Authorization']='Bearer '+t;
+ const r=await fetch(AM_STAFF_API,{method:'POST',headers,body:JSON.stringify({action,...body})});
+ const j=await r.json().catch(()=>({})); if(!r.ok)throw new Error(j.error||j.detail||('HTTP '+r.status)); return j;
+}
+async function amRequireSession(){if(!amToken()){location.replace('portal.html');return false}try{await amStaffCall('me');return true}catch(e){localStorage.removeItem(AM_TOKEN_KEY);location.replace('portal.html');return false}}
+async function amLogout(){try{if(amToken())await amStaffCall('logout')}catch(e){}localStorage.removeItem(AM_TOKEN_KEY);location.replace('portal.html')}
+
+const cover=document.getElementById('authCover'),app=document.getElementById('portalApp'),errEl=document.getElementById('loginError'),btn=document.getElementById('loginBtn');
 function showApp(me){cover.style.display='none';app.style.display='block';const s=me?.staff||me;if(s?.full_name||s?.email)document.getElementById('staffName').textContent=s.full_name||s.email}
-function showLogin(msg=''){cover.style.display='grid';app.style.display='none';statusEl.textContent='';if(msg){errEl.textContent=msg;errEl.style.display='block'}}
-(async()=>{if(!amToken())return showLogin();try{const me=await amStaffCall('me');showApp(me)}catch(e){localStorage.removeItem(AM_TOKEN_KEY);showLogin()}})();
-document.getElementById('loginForm').addEventListener('submit',async(e)=>{e.preventDefault();errEl.style.display='none';btn.disabled=true;btn.textContent='Signing in…';try{const j=await amStaffCall('login',{email:document.getElementById('email').value.trim(),password:document.getElementById('password').value});localStorage.setItem(AM_TOKEN_KEY,j.token);showApp(j)}catch(ex){let m='Sign in failed.';if(ex.message==='INVALID_CREDENTIALS')m='Email or password is incorrect.';else if(ex.message==='TOO_MANY_ATTEMPTS')m='Too many attempts. Please wait and try again.';else if(ex.message==='FORBIDDEN')m='This staff account does not have portal access.';showLogin(m)}finally{btn.disabled=false;btn.textContent='Sign in to Aviation Matrix'}});
-</script>
-</body></html>
+function showLogin(msg=''){cover.style.display='grid';app.style.display='none';document.getElementById('authStatus').textContent='';if(msg){errEl.textContent=msg;errEl.style.display='block'}}
+(async()=>{if(!amToken())return showLogin();try{showApp(await amStaffCall('me'))}catch(e){localStorage.removeItem(AM_TOKEN_KEY);showLogin()}})();
+document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();errEl.style.display='none';btn.disabled=true;btn.textContent='Signing in…';try{const j=await amStaffCall('login',{email:document.getElementById('email').value.trim(),password:document.getElementById('password').value});localStorage.setItem(AM_TOKEN_KEY,j.token);showApp(j)}catch(ex){showLogin(ex.message==='INVALID_CREDENTIALS'?'Email or password is incorrect.':ex.message==='TOO_MANY_ATTEMPTS'?'Too many attempts. Please wait and try again.':ex.message==='FORBIDDEN'?'This staff account does not have portal access.':'Sign in failed.')}finally{btn.disabled=false;btn.textContent='Sign in to Aviation Matrix'}});
+</script></body></html>
