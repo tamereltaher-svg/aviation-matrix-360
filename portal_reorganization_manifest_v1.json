@@ -1,0 +1,20 @@
+{
+  "version": "AM-PORTAL-REORG-FINAL-1.0",
+  "navigation": "Portal -> Domain Hub -> Tool",
+  "domains": [
+    "Business & Commercial",
+    "Kids Aviation",
+    "Talent Intelligence",
+    "Learning & Assessment",
+    "Airline & Employer",
+    "Platform & Governance"
+  ],
+  "relocated_phase8_tools": {
+    "candidate_360_dashboard.html": "Talent Intelligence",
+    "candidate_dossier.html": "Talent Intelligence",
+    "exam_transcript.html": "Learning & Assessment",
+    "airline_readiness.html": "Talent Intelligence / Airline & Employer",
+    "employer_dashboard.html": "Airline & Employer",
+    "management_dashboard.html": "Platform & Governance"
+  }
+}
