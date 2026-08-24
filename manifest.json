@@ -1,4 +1,19 @@
 {
-  "version": "AM-STABLE-PORTAL-SELFCONTAINED-3.0",
-  "note": "All portal and hub HTML files contain their own CSS and auth JavaScript; no portal_final.css or portal_auth.js dependency."
+  "package": "KAM Character Identity Lock",
+  "version": "1.0-final",
+  "phase": "5/5 Review, Approval & Final Integration",
+  "root_file": "kids_ai_studio.html",
+  "reference_root": "assets/kam-character-lock",
+  "characters": ["AW-001","BJ-001","CM-001","DS-001","MX-001","TC-001","DM-001"],
+  "references_per_character": ["01_FULL_BODY_CANONICAL.jpg","02_FACE_CANONICAL.jpg"],
+  "features": [
+    "LOCK_READY gate",
+    "canonical visual references",
+    "reference-based scene generation",
+    "hard identity rules",
+    "reference comparison panel",
+    "manual identity review confirmation",
+    "approve or reject/regenerate flow",
+    "backend rejection of unlocked approvals"
+  ]
 }

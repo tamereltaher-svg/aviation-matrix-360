@@ -1,0 +1,89 @@
+{
+  "files": [
+    {
+      "path": "README_FINAL_UPLOAD.txt",
+      "bytes": 1741,
+      "sha256": "64ec443f1699e753fe0dc5b6b6bd275692c0e9f097405ec3bffe4cecc3daf605"
+    },
+    {
+      "path": "assets/kam-character-lock/AW-001/01_FULL_BODY_CANONICAL.jpg",
+      "bytes": 144561,
+      "sha256": "fa84d1ad8bfcd2f4d843cfe9a0f944a745563bdd205dbcd2d7f62d670283fb76"
+    },
+    {
+      "path": "assets/kam-character-lock/AW-001/02_FACE_CANONICAL.jpg",
+      "bytes": 37281,
+      "sha256": "ed3cb4ac4ddcab0d2530ea26375968c32065c2013153eb0c6692ebf81d2469ac"
+    },
+    {
+      "path": "assets/kam-character-lock/BJ-001/01_FULL_BODY_CANONICAL.jpg",
+      "bytes": 65986,
+      "sha256": "74de8ce868258774018a08a0b146cad6a15c84e70773240fb218666b776e1c26"
+    },
+    {
+      "path": "assets/kam-character-lock/BJ-001/02_FACE_CANONICAL.jpg",
+      "bytes": 13666,
+      "sha256": "1c8b41890148a586818c83593e29a1167b0a1a5e600df8a5b1eb9b677a01260b"
+    },
+    {
+      "path": "assets/kam-character-lock/CM-001/01_FULL_BODY_CANONICAL.jpg",
+      "bytes": 106708,
+      "sha256": "60acc4db8f9ce8204568157ff180b65eac8dae132b5b21acd865a85fb1a98228"
+    },
+    {
+      "path": "assets/kam-character-lock/CM-001/02_FACE_CANONICAL.jpg",
+      "bytes": 27101,
+      "sha256": "d19ca04a4aa00b51fb9149cdf855cb02de0a580f6558fec22811d1784ca434c5"
+    },
+    {
+      "path": "assets/kam-character-lock/DM-001/01_FULL_BODY_CANONICAL.jpg",
+      "bytes": 143160,
+      "sha256": "1b9f1e99ffc69115a5d4dd23b5e174c21ca201a1dc05b6649c57379bf50cc900"
+    },
+    {
+      "path": "assets/kam-character-lock/DM-001/02_FACE_CANONICAL.jpg",
+      "bytes": 25788,
+      "sha256": "cf2c5bcfa4a79a445a30b08c2ca705c07d2751ab03b1358e9b4589cfa6821840"
+    },
+    {
+      "path": "assets/kam-character-lock/DS-001/01_FULL_BODY_CANONICAL.jpg",
+      "bytes": 108161,
+      "sha256": "b7e20bc2d43575317bcb0fee876d2587735df12987a77fbf613e5387cd4ad822"
+    },
+    {
+      "path": "assets/kam-character-lock/DS-001/02_FACE_CANONICAL.jpg",
+      "bytes": 27673,
+      "sha256": "12c3198c97fd74d7e69969a7a86330bd4e44b6af5a795a3c064fef75a1468c6b"
+    },
+    {
+      "path": "assets/kam-character-lock/MX-001/01_FULL_BODY_CANONICAL.jpg",
+      "bytes": 138089,
+      "sha256": "e4574e21d9b7b99e17ed795880076f08b05b9374771618cafa8fc0e9fed2083a"
+    },
+    {
+      "path": "assets/kam-character-lock/MX-001/02_FACE_CANONICAL.jpg",
+      "bytes": 26475,
+      "sha256": "6ea1ad476af47a2d0119d641c9d45f9ca970ae3c1591b8ddd9628ad4176de587"
+    },
+    {
+      "path": "assets/kam-character-lock/TC-001/01_FULL_BODY_CANONICAL.jpg",
+      "bytes": 151475,
+      "sha256": "c4c56eb62a595355f08394bf092d68ff7d6bb0fc361bf1f4016b7f598a1b2f7d"
+    },
+    {
+      "path": "assets/kam-character-lock/TC-001/02_FACE_CANONICAL.jpg",
+      "bytes": 29109,
+      "sha256": "e0c25a71646380a36723ae9a9ab82aaab1e38c0e6f2ccfba81b417afbeea6ef2"
+    },
+    {
+      "path": "kids_ai_studio.html",
+      "bytes": 24046,
+      "sha256": "af6642b527cc165c46f4959badf556b9e98efc87750b84fc32509b53f439cc97"
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 693,
+      "sha256": "ee597b4e7587503b962839fdc5b40557c767dad8269e7732c576fce7b58fde5d"
+    }
+  ]
+}
