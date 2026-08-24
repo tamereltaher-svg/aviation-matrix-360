@@ -1,0 +1,31 @@
+{
+  "version": "AM-NAV-2.0",
+  "entry": "portal.html",
+  "pattern": "Portal -> Hub -> Tool",
+  "domains": [
+    {
+      "code": "BUS",
+      "hub": "business_hub.html"
+    },
+    {
+      "code": "KIDS",
+      "hub": "kids_hub.html"
+    },
+    {
+      "code": "TALENT",
+      "hub": "talent_hub.html"
+    },
+    {
+      "code": "LEARN",
+      "hub": "learning_hub.html"
+    },
+    {
+      "code": "AIR",
+      "hub": "airline_hub.html"
+    },
+    {
+      "code": "PLAT",
+      "hub": "platform_hub.html"
+    }
+  ]
+}

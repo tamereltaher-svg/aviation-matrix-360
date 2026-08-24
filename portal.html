@@ -1,15 +1,55 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Aviation Matrix Final Portal</title><link rel="stylesheet" href="phase8.css"></head>
-<body><div class="wrap"><div class="top"><a class="back" href="portal.html">← Back</a><div class="brand">AVIATION MATRIX<small>FINAL INTEGRATION • PHASE 8</small></div></div>
-<section class="hero"><h1>Aviation Matrix Final Portal</h1><p>A clean final-output layer over the architecture built in Phases 1–7. No domain data is duplicated; dashboards and reports read from the shared engines.</p></section><div id="err" class="error"></div>
-<section class="section"><h2>Enterprise Workspaces</h2><p>Portal → Hub → Tool. Existing domain tools remain separate; final intelligence outputs are available below.</p>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aviation Matrix Portal</title>
+<style>
+:root{--navy:#0b2f4e;--blue:#157aa5;--ink:#29475a;--muted:#718694;--line:#dbeaf1;--bg:#f7fbfd;--shadow:0 20px 55px rgba(35,78,105,.10)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;background:radial-gradient(circle at 10% 0,#e7f8ff,transparent 28%),radial-gradient(circle at 90% 8%,#efeaff,transparent 30%),var(--bg);color:var(--ink);min-height:100vh}
+a{text-decoration:none;color:inherit}.wrap{max-width:1320px;margin:auto;padding:22px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:6px 0 22px}.brand{font-weight:1000;color:var(--navy);font-size:20px;letter-spacing:-.04em}.brand small{display:block;margin-top:3px;color:#1680aa;font-size:9px;letter-spacing:.16em}
+.badge{background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 12px;font-size:9px;font-weight:900;color:#6a8190}
+.hero{border-radius:30px;padding:34px;background:linear-gradient(135deg,#0b2e4d,#156f9e 58%,#756bdc);color:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}.hero:after{content:"✈";position:absolute;right:32px;top:-58px;font-size:205px;opacity:.055}
+.hero h1{margin:0 0 10px;font-size:40px;letter-spacing:-.045em}.hero p{margin:0;max-width:850px;color:#dff3fb;font-size:13px;line-height:1.65}
+.section{padding-top:28px}.section h2{margin:0;color:var(--navy);font-size:26px;letter-spacing:-.035em}.section p{margin:6px 0 0;color:var(--muted);font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:20px;min-height:230px;position:relative;box-shadow:0 12px 30px rgba(33,76,101,.07);transition:.22s}.card:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+.icon{width:66px;height:66px;border-radius:20px;display:grid;place-items:center;font-size:31px;margin-bottom:17px}.c1 .icon{background:#e8f8ff}.c2 .icon{background:#e9f8ef}.c3 .icon{background:#eef0ff}.c4 .icon{background:#fff2d9}.c5 .icon{background:#f2eaff}.c6 .icon{background:#e9f5f7}
+.code{position:absolute;right:17px;top:15px;color:#e9f0f4;font-size:43px;font-weight:1000}.card h3{margin:0 0 8px;color:var(--navy);font-size:18px}.card p{margin:0;color:var(--muted);font-size:11px;line-height:1.55;max-width:90%}.go{position:absolute;left:20px;bottom:18px;color:#14779f;font-size:10px;font-weight:1000}.go:after{content:" →"}
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:17px}.q{background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px;display:flex;gap:10px;align-items:center}.q .i{width:42px;height:42px;border-radius:13px;background:#f0f7fa;display:grid;place-items:center;font-size:20px}.q strong{display:block;color:var(--navy);font-size:11px}.q small{display:block;color:var(--muted);font-size:8px;margin-top:3px;line-height:1.4}
+.note{margin-top:18px;background:#fff7dd;border:1px solid #eedb97;border-radius:16px;padding:13px 15px;color:#725816;font-size:10px;line-height:1.55}
+footer{text-align:center;padding:38px 0 15px;color:#8799a5;font-size:9px}
+@media(max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}.quick{grid-template-columns:repeat(2,1fr)}}@media(max-width:620px){.wrap{padding:14px}.grid,.quick{grid-template-columns:1fr}.hero{padding:24px}.hero h1{font-size:31px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="top"><div class="brand">AVIATION MATRIX PORTAL<small>ONE PLATFORM • CLEAR DOMAINS</small></div><div id="session" class="badge">Checking staff session</div></div>
+<section class="hero"><h1>Welcome to Aviation Matrix</h1><p>Choose where you want to work today. Each area contains its own tools, dashboards and operational workflows, while shared engines remain connected underneath.</p></section>
+
+<section class="section"><h2>Main platform areas</h2><p>Only six doors at the top level. Everything else sits inside one of them.</p>
 <div class="grid">
-<a class="card" href="candidate_360_dashboard.html"><h3>🧭 Candidate 360 Dashboard</h3><p>Unified candidate status, evidence, exams, credentials, development and readiness.</p></a>
-<a class="card" href="candidate_dossier.html"><h3>📁 Candidate Dossier</h3><p>Create versioned Entry, Live, Final, Readiness and Gap report snapshots.</p></a>
-<a class="card" href="exam_transcript.html"><h3>🎓 Exam Transcript</h3><p>Exam attempts, integrity, results, strengths and gaps.</p></a>
-<a class="card" href="airline_readiness.html"><h3>✈️ Airline Readiness</h3><p>Requirement-set readiness, mandatory gates, score and gaps.</p></a>
-<a class="card" href="employer_dashboard.html"><h3>🏢 Employer Dashboard</h3><p>Campaigns, applications, matches, shortlists, interviews and hiring outcomes.</p></a>
-<a class="card" href="management_dashboard.html"><h3>📊 Management Overview</h3><p>Platform-level candidate, learning, recruitment, workflow and approval indicators.</p></a>
+<a class="card c1" href="business_hub.html"><span class="code">01</span><div class="icon">💼</div><h3>Business Operations</h3><p>Programs, products, pricing, institutions, requests, quotations, meetings and commercial administration.</p><span class="go">Open Business Hub</span></a>
+<a class="card c2" href="kids_hub.html"><span class="code">02</span><div class="icon">🛫</div><h3>Kids Aviation</h3><p>Kids universe, missions, stories, AI production, passport, rewards, books, products and learner experience.</p><span class="go">Open Kids Hub</span></a>
+<a class="card c3" href="talent_hub.html"><span class="code">03</span><div class="icon">🧠</div><h3>Talent Intelligence</h3><p>Applicant, candidate, learner, evidence, development, readiness, dossier and career intelligence.</p><span class="go">Open Talent Hub</span></a>
+<a class="card c4" href="learning_hub.html"><span class="code">04</span><div class="icon">🎓</div><h3>Learning & Assessment</h3><p>Curriculum, courses, assessments, question banks, exams, scoring, retakes and certificates.</p><span class="go">Open Learning Hub</span></a>
+<a class="card c5" href="airline_hub.html"><span class="code">05</span><div class="icon">✈️</div><h3>Airline & Employer</h3><p>Employer profiles, job roles, requirements, recruitment campaigns, matching, shortlists and hiring outcomes.</p><span class="go">Open Airline Hub</span></a>
+<a class="card c6" href="platform_hub.html"><span class="code">06</span><div class="icon">⚙️</div><h3>Platform & Governance</h3><p>Staff, permissions, master data, workflow, audit, AI governance, system health, reporting and integrations.</p><span class="go">Open Platform Hub</span></a>
 </div></section>
-<div class="note"><b>Access:</b> These tools use the existing custom staff session in <code>am_staff_token</code> and require the dedicated <code>platform.reporting</code> permission.</div>
-<footer>Aviation Matrix • Phase 8 Final Integration</footer></div>
-<script src="phase8.js"></script><script></script></body></html>
+
+<section class="section"><h2>Quick access</h2><p>Common tools remain reachable without breaking the domain structure.</p>
+<div class="quick">
+<a class="q" href="kids_ai_studio.html"><div class="i">✨</div><div><strong>AI Production Studio</strong><small>Create journeys, scripts and images.</small></div></a>
+<a class="q" href="kids_control_tower.html"><div class="i">🛰️</div><div><strong>Kids Control Tower</strong><small>Health, readiness and Kids operations.</small></div></a>
+<a class="q" href="store_admin.html"><div class="i">🧭</div><div><strong>Main Admin</strong><small>Existing operational administration.</small></div></a>
+<a class="q" href="kids_world.html"><div class="i">🌤️</div><div><strong>Kids Aviation World</strong><small>Public child-facing experience.</small></div></a>
+</div></section>
+
+<div class="note"><b>Navigation Rule:</b> Portal → Hub → Tool. The top-level portal chooses the business area; each Hub groups related modules; sidebars and tabs are only used inside tools.</div>
+<footer>Aviation Matrix • Portal & Navigation Architecture v2</footer>
+</div>
+<script>
+const t=localStorage.getItem('am_staff_token');document.getElementById('session').textContent=t?'Staff session found':'Login may be required';
+</script>
+</body></html>
