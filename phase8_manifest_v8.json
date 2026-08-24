@@ -1,0 +1,43 @@
+{
+  "version": "AM-PHASE8-8.0",
+  "backend": {
+    "new_tables": [
+      "am_report_templates",
+      "am_report_snapshots",
+      "am_report_exports",
+      "am_dashboard_definitions",
+      "am_dashboard_snapshots",
+      "am_portal_navigation_registry"
+    ],
+    "views": [
+      "am_candidate_360_dashboard",
+      "am_candidate_exam_transcript",
+      "am_candidate_readiness_summary",
+      "am_employer_recruitment_dashboard",
+      "am_management_overview"
+    ],
+    "report_templates": 6,
+    "dashboards": 3,
+    "portal_routes": 6,
+    "edge_function": "platform-reporting-api v1",
+    "permission": "platform.reporting"
+  },
+  "frontend": [
+    "portal.html",
+    "candidate_360_dashboard.html",
+    "candidate_dossier.html",
+    "exam_transcript.html",
+    "airline_readiness.html",
+    "employer_dashboard.html",
+    "management_dashboard.html",
+    "phase8_final_integration.html"
+  ],
+  "security": [
+    "custom staff token am_staff_token",
+    "platform.reporting permission required",
+    "new internal tables RLS enabled",
+    "reporting views security_invoker=true",
+    "anon/authenticated grants revoked"
+  ],
+  "current_limit": "PDF export binary rendering is not performed by the static frontend; versioned report snapshots and export tracking are ready."
+}
