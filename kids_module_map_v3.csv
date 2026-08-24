@@ -1,0 +1,33 @@
+﻿Group,Module,Description,Route,Status
+Operations & Learners,Kids Control Tower,"Health, launch checks, alerts and operational oversight.",kids_control_tower.html,OPEN
+Operations & Learners,Passport Manager,Create and manage Explorer Passports and Flight Keys.,kids_passports_admin.html,OPEN
+Operations & Learners,Learner Experience,Open the private learner-facing Passport experience.,kids_experience.html,OPEN
+Operations & Learners,Learner Progress,"Mission, season, level and certificate progression.",#,READY
+Journey & Production,Journey & Missions,"Levels, seasons, missions, blueprints and learning matrix.",#,READY
+Journey & Production,AI Production Studio,"Create mission drafts, scripts, artwork briefs and images.",kids_ai_studio.html,OPEN
+Journey & Production,Scripts & Artwork,"10-page scripts, artwork pages and production tracker.",#,READY
+Journey & Production,Production Dashboard,Production completeness and readiness overview.,#,READY
+Content & Media,Stories,Narrative content and story experiences.,story_hangar.html,OPEN
+Content & Media,Music & Audio,"Songs, audio and music content.",music_cabin.html,OPEN
+Content & Media,Video & Media,Video and reusable media content.,#,PLANNED
+Content & Media,Content Library,Reusable content linked to missions and programs.,#,READY
+Creative Activities,Coloring Corner,Coloring sheets and printable artwork.,coloring_corner.html,OPEN
+Creative Activities,Activities,"Activities, worksheets and quizzes.",activities.html,OPEN
+Creative Activities,Printables,Printable learning and mission assets.,#,READY
+Creative Activities,Activity Library,Reusable activities across programs and levels.,#,READY
+Characters & Universe,Characters,Approved characters and character operations.,#,READY
+Characters & Universe,Character Rules,Integration and appearance control.,#,READY
+Characters & Universe,World & Locations,Locations and universe timeline.,kids_world.html,OPEN
+Characters & Universe,"Governance, IP & Localization","Rulebook, aviation accuracy, IP and localization.",#,READY
+Rewards & Passport,Explorer Passport,Passport structure and progression rules.,kids_experience.html,OPEN
+Rewards & Passport,Mission Stamps,Mission completion stamps and rules.,#,READY
+Rewards & Passport,Badges,Season and level badges.,badges.html,OPEN
+Rewards & Passport,Certificates,Level completion and learner certificates.,#,READY
+Books & Publishing,Story Books,Story book catalog and production.,#,READY
+Books & Publishing,Coloring Books,Coloring book catalog and production.,#,READY
+Books & Publishing,Activity Books,Activity book catalog and production.,#,READY
+Books & Publishing,Publishing Readiness,"Rights, artwork, copy and publishing checks.",#,READY
+Products & Store,Product Catalog,Kids commercial product catalog.,wings_shop.html,OPEN
+Products & Store,Explorer Products,"Kits, apparel, bags, badges and related items.",wings_shop.html,OPEN
+Products & Store,Store Links,Links to the existing Aviation Matrix Store.,wings_shop.html,OPEN
+Products & Store,Commercial Readiness,"Pricing, rights, copy and sale readiness.",#,READY

@@ -1,0 +1,262 @@
+{
+  "version": "KIDS-REORG-3.0",
+  "principle": "Kids Aviation Zone = Content & Experience Engine; Programs = Commercial & Delivery Engine",
+  "navigation_pattern": "Portal -> Kids Aviation Hub -> Group -> Tool",
+  "groups": [
+    {
+      "order": "01",
+      "name": "Operations & Learners",
+      "purpose": "Operate the Kids system and learner journey.",
+      "items": [
+        {
+          "name": "Kids Control Tower",
+          "description": "Health, launch checks, alerts and operational oversight.",
+          "route": "kids_control_tower.html",
+          "status": "OPEN"
+        },
+        {
+          "name": "Passport Manager",
+          "description": "Create and manage Explorer Passports and Flight Keys.",
+          "route": "kids_passports_admin.html",
+          "status": "OPEN"
+        },
+        {
+          "name": "Learner Experience",
+          "description": "Open the private learner-facing Passport experience.",
+          "route": "kids_experience.html",
+          "status": "OPEN"
+        },
+        {
+          "name": "Learner Progress",
+          "description": "Mission, season, level and certificate progression.",
+          "route": "#",
+          "status": "READY"
+        }
+      ]
+    },
+    {
+      "order": "02",
+      "name": "Journey & Production",
+      "purpose": "Design and produce the learning journey.",
+      "items": [
+        {
+          "name": "Journey & Missions",
+          "description": "Levels, seasons, missions, blueprints and learning matrix.",
+          "route": "#",
+          "status": "READY"
+        },
+        {
+          "name": "AI Production Studio",
+          "description": "Create mission drafts, scripts, artwork briefs and images.",
+          "route": "kids_ai_studio.html",
+          "status": "OPEN"
+        },
+        {
+          "name": "Scripts & Artwork",
+          "description": "10-page scripts, artwork pages and production tracker.",
+          "route": "#",
+          "status": "READY"
+        },
+        {
+          "name": "Production Dashboard",
+          "description": "Production completeness and readiness overview.",
+          "route": "#",
+          "status": "READY"
+        }
+      ]
+    },
+    {
+      "order": "03",
+      "name": "Content & Media",
+      "purpose": "Educational and entertainment content, separate from products.",
+      "items": [
+        {
+          "name": "Stories",
+          "description": "Narrative content and story experiences.",
+          "route": "story_hangar.html",
+          "status": "OPEN"
+        },
+        {
+          "name": "Music & Audio",
+          "description": "Songs, audio and music content.",
+          "route": "music_cabin.html",
+          "status": "OPEN"
+        },
+        {
+          "name": "Video & Media",
+          "description": "Video and reusable media content.",
+          "route": "#",
+          "status": "PLANNED"
+        },
+        {
+          "name": "Content Library",
+          "description": "Reusable content linked to missions and programs.",
+          "route": "#",
+          "status": "READY"
+        }
+      ]
+    },
+    {
+      "order": "04",
+      "name": "Creative Activities",
+      "purpose": "Printable and interactive learning activities.",
+      "items": [
+        {
+          "name": "Coloring Corner",
+          "description": "Coloring sheets and printable artwork.",
+          "route": "coloring_corner.html",
+          "status": "OPEN"
+        },
+        {
+          "name": "Activities",
+          "description": "Activities, worksheets and quizzes.",
+          "route": "activities.html",
+          "status": "OPEN"
+        },
+        {
+          "name": "Printables",
+          "description": "Printable learning and mission assets.",
+          "route": "#",
+          "status": "READY"
+        },
+        {
+          "name": "Activity Library",
+          "description": "Reusable activities across programs and levels.",
+          "route": "#",
+          "status": "READY"
+        }
+      ]
+    },
+    {
+      "order": "05",
+      "name": "Characters & Universe",
+      "purpose": "Govern the Kids Aviation world and brand identity.",
+      "items": [
+        {
+          "name": "Characters",
+          "description": "Approved characters and character operations.",
+          "route": "#",
+          "status": "READY"
+        },
+        {
+          "name": "Character Rules",
+          "description": "Integration and appearance control.",
+          "route": "#",
+          "status": "READY"
+        },
+        {
+          "name": "World & Locations",
+          "description": "Locations and universe timeline.",
+          "route": "kids_world.html",
+          "status": "OPEN"
+        },
+        {
+          "name": "Governance, IP & Localization",
+          "description": "Rulebook, aviation accuracy, IP and localization.",
+          "route": "#",
+          "status": "READY"
+        }
+      ]
+    },
+    {
+      "order": "06",
+      "name": "Rewards & Passport",
+      "purpose": "Progression, motivation and learner recognition.",
+      "items": [
+        {
+          "name": "Explorer Passport",
+          "description": "Passport structure and progression rules.",
+          "route": "kids_experience.html",
+          "status": "OPEN"
+        },
+        {
+          "name": "Mission Stamps",
+          "description": "Mission completion stamps and rules.",
+          "route": "#",
+          "status": "READY"
+        },
+        {
+          "name": "Badges",
+          "description": "Season and level badges.",
+          "route": "badges.html",
+          "status": "OPEN"
+        },
+        {
+          "name": "Certificates",
+          "description": "Level completion and learner certificates.",
+          "route": "#",
+          "status": "READY"
+        }
+      ]
+    },
+    {
+      "order": "07",
+      "name": "Books & Publishing",
+      "purpose": "Printed publishing products and readiness.",
+      "items": [
+        {
+          "name": "Story Books",
+          "description": "Story book catalog and production.",
+          "route": "#",
+          "status": "READY"
+        },
+        {
+          "name": "Coloring Books",
+          "description": "Coloring book catalog and production.",
+          "route": "#",
+          "status": "READY"
+        },
+        {
+          "name": "Activity Books",
+          "description": "Activity book catalog and production.",
+          "route": "#",
+          "status": "READY"
+        },
+        {
+          "name": "Publishing Readiness",
+          "description": "Rights, artwork, copy and publishing checks.",
+          "route": "#",
+          "status": "READY"
+        }
+      ]
+    },
+    {
+      "order": "08",
+      "name": "Products & Store",
+      "purpose": "Commercial products remain separate from learning content.",
+      "items": [
+        {
+          "name": "Product Catalog",
+          "description": "Kids commercial product catalog.",
+          "route": "wings_shop.html",
+          "status": "OPEN"
+        },
+        {
+          "name": "Explorer Products",
+          "description": "Kits, apparel, bags, badges and related items.",
+          "route": "wings_shop.html",
+          "status": "OPEN"
+        },
+        {
+          "name": "Store Links",
+          "description": "Links to the existing Aviation Matrix Store.",
+          "route": "wings_shop.html",
+          "status": "OPEN"
+        },
+        {
+          "name": "Commercial Readiness",
+          "description": "Pricing, rights, copy and sale readiness.",
+          "route": "#",
+          "status": "READY"
+        }
+      ]
+    }
+  ],
+  "separation_rules": [
+    "Stories, music, coloring and activities are content",
+    "Books are publishing outputs",
+    "Physical merchandise is commercial product",
+    "Content may link to products without becoming product data",
+    "One content library may be reused by many programs"
+  ]
+}
