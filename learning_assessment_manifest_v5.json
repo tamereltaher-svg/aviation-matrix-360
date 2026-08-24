@@ -1,0 +1,47 @@
+{
+  "version": "AM-LEARN-5.0",
+  "flow": "Curriculum -> Course -> Learning Path -> Enrollment -> Assessment Blueprint -> Exam -> Session -> Attempt -> Result -> Evidence -> Credential",
+  "new_tables": [
+    "am_learning_curricula",
+    "am_learning_courses",
+    "am_learning_paths",
+    "am_learning_path_courses",
+    "am_course_learning_outcomes",
+    "am_candidate_learning_enrollments",
+    "am_assessment_blueprints",
+    "am_assessment_blueprint_components",
+    "am_exam_definitions",
+    "am_exam_versions",
+    "am_exam_version_questions",
+    "am_exam_sessions",
+    "am_exam_attempts",
+    "am_exam_attempt_answers",
+    "am_exam_results",
+    "am_exam_result_components",
+    "am_exam_retakes",
+    "am_learning_credentials"
+  ],
+  "summary_view": "am_learning_exam_architecture_summary",
+  "automation": "Final am_exam_results automatically insert verified exam_result evidence into am_candidate_evidence",
+  "existing_assets_reused": {
+    "question_bank_items": 10,
+    "tables": [
+      "question_bank",
+      "question_options",
+      "assessment_dimensions"
+    ]
+  },
+  "current_new_record_counts": {
+    "curricula": 0,
+    "courses": 0,
+    "learning_paths": 0,
+    "assessment_blueprints": 0,
+    "exams": 0,
+    "exam_sessions": 0,
+    "exam_attempts": 0,
+    "exam_results": 0,
+    "credentials": 0
+  },
+  "security": "RLS enabled; no public policies on new Phase-5 tables",
+  "next_phase": "Airline & Employer Architecture"
+}
