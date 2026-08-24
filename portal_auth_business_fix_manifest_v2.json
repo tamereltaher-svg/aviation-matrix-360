@@ -1,0 +1,12 @@
+{
+  "version": "AM-PORTAL-AUTH-BUSINESS-FIX-2.0",
+  "changes": [
+    "Portal has native staff login using existing staff-admin-api",
+    "am_staff_token is stored once and reused across hubs/tools",
+    "Hubs validate session and return to portal when session is missing/expired",
+    "Business Hub only links Main Admin to store_admin.html",
+    "Programs, Products, Requests, Institutions and Pricing are marked Managed inside Main Admin until dedicated screens exist"
+  ],
+  "backend_changes": "none",
+  "safe_scope": "frontend navigation/auth gate only"
+}

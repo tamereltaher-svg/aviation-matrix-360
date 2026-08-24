@@ -1,1 +1,44 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Aviation Matrix Portal</title><link rel="stylesheet" href="portal_final.css"></head><body><div class="wrap"><div class="top"><div class="brand">AVIATION MATRIX<small>ENTERPRISE OPERATING PORTAL</small></div><div style="font-size:9px;font-weight:1000;color:#177ca7">PORTAL v1</div></div><section class="hero"><h1>Welcome to Aviation Matrix</h1><p>Choose the area you want to work in. Each domain contains its own tools, dashboards and workflows while all engines remain connected underneath.</p></section><section class="section"><h2>Choose where you want to work today</h2><p>Six clear business areas. Dashboards and reports live inside the correct domain, not on the first screen.</p><div class="grid"><a class="card" href="business_hub.html"><span class="tag live">OPEN</span><div class="icon">💼</div><h3>Business & Commercial</h3><p>Programs, products, pricing, requests, quotations, institutions and commercial operations.</p><span class="open">Open Business & Commercial</span></a><a class="card" href="kids_hub.html"><span class="tag live">OPEN</span><div class="icon">🛫</div><h3>Kids Aviation</h3><p>Kids universe, missions, content, AI production, passport, rewards, publishing and products.</p><span class="open">Open Kids Aviation</span></a><a class="card" href="talent_hub.html"><span class="tag live">OPEN</span><div class="icon">🧠</div><h3>Talent Intelligence</h3><p>Applicant, candidate, evidence, development, readiness and Candidate 360 intelligence.</p><span class="open">Open Talent Intelligence</span></a><a class="card" href="learning_hub.html"><span class="tag live">OPEN</span><div class="icon">🎓</div><h3>Learning & Assessment</h3><p>Curriculum, courses, question bank, exam builder, results, transcripts and credentials.</p><span class="open">Open Learning & Assessment</span></a><a class="card" href="airline_hub.html"><span class="tag live">OPEN</span><div class="icon">✈️</div><h3>Airline & Employer</h3><p>Employers, job roles, requirements, campaigns, matching, shortlists, interviews and hiring.</p><span class="open">Open Airline & Employer</span></a><a class="card" href="platform_hub.html"><span class="tag live">OPEN</span><div class="icon">⚙️</div><h3>Platform & Governance</h3><p>Staff, permissions, master data, workflows, decisions, system health and reporting.</p><span class="open">Open Platform & Governance</span></a></div></section><div class="rule"><b>Navigation rule:</b> Portal → Domain Hub → Tool. The first screen contains no KPIs, reports or operational tables.</div><footer>Aviation Matrix • Portal Reorganization Final v1</footer></div></body></html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Aviation Matrix Portal</title><link rel="stylesheet" href="portal_final.css"></head>
+<body>
+<div id="authCover" class="auth-cover">
+  <div class="auth-card">
+    <div class="auth-brand">AVIATION MATRIX</div>
+    <h1>Staff Sign In</h1>
+    <p>Sign in once, then move between Portal → Hub → Tool without repeated login screens.</p>
+    <form id="loginForm">
+      <div class="field"><label>EMAIL</label><input id="email" type="email" autocomplete="username" required></div>
+      <div class="field"><label>PASSWORD</label><input id="password" type="password" autocomplete="current-password" required></div>
+      <button id="loginBtn" class="login-btn" type="submit">Sign in to Aviation Matrix</button>
+      <div id="loginError" class="auth-error"></div>
+      <div id="authStatus" class="auth-status">Checking existing staff session…</div>
+    </form>
+  </div>
+</div>
+
+<div id="portalApp" class="wrap" style="display:none">
+  <div class="top">
+    <div class="brand">AVIATION MATRIX<small>ENTERPRISE OPERATING PORTAL</small></div>
+    <div class="sessionbar"><span id="staffName" class="session-pill">Staff session</span><button class="logout-btn" onclick="amLogout()">Sign out</button></div>
+  </div>
+  <section class="hero"><h1>Welcome to Aviation Matrix</h1><p>Choose the area you want to work in. Each domain contains its own tools, dashboards and workflows while all engines remain connected underneath.</p></section>
+  <section class="section"><h2>Choose where you want to work today</h2><p>Six clear business areas. Dashboards and reports live inside the correct domain, not on the first screen.</p>
+  <div class="grid">
+    <a class="card" href="business_hub.html"><span class="tag live">OPEN</span><div class="icon">💼</div><h3>Business & Commercial</h3><p>Programs, products, pricing, requests, quotations, institutions and commercial operations.</p><span class="open">Open Business & Commercial</span></a>
+    <a class="card" href="kids_hub.html"><span class="tag live">OPEN</span><div class="icon">🛫</div><h3>Kids Aviation</h3><p>Kids universe, missions, content, AI production, passport, rewards, publishing and products.</p><span class="open">Open Kids Aviation</span></a>
+    <a class="card" href="talent_hub.html"><span class="tag live">OPEN</span><div class="icon">🧠</div><h3>Talent Intelligence</h3><p>Applicant, candidate, evidence, development, readiness and Candidate 360 intelligence.</p><span class="open">Open Talent Intelligence</span></a>
+    <a class="card" href="learning_hub.html"><span class="tag live">OPEN</span><div class="icon">🎓</div><h3>Learning & Assessment</h3><p>Curriculum, courses, question bank, exam builder, results, transcripts and credentials.</p><span class="open">Open Learning & Assessment</span></a>
+    <a class="card" href="airline_hub.html"><span class="tag live">OPEN</span><div class="icon">✈️</div><h3>Airline & Employer</h3><p>Employers, job roles, requirements, campaigns, matching, shortlists, interviews and hiring.</p><span class="open">Open Airline & Employer</span></a>
+    <a class="card" href="platform_hub.html"><span class="tag live">OPEN</span><div class="icon">⚙️</div><h3>Platform & Governance</h3><p>Staff, permissions, master data, workflows, decisions, system health and reporting.</p><span class="open">Open Platform & Governance</span></a>
+  </div></section>
+  <div class="rule"><b>Navigation rule:</b> Login once → Portal → Domain Hub → Tool. Business submodules no longer pretend to be separate pages when they are still managed inside Main Admin.</div>
+  <footer>Aviation Matrix • Portal Login Gate + Navigation Fix v2</footer>
+</div>
+<script src="portal_auth.js"></script>
+<script>
+const cover=document.getElementById('authCover'), app=document.getElementById('portalApp'), statusEl=document.getElementById('authStatus'), errEl=document.getElementById('loginError'), btn=document.getElementById('loginBtn');
+function showApp(me){cover.style.display='none';app.style.display='block';const s=me?.staff||me;if(s?.full_name||s?.email)document.getElementById('staffName').textContent=s.full_name||s.email}
+function showLogin(msg=''){cover.style.display='grid';app.style.display='none';statusEl.textContent='';if(msg){errEl.textContent=msg;errEl.style.display='block'}}
+(async()=>{if(!amToken())return showLogin();try{const me=await amStaffCall('me');showApp(me)}catch(e){localStorage.removeItem(AM_TOKEN_KEY);showLogin()}})();
+document.getElementById('loginForm').addEventListener('submit',async(e)=>{e.preventDefault();errEl.style.display='none';btn.disabled=true;btn.textContent='Signing in…';try{const j=await amStaffCall('login',{email:document.getElementById('email').value.trim(),password:document.getElementById('password').value});localStorage.setItem(AM_TOKEN_KEY,j.token);showApp(j)}catch(ex){let m='Sign in failed.';if(ex.message==='INVALID_CREDENTIALS')m='Email or password is incorrect.';else if(ex.message==='TOO_MANY_ATTEMPTS')m='Too many attempts. Please wait and try again.';else if(ex.message==='FORBIDDEN')m='This staff account does not have portal access.';showLogin(m)}finally{btn.disabled=false;btn.textContent='Sign in to Aviation Matrix'}});
+</script>
+</body></html>
