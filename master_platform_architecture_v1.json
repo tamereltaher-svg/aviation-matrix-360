@@ -1,0 +1,334 @@
+{
+  "version": "AM-ARCH-1.0",
+  "status": "frozen",
+  "principles": [
+    "One Person Record",
+    "One Evidence Engine",
+    "One Requirements Engine",
+    "One Competency Language",
+    "Every Decision Traceable",
+    "Input → Process → Evidence → Decision → Output",
+    "AI assists; structured data remains source of truth",
+    "Role-based portals",
+    "Case/Journey separated from Person",
+    "No orphan modules"
+  ],
+  "counts": {
+    "domains": 6,
+    "modules": 46,
+    "screens": 22,
+    "flows": 6,
+    "roles": 9
+  },
+  "domains": [
+    {
+      "code": "BUS",
+      "name": "Business Operations",
+      "purpose": "Commercial, institutional and operational administration.",
+      "modules": [
+        {
+          "code": "BUS-PROD",
+          "name": "Products & Store",
+          "status": "existing"
+        },
+        {
+          "code": "BUS-PROG",
+          "name": "Programs",
+          "status": "existing"
+        },
+        {
+          "code": "BUS-REQ",
+          "name": "Requests & Quotations",
+          "status": "existing"
+        },
+        {
+          "code": "BUS-INST",
+          "name": "Institutions & Relationships",
+          "status": "existing"
+        },
+        {
+          "code": "BUS-PRC",
+          "name": "Pricing & Commercial Rules",
+          "status": "partial"
+        }
+      ]
+    },
+    {
+      "code": "KIDS",
+      "name": "Kids Aviation",
+      "purpose": "Kids Aviation Matrix learning universe, production and learner experience.",
+      "modules": [
+        {
+          "code": "KID-JRN",
+          "name": "Journey & Missions",
+          "status": "existing"
+        },
+        {
+          "code": "KID-AI",
+          "name": "AI Production Studio",
+          "status": "existing"
+        },
+        {
+          "code": "KID-MEDIA",
+          "name": "Stories & Media",
+          "status": "partial"
+        },
+        {
+          "code": "KID-ACT",
+          "name": "Creative Activities",
+          "status": "partial"
+        },
+        {
+          "code": "KID-UNI",
+          "name": "Characters & Universe",
+          "status": "existing"
+        },
+        {
+          "code": "KID-RWD",
+          "name": "Rewards & Passport",
+          "status": "existing"
+        },
+        {
+          "code": "KID-BOOK",
+          "name": "Books & Publishing",
+          "status": "existing"
+        },
+        {
+          "code": "KID-COM",
+          "name": "Kids Products & Store",
+          "status": "existing"
+        },
+        {
+          "code": "KID-EXP",
+          "name": "Kids Public Experience",
+          "status": "existing"
+        }
+      ]
+    },
+    {
+      "code": "TALENT",
+      "name": "Talent Intelligence",
+      "purpose": "One person, applicant, candidate and learner intelligence.",
+      "modules": [
+        {
+          "code": "TAL-PER",
+          "name": "Person & Identity",
+          "status": "partial"
+        },
+        {
+          "code": "TAL-APP",
+          "name": "Applicant & Application",
+          "status": "partial"
+        },
+        {
+          "code": "TAL-CAN",
+          "name": "Candidate 360 Profile",
+          "status": "planned"
+        },
+        {
+          "code": "TAL-FIT",
+          "name": "Career Fit & Development",
+          "status": "partial"
+        },
+        {
+          "code": "TAL-EVD",
+          "name": "Evidence Portfolio",
+          "status": "planned"
+        },
+        {
+          "code": "TAL-DOC",
+          "name": "Document & Credential Vault",
+          "status": "planned"
+        },
+        {
+          "code": "TAL-TIM",
+          "name": "Candidate Timeline",
+          "status": "planned"
+        },
+        {
+          "code": "TAL-DOS",
+          "name": "Candidate Dossier",
+          "status": "planned"
+        }
+      ]
+    },
+    {
+      "code": "LEARN",
+      "name": "Learning & Assessment",
+      "purpose": "Curriculum, courses, assessments, exams, scoring and credentials.",
+      "modules": [
+        {
+          "code": "LRN-CUR",
+          "name": "Curriculum Architecture",
+          "status": "planned"
+        },
+        {
+          "code": "LRN-CRS",
+          "name": "Courses & Learning Paths",
+          "status": "planned"
+        },
+        {
+          "code": "LRN-QB",
+          "name": "Question Bank",
+          "status": "partial"
+        },
+        {
+          "code": "LRN-ASM",
+          "name": "Assessment Builder",
+          "status": "partial"
+        },
+        {
+          "code": "LRN-EXM",
+          "name": "Exam Builder & Sessions",
+          "status": "planned"
+        },
+        {
+          "code": "LRN-SCR",
+          "name": "Scoring & Results",
+          "status": "partial"
+        },
+        {
+          "code": "LRN-CRD",
+          "name": "Certificates & Credentials",
+          "status": "partial"
+        }
+      ]
+    },
+    {
+      "code": "AIR",
+      "name": "Airline & Employer",
+      "purpose": "Requirements, campaigns, matching, shortlists and hiring outcomes.",
+      "modules": [
+        {
+          "code": "AIR-ORG",
+          "name": "Airline & Employer Profiles",
+          "status": "planned"
+        },
+        {
+          "code": "AIR-ROLE",
+          "name": "Job Roles",
+          "status": "planned"
+        },
+        {
+          "code": "AIR-REQ",
+          "name": "Requirements Engine",
+          "status": "planned"
+        },
+        {
+          "code": "AIR-CMP",
+          "name": "Recruitment Campaigns",
+          "status": "planned"
+        },
+        {
+          "code": "AIR-MAT",
+          "name": "Candidate Matching",
+          "status": "planned"
+        },
+        {
+          "code": "AIR-SHL",
+          "name": "Shortlists & Interviews",
+          "status": "planned"
+        },
+        {
+          "code": "AIR-HIR",
+          "name": "Hiring Outcomes",
+          "status": "planned"
+        }
+      ]
+    },
+    {
+      "code": "PLAT",
+      "name": "Platform & Governance",
+      "purpose": "Identity, master data, workflow, audit, AI and platform control.",
+      "modules": [
+        {
+          "code": "PLT-IAM",
+          "name": "Identity & Access",
+          "status": "existing"
+        },
+        {
+          "code": "PLT-REF",
+          "name": "Master Reference Data",
+          "status": "partial"
+        },
+        {
+          "code": "PLT-CMP",
+          "name": "Competency Framework",
+          "status": "planned"
+        },
+        {
+          "code": "PLT-WF",
+          "name": "Workflow & Approvals",
+          "status": "planned"
+        },
+        {
+          "code": "PLT-DEC",
+          "name": "Decision History",
+          "status": "planned"
+        },
+        {
+          "code": "PLT-COM",
+          "name": "Communications Timeline",
+          "status": "planned"
+        },
+        {
+          "code": "PLT-AUD",
+          "name": "Audit & Event Bus",
+          "status": "partial"
+        },
+        {
+          "code": "PLT-AI",
+          "name": "AI Governance & Configuration",
+          "status": "partial"
+        },
+        {
+          "code": "PLT-HLT",
+          "name": "System Health & Control Tower",
+          "status": "partial"
+        },
+        {
+          "code": "PLT-RPT",
+          "name": "Reporting & Export Layer",
+          "status": "planned"
+        }
+      ]
+    }
+  ],
+  "flows": [
+    {
+      "name": "Candidate Lifecycle",
+      "path": "Registration → Screening → Applicant → Assessment → Candidate Activation → Enrollment → Learning → Exams → Evidence → Requirements → Matching → Outcome"
+    },
+    {
+      "name": "Kids Explorer Lifecycle",
+      "path": "Passport → Level → Season → Mission → Stamp → Badge → Certificate → Content/Product Experience"
+    },
+    {
+      "name": "Assessment & Exam Lifecycle",
+      "path": "Blueprint → Question Bank → Version → Eligibility → Session/Attempt → Integrity → Scoring → Result → Evidence → Credential/Retake"
+    },
+    {
+      "name": "Airline Recruitment Lifecycle",
+      "path": "Employer → Role → Requirements → Campaign → Matching → Review → Shortlist → Interview → Offer/Hiring Outcome"
+    },
+    {
+      "name": "Candidate Dossier Lifecycle",
+      "path": "Identity → Entry Profile → Assessment → Development → Training → Exams → Credentials → Requirements → Readiness → Controlled Release"
+    },
+    {
+      "name": "Requirement Evaluation Lifecycle",
+      "path": "Requirement → Evidence Lookup → Rule Evaluation → Gap → Decision → Trace → Re-evaluate"
+    }
+  ],
+  "roles": [
+    "Platform Administrator",
+    "Operations Staff",
+    "Candidate / Learner",
+    "Parent / Guardian",
+    "Instructor",
+    "Examiner / Assessor",
+    "Airline / Employer",
+    "Institution",
+    "Public Visitor"
+  ]
+}
