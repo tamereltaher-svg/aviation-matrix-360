@@ -1,0 +1,45 @@
+{
+  "version": "AM-AIR-6.0",
+  "flow": "Employer -> Job Role -> Requirement Set -> Recruitment Campaign -> Candidate Application -> Match -> Shortlist -> Interview -> Hiring Outcome",
+  "new_tables": [
+    "am_employer_organizations",
+    "am_employer_contacts",
+    "am_job_roles",
+    "am_requirement_sets",
+    "am_requirement_items",
+    "am_recruitment_campaigns",
+    "am_candidate_applications",
+    "am_candidate_matches",
+    "am_shortlists",
+    "am_interviews",
+    "am_interview_scores",
+    "am_hiring_outcomes"
+  ],
+  "summary_view": "am_airline_employer_architecture_summary",
+  "module_status_updates": [
+    "AIR-ORG",
+    "AIR-ROLE",
+    "AIR-REQ",
+    "AIR-CMP",
+    "AIR-MAT",
+    "AIR-SHL",
+    "AIR-HIR"
+  ],
+  "current_operational_counts": {
+    "employers": 0,
+    "roles": 0,
+    "requirement_sets": 0,
+    "requirement_items": 0,
+    "campaigns": 0,
+    "applications": 0,
+    "matches": 0,
+    "shortlisted": 0,
+    "interviews": 0,
+    "outcomes": 0
+  },
+  "security": "RLS enabled; no public policies on new Phase-6 tables",
+  "phase_boundary": {
+    "phase7": "Generalized Requirements, Evidence, Competency and Decision engines",
+    "phase8": "Dashboards, employer portal, candidate readiness outputs and reports"
+  }
+}
