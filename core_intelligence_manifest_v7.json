@@ -1,0 +1,55 @@
+{
+  "version": "AM-CORE-7.0",
+  "principles": [
+    "One Evidence Engine",
+    "One Requirements Engine",
+    "One Competency Language",
+    "Every Decision Traceable",
+    "AI assists; structured data remains source of truth"
+  ],
+  "new_tables": [
+    "am_evidence_type_registry",
+    "am_evidence_verifications",
+    "am_candidate_facts",
+    "am_competency_frameworks",
+    "am_competencies",
+    "am_candidate_competency_ratings",
+    "am_competency_evidence_links",
+    "am_requirement_evaluation_runs",
+    "am_requirement_evaluation_results",
+    "am_decision_records",
+    "am_decision_evidence_links",
+    "am_workflow_templates",
+    "am_workflow_steps",
+    "am_workflow_instances",
+    "am_workflow_tasks",
+    "am_approval_records",
+    "am_communications",
+    "am_communication_participants",
+    "am_intelligence_events"
+  ],
+  "summary_view": "am_core_intelligence_summary",
+  "requirement_evaluator": "am_evaluate_candidate_requirements",
+  "standard_evidence_types": 11,
+  "current_counts": {
+    "candidate_facts": 0,
+    "competency_frameworks": 0,
+    "competencies": 0,
+    "competency_ratings": 0,
+    "requirement_runs": 0,
+    "decisions": 0,
+    "workflow_templates": 0,
+    "workflow_instances": 0,
+    "workflow_tasks": 0,
+    "approvals": 0,
+    "communications": 0,
+    "intelligence_events": 0
+  },
+  "validation": {
+    "requirement_engine_rollback_test": "passed",
+    "result": "100.00 / mandatory_met=true / matched=1 / gaps=0 / manual_review=0"
+  },
+  "security": "RLS enabled on all Phase-7 tables; no public browser policies; evaluator execute revoked from anon/authenticated",
+  "advisor_note": "RLS-enabled-no-policy notices are expected for internal tables. Pre-existing security advisor warnings remain and were not changed blindly.",
+  "next_phase": "Dashboards, Dossiers, Reports & Final Integration"
+}
