@@ -1,0 +1,46 @@
+{
+  "version": "AM-TALENT-4.0",
+  "lifecycle": [
+    "visitor",
+    "applicant",
+    "candidate",
+    "enrolled_learner",
+    "active_learner",
+    "completed",
+    "alumni",
+    "employed",
+    "inactive"
+  ],
+  "canonical_model": "Person -> Candidate Record -> Case -> Evidence/Timeline/Documents/Development -> Dashboard/Dossier",
+  "implemented_tables": [
+    "am_persons",
+    "am_candidate_records",
+    "am_candidate_cases",
+    "am_candidate_timeline_events",
+    "am_candidate_evidence",
+    "am_candidate_documents",
+    "am_candidate_development_plans",
+    "am_candidate_development_actions",
+    "am_candidate_dossier_snapshots"
+  ],
+  "implemented_view": "am_candidate_360_summary",
+  "legacy_migration": {
+    "candidate_profiles_linked": 3,
+    "persons_created": 3,
+    "timeline_import_events": 3
+  },
+  "dossier_types": [
+    "entry_profile",
+    "live_profile",
+    "final_dossier",
+    "employer_release",
+    "readiness_report",
+    "gap_report"
+  ],
+  "phase_boundaries": {
+    "phase5": "Learning, exams and assessment architecture",
+    "phase6": "Airline and employer architecture",
+    "phase7": "Requirements, evidence, competency and decision engines",
+    "phase8": "Dashboards, dossiers, reports and final integration"
+  }
+}
