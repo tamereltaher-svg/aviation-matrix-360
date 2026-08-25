@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KAM Characters & Universe</title>
+<style>
+:root{
+ --navy:#0b2f4e;--blue:#177ca7;--violet:#7068dc;--ink:#29475a;--muted:#748895;
+ --line:#dbeaf1;--bg:#f7fbfd;--card:#fff;--green:#1f8d60;--amber:#b57916;--red:#a44b45;
+ --shadow:0 16px 40px rgba(34,76,101,.08)
+}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;
+background:radial-gradient(circle at 12% 0,#e8f9ff,transparent 25%),radial-gradient(circle at 90% 5%,#eeeaff,transparent 28%),var(--bg);color:var(--ink)}
+a{text-decoration:none;color:inherit}.wrap{max-width:1480px;margin:auto;padding:18px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+.nav{display:flex;gap:8px;flex-wrap:wrap}.pill{padding:9px 12px;border:1px solid var(--line);background:#fff;border-radius:999px;font-size:9px;font-weight:1000;color:var(--blue)}
+.brand{font-size:18px;font-weight:1000;color:var(--navy)}.brand small{display:block;font-size:8px;letter-spacing:.16em;color:#7e929f;margin-top:2px}
+.hero{padding:28px 30px;border-radius:28px;background:linear-gradient(135deg,#0b3152,#197ca6 58%,#7169d7);color:#fff;box-shadow:var(--shadow)}
+.hero h1{font-size:36px;letter-spacing:-.04em;margin:0 0 8px}.hero p{margin:0;max-width:1050px;color:#def2f9;font-size:12px;line-height:1.6}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:14px}.kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+.kpi small{display:block;font-size:8px;color:var(--muted);font-weight:1000}.kpi strong{display:block;font-size:22px;color:var(--navy);margin-top:5px}
+.layout{display:grid;grid-template-columns:1fr 370px;gap:14px;margin-top:14px}.panel{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px;box-shadow:var(--shadow)}
+.headrow{display:flex;justify-content:space-between;align-items:center;gap:10px}.panel h2{margin:0;color:var(--navy);font-size:17px}.panel h3{margin:16px 0 8px;color:var(--navy);font-size:13px}
+.status{padding:5px 8px;border-radius:999px;font-size:7px;font-weight:1000}.ok{background:#e9f8ef;color:#1f7650}.warn{background:#fff4dc;color:#826016}.bad{background:#fff0ef;color:#963e38}
+.toolbar{display:grid;grid-template-columns:1fr auto auto;gap:10px;margin-top:14px}.toolbar input{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;outline:none}
+.btn{border:0;border-radius:12px;padding:11px 14px;font-weight:1000;cursor:pointer}.btn.primary{background:var(--navy);color:#fff}.btn.soft{background:#eaf6fb;color:#0b5c82}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.char{border:1px solid var(--line);border-radius:18px;padding:14px;background:#fff;display:grid;grid-template-columns:92px 1fr;gap:12px;align-items:center}
+.ref{width:92px;height:112px;border-radius:14px;overflow:hidden;background:#eef5f8;border:1px solid var(--line);display:grid;place-items:center}
+.ref img{width:100%;height:100%;object-fit:cover}.char h3{margin:0 0 3px;font-size:13px}.char .code{font-size:8px;font-weight:1000;color:#6e8290}.char p{font-size:8.5px;color:var(--muted);line-height:1.45;margin:7px 0}
+.meta{display:flex;gap:6px;flex-wrap:wrap}.tag{padding:4px 7px;border-radius:999px;background:#edf6fa;color:#42687c;font-size:7px;font-weight:1000}
+.tag.lock{background:#e9f8ef;color:#1f7650}.tag.pending{background:#fff4dc;color:#826016}
+.rulebox{display:grid;gap:8px;max-height:330px;overflow:auto}.rule{padding:10px 11px;border:1px solid var(--line);border-radius:12px;background:#fbfdfe}.rule b{display:block;color:var(--navy);font-size:9px}.rule span{font-size:8px;color:var(--muted);line-height:1.4}
+.detail{min-height:260px}.detail .portrait{width:100%;max-height:300px;object-fit:contain;background:#f5fafc;border:1px solid var(--line);border-radius:16px}
+.detail .name{font-size:22px;font-weight:1000;color:var(--navy);margin:12px 0 2px}.detail .sub{font-size:9px;color:var(--muted)}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.action{display:block;text-align:center;padding:10px;border-radius:11px;font-size:8px;font-weight:1000;border:1px solid var(--line);color:var(--blue);background:#fff}
+.note{margin-top:10px;padding:11px;border-radius:12px;background:#eaf7fc;color:#0b5c82;font-size:8.5px;line-height:1.5}.empty{padding:24px;border:1px dashed #c9dce5;border-radius:14px;text-align:center;color:var(--muted);font-size:9px}
+footer{text-align:center;padding:28px 0 8px;color:#899aa5;font-size:8px}
+@media(max-width:1100px){.layout{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}}@media(max-width:760px){.grid{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr}.kpis{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="nav">
+      <a class="pill" href="kids_hub.html">← Kids Hub</a>
+      <a class="pill" href="portal.html">Main Portal</a>
+    </div>
+    <div class="brand">AVIATION MATRIX<small>KIDS CHARACTERS & UNIVERSE</small></div>
+  </div>
+
+  <section class="hero">
+    <h1>Characters & Universe</h1>
+    <p>Single operating view for KAM character identity, canonical references, visual lock readiness and production use. This module reads the same locked character system already used by AI Production Studio.</p>
+  </section>
+
+  <section class="kpis">
+    <div class="kpi"><small>CHARACTERS</small><strong id="kChars">—</strong></div>
+    <div class="kpi"><small>LOCK READY</small><strong id="kReady">—</strong></div>
+    <div class="kpi"><small>LOCK PENDING</small><strong id="kPending">—</strong></div>
+    <div class="kpi"><small>ACTIVE RULES</small><strong id="kRules">—</strong></div>
+    <div class="kpi"><small>SYSTEM</small><strong id="kStatus">…</strong></div>
+  </section>
+
+  <section class="toolbar">
+    <input id="search" placeholder="Search character by name or code…">
+    <button class="btn soft" onclick="location.href='kids_ai_studio.html'">Open AI Studio</button>
+    <button class="btn primary" onclick="loadData()">Refresh Locks</button>
+  </section>
+
+  <section class="layout">
+    <main class="panel">
+      <div class="headrow"><h2>Character Registry</h2><span id="apiStatus" class="status warn">CONNECTING</span></div>
+      <div id="chars" class="grid" style="margin-top:12px"></div>
+    </main>
+
+    <aside class="panel detail">
+      <div class="headrow"><h2>Identity Detail</h2><span id="detailStatus" class="status warn">SELECT</span></div>
+      <div id="detail" class="empty" style="margin-top:12px">Select a character to review canonical identity and lock rules.</div>
+      <h3>Active Lock Rules</h3>
+      <div id="rules" class="rulebox"><div class="empty">No character selected.</div></div>
+      <div class="note">Canonical references are read-only production controls. Use AI Production Studio to generate scenes; use this page to verify identity readiness before production.</div>
+    </aside>
+  </section>
+
+  <footer>Kids Aviation Matrix 360° • Characters & Universe Module v1.0</footer>
+</div>
+
+<script>
+const API='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/kids-ai-studio-api';
+const token=localStorage.getItem('am_staff_token')||'';
+let refs=null, selected='';
+const e=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+async function api(action,payload={}){
+ const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({action,...payload})});
+ const d=await r.json().catch(()=>({}));
+ if(!r.ok) throw new Error(d.error||d.detail||('HTTP '+r.status));
+ return d;
+}
+function lockFor(code){return (refs?.character_locks||[]).find(x=>x.character_code===code)||null}
+function baseUrl(){return (refs?.reference_base_url||'assets/kam-character-lock').replace(/\/$/,'')}
+function render(){
+ const q=e('search').value.trim().toLowerCase();
+ const chars=(refs?.characters||[]).filter(x=>[x.name,x.code,x.role,x.description].join(' ').toLowerCase().includes(q));
+ e('chars').innerHTML=chars.map(x=>{
+   const l=lockFor(x.code), ready=l?.lock_status==='LOCK_READY';
+   const img=`${baseUrl()}/${encodeURIComponent(x.code)}/01_FULL_BODY_CANONICAL.jpg`;
+   return `<article class="char" onclick="selectChar('${esc(x.code)}')" style="cursor:pointer">
+     <div class="ref"><img src="${img}" alt="${esc(x.name)} canonical"></div>
+     <div><h3>${esc(x.name)}</h3><div class="code">${esc(x.code)}</div>
+     <p>${esc(x.role||x.description||'KAM character identity')}</p>
+     <div class="meta"><span class="tag ${ready?'lock':'pending'}">${ready?'🔒 LOCK READY':'⚠ LOCK PENDING'}</span><span class="tag">Canonical refs</span></div></div>
+   </article>`
+ }).join('')||'<div class="empty">No characters match your search.</div>';
+ renderKpis();
+ if(selected) selectChar(selected,false);
+}
+function renderKpis(){
+ const locks=refs?.character_locks||[], chars=refs?.characters||[];
+ const ready=locks.filter(x=>x.lock_status==='LOCK_READY').length;
+ e('kChars').textContent=chars.length;e('kReady').textContent=ready;e('kPending').textContent=Math.max(chars.length-ready,0);
+ const activeRules=locks.reduce((n,x)=>n+(Number(x.active_rule_count||x.rule_count||0)||0),0);
+ e('kRules').textContent=activeRules||'—';
+}
+function selectChar(code,scroll=true){
+ selected=code;
+ const x=(refs?.characters||[]).find(c=>c.code===code); if(!x)return;
+ const l=lockFor(code), ready=l?.lock_status==='LOCK_READY';
+ e('detailStatus').textContent=ready?'LOCK READY':'LOCK PENDING';e('detailStatus').className='status '+(ready?'ok':'warn');
+ const full=`${baseUrl()}/${encodeURIComponent(code)}/01_FULL_BODY_CANONICAL.jpg`;
+ const face=`${baseUrl()}/${encodeURIComponent(code)}/02_FACE_CANONICAL.jpg`;
+ e('detail').className='';e('detail').innerHTML=`<img class="portrait" src="${full}" alt="${esc(x.name)}"><div class="name">${esc(x.name)}</div><div class="sub">${esc(code)}${x.role?' • '+esc(x.role):''}</div>
+ <div class="actions"><a class="action" href="${face}" target="_blank">Open Canonical Face</a><a class="action" href="${full}" target="_blank">Open Full Body</a></div>`;
+ const rules=l?.rules||l?.active_rules||[];
+ e('rules').innerHTML=rules.length?rules.map(r=>`<div class="rule"><b>${esc(r.rule_code||r.code||r.rule_type||'IDENTITY RULE')}</b><span>${esc(r.rule_text||r.text||r.description||String(r))}</span></div>`).join(''):
+ `<div class="empty">${ready?'Identity lock is ready. Detailed rule text is enforced server-side during scene generation.':'No active rule detail returned for this character.'}</div>`;
+ if(scroll && window.innerWidth<1100)e('detail').scrollIntoView({behavior:'smooth',block:'start'});
+}
+async function loadData(){
+ if(!token){location.replace('portal.html');return}
+ try{
+   e('apiStatus').textContent='CONNECTING';e('apiStatus').className='status warn';
+   refs=await api('refs');
+   e('apiStatus').textContent='CONNECTED';e('apiStatus').className='status ok';e('kStatus').textContent='LIVE';
+   render();
+ }catch(err){
+   e('apiStatus').textContent='OFFLINE';e('apiStatus').className='status bad';e('kStatus').textContent='CHECK';
+   e('chars').innerHTML='<div class="empty">Could not load character registry. Confirm staff login, then refresh.</div>';
+ }
+}
+e('search').addEventListener('input',render);
+loadData();
+</script>
+</body>
+</html>
