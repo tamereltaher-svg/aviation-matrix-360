@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kids Aviation Final Control Tower</title>
+<title>Kids Aviation Control Tower — Final Integration</title>
 <style>
 :root{--navy:#08233b;--sky:#0b6f9f;--muted:#6c8190;--line:#dbe7ed;--bg:#f4f9fb;--good:#1f7a50;--warn:#a66c00;--bad:#b13d3d}
 *{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:#17384f}.wrap{max-width:1250px;margin:auto;padding:22px}
@@ -19,17 +19,46 @@
 .table{width:100%;border-collapse:collapse;margin-top:11px;font-size:10px}.table th,.table td{text-align:left;padding:8px;border-bottom:1px solid #edf2f5}.table th{font-size:8px;text-transform:uppercase;color:var(--muted)}
 .empty{color:var(--muted);font-size:11px;padding:15px 0}.error{color:var(--bad);font-size:11px;margin-top:10px}
 @media(max-width:1000px){.kpis{grid-template-columns:repeat(3,1fr)}.grid{grid-template-columns:1fr}.level-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:620px){.kpis{grid-template-columns:repeat(2,1fr)}.checks,.rules,.level-grid{grid-template-columns:1fr}.hero-top{flex-direction:column;align-items:flex-start}}
-</style></head>
+</style>
+<style id="kam-control-tower-final-integration-v1">
+.ops-section{margin:18px 0}
+.ops-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.ops-head h2{margin:0;color:var(--navy);font-size:17px}
+.ops-head .sub{max-width:760px}
+.ops-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.ops-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px;box-shadow:0 8px 24px rgba(5,30,48,.04);position:relative}
+.ops-card h4{margin:5px 0 4px;color:var(--navy);font-size:11px;padding-right:58px}
+.ops-card p{margin:0 0 10px;font-size:9px;color:var(--muted);line-height:1.45}
+.ops-card .n{font-size:8px;font-weight:950;color:#0b6f9f}
+.ops-card .state{position:absolute;right:10px;top:10px;border-radius:999px;padding:5px 7px;font-size:7px;font-weight:950;background:#edf2f5;color:#6c8190}
+.ops-card .state.live{background:#e5f6ec;color:var(--good)}
+.ops-card .state.missing{background:#fde8e8;color:var(--bad)}
+.ops-card a{font-size:8px;font-weight:950;color:#0b6f9f;text-decoration:none}
+.ops-summary{display:flex;gap:8px;flex-wrap:wrap}
+.ops-chip{padding:7px 10px;border-radius:999px;background:#eef7fb;border:1px solid #d5e9f2;color:#0b5d85;font-size:8px;font-weight:950}
+.ops-chip.good{background:#e5f6ec;color:var(--good);border-color:#ccebd9}
+@media(max-width:1050px){.ops-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.ops-grid{grid-template-columns:1fr}}
+</style>
+</head>
 <body><div style="position:fixed;right:18px;bottom:18px;z-index:999"><a href="kids_ai_studio.html" style="display:inline-flex;align-items:center;gap:7px;padding:10px 13px;border-radius:12px;background:#7d6cf2;color:#fff;text-decoration:none;font-weight:900;font-size:11px;box-shadow:0 10px 22px rgba(90,75,190,.18)">✨ AI Production Studio</a></div><div class="wrap">
 <section class="hero">
- <div class="hero-top"><div><small>KIDS AVIATION MATRIX 360 • PHASE 8/8</small><h1>Final Control Tower</h1><p>One screen for curriculum integrity, learner experience, publishing, commercial readiness, automation and launch health.</p></div>
- <div class="actions"><button class="btn white" onclick="runHealth()">Run Health Check</button><a class="btn white" href="kids_passports_admin.html">Passport Manager</a><a class="btn white" href="store_admin.html">Main Control Tower</a></div></div>
+ <div class="hero-top"><div><small>KIDS AVIATION MATRIX 360 • FINAL OPERATIONAL INTEGRATION</small><h1>Kids Control Tower</h1><p>One operating screen for the complete Kids Aviation Matrix ecosystem: curriculum, characters, media, activities, rewards, publishing, store, learner experience, automation and system health.</p></div>
+ <div class="actions"><button class="btn white" onclick="runHealth()">Run Health Check</button><button class="btn white" onclick="checkModules()">Check 8 Modules</button><a class="btn white" href="kids_hub.html">Kids Hub</a><a class="btn white" href="kids_ai_studio.html">AI Studio</a><a class="btn white" href="kids_passports_admin.html">Passport Manager</a></div></div>
  <div class="healthbar"><span class="health"><span id="healthDot" class="dot"></span><span id="healthText">Loading system health…</span></span><span id="healthTime" style="font-size:10px;color:#d4eaf5"></span></div>
 </section>
 
 <div class="kpis">
  <div class="kpi"><small>Levels</small><strong id="kLevels">—</strong></div><div class="kpi"><small>Seasons</small><strong id="kSeasons">—</strong></div><div class="kpi"><small>Missions</small><strong id="kMissions">—</strong></div><div class="kpi"><small>Script Pages</small><strong id="kScripts">—</strong></div><div class="kpi"><small>Artwork Pages</small><strong id="kArtwork">—</strong></div><div class="kpi"><small>Books</small><strong id="kBooks">—</strong></div>
 </div>
+
+<section class="ops-section">
+  <div class="ops-head">
+    <div><h2>8-Module Operational Integration</h2><div class="sub">Live route health for the complete Kids Aviation Hub operating flow.</div></div>
+    <div class="ops-summary"><span class="ops-chip good" id="opsReady">Checking modules…</span><span class="ops-chip">Flow: Create → Review → Publish → Sell → Track</span></div>
+  </div>
+  <div class="ops-grid" id="opsGrid"></div>
+</section>
 
 <div class="grid">
  <section class="card"><h3>Launch Readiness</h3><div class="sub">18 hard checks across curriculum, production, rewards, security, publishing, experience, governance and operations.</div><div id="checks" class="checks"></div></section>
@@ -48,6 +77,42 @@
 </div>
 <script>
 const API='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/kids-control-tower-api';const token=localStorage.getItem('am_staff_token')||'';
+const KAM_MODULES=[
+ {n:1,name:'Journey & Missions',href:'kids_journey_missions.html',desc:'Levels, seasons, missions and curriculum navigation.'},
+ {n:2,name:'Characters & Universe',href:'kids_characters_universe.html',desc:'Canonical identity, character locks and universe controls.'},
+ {n:3,name:'Stories & Media',href:'kids_stories_media.html',desc:'Stories, music, scenes and governed media production.'},
+ {n:4,name:'Creative Activities',href:'kids_creative_activities.html',desc:'Coloring, worksheets, activities and hands-on learning.'},
+ {n:5,name:'Rewards & Passport',href:'kids_rewards_passport.html',desc:'Badges, stamps, certificates and Explorer Passport.'},
+ {n:6,name:'Books & Publishing',href:'kids_books_publishing.html',desc:'Story, coloring and activity book publishing flow.'},
+ {n:7,name:'Products & Store',href:'kids_products_store.html',desc:'Product readiness and learner-facing store integration.'},
+ {n:8,name:'Control & Review',href:'kids_control_tower.html',desc:'System health, governance, alerts, analytics and launch readiness.'}
+];
+function renderModules(states={}){
+ const g=document.getElementById('opsGrid'); if(!g)return;
+ g.innerHTML=KAM_MODULES.map(m=>{
+   const s=states[m.href]||'checking';
+   const cls=s==='live'?'live':s==='missing'?'missing':'';
+   const label=s==='live'?'LIVE':s==='missing'?'MISSING':'CHECK';
+   return `<div class="ops-card"><span class="state ${cls}">${label}</span><span class="n">MODULE ${m.n}</span><h4>${m.name}</h4><p>${m.desc}</p><a href="${m.href}">Open module →</a></div>`;
+ }).join('');
+}
+async function checkModules(){
+ const states={};
+ await Promise.all(KAM_MODULES.map(async m=>{
+   if(m.href==='kids_control_tower.html'){states[m.href]='live';return;}
+   try{
+     const r=await fetch(m.href+'?health='+Date.now(),{method:'GET',cache:'no-store'});
+     states[m.href]=r.ok?'live':'missing';
+   }catch(e){states[m.href]='missing'}
+ }));
+ renderModules(states);
+ const live=Object.values(states).filter(x=>x==='live').length;
+ const chip=document.getElementById('opsReady');
+ chip.textContent=`${live}/8 modules reachable`;
+ chip.className='ops-chip '+(live===8?'good':'');
+}
+renderModules();
+
 async function api(action){const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({action})});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.detail||d.error||'Request failed');return d}
 const n=v=>Number(v||0).toLocaleString();const row=(a,b)=>`<tr><th>${a}</th><td><strong>${n(b)}</strong></td></tr>`;
 async function load(action='dashboard'){try{if(!token)throw new Error('Open this page after Staff Login in the Main Control Tower.');const d=await api(action),e=d.executive||{},h=d.health||{};
@@ -61,7 +126,7 @@ async function load(action='dashboard'){try{if(!token)throw new Error('Open this
  document.getElementById('rules').innerHTML=(d.automation_rules||[]).map(r=>`<div class="rule"><span class="code">${r.code} • ${r.domain}</span><strong>${r.name}</strong><p>${r.action_description}</p></div>`).join('');document.getElementById('err').textContent='';
  }catch(e){document.getElementById('err').textContent=e.message}}
 async function runHealth(){await load('run_health')}
-load();
+load();checkModules();
 </script>
 
 <style id="am-navigation-cleanup-v1">
