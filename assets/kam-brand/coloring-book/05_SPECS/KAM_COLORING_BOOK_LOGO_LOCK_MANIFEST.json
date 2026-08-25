@@ -1,0 +1,21 @@
+{
+  "pack": "KAM Coloring Book Logo Asset Pack",
+  "version": "1.0",
+  "status": "PRODUCTION_LOCK_CANDIDATE",
+  "master_brand": "Kids Aviation Matrix 360\u00b0",
+  "product_line": "Coloring Book",
+  "method": "Deterministic composite using locked Ava and Ben cutouts; characters were not AI-redrawn.",
+  "character_sources": [
+    "KAM_AW-001_AVA_WINGS_LOGO_CUTOUT_MASTER.png",
+    "KAM_BJ-001_BEN_JOURNEY_LOGO_CUTOUT_MASTER.png"
+  ],
+  "canonical_rule": "After user visual approval, register PRIMARY_MASTER as canonical locked asset in Supabase.",
+  "asset_path_target": "assets/kam-brand/coloring-book/01_MASTER/KAM_COLORING_BOOK_LOGO_PRIMARY_MASTER.png",
+  "do_not": [
+    "redraw characters",
+    "replace characters",
+    "stretch/distort",
+    "random recolor",
+    "regenerate logo inside AI artwork"
+  ]
+}
