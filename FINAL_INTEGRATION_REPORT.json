@@ -1,0 +1,73 @@
+{
+  "package": "KAM Kids Hub Final Operational Package v1.0",
+  "module_count": 8,
+  "hub_card_count": 12,
+  "all_hub_cards_open": true,
+  "hub_cards": [
+    {
+      "name": "Kids Control Tower",
+      "status": "OPEN",
+      "href": "kids_control_tower.html"
+    },
+    {
+      "name": "AI Production Studio",
+      "status": "OPEN",
+      "href": "kids_ai_studio.html"
+    },
+    {
+      "name": "Kids Aviation World",
+      "status": "OPEN",
+      "href": "kids_world.html"
+    },
+    {
+      "name": "Explorer Passport Admin",
+      "status": "OPEN",
+      "href": "kids_passports_admin.html"
+    },
+    {
+      "name": "Learner Experience",
+      "status": "OPEN",
+      "href": "kids_experience.html"
+    },
+    {
+      "name": "Stories & Media",
+      "status": "OPEN",
+      "href": "kids_stories_media.html"
+    },
+    {
+      "name": "Creative Activities",
+      "status": "OPEN",
+      "href": "kids_creative_activities.html"
+    },
+    {
+      "name": "Characters & Universe",
+      "status": "OPEN",
+      "href": "kids_characters_universe.html"
+    },
+    {
+      "name": "Rewards & Passport",
+      "status": "OPEN",
+      "href": "kids_rewards_passport.html"
+    },
+    {
+      "name": "Books & Publishing",
+      "status": "OPEN",
+      "href": "kids_books_publishing.html"
+    },
+    {
+      "name": "Products & Store",
+      "status": "OPEN",
+      "href": "kids_products_store.html"
+    },
+    {
+      "name": "Journey & Missions",
+      "status": "OPEN",
+      "href": "kids_journey_missions.html"
+    }
+  ],
+  "broken_local_html_links": [],
+  "upload_target": "repository root",
+  "supabase_schema_changed": false,
+  "authentication_changed": false,
+  "api_keys_added": false
+}
