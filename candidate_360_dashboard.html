@@ -12,4 +12,21 @@ async function load(){try{const j=await api('list_candidates');all=j.candidates|
 function render(){const q=(document.getElementById('q').value||'').toLowerCase();const a=all.filter(x=>(x.full_name+' '+x.candidate_number).toLowerCase().includes(q));document.getElementById('candidateKpis').innerHTML=`<div class="kpi"><b>${all.length}</b><small>CANDIDATES</small></div><div class="kpi"><b>${all.reduce((s,x)=>s+Number(x.evidence_count||0),0)}</b><small>EVIDENCE</small></div><div class="kpi"><b>${all.reduce((s,x)=>s+Number(x.final_exam_count||0),0)}</b><small>FINAL EXAMS</small></div><div class="kpi"><b>${all.reduce((s,x)=>s+Number(x.active_credential_count||0),0)}</b><small>CREDENTIALS</small></div><div class="kpi"><b>${all.reduce((s,x)=>s+Number(x.match_count||0),0)}</b><small>MATCHES</small></div>`;document.getElementById('rows').innerHTML=a.map(x=>`<tr><td><b>${esc(x.full_name)}</b><br>${esc(x.candidate_number)}</td><td>${esc(x.lifecycle_stage)}</td><td>${num(x.verified_evidence_count)}/${num(x.evidence_count)}</td><td>${num(x.final_exam_count)}</td><td>${num(x.active_credential_count)}</td><td>${num(x.best_match_score)}</td><td><button class="btn" onclick="openCandidate('${x.candidate_id}')">Open</button></td></tr>`).join('')||'<tr><td colspan="7" class="empty">No candidates</td></tr>'}
 async function openCandidate(id){try{const j=await api('candidate_dashboard',{candidate_id:id}),s=j.summary||{};document.getElementById('detail').innerHTML=`<div class="card"><h3>Identity & Lifecycle</h3><p><b>${esc(s.full_name)}</b><br>${esc(s.candidate_number)}<br>${esc(s.lifecycle_stage)} / ${esc(s.activation_status)}</p></div><div class="card"><h3>Evidence & Documents</h3><p>${j.evidence.length} evidence records<br>${j.documents.length} documents<br>${j.evidence.filter(x=>x.status==='verified').length} verified evidence</p></div><div class="card"><h3>Learning & Exams</h3><p>${j.exams.length} exam results<br>${j.credentials.length} credentials<br>Average: ${num(s.avg_exam_score)}</p></div><div class="card"><h3>Development</h3><p>${j.development.length} plans<br>${j.competencies.length} competency ratings</p></div><div class="card"><h3>Readiness</h3><p>${j.readiness.length} evaluations<br>Best match: ${num(s.best_match_score)}</p></div><div class="card"><h3>Traceability</h3><p>${j.timeline.length} timeline events<br>${j.decisions.length} decisions<br>Last activity: ${fmt(s.last_activity_at)}</p></div>`}catch(e){err(e)}}
 document.getElementById('q').addEventListener('input',render);load();
-</script></body></html>
+</script>
+
+<style id="am-navigation-cleanup-v1">
+.am-fixed-nav{position:fixed;left:14px;bottom:14px;z-index:9998;display:flex;gap:8px;align-items:center;
+font-family:Inter,"Segoe UI",Arial,sans-serif}
+.am-fixed-nav a{display:inline-flex;align-items:center;gap:5px;text-decoration:none;background:#fff;color:#0b2f4e;
+border:1px solid #dbeaf1;border-radius:999px;padding:9px 12px;font-size:11px;font-weight:900;
+box-shadow:0 8px 24px rgba(11,47,78,.12)}
+.am-fixed-nav a:hover{background:#f3f9fc}
+@media(max-width:620px){.am-fixed-nav{left:8px;bottom:8px}.am-fixed-nav a{font-size:10px;padding:8px 10px}}
+</style>
+
+<div class="am-fixed-nav" aria-label="Aviation Matrix navigation">
+  <a href="portal.html">← Main Portal</a>
+  <a href="talent_hub.html">Talent Hub</a>
+</div>
+
+</body></html>
