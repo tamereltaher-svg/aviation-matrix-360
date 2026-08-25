@@ -66,9 +66,9 @@
   <div class="grid2"><div class="card"><h3>Scene Generator</h3>
    <div class="field"><label>Page</label><select id="pageNo"></select></div>
    <div class="field"><label>Extra Art Direction</label><textarea id="imagePrompt" placeholder="Example: airport check-in hall at golden morning light, child-level eye view, keep clean space on upper left for page text."></textarea></div>
-   <div class="field"><label>Quality</label><select id="quality"><option value="medium">Medium — working draft</option><option value="high">High — final candidate</option><option value="low">Low — quick concept</option></select></div>
-   <div class="actions"><button id="imageBtn" class="btn purple" onclick="generateImage()">Generate Locked Scene</button><button id="approveImgBtn" class="btn green" onclick="approveImage()" disabled>Approve for Artwork Page</button><button id="rejectImgBtn" class="btn red" onclick="rejectImage()" disabled>Reject / Regenerate</button></div><div id="imageMsg"></div>
-  </div><div class="card"><h3>Generated Artwork</h3><div id="preview" class="preview"><div class="empty">Generate a scene to preview it here.</div></div><div id="referenceCompare" class="comparegrid"></div><label class="reviewcheck"><input id="identityReviewed" type="checkbox" onchange="syncApproveState()"> <span>I compared the generated characters with the canonical face/full-body references and confirm face, hair, age look, body proportions, outfit and signature accessories are consistent.</span></label></div></div>
+   <div class="field"><label>Quality</label><select id="quality"><option value="high" selected>High — production identity candidate</option><option value="medium">Medium — working draft</option><option value="low">Low — quick concept</option></select></div>
+   <div class="actions"><button id="imageBtn" class="btn purple" onclick="generateImage()">Generate Locked Scene</button><button id="approveImgBtn" class="btn green" onclick="approveImage()" disabled>Approve for Artwork Page</button><button id="rejectImgBtn" class="btn red" onclick="rejectImage()" disabled>Reject / Regenerate</button><button id="verifyImgBtn" class="btn soft" onclick="verifyImage()" disabled>Run Identity QC Again</button></div><div id="imageMsg"></div>
+  </div><div class="card"><h3>Generated Artwork</h3><div id="preview" class="preview"><div class="empty">Generate a scene to preview it here.</div></div><div id="identityQC" class="result" style="margin-top:12px">Automatic Identity QC will run after every generated scene. Approval is blocked unless QC passes.</div><div id="referenceCompare" class="comparegrid"></div><label class="reviewcheck"><input id="identityReviewed" type="checkbox" onchange="syncApproveState()"> <span>I compared the generated characters with the canonical face/full-body references and confirm face, hair, age look, body proportions, outfit and signature accessories are consistent.</span></label></div></div>
  </section>
 
  <section id="review" class="view">
@@ -79,14 +79,23 @@
 <script>
 const API='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/kids-ai-studio-api';
 const token=localStorage.getItem('am_staff_token')||'';
-let refs=null,ctx=null,draft=null,project=null,lastImage=null;
+let refs=null,ctx=null,draft=null,project=null,lastImage=null,lastQC=null;
 
 async function api(action,payload={}){const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({action,...payload})});const d=await r.json().catch(()=>({}));if(!r.ok)throw Object.assign(new Error(d.error||'Request failed'),{detail:d.detail,status:r.status});return d}
 const e=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 function selectedChars(){return [...document.querySelectorAll('#characters input:checked')].map(x=>x.value)}
 function renderReferenceCompare(){const chars=selectedChars();const base=(refs?.reference_base_url||'assets/kam-character-lock').replace(/\/$/,'');e('referenceCompare').innerHTML=chars.map(c=>`<div class="refbox"><img src="${base}/${encodeURIComponent(c)}/02_FACE_CANONICAL.jpg" alt="${esc(c)} canonical face"><b>${esc(c)} • Canonical Face</b></div><div class="refbox"><img src="${base}/${encodeURIComponent(c)}/01_FULL_BODY_CANONICAL.jpg" alt="${esc(c)} canonical full body"><b>${esc(c)} • Canonical Full Body</b></div>`).join('')}
-function syncApproveState(){e('approveImgBtn').disabled=!(lastImage&&e('identityReviewed')?.checked);e('rejectImgBtn').disabled=!lastImage}
+function syncApproveState(){const qcPass=!!(lastQC&&lastQC.overall_pass);e('approveImgBtn').disabled=!(lastImage&&qcPass&&e('identityReviewed')?.checked);e('rejectImgBtn').disabled=!lastImage;e('verifyImgBtn').disabled=!lastImage}
+
+function renderIdentityQC(){
+ const box=e('identityQC');
+ if(!lastQC){box.innerHTML='<b>Automatic Identity QC:</b> waiting for a generated scene.';return}
+ const pass=!!lastQC.overall_pass, threshold=lastQC.threshold||refs?.identity_qc_threshold||96;
+ const chars=(lastQC.characters||[]).map(c=>`<div style="padding:8px 0;border-top:1px solid #dce8ef"><b>${esc(c.character_code)} — ${Number(c.overall_score||0).toFixed(1)}%</b> ${c.pass?'✅':'❌'}<br><small>Face ${c.face_score}% · Hair ${c.hair_score}% · Age ${c.age_score}% · Proportions ${c.proportion_score}% · Outfit ${c.outfit_score}% · Accessories ${c.accessory_score}%</small>${(c.differences||[]).length?`<br><small><b>Differences:</b> ${esc(c.differences.join(' | '))}</small>`:''}${(c.regeneration_instructions||[]).length?`<br><small><b>Fix:</b> ${esc(c.regeneration_instructions.join(' | '))}</small>`:''}</div>`).join('');
+ box.innerHTML=`<div class="notice ${pass?'info':'warn'}"><b>${pass?'✅ IDENTITY QC PASSED':'❌ IDENTITY QC FAILED'} — ${Number(lastQC.overall_score||0).toFixed(1)}%</b> · Required ≥ ${threshold}%<br>${esc(lastQC.summary||'')}</div>${chars}`;
+}
+
 function updateLockUI(){const s=selectedChars();e('lockSelected').textContent=s.length;const rows=(refs?.character_locks||[]).filter(x=>s.includes(x.character_code));const ready=s.length>0&&rows.length===s.length&&rows.every(x=>x.lock_status==='LOCK_READY');e('lockStatus').textContent=ready?'LOCK READY':(s.length?'LOCK INCOMPLETE':'Select character');e('lockStatus').className='lockpill '+(ready?'':'warn');e('lockNote').textContent=ready?'Canonical visual references + hard identity rules will be sent with every scene generation.':'Final scene generation is blocked unless every selected character has canonical references and active lock rules.';return ready}
 function notice(id,msg,type='info'){e(id).innerHTML=`<div class="notice ${type}">${esc(msg)}</div>`}
 function busy(btn,on,label){btn.disabled=on;if(on){btn.dataset.old=btn.textContent;btn.innerHTML='<span class="spinner"></span> '+label}else btn.textContent=btn.dataset.old||btn.textContent}
@@ -101,7 +110,7 @@ async function init(){
   e('textModel').textContent=refs.text_model||'—';e('imageModel').textContent=refs.image_model||'—';
   e('aiStatus').className='status '+(refs.openai_configured?'ok':'bad');e('aiStatus').innerHTML='<span class="dot"></span>'+(refs.openai_configured?'OpenAI Connected':'OpenAI Key Required');
   e('aiNote').className='notice '+(refs.openai_configured?'info':'warn');
-  e('aiNote').textContent=refs.openai_configured?'Secure server-side OpenAI connection is ready. API keys are not exposed to the browser.':'Studio is installed, but the server still needs the OPENAI_API_KEY secret before Generate buttons can call OpenAI.';
+  e('aiNote').textContent=refs.openai_configured?`Secure server-side OpenAI connection is ready. Character Identity QC threshold: ${refs.identity_qc_threshold||96}%. API keys are not exposed to the browser.`:'Studio is installed, but the server still needs the OPENAI_API_KEY secret before Generate buttons can call OpenAI.';
   e('level').innerHTML=(refs.levels||[]).map(x=>`<option value="${x.id}">${esc(x.name)} • ${esc(x.age_range||'')}</option>`).join('');
   e('characters').innerHTML=(refs.characters||[]).map(x=>{const l=(refs.character_locks||[]).find(r=>r.character_code===x.code);return `<label class="char ${l?.lock_status==='LOCK_READY'?'locked':''}"><input type="checkbox" value="${esc(x.code)}">${esc(x.name)}<small>${l?.lock_status==='LOCK_READY'?'🔒 Identity Locked':'⚠ Lock Pending'}</small></label>`}).join('');document.querySelectorAll('#characters input').forEach(x=>x.onchange=updateLockUI);updateLockUI();
   e('pageNo').innerHTML=Array.from({length:10},(_,i)=>`<option value="${i+1}">Page ${i+1}</option>`).join('');
@@ -140,12 +149,41 @@ async function applyDraft(){
 
 async function generateImage(){
  if(!refs?.openai_configured){notice('imageMsg','OPENAI_API_KEY is not configured on the server yet.','warn');return}
- const mid=e('mission').value;if(!mid)return;const chars=selectedChars();if(!chars.length){notice('imageMsg','Select at least one character before generating a locked scene.','warn');return}if(!updateLockUI()){notice('imageMsg','Character Identity Lock is incomplete. Locked generation is blocked.','err');return}const btn=e('imageBtn');busy(btn,true,'Generating locked image…');notice('imageMsg','Generating with canonical character references and hard identity rules.','info');
- try{const d=await api('generate_image',{mission_id:mid,project_id:project?.id||null,page_no:Number(e('pageNo').value),prompt:e('imagePrompt').value,character_codes:chars,identity_lock:true,quality:e('quality').value,size:'1536x1024'});lastImage=d.generation;e('preview').innerHTML=`<div style="width:100%"><div style="padding:8px 10px;background:#e8f8f1;color:#176d4d;font-size:9px;font-weight:1000;text-align:center">🔒 CHARACTER IDENTITY LOCK APPLIED</div><img src="${d.url}" alt="Generated KAM scene"></div>`;e('identityReviewed').checked=false;renderReferenceCompare();syncApproveState();notice('imageMsg','Locked-identity image generated. Compare the generated scene against the canonical references below, then tick the review confirmation before approval.','info')}
- catch(err){notice('imageMsg',err.detail||err.message,'err')}finally{busy(btn,false,'')}
+ const mid=e('mission').value;if(!mid)return;const chars=selectedChars();if(!chars.length){notice('imageMsg','Select at least one character before generating a locked scene.','warn');return}if(!updateLockUI()){notice('imageMsg','Character Identity Lock is incomplete. Locked generation is blocked.','err');return}
+ const btn=e('imageBtn');busy(btn,true,'Generating + checking identity…');notice('imageMsg','Generating with canonical references, hard identity rules, then running automatic Identity QC.','info');
+ try{
+  const d=await api('generate_image',{mission_id:mid,project_id:project?.id||null,page_no:Number(e('pageNo').value),prompt:e('imagePrompt').value,character_codes:chars,identity_lock:true,quality:e('quality').value,size:'1536x1024'});
+  lastImage=d.generation;lastQC=d.qc||d.lock?.identity_qc||null;
+  e('preview').innerHTML=`<div style="width:100%"><div style="padding:8px 10px;background:#e8f8f1;color:#176d4d;font-size:9px;font-weight:1000;text-align:center">🔒 CHARACTER IDENTITY LOCK + AUTOMATIC QC</div><img src="${d.url}" alt="Generated KAM scene"></div>`;
+  e('identityReviewed').checked=false;renderIdentityQC();renderReferenceCompare();syncApproveState();
+  if(lastQC?.overall_pass) notice('imageMsg',`Identity QC PASSED at ${Number(lastQC.overall_score||0).toFixed(1)}%. Compare visually with canonical references, tick confirmation, then approve.`,'info');
+  else notice('imageMsg',`Identity QC FAILED at ${Number(lastQC?.overall_score||0).toFixed(1)}%. Approval is blocked. Review differences, then Reject / Regenerate.`,'warn');
+ }catch(err){lastQC=null;renderIdentityQC();notice('imageMsg',err.detail||err.message,'err')}
+ finally{busy(btn,false,'')}
 }
-async function approveImage(){if(!lastImage||!e('identityReviewed').checked){notice('imageMsg','Complete the character identity comparison before approval.','warn');return}try{await api('approve_image',{generation_id:lastImage.id});notice('imageMsg','Approved and attached to the selected artwork page with Character Identity Lock.','info');lastImage=null;e('identityReviewed').checked=false;syncApproveState()}catch(err){notice('imageMsg',err.detail||err.message,'err')}}
-function rejectImage(){if(!lastImage)return;lastImage=null;e('identityReviewed').checked=false;e('preview').innerHTML='<div class="empty">Rejected. Adjust art direction or character selection, then generate again.</div>';e('referenceCompare').innerHTML='';syncApproveState();notice('imageMsg','Image rejected locally and not approved to the artwork page. Generate a new locked scene when ready.','warn')}
+async function approveImage(){
+ if(!lastImage){notice('imageMsg','Generate a scene first.','warn');return}
+ if(!lastQC?.overall_pass){notice('imageMsg','Automatic Identity QC must pass before approval.','warn');return}
+ if(!e('identityReviewed').checked){notice('imageMsg','Complete the manual character identity comparison before approval.','warn');return}
+ try{
+  const d=await api('approve_image',{generation_id:lastImage.id});
+  notice('imageMsg',`Approved: Identity Lock + QC passed (${Number(d.score||lastQC.overall_score||0).toFixed(1)}%). Artwork page updated.`,'info');
+  lastImage=null;lastQC=null;e('identityReviewed').checked=false;renderIdentityQC();syncApproveState()
+ }catch(err){notice('imageMsg',err.detail||err.message,'err')}
+}
+async function verifyImage(){
+ if(!lastImage)return;
+ const btn=e('verifyImgBtn');busy(btn,true,'Running QC…');
+ try{
+  const d=await api('verify_image',{generation_id:lastImage.id});lastQC=d.qc||null;renderIdentityQC();syncApproveState();
+  notice('imageMsg',lastQC?.overall_pass?`QC recheck PASSED at ${Number(lastQC.overall_score||0).toFixed(1)}%.`:`QC recheck FAILED at ${Number(lastQC?.overall_score||0).toFixed(1)}%.`,lastQC?.overall_pass?'info':'warn');
+ }catch(err){notice('imageMsg',err.detail||err.message,'err')}
+ finally{busy(btn,false,'')}
+}
+function rejectImage(){
+ if(!lastImage)return;
+ lastImage=null;lastQC=null;e('identityReviewed').checked=false;e('preview').innerHTML='<div class="empty">Rejected. Use the QC differences to tighten art direction, then generate again.</div>';e('referenceCompare').innerHTML='';renderIdentityQC();syncApproveState();notice('imageMsg','Image rejected and not attached to the artwork page. Generate a stronger locked scene when ready.','warn')
+}
 
 async function loadHistory(){const mid=e('mission').value;if(!mid)return;try{const d=await api('list_projects',{mission_id:mid});e('history').innerHTML=(d.items||[]).map(x=>`<div class="hist"><strong>${esc(x.title||'AI Draft')}</strong><small>${esc(x.status)} • ${new Date(x.created_at).toLocaleString()}</small></div>`).join('')||'<div class="empty">No AI drafts yet.</div>'}catch{}}
 init();
