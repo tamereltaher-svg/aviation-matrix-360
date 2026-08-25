@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KAM Journey & Missions</title>
+<style>
+:root{
+ --navy:#0b2f4e;--blue:#177ca7;--blue2:#3f7ed4;--purple:#6f67d9;--ink:#29475a;
+ --muted:#748895;--line:#dbeaf1;--bg:#f7fbfd;--card:#fff;--green:#1f8d60;
+ --amber:#b57916;--red:#a44b45;--shadow:0 16px 40px rgba(34,76,101,.08)
+}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;
+background:radial-gradient(circle at 12% 0,#e8f9ff,transparent 25%),radial-gradient(circle at 90% 5%,#eeeaff,transparent 28%),var(--bg);color:var(--ink)}
+a{text-decoration:none;color:inherit}.wrap{max-width:1480px;margin:auto;padding:18px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.brand{font-size:18px;font-weight:1000;color:var(--navy)}.brand small{display:block;font-size:8px;letter-spacing:.16em;color:#7e929f;margin-top:2px}
+.nav{display:flex;gap:8px;flex-wrap:wrap}.pill{padding:9px 12px;border:1px solid var(--line);background:#fff;border-radius:999px;font-size:9px;font-weight:1000;color:var(--blue)}
+.hero{padding:28px 30px;border-radius:28px;background:linear-gradient(135deg,#0b3152,#197ca6 58%,#7169d7);color:#fff;box-shadow:var(--shadow)}
+.hero h1{font-size:36px;letter-spacing:-.04em;margin:0 0 8px}.hero p{margin:0;max-width:1000px;color:#def2f9;font-size:12px;line-height:1.6}
+.toolbar{display:grid;grid-template-columns:1.2fr .8fr .8fr 1.3fr auto;gap:10px;margin-top:16px}
+.field label{display:block;font-size:8px;font-weight:1000;color:#607987;margin:0 0 5px 2px}.field select,.field input{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);outline:none}
+.btn{border:0;border-radius:12px;padding:11px 14px;font-weight:1000;cursor:pointer}.btn.primary{background:var(--navy);color:#fff}.btn.soft{background:#eaf6fb;color:#0b5c82}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:14px}.kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+.kpi small{display:block;font-size:8px;color:var(--muted);font-weight:1000}.kpi strong{display:block;font-size:22px;color:var(--navy);margin-top:5px}
+.layout{display:grid;grid-template-columns:330px 1fr;gap:14px;margin-top:14px}.panel{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px;box-shadow:var(--shadow)}
+.panel h2{margin:0 0 10px;color:var(--navy);font-size:17px}.panel h3{margin:16px 0 8px;color:var(--navy);font-size:13px}
+.levels{display:grid;gap:8px}.level{border:1px solid var(--line);border-radius:14px;padding:11px;background:#fbfdfe;cursor:pointer}.level.active{border-color:#6b79df;background:#f2f1ff}
+.level b{display:block;color:var(--navy);font-size:11px}.level span{font-size:8px;color:var(--muted)}
+.season-list{display:grid;gap:7px;max-height:360px;overflow:auto}.season{padding:9px 10px;border:1px solid var(--line);border-radius:11px;font-size:9px;cursor:pointer}.season.active{background:#eaf7fc;border-color:#8cc7df;color:#0b5c82;font-weight:1000}
+.headrow{display:flex;align-items:center;justify-content:space-between;gap:10px}.status{padding:5px 8px;border-radius:999px;font-size:7px;font-weight:1000}.ok{background:#e9f8ef;color:#1f7650}.warn{background:#fff4dc;color:#826016}.bad{background:#fff0ef;color:#963e38}
+.mission-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.mission{border:1px solid var(--line);border-radius:16px;padding:14px;min-height:150px;background:#fff;position:relative}
+.mission b{display:block;color:var(--navy);font-size:11px;padding-right:44px}.mission p{font-size:8.5px;line-height:1.5;color:var(--muted);margin:8px 0 28px}.code{position:absolute;right:10px;top:10px;font-size:7px;font-weight:1000;color:#728896;background:#eef5f8;border-radius:999px;padding:5px 7px}.actions{position:absolute;left:14px;bottom:12px;display:flex;gap:8px}.action{font-size:8px;font-weight:1000;color:var(--blue);cursor:pointer}
+.empty{padding:30px;border:1px dashed #c9dce5;border-radius:14px;text-align:center;color:var(--muted);font-size:10px}
+.notice{margin-top:12px;padding:11px 12px;border-radius:12px;font-size:9px;line-height:1.5}.notice.info{background:#eaf7fc;color:#0b5c82}.notice.warn{background:#fff4dc;color:#826016}
+footer{text-align:center;padding:28px 0 8px;color:#899aa5;font-size:8px}
+@media(max-width:1100px){.toolbar{grid-template-columns:1fr 1fr}.kpis{grid-template-columns:repeat(2,1fr)}.layout{grid-template-columns:1fr}.mission-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.wrap{padding:12px}.hero{padding:22px}.hero h1{font-size:28px}.toolbar,.mission-grid,.kpis{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="nav">
+      <a class="pill" href="kids_hub.html">← Kids Hub</a>
+      <a class="pill" href="portal.html">Main Portal</a>
+    </div>
+    <div class="brand">AVIATION MATRIX<small>KIDS JOURNEY & MISSIONS</small></div>
+  </div>
+
+  <section class="hero">
+    <h1>Journey & Missions</h1>
+    <p>Operational map for KAM levels, seasons and missions. Browse the curriculum structure, locate any mission fast, then move directly into AI Production Studio for story, scene and artwork production.</p>
+  </section>
+
+  <section class="toolbar">
+    <div class="field"><label>SEARCH</label><input id="search" placeholder="Search mission, season or code…"></div>
+    <div class="field"><label>LEVEL</label><select id="levelFilter"><option value="">All Levels</option></select></div>
+    <div class="field"><label>SEASON</label><select id="seasonFilter"><option value="">All Seasons</option></select></div>
+    <div class="field"><label>VIEW</label><select id="viewFilter"><option value="all">All Missions</option><option value="visible">Current Selection</option></select></div>
+    <button class="btn primary" onclick="openStudio()">Open AI Studio</button>
+  </section>
+
+  <section class="kpis">
+    <div class="kpi"><small>LEVELS</small><strong id="kLevels">—</strong></div>
+    <div class="kpi"><small>SEASONS</small><strong id="kSeasons">—</strong></div>
+    <div class="kpi"><small>MISSIONS</small><strong id="kMissions">—</strong></div>
+    <div class="kpi"><small>VISIBLE</small><strong id="kVisible">—</strong></div>
+    <div class="kpi"><small>SYSTEM</small><strong id="kStatus">…</strong></div>
+  </section>
+
+  <section class="layout">
+    <aside class="panel">
+      <div class="headrow"><h2>Curriculum Navigator</h2><span id="apiStatus" class="status warn">CONNECTING</span></div>
+      <h3>Levels</h3><div id="levels" class="levels"></div>
+      <h3>Seasons</h3><div id="seasons" class="season-list"></div>
+      <div class="notice info">Mission production remains inside the existing AI Production Studio. This module is the curriculum/navigation layer, not a second production engine.</div>
+    </aside>
+
+    <main class="panel">
+      <div class="headrow"><h2 id="missionTitle">Mission Library</h2><span id="selectionLabel" class="status ok">ALL</span></div>
+      <div id="missions" class="mission-grid"></div>
+    </main>
+  </section>
+
+  <footer>Kids Aviation Matrix 360° • Journey & Missions Module v1.0</footer>
+</div>
+
+<script>
+const API='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/kids-ai-studio-api';
+const token=localStorage.getItem('am_staff_token')||'';
+let refs={levels:[],seasons:[],missions:[]};
+let selectedLevel='', selectedSeason='';
+
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+async function api(action,payload={}){
+ const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({action,...payload})});
+ const d=await r.json().catch(()=>({}));
+ if(!r.ok) throw new Error(d.error||d.detail||('HTTP '+r.status));
+ return d;
+}
+function normId(x){return String(x??'')}
+function levelId(x){return normId(x.level_id ?? x.levelId ?? x.level ?? '')}
+function seasonId(x){return normId(x.season_id ?? x.seasonId ?? x.season ?? '')}
+function missionName(x){return x.name||x.title||x.mission_name||x.mission_title||'Untitled mission'}
+function seasonName(x){return x.name||x.title||x.season_name||'Untitled season'}
+function levelName(x){return x.name||x.title||x.level_name||'Untitled level'}
+function ageRange(x){return x.age_range||x.age||x.ages||''}
+function missionCode(x,i){return x.code||x.mission_code||x.id||('M'+String(i+1).padStart(2,'0'))}
+
+async function init(){
+ if(!token){location.replace('portal.html');return}
+ try{
+   refs=await api('refs');
+   refs.levels=refs.levels||[]; refs.seasons=refs.seasons||[]; refs.missions=refs.missions||[];
+   document.getElementById('apiStatus').textContent='CONNECTED';
+   document.getElementById('apiStatus').className='status ok';
+   document.getElementById('kStatus').textContent='LIVE';
+   populateFilters(); renderAll();
+ }catch(e){
+   document.getElementById('apiStatus').textContent='OFFLINE';
+   document.getElementById('apiStatus').className='status bad';
+   document.getElementById('kStatus').textContent='CHECK';
+   document.getElementById('missions').innerHTML='<div class="empty">Could not load curriculum data. Return to the main portal and confirm staff login, then reload this page.</div>';
+ }
+}
+function populateFilters(){
+ const lf=document.getElementById('levelFilter'), sf=document.getElementById('seasonFilter');
+ lf.innerHTML='<option value="">All Levels</option>'+refs.levels.map(x=>`<option value="${esc(normId(x.id))}">${esc(levelName(x))}${ageRange(x)?' • '+esc(ageRange(x)):''}</option>`).join('');
+ sf.innerHTML='<option value="">All Seasons</option>'+refs.seasons.map(x=>`<option value="${esc(normId(x.id))}">${esc(seasonName(x))}</option>`).join('');
+}
+function renderAll(){renderLevels();renderSeasons();renderMissions();renderKpis()}
+function renderLevels(){
+ const box=document.getElementById('levels');
+ box.innerHTML=refs.levels.map(x=>{
+   const id=normId(x.id),active=id===selectedLevel?' active':'';
+   return `<div class="level${active}" onclick="selectLevel('${esc(id)}')"><b>${esc(levelName(x))}</b><span>${esc(ageRange(x)||'Age range not specified')}</span></div>`
+ }).join('')||'<div class="empty">No levels returned.</div>';
+}
+function renderSeasons(){
+ let arr=refs.seasons;
+ if(selectedLevel) arr=arr.filter(x=>levelId(x)===selectedLevel);
+ const box=document.getElementById('seasons');
+ box.innerHTML=arr.map(x=>{
+  const id=normId(x.id),active=id===selectedSeason?' active':'';
+  return `<div class="season${active}" onclick="selectSeason('${esc(id)}')">${esc(seasonName(x))}</div>`
+ }).join('')||'<div class="empty">No seasons in this selection.</div>';
+}
+function getVisibleMissions(){
+ let arr=refs.missions.slice();
+ if(selectedLevel) arr=arr.filter(x=>levelId(x)===selectedLevel);
+ if(selectedSeason) arr=arr.filter(x=>seasonId(x)===selectedSeason);
+ const q=document.getElementById('search').value.trim().toLowerCase();
+ if(q) arr=arr.filter((x,i)=>[missionName(x),missionCode(x,i),x.description||'',x.summary||''].join(' ').toLowerCase().includes(q));
+ return arr;
+}
+function renderMissions(){
+ const arr=getVisibleMissions();
+ const title=document.getElementById('missionTitle');
+ const label=document.getElementById('selectionLabel');
+ let text='Mission Library';
+ if(selectedSeason){
+   const s=refs.seasons.find(x=>normId(x.id)===selectedSeason); text=seasonName(s||{});
+ }else if(selectedLevel){
+   const l=refs.levels.find(x=>normId(x.id)===selectedLevel); text=levelName(l||{});
+ }
+ title.textContent=text; label.textContent=arr.length+' MISSION'+(arr.length===1?'':'S');
+ const box=document.getElementById('missions');
+ box.innerHTML=arr.map((x,i)=>{
+   const desc=x.description||x.summary||x.learning_objective||'Open this mission in AI Production Studio to build story, scenes and artwork.';
+   return `<article class="mission"><span class="code">${esc(missionCode(x,i))}</span><b>${esc(missionName(x))}</b><p>${esc(desc)}</p><div class="actions"><a class="action" href="kids_ai_studio.html">Produce in AI Studio →</a></div></article>`
+ }).join('')||'<div class="empty">No missions match the current filters.</div>';
+ document.getElementById('kVisible').textContent=arr.length;
+}
+function renderKpis(){
+ document.getElementById('kLevels').textContent=refs.levels.length;
+ document.getElementById('kSeasons').textContent=refs.seasons.length;
+ document.getElementById('kMissions').textContent=refs.missions.length;
+}
+function selectLevel(id){
+ selectedLevel=(selectedLevel===id?'':id); selectedSeason='';
+ document.getElementById('levelFilter').value=selectedLevel;
+ document.getElementById('seasonFilter').value='';
+ renderAll();
+}
+function selectSeason(id){
+ selectedSeason=(selectedSeason===id?'':id);
+ const s=refs.seasons.find(x=>normId(x.id)===selectedSeason);
+ if(s&&levelId(s)){selectedLevel=levelId(s);document.getElementById('levelFilter').value=selectedLevel}
+ document.getElementById('seasonFilter').value=selectedSeason;
+ renderAll();
+}
+document.getElementById('search').addEventListener('input',renderMissions);
+document.getElementById('levelFilter').addEventListener('change',e=>{selectedLevel=e.target.value;selectedSeason='';document.getElementById('seasonFilter').value='';renderAll()});
+document.getElementById('seasonFilter').addEventListener('change',e=>{selectedSeason=e.target.value;const s=refs.seasons.find(x=>normId(x.id)===selectedSeason);if(s&&levelId(s)){selectedLevel=levelId(s);document.getElementById('levelFilter').value=selectedLevel}renderAll()});
+function openStudio(){location.href='kids_ai_studio.html'}
+init();
+</script>
+</body>
+</html>
