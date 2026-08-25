@@ -1,0 +1,22 @@
+{
+  "package": "Aviation Matrix Portal Navigation Cleanup v1.0",
+  "broken_local_html_links_after_cleanup": [],
+  "canonical_staff_login": "login.html",
+  "canonical_portal": "portal.html",
+  "changed_files": [
+    "kids_hub.html",
+    "login.html",
+    "NAVIGATION_MAP.md",
+    "store_admin.html",
+    "kids_control_tower.html",
+    "kids_ai_studio.html",
+    "kids_passports_admin.html",
+    "candidate_360_dashboard.html",
+    "candidate_dossier.html",
+    "exam_transcript.html",
+    "employer_dashboard.html",
+    "airline_readiness.html",
+    "management_dashboard.html",
+    "phase8_final_integration.html"
+  ]
+}

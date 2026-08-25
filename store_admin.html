@@ -834,5 +834,22 @@ window.addEventListener('error',e=>{
 });
 boot();
 </script>
+
+
+<style id="am-navigation-cleanup-v1">
+.am-fixed-nav{position:fixed;left:14px;bottom:14px;z-index:9998;display:flex;gap:8px;align-items:center;
+font-family:Inter,"Segoe UI",Arial,sans-serif}
+.am-fixed-nav a{display:inline-flex;align-items:center;gap:5px;text-decoration:none;background:#fff;color:#0b2f4e;
+border:1px solid #dbeaf1;border-radius:999px;padding:9px 12px;font-size:11px;font-weight:900;
+box-shadow:0 8px 24px rgba(11,47,78,.12)}
+.am-fixed-nav a:hover{background:#f3f9fc}
+@media(max-width:620px){.am-fixed-nav{left:8px;bottom:8px}.am-fixed-nav a{font-size:10px;padding:8px 10px}}
+</style>
+
+<div class="am-fixed-nav" aria-label="Aviation Matrix navigation">
+  <a href="portal.html">← Main Portal</a>
+  <a href="business_hub.html">Business Hub</a>
+</div>
+
 </body>
 </html>

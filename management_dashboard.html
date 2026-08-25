@@ -8,4 +8,21 @@
 <footer>Aviation Matrix • Phase 8 Final Integration</footer></div>
 <script src="phase8.js"></script><script>
 async function load(){try{const j=await api('management_overview'),x=j.overview||{};document.getElementById('kpis').innerHTML=`<div class="kpi"><b>${num(x.candidates)}</b><small>CANDIDATES</small></div><div class="kpi"><b>${num(x.active_learners)}</b><small>ACTIVE LEARNERS</small></div><div class="kpi"><b>${num(x.final_exam_results)}</b><small>FINAL EXAMS</small></div><div class="kpi"><b>${num(x.active_employers)}</b><small>ACTIVE EMPLOYERS</small></div><div class="kpi"><b>${num(x.hired_candidates)}</b><small>HIRED</small></div>`;document.getElementById('talent').innerHTML=`Candidates: <b>${num(x.candidates)}</b><br>Active learners: <b>${num(x.active_learners)}</b><br>Positive matches: <b>${num(x.positive_matches)}</b>`;document.getElementById('learning').innerHTML=`Final exam results: <b>${num(x.final_exam_results)}</b><br>Active credentials: <b>${num(x.active_credentials)}</b>`;document.getElementById('recruit').innerHTML=`Active employers: <b>${num(x.active_employers)}</b><br>Active campaigns: <b>${num(x.active_campaigns)}</b><br>Hired candidates: <b>${num(x.hired_candidates)}</b>`;document.getElementById('gov').innerHTML=`Open workflow tasks: <b>${num(x.open_workflow_tasks)}</b><br>Pending approvals: <b>${num(x.pending_approvals)}</b>`}catch(e){err(e)}}load();
-</script></body></html>
+</script>
+
+<style id="am-navigation-cleanup-v1">
+.am-fixed-nav{position:fixed;left:14px;bottom:14px;z-index:9998;display:flex;gap:8px;align-items:center;
+font-family:Inter,"Segoe UI",Arial,sans-serif}
+.am-fixed-nav a{display:inline-flex;align-items:center;gap:5px;text-decoration:none;background:#fff;color:#0b2f4e;
+border:1px solid #dbeaf1;border-radius:999px;padding:9px 12px;font-size:11px;font-weight:900;
+box-shadow:0 8px 24px rgba(11,47,78,.12)}
+.am-fixed-nav a:hover{background:#f3f9fc}
+@media(max-width:620px){.am-fixed-nav{left:8px;bottom:8px}.am-fixed-nav a{font-size:10px;padding:8px 10px}}
+</style>
+
+<div class="am-fixed-nav" aria-label="Aviation Matrix navigation">
+  <a href="portal.html">← Main Portal</a>
+  <a href="platform_hub.html">Platform Hub</a>
+</div>
+
+</body></html>
