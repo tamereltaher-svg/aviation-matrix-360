@@ -1,0 +1,41 @@
+{
+  "pack_name": "KAM Story Book Logo Asset Pack",
+  "version": "1.0",
+  "master_brand": "Kids Aviation Matrix 360°",
+  "product_line": "Story Book",
+  "tagline": "Discover. Learn. Explore. Fly.",
+  "direction": "Aviation Badge + Cartoon Premium",
+  "master_source": {
+    "filename": "KAM_STORY_BOOK_LOGO_PRIMARY_MASTER.png",
+    "pixel_size": [
+      1254,
+      1254
+    ],
+    "status": "Locked raster master for Story Book use",
+    "note": "Exact approved artwork preserved; this is raster, not vector."
+  },
+  "usage_lock": {
+    "never": [
+      "stretch/distort",
+      "recolor elements",
+      "redraw Ava or Ben",
+      "replace Ava or Ben",
+      "crop through badge",
+      "regenerate logo inside AI artwork"
+    ],
+    "allowed": [
+      "uniform scaling",
+      "front/back cover placement",
+      "store thumbnail",
+      "digital preview",
+      "normal book print use within raster limits"
+    ]
+  },
+  "placements": {
+    "front_cover": "upper third / top-center with clear space",
+    "back_cover": "small brand/series mark in lower third",
+    "interior": "optional title/copyright page mark",
+    "store_thumbnail": "use 512px or 768px derivative"
+  },
+  "print_note": "3000px raster derivative tagged at 300 DPI. Create a true vector master later for oversized print, embroidery, die-cut signage, or infinite scaling."
+}
