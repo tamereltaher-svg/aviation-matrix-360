@@ -1,0 +1,16 @@
+{
+  "phase": "Phase 2 \u2014 Multi-Stage Assessment Engine",
+  "backend": "DEPLOYED",
+  "edge_functions": [
+    "assessment-admin-api",
+    "assessment-public-api"
+  ],
+  "stages": [
+    "ENGLISH",
+    "COMPUTER",
+    "TRAITS",
+    "CAREER"
+  ],
+  "historical_attempts": "append_only",
+  "assessment_content_invented": false
+}
