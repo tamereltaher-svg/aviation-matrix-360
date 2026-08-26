@@ -1,0 +1,16 @@
+{
+  "phase": "Phase 1 \u2014 Person, Registration, Institution Batch, Dynamic Documents & Lifetime Record Foundation",
+  "backend": "DEPLOYED",
+  "edge_functions": [
+    "candidate-lifetime-api",
+    "registration-admin-api",
+    "registration-public-api"
+  ],
+  "frontend": "READY_FOR_GITHUB_UPLOAD",
+  "auto_activation": true,
+  "individual_and_batch_codes": true,
+  "dynamic_documents": true,
+  "provider_delivery_adapter_connected": false,
+  "historical_evidence": "append_only",
+  "current_state": "recalculable"
+}

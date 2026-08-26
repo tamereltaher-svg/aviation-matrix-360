@@ -39,18 +39,18 @@ a{text-decoration:none;color:inherit}.wrap{max-width:1500px;margin:auto;padding:
 <div class="toolbar">
 <input id="search" placeholder="Search candidate name, number, email or mobile…">
 <button class="btn soft" onclick="loadCandidates()">Refresh</button>
-<button class="btn primary" onclick="openCreate()">+ New Candidate</button>
+<button class="btn primary" onclick="openCreate()">+ Manual Exception</button>
 </div>
 
 <section class="layout">
-<aside class="panel"><h2>Candidate Registry</h2><div class="sub">One candidate record per person. Select a record to inspect the full lifetime history.</div><div id="list" class="list"></div></aside>
+<aside class="panel"><h2>Candidate Registry</h2><div class="sub">Candidates normally arrive automatically after registration eligibility. Manual creation is reserved for controlled exceptions.</div><div id="list" class="list"></div></aside>
 <main class="panel">
 <div id="detail" class="empty">Select a candidate from the registry.</div>
 </main>
 </section>
 </div>
 
-<div id="createModal" class="modal"><div class="modal-card"><h2>Create Candidate Record</h2><div class="form">
+<div id="createModal" class="modal"><div class="modal-card"><h2>Manual Candidate Exception</h2><div class="form">
 <div class="field full"><label>FULL NAME</label><input id="fName"></div>
 <div class="field"><label>EMAIL</label><input id="fEmail"></div><div class="field"><label>MOBILE</label><input id="fMobile"></div>
 <div class="field"><label>DATE OF BIRTH</label><input id="fDob" type="date"></div><div class="field"><label>CURRENT CITY</label><input id="fCity"></div>
