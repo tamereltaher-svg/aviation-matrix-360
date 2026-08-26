@@ -1,0 +1,19 @@
+{
+  "phase": "Phase 1 \u2014 Person & Lifetime Evidence Foundation",
+  "version": "1.0",
+  "backend_status": "DEPLOYED",
+  "edge_function": "candidate-lifetime-api v1",
+  "frontend_status": "READY_FOR_GITHUB_UPLOAD",
+  "frontend_files": [
+    "candidate_lifetime_record.html",
+    "talent_hub.html"
+  ],
+  "historical_rule": "append_only",
+  "current_state_rule": "recalculable",
+  "schema_objects": [
+    "am_candidate_lifetime_events",
+    "am_candidate_current_state",
+    "am_candidate_lifetime_snapshots",
+    "am_candidate_lifetime_summary"
+  ]
+}

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aviation Matrix — Lifetime Candidate Record</title>
+<style>
+:root{--navy:#0b2f4e;--blue:#177ca7;--ink:#29475a;--muted:#748895;--line:#dbeaf1;--bg:#f7fbfd;--good:#1f7a50;--warn:#9b6a16;--bad:#a8443e;--shadow:0 16px 40px rgba(34,76,101,.08)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;background:radial-gradient(circle at 8% 0,#e8f9ff,transparent 24%),radial-gradient(circle at 90% 0,#eeeaff,transparent 28%),var(--bg);color:var(--ink)}
+a{text-decoration:none;color:inherit}.wrap{max-width:1500px;margin:auto;padding:18px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.nav{display:flex;gap:8px;flex-wrap:wrap}.pill{padding:9px 12px;border:1px solid var(--line);background:#fff;border-radius:999px;font-size:9px;font-weight:1000;color:var(--blue)}
+.brand{font-size:18px;font-weight:1000;color:var(--navy)}.brand small{display:block;font-size:8px;letter-spacing:.14em;color:#7e929f}
+.hero{padding:28px 30px;border-radius:28px;background:linear-gradient(135deg,#0b3152,#197ca6 58%,#7169d7);color:#fff;box-shadow:var(--shadow)}.hero h1{font-size:36px;margin:0 0 7px;letter-spacing:-.04em}.hero p{margin:0;max-width:1050px;font-size:12px;line-height:1.6;color:#dff2fa}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}.kpi,.panel{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}.kpi{padding:14px}.kpi small{font-size:8px;font-weight:1000;color:var(--muted)}.kpi strong{display:block;font-size:23px;color:var(--navy);margin-top:4px}
+.toolbar{display:grid;grid-template-columns:1fr auto auto;gap:8px;margin-top:14px}.toolbar input{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:12px}.btn{border:0;border-radius:11px;padding:11px 13px;font-weight:1000;cursor:pointer}.primary{background:var(--navy);color:#fff}.soft{background:#eaf6fb;color:#0b5c82}
+.layout{display:grid;grid-template-columns:360px 1fr;gap:14px;margin-top:14px}.panel{padding:15px}.panel h2{margin:0;color:var(--navy);font-size:16px}.sub{font-size:9px;color:var(--muted);line-height:1.5;margin-top:4px}
+.list{display:grid;gap:8px;margin-top:12px;max-height:720px;overflow:auto}.person{border:1px solid var(--line);border-radius:13px;padding:10px;cursor:pointer;background:#fbfdfe}.person.active{border-color:#74b7d5;background:#edf8fc}.person b{display:block;font-size:10px;color:var(--navy)}.person span{font-size:8px;color:var(--muted)}
+.empty{padding:20px;border:1px dashed #cadde6;border-radius:13px;text-align:center;color:var(--muted);font-size:9px}
+.detail-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.detail-head h2{font-size:22px}.meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}.tag{padding:5px 7px;border-radius:999px;background:#edf6fa;color:#42687c;font-size:7px;font-weight:1000}.tag.good{background:#e8f7ef;color:var(--good)}
+.state-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.state{border:1px solid var(--line);border-radius:12px;padding:10px;background:#fbfdfe}.state small{display:block;font-size:7px;color:var(--muted);font-weight:1000}.state strong{display:block;font-size:12px;color:var(--navy);margin-top:4px}
+.tabs{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}.tab{padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:8px;font-weight:1000;cursor:pointer;color:#557384}.tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.timeline,.evidence,.snapshots{display:grid;gap:8px;margin-top:12px}.event,.ev,.snap{border:1px solid var(--line);border-radius:13px;padding:11px}.event b,.ev b,.snap b{font-size:9px;color:var(--navy)}.event p,.ev p,.snap p{font-size:8px;color:var(--muted);margin:5px 0 0;line-height:1.45}.time{font-size:7px;color:#8aa0ad;margin-top:5px}.hash{font-family:monospace;font-size:7px;color:#8ca0ab;overflow-wrap:anywhere;margin-top:5px}
+.modal{position:fixed;inset:0;background:#0a2238aa;display:none;place-items:center;padding:18px;z-index:9999}.modal.open{display:grid}.modal-card{width:min(650px,100%);background:#fff;border-radius:22px;padding:20px}.modal-card h2{margin:0;color:var(--navy)}.form{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.field label{display:block;font-size:7px;font-weight:1000;color:#607987;margin-bottom:4px}.field input,.field textarea,.field select{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:10px}.field.full{grid-column:1/-1}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
+.notice{margin-top:12px;padding:10px 11px;border-radius:12px;background:#eaf7fc;color:#0b5c82;font-size:8.5px;line-height:1.5}
+.err{color:var(--bad);font-size:9px;margin-top:8px}
+@media(max-width:1000px){.layout{grid-template-columns:1fr}.kpis,.state-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:620px){.toolbar,.form,.kpis,.state-grid{grid-template-columns:1fr}.wrap{padding:12px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="top"><div class="nav"><a class="pill" href="talent_hub.html">← Talent Hub</a><a class="pill" href="portal.html">Main Portal</a></div><div class="brand">AVIATION MATRIX<small>LIFETIME EVIDENCE FOUNDATION</small></div></div>
+<section class="hero"><h1>Lifetime Candidate Record</h1><p>Permanent person identity + append-only history + evidence trace + recalculable current qualification state. Historical records are preserved; only the current state can be recalculated as new assessments, training, exams and credentials arrive.</p></section>
+
+<section class="kpis">
+<div class="kpi"><small>PERSONS</small><strong id="kPersons">—</strong></div>
+<div class="kpi"><small>CANDIDATES</small><strong id="kCandidates">—</strong></div>
+<div class="kpi"><small>LIFETIME EVENTS</small><strong id="kEvents">—</strong></div>
+<div class="kpi"><small>EVIDENCE RECORDS</small><strong id="kEvidence">—</strong></div>
+</section>
+
+<div class="toolbar">
+<input id="search" placeholder="Search candidate name, number, email or mobile…">
+<button class="btn soft" onclick="loadCandidates()">Refresh</button>
+<button class="btn primary" onclick="openCreate()">+ New Candidate</button>
+</div>
+
+<section class="layout">
+<aside class="panel"><h2>Candidate Registry</h2><div class="sub">One candidate record per person. Select a record to inspect the full lifetime history.</div><div id="list" class="list"></div></aside>
+<main class="panel">
+<div id="detail" class="empty">Select a candidate from the registry.</div>
+</main>
+</section>
+</div>
+
+<div id="createModal" class="modal"><div class="modal-card"><h2>Create Candidate Record</h2><div class="form">
+<div class="field full"><label>FULL NAME</label><input id="fName"></div>
+<div class="field"><label>EMAIL</label><input id="fEmail"></div><div class="field"><label>MOBILE</label><input id="fMobile"></div>
+<div class="field"><label>DATE OF BIRTH</label><input id="fDob" type="date"></div><div class="field"><label>CURRENT CITY</label><input id="fCity"></div>
+<div class="field"><label>PREFERRED LANGUAGE</label><select id="fLang"><option value="en">English</option><option value="ar">Arabic</option></select></div>
+</div><div id="createErr" class="err"></div><div class="modal-actions"><button class="btn soft" onclick="closeCreate()">Cancel</button><button class="btn primary" onclick="createCandidate()">Create Candidate</button></div></div></div>
+
+<div id="eventModal" class="modal"><div class="modal-card"><h2>Add Lifetime Event</h2><div class="form">
+<div class="field"><label>EVENT CODE</label><input id="eCode" placeholder="PROFILE_UPDATED"></div>
+<div class="field"><label>DOMAIN</label><input id="eDomain" value="lifetime"></div>
+<div class="field full"><label>TITLE</label><input id="eTitle"></div>
+<div class="field full"><label>DETAIL</label><textarea id="eDetail" rows="4"></textarea></div>
+</div><div id="eventErr" class="err"></div><div class="modal-actions"><button class="btn soft" onclick="closeEvent()">Cancel</button><button class="btn primary" onclick="appendEvent()">Append Event</button></div></div></div>
+
+<script>
+const API='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/candidate-lifetime-api';
+const token=localStorage.getItem('am_staff_token')||'';
+let candidates=[],selectedId='',detailData=null,currentTab='timeline';
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const fmt=d=>d?new Date(d).toLocaleString():'—';
+async function api(action,payload={}){const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({action,...payload})});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.detail||j.error||('HTTP '+r.status));return j}
+async function init(){if(!token){location.replace('portal.html');return}await loadDashboard();await loadCandidates()}
+async function loadDashboard(){try{const d=await api('dashboard');document.getElementById('kPersons').textContent=d.stats.persons;document.getElementById('kCandidates').textContent=d.stats.candidates;document.getElementById('kEvents').textContent=d.stats.lifetime_events;document.getElementById('kEvidence').textContent=d.stats.evidence}catch(e){}}
+async function loadCandidates(){const q=document.getElementById('search').value.trim();try{const d=await api('list_candidates',{q});candidates=d.candidates||[];renderList()}catch(e){document.getElementById('list').innerHTML='<div class="empty">'+esc(e.message)+'</div>'}}
+function renderList(){const box=document.getElementById('list');box.innerHTML=candidates.map(c=>`<div class="person ${c.candidate_id===selectedId?'active':''}" onclick="selectCandidate('${c.candidate_id}')"><b>${esc(c.full_name)}</b><span>${esc(c.candidate_number)} • ${esc(c.lifecycle_stage||'applicant')}</span></div>`).join('')||'<div class="empty">No candidates found.</div>'}
+async function selectCandidate(id){selectedId=id;renderList();document.getElementById('detail').innerHTML='<div class="empty">Loading lifetime record…</div>';try{detailData=await api('get_candidate',{candidate_id:id});renderDetail()}catch(e){document.getElementById('detail').innerHTML='<div class="empty">'+esc(e.message)+'</div>'}}
+function renderDetail(){const c=detailData.candidate,s=detailData.current_state||{};document.getElementById('detail').className='';document.getElementById('detail').innerHTML=`
+<div class="detail-head"><div><h2>${esc(c.full_name)}</h2><div class="meta"><span class="tag good">${esc(c.candidate_number)}</span><span class="tag">${esc(c.lifecycle_stage||'applicant')}</span><span class="tag">${esc(s.qualification_status||'unassessed')}</span></div></div><div><button class="btn soft" onclick="openEvent()">+ Event</button> <button class="btn primary" onclick="snapshot()">Capture Snapshot</button></div></div>
+<div class="state-grid">
+<div class="state"><small>QUALIFICATION</small><strong>${esc(s.qualification_status||'unassessed')}</strong></div>
+<div class="state"><small>READINESS</small><strong>${esc(s.readiness_status||'not_calculated')}</strong></div>
+<div class="state"><small>ENGLISH</small><strong>${esc(s.english_level||'—')}</strong></div>
+<div class="state"><small>COMPUTER</small><strong>${esc(s.computer_level||'—')}</strong></div>
+<div class="state"><small>CAREER</small><strong>${esc(s.current_career_code||'—')}</strong></div>
+<div class="state"><small>CAREER FIT</small><strong>${s.current_career_fit==null?'—':esc(s.current_career_fit+'%')}</strong></div>
+<div class="state"><small>ACTIVE GAPS</small><strong>${esc(s.active_gap_count??0)}</strong></div>
+<div class="state"><small>VALID CREDENTIALS</small><strong>${esc(s.valid_credential_count??0)}</strong></div>
+</div>
+<div class="notice">Foundation rule: history is append-only. Later phases will automatically append every assessment attempt, training session, exam, result and credential while recalculating this current state.</div>
+<div class="tabs"><button class="tab ${currentTab==='timeline'?'active':''}" onclick="setTab('timeline')">Timeline (${detailData.events.length})</button><button class="tab ${currentTab==='evidence'?'active':''}" onclick="setTab('evidence')">Evidence (${detailData.evidence.length})</button><button class="tab ${currentTab==='snapshots'?'active':''}" onclick="setTab('snapshots')">Snapshots (${detailData.snapshots.length})</button></div>
+<div id="tabBody"></div>`;renderTab()}
+function setTab(t){currentTab=t;renderDetail()}
+function renderTab(){const b=document.getElementById('tabBody');if(!b)return;
+ if(currentTab==='timeline'){b.innerHTML='<div class="timeline">'+(detailData.events.map(x=>`<div class="event"><b>${esc(x.event_code)} • ${esc(x.title)}</b><p>${esc(x.detail||'')}</p><div class="time">${fmt(x.occurred_at)} • ${esc(x.event_domain)}</div><div class="hash">SHA-256 ${esc(x.integrity_hash)}</div></div>`).join('')||'<div class="empty">No lifetime events yet.</div>')+'</div>'}
+ if(currentTab==='evidence'){b.innerHTML='<div class="evidence">'+(detailData.evidence.map(x=>`<div class="ev"><b>${esc(x.evidence_type)} • ${esc(x.title)}</b><p>${esc(x.summary||'')}</p><div class="time">Status: ${esc(x.status)} • Score: ${x.score??'—'} • ${fmt(x.created_at)}</div></div>`).join('')||'<div class="empty">No evidence records yet.</div>')+'</div>'}
+ if(currentTab==='snapshots'){b.innerHTML='<div class="snapshots">'+(detailData.snapshots.map(x=>`<div class="snap"><b>${esc(x.snapshot_type)} • v${esc(x.snapshot_version)}</b><p>Immutable current-state snapshot</p><div class="time">${fmt(x.captured_at)}</div><div class="hash">SHA-256 ${esc(x.integrity_hash)}</div></div>`).join('')||'<div class="empty">No snapshots yet.</div>')+'</div>'}
+}
+document.getElementById('search').addEventListener('input',()=>{clearTimeout(window._s);window._s=setTimeout(loadCandidates,250)});
+function openCreate(){document.getElementById('createModal').classList.add('open')}function closeCreate(){document.getElementById('createModal').classList.remove('open')}
+async function createCandidate(){const person={full_name:fName.value,email:fEmail.value,mobile:fMobile.value,date_of_birth:fDob.value||null,current_city:fCity.value,preferred_language:fLang.value};createErr.textContent='';try{const d=await api('create_candidate',{person});closeCreate();await loadDashboard();await loadCandidates();await selectCandidate(d.candidate_id)}catch(e){createErr.textContent=e.message}}
+function openEvent(){eventModal.classList.add('open')}function closeEvent(){eventModal.classList.remove('open')}
+async function appendEvent(){eventErr.textContent='';try{await api('append_event',{candidate_id:selectedId,event_code:eCode.value,event_domain:eDomain.value,title:eTitle.value,detail:eDetail.value});closeEvent();await selectCandidate(selectedId);await loadDashboard()}catch(e){eventErr.textContent=e.message}}
+async function snapshot(){try{await api('capture_snapshot',{candidate_id:selectedId,snapshot_type:'current_state'});await selectCandidate(selectedId)}catch(e){alert(e.message)}}
+init();
+</script>
+</body></html>

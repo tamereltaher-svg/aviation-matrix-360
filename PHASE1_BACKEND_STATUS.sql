@@ -1,0 +1,14 @@
+-- Applied to Supabase production as:
+-- phase1_person_lifetime_evidence_foundation
+-- This package includes the frontend release; database migration is already active.
+--
+-- Core objects created:
+-- am_candidate_lifetime_events (append-only)
+-- am_candidate_current_state (recalculable)
+-- am_candidate_lifetime_snapshots (append-only)
+-- am_candidate_lifetime_summary (view)
+-- am_append_candidate_lifetime_event(...)
+-- am_capture_candidate_lifetime_snapshot(...)
+--
+-- Edge Function deployed:
+-- candidate-lifetime-api v1
