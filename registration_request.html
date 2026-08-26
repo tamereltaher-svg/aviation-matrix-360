@@ -8,5 +8,47 @@ a{text-decoration:none;color:inherit}.wrap{max-width:1450px;margin:auto;padding:
 .table{width:100%;border-collapse:collapse;font-size:9px}.table th,.table td{padding:9px 7px;border-bottom:1px solid #edf2f5;text-align:left;vertical-align:top}.table th{font-size:7px;text-transform:uppercase;color:var(--muted)}.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0}.tab{padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:8px;font-weight:1000;cursor:pointer}.tab.active{background:var(--navy);color:#fff}.panel{display:none}.panel.active{display:block}.notice{margin-top:12px;padding:10px;border-radius:12px;background:#edf8fc;color:#0b5c82;font-size:8.5px;line-height:1.5}.err{color:var(--bad);font-size:9px;margin-top:8px}.ok{color:var(--good);font-size:9px;margin-top:8px}.modal{position:fixed;inset:0;background:#0a2238aa;display:none;place-items:center;padding:18px;z-index:9999}.modal.open{display:grid}.modal-card{width:min(760px,100%);background:#fff;border-radius:22px;padding:20px;max-height:90vh;overflow:auto}
 @media(max-width:900px){.grid,.form{grid-template-columns:1fr}.full{grid-column:auto}}</style></head><body><div class="wrap"><div class="top"><a class="pill" href="index.html">← Home</a><div class="brand">AVIATION MATRIX<small>CONTROLLED REGISTRATION</small></div></div><section class="hero"><h1>Request Registration</h1><p>Your request starts as an application only. After review, Aviation Matrix issues a personal activation code. Candidate status is created only after the activation, document, consent and payment gates are satisfied.</p></section><section class="card" style="max-width:820px;margin:16px auto"><div class="form"><div class="field full"><label>FULL NAME</label><input id="name"></div><div class="field"><label>EMAIL</label><input id="email" type="email"></div><div class="field"><label>MOBILE</label><input id="mobile"></div><div class="field"><label>DATE OF BIRTH</label><input id="dob" type="date"></div><div class="field"><label>CITY</label><input id="city"></div><div class="field"><label>PROGRAM / CAREER INTEREST (OPTIONAL)</label><input id="program"></div><div class="field"><label>LANGUAGE</label><select id="lang"><option value="en">English</option><option value="ar">Arabic</option></select></div></div><button class="btn primary" style="margin-top:12px" onclick="submitReq()">Submit Registration Request</button><div id="msg"></div></section></div><script>
 const API='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/registration-public-api';
-async function submitReq(){msg.className='';msg.textContent='Submitting…';try{const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'request_registration',full_name:name.value,email:email.value,mobile:mobile.value,date_of_birth:dob.value||null,current_city:city.value,program_code:program.value,preferred_language:lang.value})});const d=await r.json();if(!r.ok)throw new Error(d.error||d.detail);msg.className='ok';msg.innerHTML='Request received. Application Number: <b>'+d.application_number+'</b><br>Keep this number. You will need it with your personal activation code.'}catch(e){msg.className='err';msg.textContent=e.message}}
+async function submitReq(){
+  const msgEl=document.getElementById('msg');
+  const fullName=document.getElementById('name').value.trim();
+  const emailVal=document.getElementById('email').value.trim();
+  const mobileVal=document.getElementById('mobile').value.trim();
+  const dobVal=document.getElementById('dob').value;
+  const cityVal=document.getElementById('city').value.trim();
+  const programVal=document.getElementById('program').value.trim();
+  const langVal=document.getElementById('lang').value;
+
+  msgEl.className='';
+  msgEl.textContent='Submitting…';
+
+  if(!fullName || (!emailVal && !mobileVal)){
+    msgEl.className='err';
+    msgEl.textContent='Full name and at least one contact method (email or mobile) are required.';
+    return;
+  }
+
+  try{
+    const r=await fetch(API,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        action:'request_registration',
+        full_name:fullName,
+        email:emailVal,
+        mobile:mobileVal,
+        date_of_birth:dobVal||null,
+        current_city:cityVal,
+        program_code:programVal,
+        preferred_language:langVal
+      })
+    });
+    const d=await r.json().catch(()=>({}));
+    if(!r.ok) throw new Error(d.detail||d.error||('HTTP '+r.status));
+    msgEl.className='ok';
+    msgEl.innerHTML='Request received. Application Number: <b>'+d.application_number+'</b><br>Keep this number. You will need it with your personal activation code.';
+  }catch(e){
+    msgEl.className='err';
+    msgEl.textContent=e.message;
+  }
+}
 </script></body></html>
