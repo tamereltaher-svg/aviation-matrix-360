@@ -31,7 +31,8 @@ jobs:
           deno-version: v2.x
 
       - name: Type-check Edge Function
-        run: deno check supabase/functions/phase06-review-api/index.ts
+        working-directory: supabase/functions/phase06-review-api
+        run: deno check index.ts
 
       - name: Verify Portal navigation chain
         shell: bash
