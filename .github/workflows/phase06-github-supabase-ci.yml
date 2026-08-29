@@ -1,0 +1,49 @@
+name: Phase 06 GitHub + Supabase CI
+
+on:
+  pull_request:
+    paths:
+      - 'learning_hub.html'
+      - 'english_assessment_hub.html'
+      - 'phase06_review.html'
+      - 'supabase/functions/phase06-review-api/**'
+      - '.github/workflows/phase06-github-supabase-ci.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'learning_hub.html'
+      - 'english_assessment_hub.html'
+      - 'phase06_review.html'
+      - 'supabase/functions/phase06-review-api/**'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Type-check Edge Function
+        run: deno check supabase/functions/phase06-review-api/index.ts
+
+      - name: Verify Portal navigation chain
+        shell: bash
+        run: |
+          grep -q 'href="english_assessment_hub.html"' learning_hub.html
+          grep -q 'href="phase06_review.html"' english_assessment_hub.html
+          grep -q "am_staff_token" phase06_review.html
+
+      - name: Verify browser files contain no service-role credential use
+        shell: bash
+        run: |
+          if grep -Ei 'SUPABASE_SERVICE_ROLE_KEY|sb_secret_|service_role' learning_hub.html english_assessment_hub.html phase06_review.html; then
+            echo "Server-only credential reference found in browser-delivered HTML."
+            exit 1
+          fi
