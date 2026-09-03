@@ -1,0 +1,67 @@
+name: Temporary Repro Baseline Verify
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/repro-baseline-verify.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify canonical Git baseline
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          import pathlib
+
+          root = pathlib.Path('.')
+          replay_manifest = json.loads((root/'supabase/reproducibility/replay-manifest.json').read_text())
+          assert replay_manifest['count'] == 119
+          assert replay_manifest['cutoff'] == '20260903144840'
+          rows = replay_manifest['migrations']
+          assert len(rows) == 119
+          assert [int(x['rn']) for x in rows] == list(range(1,120))
+
+          replay_files = sorted((root/'supabase/reproducibility/replay').glob('*.sql'))
+          assert len(replay_files) == 119, len(replay_files)
+          for x in rows:
+              p = root/x['path']
+              assert p.exists(), p
+              actual = hashlib.sha256(p.read_bytes()).hexdigest()
+              assert actual == x['sha256'], (p, actual, x['sha256'])
+
+          combined = '\n'.join(p.read_text().lower() for p in replay_files)
+          assert 'tamereltaher@exit-logistics.com' not in combined
+          assert 'sanitized: production store-admin identity seed omitted.' in combined
+          assert 'sanitized: production staff-account identity seed omitted.' in combined
+          assert 'sanitized: production staff-permission identity seed omitted.' in combined
+
+          edge = json.loads((root/'supabase/reproducibility/edge-functions.freeze.json').read_text())
+          functions = edge['functions']
+          assert len(functions) == 19
+          assert len({f['name'] for f in functions}) == 19
+          assert all(f['verify_jwt'] is False for f in functions)
+          missing=[]
+          raw_hash_matches=0
+          for f in functions:
+              p=root/'supabase/functions'/f['name']/'index.ts'
+              if not p.exists(): missing.append(str(p)); continue
+              raw=hashlib.sha256(p.read_bytes()).hexdigest()
+              if raw == f['sha256']: raw_hash_matches += 1
+          assert not missing, missing
+
+          print('REPLAY_COUNT=119')
+          print('REPLAY_HASHES=PASS')
+          print('SANITIZATION=PASS')
+          print('EDGE_SOURCE_PATHS=19/19')
+          print(f'EDGE_RAW_HASH_EQUALS_BUNDLE_HASH={raw_hash_matches}/19')
+          print('GIT_BASELINE_STRUCTURE=PASS')
+          PY
