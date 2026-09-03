@@ -1,0 +1,37 @@
+const fs=require('fs');
+(async()=>{
+  const src=fs.readFileSync('app.js','utf8');
+  const key=(src.match(/sb_publishable_[A-Za-z0-9_-]+/)||[])[0];
+  if(!key) throw new Error('PUBLISHABLE_KEY_NOT_FOUND');
+  const url='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/application-login';
+  const headers={'content-type':'application/json','apikey':key,'authorization':`Bearer ${key}`};
+  async function call(body){
+    const r=await fetch(url,{method:'POST',headers,body:JSON.stringify(body)});
+    let j={}; try{j=await r.json()}catch{}
+    return {status:r.status,body:j};
+  }
+  const suffix=Date.now().toString().slice(-8);
+  const email=`runtime.gate.${suffix}@example.invalid`;
+  const mobile=`+2019${suffix}`;
+  const reg=await call({action:'register',full_name:'Runtime Gate Probe',mobile,email,date_of_birth:'1990-01-01',education_stage:'graduate',current_city:'Cairo',aviation_interest:'operations',preferred_language:'en',consent:true});
+  if(reg.status!==200||!reg.body.application_number||!reg.body.resume_token) throw new Error(`REGISTER_${reg.status}_${reg.body.error||'FAIL'}`);
+  const app=reg.body.application_number, token1=reg.body.resume_token;
+  const unknown='AM-A-2026-999998';
+  const knownSend=await call({action:'send',application_number:app});
+  const unknownSend=await call({action:'send',application_number:unknown});
+  const enumSafe=knownSend.status===unknownSend.status && JSON.stringify(knownSend.body)===JSON.stringify(unknownSend.body);
+  const wrongApp=await call({action:'resume_token',application_number:unknown,resume_token:token1});
+  const valid=await call({action:'resume_token',application_number:app,resume_token:token1});
+  if(valid.status!==200||!valid.body.resume_token) throw new Error(`VALID_RESUME_${valid.status}_${valid.body.error||'FAIL'}`);
+  const replay=await call({action:'resume_token',application_number:app,resume_token:token1});
+  const wrongOtp=await call({action:'verify',application_number:app,token:'000000'});
+  const brute=[];
+  for(let i=0;i<10;i++){ brute.push((await call({action:'verify',application_number:app,token:'000000'})).status); }
+  const rateLimited=brute.includes(429);
+  console.log(JSON.stringify({marker:'AM_RUNTIME_APPLICATION_GATE_V1',probe_email:email,application_number:app,register_status:reg.status,known_send_status:knownSend.status,unknown_send_status:unknownSend.status,enumeration_safe:enumSafe,wrong_application_status:wrongApp.status,valid_resume_status:valid.status,replay_status:replay.status,wrong_otp_status:wrongOtp.status,brute_statuses:brute,rate_limited:rateLimited,tokens_printed:false}));
+  if(!enumSafe) throw new Error('ENUMERATION_DIFFERENCE');
+  if(wrongApp.status!==401) throw new Error('WRONG_APP_NOT_BLOCKED');
+  if(replay.status!==401) throw new Error('REPLAY_NOT_BLOCKED');
+  if(wrongOtp.status!==401) throw new Error('WRONG_OTP_NOT_BLOCKED');
+  if(!rateLimited) throw new Error('BRUTE_FORCE_NOT_RATE_LIMITED');
+})().catch(e=>{console.error(e);process.exit(1)});
