@@ -14,65 +14,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Patch applicant resume flow
+        env:
+          PATCH_B64: ZnJvbSBwYXRobGliIGltcG9ydCBQYXRoCnA9UGF0aCgiYXBwLmpzIikKcz1wLnJlYWRfdGV4dCgpCm1hcmtlcj0iZnVuY3Rpb24gc2hvd090cFN0ZXAoKXsiCmluc2VydD0iIiJhc3luYyBmdW5jdGlvbiByZXN1bWVBcHBsaWNhdGlvbldpdGhUb2tlbihhcHBObyx0b2tlbil7CiBjb25zdCBkYXRhPWF3YWl0IGNhbGxBcHBsaWNhdGlvbkxvZ2luKHthY3Rpb246J3Jlc3VtZV90b2tlbicsYXBwbGljYXRpb25fbnVtYmVyOmFwcE5vLHJlc3VtZV90b2tlbjp0b2tlbn0pOwogY29uc3QgYXBwbGljYXRpb25EYXRhPWRhdGEuYXBwbGljYXRpb258fHt9Owogc3RhdGU9ey4uLnN0YXRlLC4uLmFwcGxpY2F0aW9uRGF0YSxyZXN1bWVfdG9rZW46ZGF0YS5yZXN1bWVfdG9rZW4scmVzdW1lX3Rva2VuX2V4cGlyZXNfYXQ6ZGF0YS5yZXN1bWVfdG9rZW5fZXhwaXJlc19hdH07CiBpZihhcHBsaWNhdGlvbkRhdGEuYXNzZXNzbWVudF9yZXN1bHQpewogIGNvbnN0IGVyPWFwcGxpY2F0aW9uRGF0YS5hc3Nlc3NtZW50X3Jlc3VsdC5ldmlkZW5jZV9wYXlsb2FkfHx7fTsKIHN0YXRlLmFzc2Vzc21lbnQ9ewogICBjdXJyZW50X2ZpdDphcHBsaWNhdGlvbkRhdGEuYXNzZXNzbWVudF9yZXN1bHQuY3VycmVudF9maXQsCiAgIGZ1dHVyZV9maXQ6YXBwbGljYXRpb25EYXRhLmFzc2Vzc21lbnRfcmVzdWx0LmZ1dHVyZV9maXQsCiAgIHJlYWRpbmVzc19zdGF0dXM6YXBwbGljYXRpb25EYXRhLmFzc2Vzc21lbnRfcmVzdWx0LnJlYWRpbmVzc19zdGF0dXMsCiAgIHN1bW1hcnk6YXBwbGljYXRpb25EYXRhLmFzc2Vzc21lbnRfcmVzdWx0LnN1bW1hcnksCiAgIC4uLmVyCiAgfTsKIH0KIHNhdmUoKTsKIGNvbnN0IHJlc3VtZURhdGE9ZGF0YS5hc3Nlc3NtZW50fHx7fTsKIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdyZXN1bWVPdmVybGF5Jyk/LnJlbW92ZSgpOwogaWYocmVzdW1lRGF0YS5zdGF0dXM9PT0naW5fcHJvZ3Jlc3MnKXsKICBhd2FpdCBsb2FkUHVibGlzaGVkUXVlc3Rpb25zKCk7CiAgYXNzZXNzbWVudD17CiAgIGluZGV4Ok1hdGgubWluKE51bWJlcihyZXN1bWVEYXRhLmFuc3dlcmVkX2NvdW50KXx8MCxNYXRoLm1heChydW50aW1lUXVlc3Rpb25zLmxlbmd0aC0xLDApKSwKICAgYXR0ZW1wdF9pZDpyZXN1bWVEYXRhLmF0dGVtcHRfaWQsCiAgIGFjY2Vzc190b2tlbjpyZXN1bWVEYXRhLmFjY2Vzc190b2tlbiwKICAgY2FuZGlkYXRlX2lkOnJlc3VtZURhdGEuY2FuZGlkYXRlX2lkLAogICBsb2NrZWQ6ZmFsc2UsCiAgIHJlc3VsdDpudWxsCiAgfTsKICByZW5kZXIoJ2Fzc2Vzc21lbnQnKTsKIH1lbHNlIGlmKHJlc3VtZURhdGEuc3RhdHVzPT09J2NvbXBsZXRlZCcgJiYgc3RhdGUuYXNzZXNzbWVudCl7CiAgcmVuZGVyKCdyZXN1bHRzJyk7CiB9ZWxzZSBpZihhcHBsaWNhdGlvbkRhdGEuYXNzZXNzbWVudF9yZXN1bHQpewogIHJlbmRlcigncmVzdWx0cycpOwogfWVsc2UgaWYoYXBwbGljYXRpb25EYXRhLnByb2ZpbGVfc3RhdHVzKXsKICByZW5kZXIoJ2NvbmZpcm0nKTsKIH1lbHNlewogIHJlbmRlcignd2VsY29tZScpOwogfQp9CgoiIiIKCmlmICJhc3luYyBmdW5jdGlvbiByZXN1bWVBcHBsaWNhdGlvbldpdGhUb2tlbigibm90IGluIHM6CiAgICBpZiBtYXJrZXIgbm90IGluIHM6CiAgICAgICAgcmFpc2UgU3lzdGVtRXhpdCgic2hvd090cFN0ZXAgbWFya2VyIG1pc3NpbmciKQogICAgcz1zLnJlcGxhY2UobWFya2VyLGluc2VydCttYXJrZXIsMSkKCm9sZD0iIiIgaWYobXNnKXttc2cuY2xhc3NOYW1lPSdoZWxwZXInO21zZy50ZXh0Q29udGVudD1jLmZpbmRpbmc7fQogdHJ5ewogIGNvbnN0IGRhdGE9YXdhaXQgY2FsbEFwcGxpY2F0aW9uTG9naW4oe2FjdGlvbjonc2VuZCcsYXBwbGljYXRpb25fbnVtYmVyOmFwcE5vfSk7IiIiCm5ldz0iIiIgaWYobXNnKXttc2cuY2xhc3NOYW1lPSdoZWxwZXInO21zZy50ZXh0Q29udGVudD1jLmZpbmRpbmc7fQogdHJ5ewogIGlmKHN0YXRlLmFwcGxpY2F0aW9uX251bWJlcj09PWFwcE5vICYmIHN0YXRlLnJlc3VtZV90b2tlbil7CiAgIHRyeXsKICAgIGF3YWl0IHJlc3VtZUFwcGxpY2F0aW9uV2l0aFRva2VuKGFwcE5vLHN0YXRlLnJlc3VtZV90b2tlbik7CiAgICByZXR1cm47CiAgIH1jYXRjaCh0b2tlbkVycm9yKXsKICAgIGlmKHRva2VuRXJyb3IuY29kZT09PSdJTlZBTElEX09SX0VYUElSRURfUkVTVU1FX1RPS0VOJyl7CiAgICAgZGVsZXRlIHN0YXRlLnJlc3VtZV90b2tlbjsKICAgICBkZWxldGUgc3RhdGUucmVzdW1lX3Rva2VuX2V4cGlyZXNfYXQ7CiAgICAgc2F2ZSgpOwogICAgfWVsc2V7CiAgICAgdGhyb3cgdG9rZW5FcnJvcjsKICAgIH0KICB9CiB9CiBjb25zdCBkYXRhPWF3YWl0IGNhbGxBcHBsaWNhdGlvbkxvZ2luKHthY3Rpb246J3NlbmQnLGFwcGxpY2F0aW9uX251bWJlcjphcHBOb30pOyIiIgppZiBvbGQgbm90IGluIHM6CiAgICByYWlzZSBTeXN0ZW1FeGl0KCJyZXF1ZXN0QXBwbGljYXRpb25PdHAgbWFya2VyIG1pc3NpbmciKQpzPXMucmVwbGFjZShvbGQsbmV3LDEpCnAud3JpdGVfdGV4dChzKQo=
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          p=Path('app.js')
-          s=p.read_text()
-          marker="function showOtpStep(){"
-          insert=r'''async function resumeApplicationWithToken(appNo,token){
- const data=await callApplicationLogin({action:'resume_token',application_number:appNo,resume_token:token});
- const applicationData=data.application||{};
- state={...state,...applicationData,resume_token:data.resume_token,resume_token_expires_at:data.resume_token_expires_at};
- if(applicationData.assessment_result){
-  const er=applicationData.assessment_result.evidence_payload||{};
-  state.assessment={
-   current_fit:applicationData.assessment_result.current_fit,
-   future_fit:applicationData.assessment_result.future_fit,
-   readiness_status:applicationData.assessment_result.readiness_status,
-   summary:applicationData.assessment_result.summary,
-   ...er
-  };
- }
- save();
- const resumeData=data.assessment||{};
- document.getElementById('resumeOverlay')?.remove();
- if(resumeData.status==='in_progress'){
-  await loadPublishedQuestions();
-  assessment={
-   index:Math.min(Number(resumeData.answered_count)||0,Math.max(runtimeQuestions.length-1,0)),
-   attempt_id:resumeData.attempt_id,
-   access_token:resumeData.access_token,
-   candidate_id:resumeData.candidate_id,
-   locked:false,
-   result:null
-  };
-  render('assessment');
- }else if(resumeData.status==='completed' && state.assessment){
-  render('results');
- }else if(applicationData.assessment_result){
-  render('results');
- }else if(applicationData.profile_status){
-  render('confirm');
- }else{
-  render('welcome');
- }
-}
-
-'''
-          if 'async function resumeApplicationWithToken(' not in s:
-              if marker not in s: raise SystemExit('showOtpStep marker missing')
-              s=s.replace(marker,insert+marker,1)
-          old=""" if(msg){msg.className='helper';msg.textContent=c.finding;}\n try{\n  const data=await callApplicationLogin({action:'send',application_number:appNo});"""
-          new=""" if(msg){msg.className='helper';msg.textContent=c.finding;}\n try{\n  if(state.application_number===appNo && state.resume_token){\n   try{\n    await resumeApplicationWithToken(appNo,state.resume_token);\n    return;\n   }catch(tokenError){\n    if(tokenError.code==='INVALID_OR_EXPIRED_RESUME_TOKEN'){\n     delete state.resume_token;\n     delete state.resume_token_expires_at;\n     save();\n    }else{\n     throw tokenError;\n    }\n   }\n  }\n  const data=await callApplicationLogin({action:'send',application_number:appNo});"""
-          if old not in s: raise SystemExit('requestApplicationOtp marker missing')
-          s=s.replace(old,new,1)
-          p.write_text(s)
-          PY
+          echo "$PATCH_B64" | base64 -d | python
       - name: Verify patch
         run: |
           grep -q "resumeApplicationWithToken" app.js
-          grep -q "resume_token" app.js
+          grep -q "state.resume_token" app.js
       - name: Commit hardened frontend and remove temporary workflow
         run: |
           git config user.name "aviation-matrix-security-bot"
