@@ -1,0 +1,25 @@
+name: Runtime expired token gate
+on:
+  push:
+    paths:
+      - '.github/workflows/runtime-expired-token-gate.yml'
+permissions:
+  contents: read
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify expired token is rejected
+        run: |
+          KEY=$(grep -o 'sb_publishable_[A-Za-z0-9_-]*' app.js | head -1)
+          CODE=$(curl -sS -o /tmp/expired.json -w '%{http_code}' \
+            -H 'Content-Type: application/json' \
+            -H "apikey: $KEY" \
+            -H "Authorization: Bearer $KEY" \
+            -X POST 'https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/application-login' \
+            --data '{"action":"resume_token","application_number":"AM-A-2026-000017","resume_token":"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"}')
+          echo "EXPIRED_TOKEN_STATUS=$CODE"
+          cat /tmp/expired.json
+          test "$CODE" = "401"
+          grep -q 'INVALID_OR_EXPIRED_RESUME_TOKEN' /tmp/expired.json
