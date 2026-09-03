@@ -1,1 +1,839 @@
-{"status":"placeholder"}
+{
+  "count": 119,
+  "cutoff": "20260903144840",
+  "migrations": [
+    {
+      "rn": 1,
+      "version": "20260821003413",
+      "name": "create_aviation_interest_leads",
+      "path": "supabase/reproducibility/replay/0001_20260821003413_create_aviation_interest_leads.sql",
+      "sha256": "c617c93356a8433e23442c283e44bac63417aa203b617172003907368f9d5311"
+    },
+    {
+      "rn": 2,
+      "version": "20260821005702",
+      "name": "add_candidate_onboarding_pilot",
+      "path": "supabase/reproducibility/replay/0002_20260821005702_add_candidate_onboarding_pilot.sql",
+      "sha256": "d2475f03ac19419791bb2fece961f91002edd33399f096950ae778ad09ad2e69"
+    },
+    {
+      "rn": 3,
+      "version": "20260821233139",
+      "name": "create_generic_assessment_architecture",
+      "path": "supabase/reproducibility/replay/0003_20260821233139_create_generic_assessment_architecture.sql",
+      "sha256": "4e2cf6ce689231105ddaf4056aef47ac15663751ab598e9359021d437e60cbb1"
+    },
+    {
+      "rn": 4,
+      "version": "20260821233752",
+      "name": "extend_assessment_question_traceability",
+      "path": "supabase/reproducibility/replay/0004_20260821233752_extend_assessment_question_traceability.sql",
+      "sha256": "8f18f728bca472567b3a54dd704f64315641557c55e84a910d473e4beb2b742f"
+    },
+    {
+      "rn": 5,
+      "version": "20260821233830",
+      "name": "assessment_question_uniqueness_guards",
+      "path": "supabase/reproducibility/replay/0005_20260821233830_assessment_question_uniqueness_guards.sql",
+      "sha256": "bf998d2eb4ded2f42aed86d9548d2ad6e0c73f5d8c3b45241a2d606ecc69a173"
+    },
+    {
+      "rn": 6,
+      "version": "20260821234849",
+      "name": "add_explainable_assessment_scoring_engine",
+      "path": "supabase/reproducibility/replay/0006_20260821234849_add_explainable_assessment_scoring_engine.sql",
+      "sha256": "65d09032832eab641ae3a548a144b94c651c69f642eb2cf78e71f8c517a5aa9e"
+    },
+    {
+      "rn": 7,
+      "version": "20260821235127",
+      "name": "connect_public_assessment_engine",
+      "path": "supabase/reproducibility/replay/0007_20260821235127_connect_public_assessment_engine.sql",
+      "sha256": "f69e10587996a38569770e22f39c9ab953d544e0f5bbd867228f852d4142c9e9"
+    },
+    {
+      "rn": 8,
+      "version": "20260821235206",
+      "name": "public_registration_and_duplicate_guard",
+      "path": "supabase/reproducibility/replay/0008_20260821235206_public_registration_and_duplicate_guard.sql",
+      "sha256": "1306f792fbeb96b3f86a79a31cd3b3912d6e25dd0dc22032497f1ae39d649254"
+    },
+    {
+      "rn": 9,
+      "version": "20260821235249",
+      "name": "resume_existing_public_profile",
+      "path": "supabase/reproducibility/replay/0009_20260821235249_resume_existing_public_profile.sql",
+      "sha256": "21e82c9b4ae0290fbdc836110c432292679c445b1e4fbd04202d321025ac24e1"
+    },
+    {
+      "rn": 10,
+      "version": "20260822070220",
+      "name": "fix_public_lead_duplicate_trigger_permissions",
+      "path": "supabase/reproducibility/replay/0010_20260822070220_fix_public_lead_duplicate_trigger_permissions.sql",
+      "sha256": "93a6714a044ff8a4dd1d4e13c2e34dc8ffd07751fa9ca4ee398e9e60b284ad06"
+    },
+    {
+      "rn": 11,
+      "version": "20260822071212",
+      "name": "english_cabin_crew_questions_with_timeout",
+      "path": "supabase/reproducibility/replay/0011_20260822071212_english_cabin_crew_questions_with_timeout.sql",
+      "sha256": "f10ac25b2d01ea8aa60076c59ca5ad733755e108eccd1000a11e7a482a491ca7"
+    },
+    {
+      "rn": 12,
+      "version": "20260822071345",
+      "name": "secure_public_assessment_runtime",
+      "path": "supabase/reproducibility/replay/0012_20260822071345_secure_public_assessment_runtime.sql",
+      "sha256": "8741c246917723b8707ae1cd12ba4c5f6e26917bdb1fc7e7c5974330e15a0b69"
+    },
+    {
+      "rn": 13,
+      "version": "20260822072511",
+      "name": "add_application_number_and_resume_flow",
+      "path": "supabase/reproducibility/replay/0013_20260822072511_add_application_number_and_resume_flow.sql",
+      "sha256": "4a6e0c08fded9f9508b269ccd5c0af5dd43b19fdbe20d9d172a6f933cabf0b19"
+    },
+    {
+      "rn": 14,
+      "version": "20260822072555",
+      "name": "public_registration_rpc_and_languages_v2",
+      "path": "supabase/reproducibility/replay/0014_20260822072555_public_registration_rpc_and_languages_v2.sql",
+      "sha256": "a83df82e97f6090aeece0808480970aa323ab9b44306d8a3c2fd75d3fbd7d248"
+    },
+    {
+      "rn": 15,
+      "version": "20260822072629",
+      "name": "resume_in_progress_assessment",
+      "path": "supabase/reproducibility/replay/0015_20260822072629_resume_in_progress_assessment.sql",
+      "sha256": "83660b1c7069f709856f3fb6ad8348576d1ac341884e9df8d1bcc94a07b178c1"
+    },
+    {
+      "rn": 16,
+      "version": "20260822075738",
+      "name": "add_authenticated_application_resume",
+      "path": "supabase/reproducibility/replay/0016_20260822075738_add_authenticated_application_resume.sql",
+      "sha256": "f6c19cdbeb0ed09a9ac9cd29979a1ab6174aaaa8bef0fc90e4cf9554f9b20ad7"
+    },
+    {
+      "rn": 17,
+      "version": "20260822075756",
+      "name": "add_application_otp_rate_limit",
+      "path": "supabase/reproducibility/replay/0017_20260822075756_add_application_otp_rate_limit.sql",
+      "sha256": "e8b917529894c9bd61e93457045337808ec7d0f691190df045ddd0c981c9ea7c"
+    },
+    {
+      "rn": 18,
+      "version": "20260822113812",
+      "name": "store_backend_foundation_v1",
+      "path": "supabase/reproducibility/replay/0018_20260822113812_store_backend_foundation_v1.sql",
+      "sha256": "1683f0df2e2b9ddaa94da4d7547a14614c51e2ddb213e628d1ca1fba555eaa7a"
+    },
+    {
+      "rn": 19,
+      "version": "20260822113828",
+      "name": "store_seed_products_v1",
+      "path": "supabase/reproducibility/replay/0019_20260822113828_store_seed_products_v1.sql",
+      "sha256": "b551fa51481521c4c4723a9a8a191964c4f5f7b183be4a987257655d7df5a3ff"
+    },
+    {
+      "rn": 20,
+      "version": "20260822113953",
+      "name": "store_admin_management_security",
+      "path": "supabase/reproducibility/replay/0020_20260822113953_store_admin_management_security.sql",
+      "sha256": "1779d896f875344ae891d6f97abe53369507fce4cc9121357da5c99425e173da"
+    },
+    {
+      "rn": 21,
+      "version": "20260822122643",
+      "name": "staff_accounts_and_permissions",
+      "path": "supabase/reproducibility/replay/0021_20260822122643_staff_accounts_and_permissions.sql",
+      "sha256": "a52f84b8ed94a96ec977358fc2f158ed7eed177e1521a828b8a5a706d8e55961"
+    },
+    {
+      "rn": 22,
+      "version": "20260822125244",
+      "name": "staff_password_auth_and_sessions_v2",
+      "path": "supabase/reproducibility/replay/0022_20260822125244_staff_password_auth_and_sessions_v2.sql",
+      "sha256": "ded4e15dea3f56918ed24f600d341db0c8e47f4be7491cb52d8284181331c6ab"
+    },
+    {
+      "rn": 23,
+      "version": "20260822125444",
+      "name": "staff_login_guard",
+      "path": "supabase/reproducibility/replay/0023_20260822125444_staff_login_guard.sql",
+      "sha256": "ef12b5debb1de1bce107c1ffca95810b14aba84688eb68b98791abbfb853f72e"
+    },
+    {
+      "rn": 24,
+      "version": "20260822125607",
+      "name": "store_writes_edge_only",
+      "path": "supabase/reproducibility/replay/0024_20260822125607_store_writes_edge_only.sql",
+      "sha256": "33d486f8a0586121edc9ca54db600ee859dc43ec1512129ec870f2c45959a1d7"
+    },
+    {
+      "rn": 25,
+      "version": "20260822131627",
+      "name": "control_tower_programs_requests_foundation",
+      "path": "supabase/reproducibility/replay/0025_20260822131627_control_tower_programs_requests_foundation.sql",
+      "sha256": "f4a45dd817e01142568f547c8ef1f1c41e8aec59f79702e851033a4a97b14a9e"
+    },
+    {
+      "rn": 26,
+      "version": "20260822152832",
+      "name": "commercial_operations_foundation",
+      "path": "supabase/reproducibility/replay/0026_20260822152832_commercial_operations_foundation.sql",
+      "sha256": "fe190c191d4c6b419abbf36c1beccedc287c003a7625c2528f829dda3bfd33ae"
+    },
+    {
+      "rn": 27,
+      "version": "20260822160801",
+      "name": "program_cover_images_and_card_theme",
+      "path": "supabase/reproducibility/replay/0027_20260822160801_program_cover_images_and_card_theme.sql",
+      "sha256": "bd722cd531f59035a7bf5236e50c698a7a686b43a7a9daaec13526921800fea1"
+    },
+    {
+      "rn": 28,
+      "version": "20260823130248",
+      "name": "kids_aviation_zone_foundation",
+      "path": "supabase/reproducibility/replay/0028_20260823130248_kids_aviation_zone_foundation.sql",
+      "sha256": "ce952540c1f7fe4f49ef6acdf9d4c86ac7ed935d423760fb217e8fd157e15c12"
+    },
+    {
+      "rn": 29,
+      "version": "20260823130605",
+      "name": "kids_phase2_commercial_content",
+      "path": "supabase/reproducibility/replay/0029_20260823130605_kids_phase2_commercial_content.sql",
+      "sha256": "261c3d390908fb10f7558f5f12dd0a939eb2d5718b5373b3fed439420dccde3c"
+    },
+    {
+      "rn": 30,
+      "version": "20260823133347",
+      "name": "kam_architecture_v2_core",
+      "path": "supabase/reproducibility/replay/0030_20260823133347_kam_architecture_v2_core.sql",
+      "sha256": "15449dee04f10ad19b64584ccd8c2c2b1c2daa2f75c9581a683f52dab6551d12"
+    },
+    {
+      "rn": 31,
+      "version": "20260823135344",
+      "name": "kam_phase2_import_seasons",
+      "path": "supabase/reproducibility/replay/0031_20260823135344_kam_phase2_import_seasons.sql",
+      "sha256": "5bfb73ce08573f2b6201e6125fa30618f822f2e5148ae8f5a935bd786540fbff"
+    },
+    {
+      "rn": 32,
+      "version": "20260823135536",
+      "name": "kam_phase2_import_missions_1",
+      "path": "supabase/reproducibility/replay/0032_20260823135536_kam_phase2_import_missions_1.sql",
+      "sha256": "4bac095972bc2afc319b2a749253ffec01ef34cea9a0d73a859d59db79e1a6fe"
+    },
+    {
+      "rn": 33,
+      "version": "20260823135723",
+      "name": "kam_phase2_import_missions_l2_tail",
+      "path": "supabase/reproducibility/replay/0033_20260823135723_kam_phase2_import_missions_l2_tail.sql",
+      "sha256": "defc05ee8d1e59549b7fb2b6f968cfec399ca6d544be8301e5489b9140229331"
+    },
+    {
+      "rn": 34,
+      "version": "20260823135800",
+      "name": "kam_phase2_generate_missions_l3_l5",
+      "path": "supabase/reproducibility/replay/0034_20260823135800_kam_phase2_generate_missions_l3_l5.sql",
+      "sha256": "3e23dc6a0d0e33bdcd48c26a24c3d4d5695d8ae45008662dbd8aa7d47c4d8519"
+    },
+    {
+      "rn": 35,
+      "version": "20260823135928",
+      "name": "kam_phase2_generate_blueprints",
+      "path": "supabase/reproducibility/replay/0035_20260823135928_kam_phase2_generate_blueprints.sql",
+      "sha256": "f49ea94c171aaf64fa2887410070eb0f8ced07feb6567c541d10669fe944480d"
+    },
+    {
+      "rn": 36,
+      "version": "20260823135955",
+      "name": "kam_phase2_generate_learning_matrix",
+      "path": "supabase/reproducibility/replay/0036_20260823135955_kam_phase2_generate_learning_matrix.sql",
+      "sha256": "6d1f907f3cf169390516aea3c8f0518d03cbd23127f501e82fa13f18fa549aac"
+    },
+    {
+      "rn": 37,
+      "version": "20260823140109",
+      "name": "kam_phase2_fill_missing_l2_missions",
+      "path": "supabase/reproducibility/replay/0037_20260823140109_kam_phase2_fill_missing_l2_missions.sql",
+      "sha256": "15978f1854897f79877f7b05fc01b0fef205d5c217c717de1e5174cf1e24a9f3"
+    },
+    {
+      "rn": 38,
+      "version": "20260823140129",
+      "name": "kam_phase2_refresh_blueprints_after_fill",
+      "path": "supabase/reproducibility/replay/0038_20260823140129_kam_phase2_refresh_blueprints_after_fill.sql",
+      "sha256": "8fa6d86da137fcf2f1af0a2e90f28418378bcf46b7cee0c7425074abe913cc0b"
+    },
+    {
+      "rn": 39,
+      "version": "20260823140542",
+      "name": "kam_phase3_content_production_engine",
+      "path": "supabase/reproducibility/replay/0039_20260823140542_kam_phase3_content_production_engine.sql",
+      "sha256": "d2b702c1a876f10302f1af1244fad64a94f6c22ded1f0b6557b4f39d4c1c6bc1"
+    },
+    {
+      "rn": 40,
+      "version": "20260823140621",
+      "name": "kam_phase3_dashboard_security_invoker",
+      "path": "supabase/reproducibility/replay/0040_20260823140621_kam_phase3_dashboard_security_invoker.sql",
+      "sha256": "80e6aa1cd716a2a2cd71b5ae1346dff6f01d618404b1583f69257add292370ff"
+    },
+    {
+      "rn": 41,
+      "version": "20260823140912",
+      "name": "kam_phase4_characters_governance_ip",
+      "path": "supabase/reproducibility/replay/0041_20260823140912_kam_phase4_characters_governance_ip.sql",
+      "sha256": "d4327c4507cf7ade0dc7eceae7407ebf2286178d091437e5f5d7e6449397afe3"
+    },
+    {
+      "rn": 42,
+      "version": "20260823141007",
+      "name": "kam_phase4_governance_dashboard",
+      "path": "supabase/reproducibility/replay/0042_20260823141007_kam_phase4_governance_dashboard.sql",
+      "sha256": "953f57d660564d38c68c9487c4b558825501ec6f8b62e30508eae865253bcb38"
+    },
+    {
+      "rn": 43,
+      "version": "20260823141330",
+      "name": "kam_phase5_rewards_passport_engine",
+      "path": "supabase/reproducibility/replay/0043_20260823141330_kam_phase5_rewards_passport_engine.sql",
+      "sha256": "3a75e42e7eba6b5b4d76f99807b11ea1c7a6bb3fa115a0439262ab828756a4d5"
+    },
+    {
+      "rn": 44,
+      "version": "20260823141805",
+      "name": "kam_phase6_publishing_products",
+      "path": "supabase/reproducibility/replay/0044_20260823141805_kam_phase6_publishing_products.sql",
+      "sha256": "c267d13efe37db7561e833740e274fec118aae64ac1fb4655c0fbb59c4b56161"
+    },
+    {
+      "rn": 45,
+      "version": "20260823142020",
+      "name": "kam_phase7_kids_experience_engine",
+      "path": "supabase/reproducibility/replay/0045_20260823142020_kam_phase7_kids_experience_engine.sql",
+      "sha256": "a83218cfe55f8025c0d352671523c114bbdc84122db9740eeb4af349093933e2"
+    },
+    {
+      "rn": 46,
+      "version": "20260823143057",
+      "name": "kids_phase8_foundation_analytics",
+      "path": "supabase/reproducibility/replay/0046_20260823143057_kids_phase8_foundation_analytics.sql",
+      "sha256": "b35875ffd9a2e684e01026bbc08c26f98afb7a9db8aa199e7ec009a00aa6b2de"
+    },
+    {
+      "rn": 47,
+      "version": "20260823143128",
+      "name": "kids_phase8_health_engine",
+      "path": "supabase/reproducibility/replay/0047_20260823143128_kids_phase8_health_engine.sql",
+      "sha256": "359ead351b536e8bec0662c43bb493bcb43a14880c3bfe2afee4c90daee95666"
+    },
+    {
+      "rn": 48,
+      "version": "20260823145300",
+      "name": "kids_passport_profile_photo",
+      "path": "supabase/reproducibility/replay/0048_20260823145300_kids_passport_profile_photo.sql",
+      "sha256": "125a59b6b09186fdfefed043fdb8212cf684566f1a3fa1a2c5091cdab440b7f2"
+    },
+    {
+      "rn": 49,
+      "version": "20260823161605",
+      "name": "kids_ai_production_studio",
+      "path": "supabase/reproducibility/replay/0049_20260823161605_kids_ai_production_studio.sql",
+      "sha256": "d2c0ea949b596f3852432e2dc82b5b7d0b2d6270e1d515521b63f79a1a224cfe"
+    },
+    {
+      "rn": 50,
+      "version": "20260824121426",
+      "name": "master_platform_architecture_v1",
+      "path": "supabase/reproducibility/replay/0050_20260824121426_master_platform_architecture_v1.sql",
+      "sha256": "a66319617086fbf32738baa673d7561849317431ef790844aca894fa97c039cb"
+    },
+    {
+      "rn": 51,
+      "version": "20260824123541",
+      "name": "kids_aviation_reorganization_v3",
+      "path": "supabase/reproducibility/replay/0051_20260824123541_kids_aviation_reorganization_v3.sql",
+      "sha256": "f729e2a7b7c70fe7f38de6eb57a8a0777e577291b352758ddeb0d62c50f3aca0"
+    },
+    {
+      "rn": 52,
+      "version": "20260824123847",
+      "name": "phase4_talent_candidate_architecture",
+      "path": "supabase/reproducibility/replay/0052_20260824123847_phase4_talent_candidate_architecture.sql",
+      "sha256": "af8e5460b31ad6ca7410677f0a2137b0bf216fcc6da6842fb945050cc54ff45c"
+    },
+    {
+      "rn": 53,
+      "version": "20260824124159",
+      "name": "phase5_learning_exam_assessment_architecture",
+      "path": "supabase/reproducibility/replay/0053_20260824124159_phase5_learning_exam_assessment_architecture.sql",
+      "sha256": "3e6f5b9dc9989e875ce64a8772dffc2d8005a12c02e5012e801b07c225d2aa8b"
+    },
+    {
+      "rn": 54,
+      "version": "20260824124630",
+      "name": "phase6_airline_employer_architecture_v2",
+      "path": "supabase/reproducibility/replay/0054_20260824124630_phase6_airline_employer_architecture_v2.sql",
+      "sha256": "7a2bedd7c39f95d48e66b989e249bff893145011855114d55429bac967d7fb6f"
+    },
+    {
+      "rn": 55,
+      "version": "20260824125151",
+      "name": "am_phase7_core_intelligence_engines",
+      "path": "supabase/reproducibility/replay/0055_20260824125151_am_phase7_core_intelligence_engines.sql",
+      "sha256": "4d7b03f7b4767c57839d49d73852007ecfb650082fa003a0d8e2b9ccb9032f2a"
+    },
+    {
+      "rn": 56,
+      "version": "20260824130248",
+      "name": "phase8_dashboards_reports_final_integration_v3",
+      "path": "supabase/reproducibility/replay/0056_20260824130248_phase8_dashboards_reports_final_integration_v3.sql",
+      "sha256": "2217e2e0349e41b6e4cec2631a172b230b071939f7590d101eac1d39501f05dd"
+    },
+    {
+      "rn": 57,
+      "version": "20260824130320",
+      "name": "phase8_reporting_permission",
+      "path": "supabase/reproducibility/replay/0057_20260824130320_phase8_reporting_permission.sql",
+      "sha256": "bd4a1ec687036f74f63ddf6791da96cab1691625cc531b928d9424d09be79618"
+    },
+    {
+      "rn": 58,
+      "version": "20260824170836",
+      "name": "kam_character_identity_foundation_v1",
+      "path": "supabase/reproducibility/replay/0058_20260824170836_kam_character_identity_foundation_v1.sql",
+      "sha256": "9d0b648b7796b5fa6be07f69f1822df088570c9b2150ff7c6a793acbb51f7f20"
+    },
+    {
+      "rn": 59,
+      "version": "20260824171814",
+      "name": "kam_character_reference_assets_phase2",
+      "path": "supabase/reproducibility/replay/0059_20260824171814_kam_character_reference_assets_phase2.sql",
+      "sha256": "44a5d4f01aa0bc7c43019a53b08921ff425b93adcef089a0cbdc5161e3bdcac9"
+    },
+    {
+      "rn": 60,
+      "version": "20260824172411",
+      "name": "kam_character_lock_rules_v1",
+      "path": "supabase/reproducibility/replay/0060_20260824172411_kam_character_lock_rules_v1.sql",
+      "sha256": "f4e8ad5946495d6237575aeafead0f462aac7abb461176511995ea37bfe9a6c5"
+    },
+    {
+      "rn": 61,
+      "version": "20260825103010",
+      "name": "allow_identity_rejected_generation_status",
+      "path": "supabase/reproducibility/replay/0061_20260825103010_allow_identity_rejected_generation_status.sql",
+      "sha256": "56fa0435aec287210a598aab1ad19ed9d2db00803233326b318a87c1deaca75b"
+    },
+    {
+      "rn": 62,
+      "version": "20260825135440",
+      "name": "kam_brand_logo_registry_v1",
+      "path": "supabase/reproducibility/replay/0062_20260825135440_kam_brand_logo_registry_v1.sql",
+      "sha256": "f1e28d0903c6b57752fbac2bd1c75605f72f43f2f104b2343fae4498d5169087"
+    },
+    {
+      "rn": 63,
+      "version": "20260825140301",
+      "name": "kam_activity_book_logo_lock_prep_v1",
+      "path": "supabase/reproducibility/replay/0063_20260825140301_kam_activity_book_logo_lock_prep_v1.sql",
+      "sha256": "f928d38aa54cbee1ff504f13432337d3e56899abea306d4fec6ffb3487760a6c"
+    },
+    {
+      "rn": 64,
+      "version": "20260826131734",
+      "name": "phase1_person_lifetime_evidence_foundation",
+      "path": "supabase/reproducibility/replay/0064_20260826131734_phase1_person_lifetime_evidence_foundation.sql",
+      "sha256": "6a8fb439e0ebf40d0b2262e0f64f7d5990d5781d22ba3f3b974261ac9b212a1d"
+    },
+    {
+      "rn": 65,
+      "version": "20260826140155",
+      "name": "phase1_registration_documents_batch_activation_final",
+      "path": "supabase/reproducibility/replay/0065_20260826140155_phase1_registration_documents_batch_activation_final.sql",
+      "sha256": "65b0af508a08a78bffdff44bd9e20cc7a616bc468d86328c399917929f44e3f3"
+    },
+    {
+      "rn": 66,
+      "version": "20260826140654",
+      "name": "phase1_auto_activation_finalize",
+      "path": "supabase/reproducibility/replay/0066_20260826140654_phase1_auto_activation_finalize.sql",
+      "sha256": "0ad4c7edcd2d2fee5468ad9e7bdd23480a9f21fa297e81c0a76cc0a3bec313db"
+    },
+    {
+      "rn": 67,
+      "version": "20260826143052",
+      "name": "phase2_multi_stage_assessment_engine",
+      "path": "supabase/reproducibility/replay/0067_20260826143052_phase2_multi_stage_assessment_engine.sql",
+      "sha256": "b9617717066d624f22829cd14dec9cd760e101420bc93d331cdf993149c08462"
+    },
+    {
+      "rn": 68,
+      "version": "20260902131530",
+      "name": "phase08_writing_foundation_schema",
+      "path": "supabase/reproducibility/replay/0068_20260902131530_phase08_writing_foundation_schema.sql",
+      "sha256": "dc9576c7e72cdd4fe151516a3f7a3b6880788a01d979925465befd192f1de0fd"
+    },
+    {
+      "rn": 69,
+      "version": "20260902131905",
+      "name": "phase08_allow_analytic_rubric_scoring",
+      "path": "supabase/reproducibility/replay/0069_20260902131905_phase08_allow_analytic_rubric_scoring.sql",
+      "sha256": "090e33eb5b7881e99e64cd3e90e4e5dfcf99480e2f93d3dc8d2561316b54ae38"
+    },
+    {
+      "rn": 70,
+      "version": "20260902151732",
+      "name": "phase08_writing_rubric_human_scoring_governance",
+      "path": "supabase/reproducibility/replay/0070_20260902151732_phase08_writing_rubric_human_scoring_governance.sql",
+      "sha256": "e59bf9e171e25b63355f943fe90c919e678e84bc4b799d3224c5787f52ff4f4e"
+    },
+    {
+      "rn": 71,
+      "version": "20260902154215",
+      "name": "phase09_speaking_foundation_schema",
+      "path": "supabase/reproducibility/replay/0071_20260902154215_phase09_speaking_foundation_schema.sql",
+      "sha256": "03cadfc7901ab728d019530a350b1168757bf3d79815c76aeace97640aab255e"
+    },
+    {
+      "rn": 72,
+      "version": "20260902160546",
+      "name": "phase09_speaking_operational_blueprint_scoring_schema",
+      "path": "supabase/reproducibility/replay/0072_20260902160546_phase09_speaking_operational_blueprint_scoring_schema.sql",
+      "sha256": "6f36be6e0a163783d5096db616859fb3b273a82b4368a829db72576f7b29e15a"
+    },
+    {
+      "rn": 73,
+      "version": "20260902185930",
+      "name": "phase10_integrated_exam_model_and_scoring_engine",
+      "path": "supabase/reproducibility/replay/0073_20260902185930_phase10_integrated_exam_model_and_scoring_engine.sql",
+      "sha256": "0ef7e993337612a243750d6dc1059cb1f0bb9b7c1d7f84e07b269eaff202565a"
+    },
+    {
+      "rn": 74,
+      "version": "20260902192452",
+      "name": "phase10_form_specific_scoring_profiles_hardening",
+      "path": "supabase/reproducibility/replay/0074_20260902192452_phase10_form_specific_scoring_profiles_hardening.sql",
+      "sha256": "a35fdee40b86edf3c10a6f95f3b152b05700ce5844716b3488fa7c6906a7dbfe"
+    },
+    {
+      "rn": 75,
+      "version": "20260902192615",
+      "name": "phase10_score_form_profile_drift_gate",
+      "path": "supabase/reproducibility/replay/0075_20260902192615_phase10_score_form_profile_drift_gate.sql",
+      "sha256": "bc1512c7d0376cb2b40f3728156c36a41df4e4a09ca4acfe1e80c02c4476ca66"
+    },
+    {
+      "rn": 76,
+      "version": "20260902193137",
+      "name": "phase11_extend_item_scoring_validation_for_analytic",
+      "path": "supabase/reproducibility/replay/0076_20260902193137_phase11_extend_item_scoring_validation_for_analytic.sql",
+      "sha256": "61b3ed5e3510b925454df8a3c39f9e5c9e76675f7a04ef304b3dd8fe2b14822e"
+    },
+    {
+      "rn": 77,
+      "version": "20260902193446",
+      "name": "phase11_secure_new_assessment_objects",
+      "path": "supabase/reproducibility/replay/0077_20260902193446_phase11_secure_new_assessment_objects.sql",
+      "sha256": "33a3e2a704f7cc842205cb0d4bf191b74d6a0761d17abea00a732e786b190382"
+    },
+    {
+      "rn": 78,
+      "version": "20260902193715",
+      "name": "phase11_integrated_validation_gate_v2",
+      "path": "supabase/reproducibility/replay/0078_20260902193715_phase11_integrated_validation_gate_v2.sql",
+      "sha256": "31d3a7091037500e0afe86f8514e24cb42f54bfa09b96581c8143997127d5a15"
+    },
+    {
+      "rn": 79,
+      "version": "20260902193804",
+      "name": "phase11_fix_integrated_gate_alias",
+      "path": "supabase/reproducibility/replay/0079_20260902193804_phase11_fix_integrated_gate_alias.sql",
+      "sha256": "d5f508b43d9c57397395c82f3dba6a4828ef9ffba8f0c6d6a15a9ee99b261c45"
+    },
+    {
+      "rn": 80,
+      "version": "20260902213103",
+      "name": "fix_phase06_form_assembly_preflight_alias",
+      "path": "supabase/reproducibility/replay/0080_20260902213103_fix_phase06_form_assembly_preflight_alias.sql",
+      "sha256": "f54c04c908e441fe350cc5545f7ad2aa63be3c4b89843ffba897757ca78fcea5"
+    },
+    {
+      "rn": 81,
+      "version": "20260902213413",
+      "name": "phase11_integrated_form_prevalidation_evidence",
+      "path": "supabase/reproducibility/replay/0081_20260902213413_phase11_integrated_form_prevalidation_evidence.sql",
+      "sha256": "2acffd4a1e1cc515ac8350232fc9e9c5f17722756be99bde729aef0d14db2960"
+    },
+    {
+      "rn": 82,
+      "version": "20260902213554",
+      "name": "fix_phase11_prevalidation_difficulty_aggregation",
+      "path": "supabase/reproducibility/replay/0082_20260902213554_fix_phase11_prevalidation_difficulty_aggregation.sql",
+      "sha256": "f462334cde7856e3d6325e6d35bbbca28fb5259363fe7383f5be9b94f1fdbbf9"
+    },
+    {
+      "rn": 83,
+      "version": "20260902215407",
+      "name": "phase11_phase06_inventory_expansion_compatibility",
+      "path": "supabase/reproducibility/replay/0083_20260902215407_phase11_phase06_inventory_expansion_compatibility.sql",
+      "sha256": "564de445bc0dbe8188ab49ba6287d9f5dfd12c631d73eca726c42765ce46c3b8"
+    },
+    {
+      "rn": 84,
+      "version": "20260902215808",
+      "name": "phase11_fix_phase06_stimulus_staging_status",
+      "path": "supabase/reproducibility/replay/0084_20260902215808_phase11_fix_phase06_stimulus_staging_status.sql",
+      "sha256": "3e5ab34d18a96b6ba0b3bbdbc01b8844b440d9054326e78fc91fbc514d5c87af"
+    },
+    {
+      "rn": 85,
+      "version": "20260902221430",
+      "name": "phase11_fix_phase06_assembly_validator_alias_collision",
+      "path": "supabase/reproducibility/replay/0085_20260902221430_phase11_fix_phase06_assembly_validator_alias_collision.sql",
+      "sha256": "e0a3793d613e4b85d715a0ade76db92e31a926180ed2cbe2978bb185997e168c"
+    },
+    {
+      "rn": 86,
+      "version": "20260903101604",
+      "name": "p0_secure_exposed_public_tables_and_internal_rpcs",
+      "path": "supabase/reproducibility/replay/0086_20260903101604_p0_secure_exposed_public_tables_and_internal_rpcs.sql",
+      "sha256": "a548e99ceb3ab823ca307f2edd1959136857c76bf93b130f3ee17be35ea43083"
+    },
+    {
+      "rn": 87,
+      "version": "20260903101713",
+      "name": "p0_harden_security_definer_views",
+      "path": "supabase/reproducibility/replay/0087_20260903101713_p0_harden_security_definer_views.sql",
+      "sha256": "e2342c07fae9564f5abd54fd6c2024c7bc992302eec25716687a4be15af5c4e3"
+    },
+    {
+      "rn": 88,
+      "version": "20260903103408",
+      "name": "temporary_enable_http_for_authorization_runtime_verification",
+      "path": "supabase/reproducibility/replay/0088_20260903103408_temporary_enable_http_for_authorization_runtime_verification.sql",
+      "sha256": "d964335162bb87cd377ce8627c57d94136f9849564cbcd3207debe7c86f88510"
+    },
+    {
+      "rn": 89,
+      "version": "20260903103713",
+      "name": "disable_temporary_http_after_authorization_runtime_verification",
+      "path": "supabase/reproducibility/replay/0089_20260903103713_disable_temporary_http_after_authorization_runtime_verification.sql",
+      "sha256": "3e04b5744a85b792aa6974e751bef12d669a6ef0bb692594405af6e68eb70ef1"
+    },
+    {
+      "rn": 90,
+      "version": "20260903115345",
+      "name": "p0_security_least_privilege_and_phase06_scope",
+      "path": "supabase/reproducibility/replay/0090_20260903115345_p0_security_least_privilege_and_phase06_scope.sql",
+      "sha256": "f9cd6ade2c1561910c37bf88c8dbef99900c1ea89be8e10a8a8543e37feeca3c"
+    },
+    {
+      "rn": 91,
+      "version": "20260903120043",
+      "name": "p0_phase06_scoped_progress_performance_fix",
+      "path": "supabase/reproducibility/replay/0091_20260903120043_p0_phase06_scoped_progress_performance_fix.sql",
+      "sha256": "65dcd8f51065c5ab16c9529345ef0be8628c54ed36f7a94db5dc8dbdfff69e6e"
+    },
+    {
+      "rn": 92,
+      "version": "20260903120634",
+      "name": "p0_phase06_scoped_neighbor_performance_fix",
+      "path": "supabase/reproducibility/replay/0092_20260903120634_p0_phase06_scoped_neighbor_performance_fix.sql",
+      "sha256": "da4d1d80b37bf8c240121dfd4ec548c81925a19440c1d86c25cf587d3f58769a"
+    },
+    {
+      "rn": 93,
+      "version": "20260903120956",
+      "name": "p0_security_search_path_hardening",
+      "path": "supabase/reproducibility/replay/0093_20260903120956_p0_security_search_path_hardening.sql",
+      "sha256": "8a2dbe89d37070b8fc5dd38ef30e545db6e81e924fb01c67ea7282748021f71b"
+    },
+    {
+      "rn": 94,
+      "version": "20260903121051",
+      "name": "p0_revoke_dormant_grants_on_rls_deny_all_tables",
+      "path": "supabase/reproducibility/replay/0094_20260903121051_p0_revoke_dormant_grants_on_rls_deny_all_tables.sql",
+      "sha256": "6443589f92ed80e7b2da2f6a5d86cf56f0525092b66ef671d274e11b56b29284"
+    },
+    {
+      "rn": 95,
+      "version": "20260903124407",
+      "name": "p0_lock_legacy_assessment_rpcs_to_service_role",
+      "path": "supabase/reproducibility/replay/0095_20260903124407_p0_lock_legacy_assessment_rpcs_to_service_role.sql",
+      "sha256": "dc84e36550c810af441c8e9df004353957d679b96f2e53c0d75dc0034e919cc1"
+    },
+    {
+      "rn": 96,
+      "version": "20260903124751",
+      "name": "temporary_enable_http_for_phase06_edge_runtime_verify",
+      "path": "supabase/reproducibility/replay/0096_20260903124751_temporary_enable_http_for_phase06_edge_runtime_verify.sql",
+      "sha256": "d964335162bb87cd377ce8627c57d94136f9849564cbcd3207debe7c86f88510"
+    },
+    {
+      "rn": 97,
+      "version": "20260903125114",
+      "name": "p0_phase06_scoped_queue_performance_fix",
+      "path": "supabase/reproducibility/replay/0097_20260903125114_p0_phase06_scoped_queue_performance_fix.sql",
+      "sha256": "5264558547b34185311a2bc399320f8c279d956926a93886499cc92ae5f5f69f"
+    },
+    {
+      "rn": 98,
+      "version": "20260903125414",
+      "name": "p0_phase06_fast_item_scope_neighbor_submit",
+      "path": "supabase/reproducibility/replay/0098_20260903125414_p0_phase06_fast_item_scope_neighbor_submit.sql",
+      "sha256": "ba128b60cf403195aea0f7e18f67155e2fdd2d62d18537278e0d4773f561d0ba"
+    },
+    {
+      "rn": 99,
+      "version": "20260903125649",
+      "name": "p1_hide_public_question_option_scoring_metadata",
+      "path": "supabase/reproducibility/replay/0099_20260903125649_p1_hide_public_question_option_scoring_metadata.sql",
+      "sha256": "505d161ef058d1c9b552107524d1275406ca0cffa14b277ffec593e61414c7f6"
+    },
+    {
+      "rn": 100,
+      "version": "20260903125807",
+      "name": "disable_temporary_http_after_phase06_edge_runtime_verify",
+      "path": "supabase/reproducibility/replay/0100_20260903125807_disable_temporary_http_after_phase06_edge_runtime_verify.sql",
+      "sha256": "3e04b5744a85b792aa6974e751bef12d669a6ef0bb692594405af6e68eb70ef1"
+    },
+    {
+      "rn": 101,
+      "version": "20260903125957",
+      "name": "p1_secure_quotation_customer_action_tokens",
+      "path": "supabase/reproducibility/replay/0101_20260903125957_p1_secure_quotation_customer_action_tokens.sql",
+      "sha256": "413750091e2e55742f9ac5132d9426d98a28722deafe320d8817af9dc0245d8b"
+    },
+    {
+      "rn": 102,
+      "version": "20260903130036",
+      "name": "p1_issue_quotation_action_token_on_send",
+      "path": "supabase/reproducibility/replay/0102_20260903130036_p1_issue_quotation_action_token_on_send.sql",
+      "sha256": "77b5ae511f05429e79106a97e2af251572963bc342b04413eacc52a87f5ec631"
+    },
+    {
+      "rn": 103,
+      "version": "20260903130158",
+      "name": "runtime_enable_http_for_quotation_auth_test",
+      "path": "supabase/reproducibility/replay/0103_20260903130158_runtime_enable_http_for_quotation_auth_test.sql",
+      "sha256": "d964335162bb87cd377ce8627c57d94136f9849564cbcd3207debe7c86f88510"
+    },
+    {
+      "rn": 104,
+      "version": "20260903130406",
+      "name": "temporary_enable_http_for_final_phase06_runtime_gate",
+      "path": "supabase/reproducibility/replay/0104_20260903130406_temporary_enable_http_for_final_phase06_runtime_gate.sql",
+      "sha256": "d964335162bb87cd377ce8627c57d94136f9849564cbcd3207debe7c86f88510"
+    },
+    {
+      "rn": 105,
+      "version": "20260903130506",
+      "name": "disable_temporary_http_after_final_phase06_runtime_gate",
+      "path": "supabase/reproducibility/replay/0105_20260903130506_disable_temporary_http_after_final_phase06_runtime_gate.sql",
+      "sha256": "3e04b5744a85b792aa6974e751bef12d669a6ef0bb692594405af6e68eb70ef1"
+    },
+    {
+      "rn": 106,
+      "version": "20260903130538",
+      "name": "runtime_reenable_http_for_quotation_auth_test",
+      "path": "supabase/reproducibility/replay/0106_20260903130538_runtime_reenable_http_for_quotation_auth_test.sql",
+      "sha256": "d964335162bb87cd377ce8627c57d94136f9849564cbcd3207debe7c86f88510"
+    },
+    {
+      "rn": 107,
+      "version": "20260903130630",
+      "name": "runtime_disable_http_after_quotation_auth_test",
+      "path": "supabase/reproducibility/replay/0107_20260903130630_runtime_disable_http_after_quotation_auth_test.sql",
+      "sha256": "3e04b5744a85b792aa6974e751bef12d669a6ef0bb692594405af6e68eb70ef1"
+    },
+    {
+      "rn": 108,
+      "version": "20260903131010",
+      "name": "p1_seed_commercial_domain_permissions",
+      "path": "supabase/reproducibility/replay/0108_20260903131010_p1_seed_commercial_domain_permissions.sql",
+      "sha256": "884dc3c6bf9b0e4324afa4de39042da4f562a5411191c6b0a2ba7575d66e4640"
+    },
+    {
+      "rn": 109,
+      "version": "20260903131351",
+      "name": "temp_enable_http_for_commercial_auth_runtime",
+      "path": "supabase/reproducibility/replay/0109_20260903131351_temp_enable_http_for_commercial_auth_runtime.sql",
+      "sha256": "d964335162bb87cd377ce8627c57d94136f9849564cbcd3207debe7c86f88510"
+    },
+    {
+      "rn": 110,
+      "version": "20260903131605",
+      "name": "temp_disable_http_after_commercial_auth_runtime",
+      "path": "supabase/reproducibility/replay/0110_20260903131605_temp_disable_http_after_commercial_auth_runtime.sql",
+      "sha256": "3e04b5744a85b792aa6974e751bef12d669a6ef0bb692594405af6e68eb70ef1"
+    },
+    {
+      "rn": 111,
+      "version": "20260903133031",
+      "name": "harden_public_service_role_rate_limits",
+      "path": "supabase/reproducibility/replay/0111_20260903133031_harden_public_service_role_rate_limits.sql",
+      "sha256": "775d2842ba949647a012e61ea7c3190ace5c0b2233df55a6e04f16ddd0a3a345"
+    },
+    {
+      "rn": 112,
+      "version": "20260903133410",
+      "name": "temp_public_edge_runtime_http",
+      "path": "supabase/reproducibility/replay/0112_20260903133410_temp_public_edge_runtime_http.sql",
+      "sha256": "d964335162bb87cd377ce8627c57d94136f9849564cbcd3207debe7c86f88510"
+    },
+    {
+      "rn": 113,
+      "version": "20260903133953",
+      "name": "cleanup_public_edge_runtime_fixtures",
+      "path": "supabase/reproducibility/replay/0113_20260903133953_cleanup_public_edge_runtime_fixtures.sql",
+      "sha256": "624ca9ba73be6b6d07dca99dcb4e0db22864bfbd030703fb45638f5987038d88"
+    },
+    {
+      "rn": 114,
+      "version": "20260903134423",
+      "name": "temp_enable_http_for_kids_entitlement_runtime",
+      "path": "supabase/reproducibility/replay/0114_20260903134423_temp_enable_http_for_kids_entitlement_runtime.sql",
+      "sha256": "d964335162bb87cd377ce8627c57d94136f9849564cbcd3207debe7c86f88510"
+    },
+    {
+      "rn": 115,
+      "version": "20260903134635",
+      "name": "temp_disable_http_after_kids_entitlement_runtime",
+      "path": "supabase/reproducibility/replay/0115_20260903134635_temp_disable_http_after_kids_entitlement_runtime.sql",
+      "sha256": "3e04b5744a85b792aa6974e751bef12d669a6ef0bb692594405af6e68eb70ef1"
+    },
+    {
+      "rn": 116,
+      "version": "20260903141131",
+      "name": "p1_harden_public_application_login_resume_boundary",
+      "path": "supabase/reproducibility/replay/0116_20260903141131_p1_harden_public_application_login_resume_boundary.sql",
+      "sha256": "f04141f3a69b0883c48aacc5db5b088be723fcf177e4e039c0720575657d1afa"
+    },
+    {
+      "rn": 117,
+      "version": "20260903141158",
+      "name": "p1_application_resume_token_atomic_rotation",
+      "path": "supabase/reproducibility/replay/0117_20260903141158_p1_application_resume_token_atomic_rotation.sql",
+      "sha256": "e3cfdb6563d7b0975d4ce99a3402fb1ce3925098b5ca3980fd9e3191c7fedf1f"
+    },
+    {
+      "rn": 118,
+      "version": "20260903141455",
+      "name": "p1_harden_direct_public_application_registration",
+      "path": "supabase/reproducibility/replay/0118_20260903141455_p1_harden_direct_public_application_registration.sql",
+      "sha256": "cbc6cbb6a176beca3aa8a943893085d2795c12d5d42dd65ed9ae353837abcab9"
+    },
+    {
+      "rn": 119,
+      "version": "20260903144840",
+      "name": "runtime_gate_remove_temporary_http_extension",
+      "path": "supabase/reproducibility/replay/0119_20260903144840_runtime_gate_remove_temporary_http_extension.sql",
+      "sha256": "3e04b5744a85b792aa6974e751bef12d669a6ef0bb692594405af6e68eb70ef1"
+    }
+  ]
+}
