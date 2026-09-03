@@ -23,3 +23,4 @@ jobs:
           cat /tmp/expired.json
           test "$CODE" = "401"
           grep -q 'INVALID_OR_EXPIRED_RESUME_TOKEN' /tmp/expired.json
+# trigger 2
