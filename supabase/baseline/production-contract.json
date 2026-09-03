@@ -1,0 +1,27 @@
+{
+  "captured_at": "2026-09-03T14:15:30.700709+00:00",
+  "project_ref": "vsuekfzyebqnhthyvwpf",
+  "postgres": "17.6.1.127",
+  "tables": 343,
+  "views": 30,
+  "functions": 195,
+  "constraints": 1737,
+  "indexes": 814,
+  "triggers": 66,
+  "rls_enabled_tables": 343,
+  "policies": 38,
+  "hashes": {
+    "functions": "77c48a6e0ede397ced58c63a54efabda2431393448a9fcb1bc2dd6160f3c2626",
+    "constraints": "d2f4b180888f228efcb53b14262d67b9213b4d8fc76da5e7417a94addd7d70b8",
+    "indexes": "49e300a09b65a4aad69440650ae2cdd3ba9e0633e2316d9ceb3db04e3bca99ba",
+    "policies": "41b6a16988dacb1523b98520061a98da8bcf626e1f768a3c71be03aea5871bdc",
+    "triggers": "2304386290b2b259b3a527af9583eb71b0b49aeca78f5add5e402103ddb6fc0c"
+  },
+  "sanitization": {
+    "production_rows": "excluded",
+    "auth_users": "excluded",
+    "sessions_tokens_credentials": "excluded",
+    "temporary_http_extension": "excluded"
+  },
+  "verification_status": "HOLD_PENDING_FRESH_REBUILD"
+}
