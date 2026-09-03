@@ -54,7 +54,7 @@ jobs:
           reg_status,reg=call({
               'action':'register','full_name':'Security Runtime Probe','mobile':mobile,
               'email':email,'date_of_birth':'1990-01-01','education_stage':'graduate',
-              'current_city':'Cairo','aviation_interest':'operations','preferred_language':'en','consent':True
+              'current_city':'Cairo','aviation_interest':'flight_ops','preferred_language':'en','consent':True
           })
           app_no=str(reg.get('application_number') or '').strip().upper()
           token=str(reg.get('resume_token') or '').strip()
