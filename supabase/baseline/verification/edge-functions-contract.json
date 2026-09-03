@@ -1,9 +1,10 @@
 {
   "captured_at": "2026-09-03",
+  "database_freeze_version": "20260903144840",
   "count": 19,
   "verify_jwt": false,
   "functions": {
-    "application-login": {"version":5,"sha256":"bfa4449e4a413cadcc8eafab170da9da73bfe9729ab207b60b260f4107123bc2"},
+    "application-login": {"version":8,"sha256":"176eb2ecdd153f5b621356e8300200c2fdfc8313df0f801312ef51e7ecbbc3e2"},
     "staff-admin-api": {"version":6,"sha256":"cd99e59d9b5155199c07a15c9194d29b484560cb79b253f99f29fa1eaf75dfbf"},
     "gateway-submit": {"version":6,"sha256":"93dd0af3afa704cbaaed184efb563cceb88e8e0c5e56d433fba3457697502ed2"},
     "request-track": {"version":6,"sha256":"8ee10ab6db8c6bdcc4fb4f3679c24640c26a40d9dd1de85c7ffedfb4f61db76e"},
@@ -23,5 +24,5 @@
     "assessment-public-api": {"version":2,"sha256":"ecfbe052972e5bd8ef9ff017ff1efc7bed30812663776e60f8742ec53ad09d1b"},
     "phase06-review-api": {"version":3,"sha256":"56ff181a50c2ec2162172771e38f7aaece0ee1eac191bc2d94b73b67be2d839e"}
   },
-  "note": "Source files must hash-match these production values after checkout and before fresh rebuild deployment. verify_jwt=false is preserved because it is the current production contract; authorization is implemented inside these functions where applicable."
+  "note": "All 19 live source files are versioned on this branch. verify_jwt=false is preserved because it is the production contract; application-level authorization is implemented inside protected functions."
 }
