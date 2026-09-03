@@ -314,6 +314,45 @@ async function callApplicationLogin(payload){
  return data;
 }
 
+async function resumeApplicationWithToken(appNo,token){
+ const data=await callApplicationLogin({action:'resume_token',application_number:appNo,resume_token:token});
+ const applicationData=data.application||{};
+ state={...state,...applicationData,resume_token:data.resume_token,resume_token_expires_at:data.resume_token_expires_at};
+ if(applicationData.assessment_result){
+  const er=applicationData.assessment_result.evidence_payload||{};
+ state.assessment={
+   current_fit:applicationData.assessment_result.current_fit,
+   future_fit:applicationData.assessment_result.future_fit,
+   readiness_status:applicationData.assessment_result.readiness_status,
+   summary:applicationData.assessment_result.summary,
+   ...er
+  };
+ }
+ save();
+ const resumeData=data.assessment||{};
+ document.getElementById('resumeOverlay')?.remove();
+ if(resumeData.status==='in_progress'){
+  await loadPublishedQuestions();
+  assessment={
+   index:Math.min(Number(resumeData.answered_count)||0,Math.max(runtimeQuestions.length-1,0)),
+   attempt_id:resumeData.attempt_id,
+   access_token:resumeData.access_token,
+   candidate_id:resumeData.candidate_id,
+   locked:false,
+   result:null
+  };
+  render('assessment');
+ }else if(resumeData.status==='completed' && state.assessment){
+  render('results');
+ }else if(applicationData.assessment_result){
+  render('results');
+ }else if(applicationData.profile_status){
+  render('confirm');
+ }else{
+  render('welcome');
+ }
+}
+
 function showOtpStep(){
  const c=resumeCopy();
  const body=document.getElementById('resumeBody');
@@ -353,7 +392,21 @@ async function requestApplicationOtp(form){
  const msg=document.getElementById('resumeMsg');
  if(msg){msg.className='helper';msg.textContent=c.finding;}
  try{
-  const data=await callApplicationLogin({action:'send',application_number:appNo});
+  if(state.application_number===appNo && state.resume_token){
+   try{
+    await resumeApplicationWithToken(appNo,state.resume_token);
+    return;
+   }catch(tokenError){
+    if(tokenError.code==='INVALID_OR_EXPIRED_RESUME_TOKEN'){
+     delete state.resume_token;
+     delete state.resume_token_expires_at;
+     save();
+    }else{
+     throw tokenError;
+    }
+  }
+ }
+ const data=await callApplicationLogin({action:'send',application_number:appNo});
   resumeLoginState={application_number:appNo,masked_email:data.masked_email||null};
   showOtpStep();
  }catch(e){
