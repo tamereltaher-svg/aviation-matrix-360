@@ -35,3 +35,4 @@ const fs=require('fs');
   if(wrongOtp.status!==401) throw new Error('WRONG_OTP_NOT_BLOCKED');
   if(!rateLimited) throw new Error('BRUTE_FORCE_NOT_RATE_LIMITED');
 })().catch(e=>{console.error(e);process.exit(1)});
+// runtime gate trigger
