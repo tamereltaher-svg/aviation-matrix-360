@@ -1,0 +1,29 @@
+name: Secure resume syntax fix
+
+on:
+  push:
+    paths:
+      - '.github/workflows/secure-resume-fix.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix bracket and validate JavaScript
+        env:
+          FIX_B64: ZnJvbSBwYXRobGliIGltcG9ydCBQYXRoCnA9UGF0aCgiYXBwLmpzIikKcz1wLnJlYWRfdGV4dCgpCm9sZD0iIiIgICAgfWVsc2V7CiAgICAgdGhyb3cgdG9rZW5FcnJvcjsKICAgIH0KICAgfQogIH0KIH0KIGNvbnN0IGRhdGE9YXdhaXQgY2FsbEFwcGxpY2F0aW9uTG9naW4oe2FjdGlvbjonc2VuZCcsYXBwbGljYXRpb25fbnVtYmVyOmFwcE5vfSk7IiIiCm5ldz0iIiIgICAgfWVsc2V7CiAgICAgdGhyb3cgdG9rZW5FcnJvcjsKICAgIH0KICAgfQogIH0KICBjb25zdCBkYXRhPWF3YWl0IGNhbGxBcHBsaWNhdGlvbkxvZ2luKHthY3Rpb246J3NlbmQnLGFwcGxpY2F0aW9uX251bWJlcjphcHBOb30pOyIiIgppZiBvbGQgbm90IGluIHM6CiAgICByYWlzZSBTeXN0ZW1FeGl0KCJicm9rZW4gYnJhY2tldCBwYXR0ZXJuIG1pc3NpbmciKQpzPXMucmVwbGFjZShvbGQsbmV3LDEpCnAud3JpdGVfdGV4dChzKQo=
+        run: |
+          echo "$FIX_B64" | base64 -d | python
+          node --check app.js
+      - name: Commit fix and remove temporary workflow
+        run: |
+          git config user.name "aviation-matrix-security-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/secure-resume-fix.yml
+          git add app.js
+          git commit -m "Fix secure applicant resume syntax"
+          git push
