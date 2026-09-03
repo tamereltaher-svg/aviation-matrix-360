@@ -1,2 +1,56 @@
+[functions.application-login]
+verify_jwt = false
+
+[functions.staff-admin-api]
+verify_jwt = false
+
+[functions.gateway-submit]
+verify_jwt = false
+
+[functions.request-track]
+verify_jwt = false
+
+[functions.program-media-admin]
+verify_jwt = false
+
+[functions.program-catalog]
+verify_jwt = false
+
+[functions.kids-admin-api]
+verify_jwt = false
+
+[functions.kids-public-catalog]
+verify_jwt = false
+
+[functions.kids-experience-admin]
+verify_jwt = false
+
+[functions.kids-experience-api]
+verify_jwt = false
+
+[functions.kids-control-tower-api]
+verify_jwt = false
+
+[functions.kids-ai-studio-api]
+verify_jwt = false
+
+[functions.platform-reporting-api]
+verify_jwt = false
+
+[functions.candidate-lifetime-api]
+verify_jwt = false
+
+[functions.registration-admin-api]
+verify_jwt = false
+
+[functions.registration-public-api]
+verify_jwt = false
+
+[functions.assessment-admin-api]
+verify_jwt = false
+
+[functions.assessment-public-api]
+verify_jwt = false
+
 [functions.phase06-review-api]
 verify_jwt = false
