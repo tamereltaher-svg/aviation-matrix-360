@@ -1,13 +1,74 @@
 name: Temporary Supabase Repro Export
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/repro-export.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  disabled:
+  export:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Temporary export workflow disabled after successful canonical replay generation."
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch sanitized frozen migrations
+        run: |
+          curl --fail --silent --show-error \
+            --retry 3 \
+            --output /tmp/repro-migrations.json \
+            https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/repro-export
+
+          python - <<'PY'
+          import hashlib
+          import json
+          import pathlib
+          import re
+
+          rows = json.loads(pathlib.Path('/tmp/repro-migrations.json').read_text())
+          assert isinstance(rows, list) and len(rows) == 119, len(rows)
+          assert [int(r['rn']) for r in rows] == list(range(1, 120))
+          assert rows[-1]['version'] == '20260903144840'
+
+          root = pathlib.Path('supabase/reproducibility/replay')
+          root.mkdir(parents=True, exist_ok=True)
+          for f in root.glob('*.sql'):
+              f.unlink()
+
+          manifest = []
+          all_text = []
+          for r in rows:
+              rn = int(r['rn'])
+              version = str(r['version'])
+              safe = re.sub(r'[^a-z0-9_]+', '_', str(r['name']).lower()).strip('_')
+              text = str(r['sql']).rstrip() + '\n'
+              p = root / f'{rn:04d}_{version}_{safe}.sql'
+              p.write_text(text)
+              sha = hashlib.sha256(text.encode()).hexdigest()
+              manifest.append({'rn': rn, 'version': version, 'name': r['name'], 'path': str(p), 'sha256': sha})
+              all_text.append(text)
+
+          combined = '\n'.join(all_text).lower()
+          assert 'tamereltaher@exit-logistics.com' not in combined
+          assert 'sanitized: production store-admin identity seed omitted.' in combined
+          assert 'sanitized: production staff-account identity seed omitted.' in combined
+          assert 'sanitized: production staff-permission identity seed omitted.' in combined
+
+          pathlib.Path('supabase/reproducibility/replay-manifest.json').write_text(
+              json.dumps({'count': 119, 'cutoff': '20260903144840', 'migrations': manifest}, indent=2) + '\n'
+          )
+          PY
+
+      - name: Commit canonical replay to main
+        run: |
+          git config user.name "aviation-matrix-repro-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add supabase/reproducibility/replay supabase/reproducibility/replay-manifest.json
+          git commit -m "Version sanitized Supabase production replay 0001-0119"
+          git push origin HEAD:main
