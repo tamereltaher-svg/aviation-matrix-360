@@ -1,0 +1,9 @@
+{
+  "freeze_version": "20260903141455",
+  "rls": {"rows":343,"sha256":"c240b6e715cba5c45c72fe96e62eff6e510ed2cd61b3c22093973449950ab55f"},
+  "relation_grants": {"rows":6614,"sha256":"37954d76758a7f28c3b90c0ec76a177707d47fce6b0e29a6a3b2400d6764e7d5"},
+  "function_grants": {"rows":421,"sha256":"959281f827f5e9d9a3b428f26e7de0f1a46514384dfaf0f95ddad3588d19856a"},
+  "schema_grants": {"rows":13,"sha256":"616256631cb48d716fdc6311cde1cb8fd4023ef3d36ff2519cb651383fc534e2"},
+  "default_privileges": {"rows":95,"sha256":"3d7258aa81cb42e9d1d26fbec4e6a5cd19cd9c4b5b26d6f75a960c64f8c9f561"},
+  "comparison_rule": "Fresh rebuild must match all counts and SHA-256 values after canonical replay. Any production migration newer than freeze_version blocks PASS until separately reviewed."
+}
