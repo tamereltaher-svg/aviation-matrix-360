@@ -13,7 +13,7 @@ const fs=require('fs');
   const suffix=Date.now().toString().slice(-8);
   const email=`runtime.gate.${suffix}@example.invalid`;
   const mobile=`+2019${suffix}`;
-  const reg=await call({action:'register',full_name:'Runtime Gate Probe',mobile,email,date_of_birth:'1990-01-01',education_stage:'graduate',current_city:'Cairo',aviation_interest:'operations',preferred_language:'en',consent:true});
+  const reg=await call({action:'register',full_name:'Runtime Gate Probe',mobile,email,date_of_birth:'1990-01-01',education_stage:'graduate',current_city:'Cairo',aviation_interest:'ground_operations',preferred_language:'en',consent:true});
   if(reg.status!==200||!reg.body.application_number||!reg.body.resume_token) throw new Error(`REGISTER_${reg.status}_${reg.body.error||'FAIL'}`);
   const app=reg.body.application_number, token1=reg.body.resume_token;
   const unknown='AM-A-2026-999998';
@@ -36,3 +36,5 @@ const fs=require('fs');
   if(!rateLimited) throw new Error('BRUTE_FORCE_NOT_RATE_LIMITED');
 })().catch(e=>{console.error(e);process.exit(1)});
 // runtime gate trigger
+
+// runtime gate trigger 2
