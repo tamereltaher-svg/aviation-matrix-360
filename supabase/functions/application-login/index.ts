@@ -60,12 +60,7 @@ Deno.serve(async(req)=>{
       const mr=await limited('contact',mobile,'application_register_mobile',3,3600);if(mr)return json({error:'RATE_LIMITED',retry_after_seconds:mr.retry_after_seconds||60},429,{'Retry-After':String(mr.retry_after_seconds||60)});
       const {data,error}=await admin.rpc('public_register_application',{p_full_name:fullName,p_mobile:mobile,p_email:email,p_date_of_birth:dob,p_education_stage:education,p_current_city:city,p_aviation_interest:interest,p_preferred_language:language,p_consent:true});
       if(error){console.error('register_application',error.code);return json({error:'APPLICATION_NOT_ACCEPTED'},400)}
-      const appNo=clean(data?.application_number,80).toUpperCase();
-      const {data:lead,error:leadErr}=await admin.from('aviation_interest_leads').select('id').eq('application_number',appNo).maybeSingle();
-      if(leadErr||!lead) throw leadErr||new Error('LEAD_NOT_FOUND_AFTER_REGISTER');
-      const resumeToken=randomToken(),tokenHash=await sha(resumeToken),expiresAt=new Date(Date.now()+30*24*3600*1000).toISOString();
-      const {error:te}=await admin.from('am_application_resume_tokens').insert({lead_id:lead.id,token_hash:tokenHash,expires_at:expiresAt});if(te)throw te;
-      return json({...data,resume_token:resumeToken,resume_token_expires_at:expiresAt});
+      return json(data);
     }
 
     if(action==='resume_token'){
