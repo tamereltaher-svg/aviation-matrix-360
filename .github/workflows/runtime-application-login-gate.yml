@@ -1,0 +1,99 @@
+name: Runtime Application Login Gate
+
+on:
+  push:
+    paths:
+      - '.github/workflows/runtime-application-login-gate.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  runtime-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run live application-login gate
+        env:
+          RUN_ID_VALUE: ${{ github.run_id }}
+        run: |
+          python - <<'PY'
+          import json, os, re, urllib.request, urllib.error
+          from pathlib import Path
+
+          src=Path('app.js').read_text()
+          m=re.search(r"const SUPABASE_KEY='([^']+)'",src)
+          if not m:
+              raise SystemExit('publishable key not found in app.js')
+          key=m.group(1)
+          endpoint='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/application-login'
+          run_id=os.environ.get('RUN_ID_VALUE','0')
+          suffix=re.sub(r'\D','',run_id)[-10:].zfill(10)
+          email=f'security.runtime.github.{suffix}@example.invalid'
+          mobile='+2010'+suffix[-8:]
+          unknown_app='AM-A-2099-'+suffix[-6:]
+
+          def call(payload):
+              data=json.dumps(payload).encode()
+              req=urllib.request.Request(endpoint,data=data,method='POST',headers={
+                  'Content-Type':'application/json',
+                  'apikey':key,
+                  'Authorization':'Bearer '+key,
+                  'User-Agent':'aviation-matrix-runtime-gate/1.0'
+              })
+              try:
+                  with urllib.request.urlopen(req,timeout=30) as r:
+                      body=r.read().decode()
+                      return r.status, json.loads(body or '{}')
+              except urllib.error.HTTPError as e:
+                  body=e.read().decode()
+                  try: obj=json.loads(body or '{}')
+                  except Exception: obj={}
+                  return e.code,obj
+
+          reg_status,reg=call({
+              'action':'register','full_name':'Security Runtime Probe','mobile':mobile,
+              'email':email,'date_of_birth':'1990-01-01','education_stage':'graduate',
+              'current_city':'Cairo','aviation_interest':'operations','preferred_language':'en','consent':True
+          })
+          app_no=str(reg.get('application_number') or '').strip().upper()
+          token=str(reg.get('resume_token') or '').strip()
+          if reg_status!=200 or not re.fullmatch(r'AM-A-\d{4}-\d{6}',app_no) or not re.fullmatch(r'[a-f0-9]{64}',token,re.I):
+              print(json.dumps({'ok':False,'stage':'register','register_status':reg_status,'resume_token_issued':bool(token)}))
+              raise SystemExit(1)
+
+          known_status,known=call({'action':'send','application_number':app_no})
+          unknown_status,unknown=call({'action':'send','application_number':unknown_app})
+          enum_equal=(known_status==unknown_status and known==unknown)
+
+          wrong_status,wrong=call({'action':'resume_token','application_number':unknown_app,'resume_token':token})
+          valid_status,valid=call({'action':'resume_token','application_number':app_no,'resume_token':token})
+          next_token=str(valid.get('resume_token') or '').strip()
+          replay_status,replay=call({'action':'resume_token','application_number':app_no,'resume_token':token})
+
+          otp_statuses=[]
+          for i in range(9):
+              s,_=call({'action':'verify','application_number':app_no,'token':str(100000+i)})
+              otp_statuses.append(s)
+
+          unauthorized_payload_safe=all(not x.get('application') and not x.get('assessment') for x in (wrong,replay))
+          brute_ok=(otp_statuses[:8]==[401]*8 and otp_statuses[8]==429)
+          ok=(known_status==200 and unknown_status==200 and enum_equal and wrong_status==401 and valid_status==200 and re.fullmatch(r'[a-f0-9]{64}',next_token,re.I) and replay_status==401 and brute_ok and unauthorized_payload_safe)
+          print(json.dumps({
+              'ok':bool(ok),
+              'register_status':reg_status,
+              'resume_token_issued':bool(re.fullmatch(r'[a-f0-9]{64}',token,re.I)),
+              'known_send_status':known_status,
+              'unknown_send_status':unknown_status,
+              'enumeration_responses_identical':enum_equal,
+              'wrong_application_status':wrong_status,
+              'valid_resume_status':valid_status,
+              'rotated_token_issued':bool(re.fullmatch(r'[a-f0-9]{64}',next_token,re.I)),
+              'replay_status':replay_status,
+              'otp_wrong_statuses':otp_statuses,
+              'brute_force_blocked':brute_ok,
+              'unauthorized_payload_exposed':not unauthorized_payload_safe
+          },sort_keys=True))
+          if not ok:
+              raise SystemExit(1)
+          PY
