@@ -1,0 +1,30 @@
+name: Fix runtime gate
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-runtime-gate.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch module format
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('.github/workflows/runtime-application-gate.yml')
+          s=p.read_text()
+          old="const fs=require('fs');"
+          new="const fs=await import('node:fs');"
+          if old not in s: raise SystemExit('target missing')
+          p.write_text(s.replace(old,new,1))
+          PY
+      - name: Commit patch
+        run: |
+          git config user.name "aviation-matrix-security-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/workflows/runtime-application-gate.yml
+          git commit -m "Fix runtime application gate module format"
+          git push
