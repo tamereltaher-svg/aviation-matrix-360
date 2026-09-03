@@ -1,7 +1,10 @@
 {
-  "captured_at": "2026-09-03T14:15:30.700709+00:00",
+  "captured_at": "2026-09-03",
   "project_ref": "vsuekfzyebqnhthyvwpf",
   "postgres": "17.6.1.127",
+  "freeze_migration_count": 119,
+  "freeze_version": "20260903144840",
+  "freeze_name": "runtime_gate_remove_temporary_http_extension",
   "tables": 343,
   "views": 30,
   "functions": 195,
