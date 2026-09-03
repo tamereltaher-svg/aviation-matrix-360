@@ -1,0 +1,27 @@
+{
+  "captured_at": "2026-09-03",
+  "count": 19,
+  "verify_jwt": false,
+  "functions": {
+    "application-login": {"version":5,"sha256":"bfa4449e4a413cadcc8eafab170da9da73bfe9729ab207b60b260f4107123bc2"},
+    "staff-admin-api": {"version":6,"sha256":"cd99e59d9b5155199c07a15c9194d29b484560cb79b253f99f29fa1eaf75dfbf"},
+    "gateway-submit": {"version":6,"sha256":"93dd0af3afa704cbaaed184efb563cceb88e8e0c5e56d433fba3457697502ed2"},
+    "request-track": {"version":6,"sha256":"8ee10ab6db8c6bdcc4fb4f3679c24640c26a40d9dd1de85c7ffedfb4f61db76e"},
+    "program-media-admin": {"version":3,"sha256":"66b9b7a1a8ba30aa95dc68a0c48c82efa591e1822d479d9806c631e95274df11"},
+    "program-catalog": {"version":2,"sha256":"878d777efa36ea288765ecc3ddd8048affa311a2dbdbfbffc3dff18154fd765d"},
+    "kids-admin-api": {"version":3,"sha256":"e6998e4c4f830eaa41beadc26c93b9647c474230ab57c762cc8833d88ed7ef3b"},
+    "kids-public-catalog": {"version":3,"sha256":"db7f502298ec17a541ad3fa2ee2c6595aa3fe61da93b3926230dbefc6b8975e7"},
+    "kids-experience-admin": {"version":3,"sha256":"70283dca9acd1f923b81825a7c96336e164d3061c20d964dc60f0deb19a4720e"},
+    "kids-experience-api": {"version":4,"sha256":"eabda2ecab98cdc06f7b2f9a1d8856e1b9867261b9fb09b98ea03ace88e188ae"},
+    "kids-control-tower-api": {"version":2,"sha256":"3c912d25c9ce53c63198989c412e8feed1cbb065f208835eb07c3e302666cdda"},
+    "kids-ai-studio-api": {"version":4,"sha256":"75f1eda8c1032f70103bb3d01c041d3394c41df4529c9dafd02d501aaae66a18"},
+    "platform-reporting-api": {"version":2,"sha256":"c3792e376f08d27d4c06b789f884f1ec73806460115dba461c9920cdfd064edf"},
+    "candidate-lifetime-api": {"version":2,"sha256":"0b20938da0e933c3dcbc8a15064091993d17a43c1f5dadaad5dd92eb725ed344"},
+    "registration-admin-api": {"version":2,"sha256":"9afb73479b2d59d3a5b023ce6a51d35704030ede497bdd03973805e9880a7bfb"},
+    "registration-public-api": {"version":2,"sha256":"fd6adac8d1e0ba4ef4aebb0163ce47bfc9d076353f4ab49d4400a4d880dc6de5"},
+    "assessment-admin-api": {"version":2,"sha256":"70ab9622cde8b6d45de9fec9ea8566e9eebc0725b6fb88a0849031b621902d8a"},
+    "assessment-public-api": {"version":2,"sha256":"ecfbe052972e5bd8ef9ff017ff1efc7bed30812663776e60f8742ec53ad09d1b"},
+    "phase06-review-api": {"version":3,"sha256":"56ff181a50c2ec2162172771e38f7aaece0ee1eac191bc2d94b73b67be2d839e"}
+  },
+  "note": "Source files must hash-match these production values after checkout and before fresh rebuild deployment. verify_jwt=false is preserved because it is the current production contract; authorization is implemented inside these functions where applicable."
+}
