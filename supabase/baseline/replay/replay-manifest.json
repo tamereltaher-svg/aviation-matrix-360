@@ -1,0 +1,23 @@
+{
+  "freeze_version": "20260903144840",
+  "freeze_name": "runtime_gate_remove_temporary_http_extension",
+  "migration_count": 119,
+  "encoding": "base64-utf8-sql",
+  "chunks": [
+    {"file":"chunk-01.sql.b64","first":1,"last":15,"migrations":15,"decoded_bytes":61852,"sha256":"76b2e368dd9d8f41cdf417b2579c9b9a6b3259ef27cb5f8aeca23fe480267ad9"},
+    {"file":"chunk-02.sql.b64","first":16,"last":30,"migrations":15,"decoded_bytes":64427,"sha256":"22a4f573efc09f7df0b0286861765bb8a50d438e4790bf0994a62d6e2e69b065"},
+    {"file":"chunk-03.sql.b64","first":31,"last":45,"migrations":15,"decoded_bytes":124930,"sha256":"42ec0e7c67c38d0f307ec42fe46bc1d9a21b7b01c891ac3302df37f9ff304686"},
+    {"file":"chunk-04.sql.b64","first":46,"last":60,"migrations":15,"decoded_bytes":137082,"sha256":"7b91b2750d833bfaccdd2e909c5a6f77119206f32205c3b2eaac9c1a0f99c1d6"},
+    {"file":"chunk-05.sql.b64","first":61,"last":75,"migrations":15,"decoded_bytes":101616,"sha256":"80aacfda1601998572a2c959477352f57d7048f8ffd636562850fedc657c276b"},
+    {"file":"chunk-06.sql.b64","first":76,"last":90,"migrations":15,"decoded_bytes":97714,"sha256":"98ce1de95cbb26ff8f046cdccdb31d86489f8639ee3a4bad58acfd4ec54afe80"},
+    {"file":"chunk-07.sql.b64","first":91,"last":105,"migrations":15,"decoded_bytes":37195,"sha256":"79913a1abe3333b789f8ed71a957d251ac983f3807ec7cc4ad3be008c7a3da69"},
+    {"file":"chunk-08.sql.b64","first":106,"last":119,"migrations":14,"decoded_bytes":18804,"sha256":"71477b56716322b883ad17bc7794517e6412d168ba0e2a2aabd41e7bef758987"}
+  ],
+  "sanitization": [
+    "production store_admins seed omitted",
+    "production staff_accounts seed omitted",
+    "production staff_permissions seed omitted",
+    "runtime fixture cleanup body 20260903133953 omitted on zero-data rebuild",
+    "auth users, sessions, tokens, credentials and production contact identifiers excluded"
+  ]
+}
