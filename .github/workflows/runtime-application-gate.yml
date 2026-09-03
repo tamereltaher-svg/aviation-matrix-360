@@ -4,6 +4,7 @@ on:
     paths:
       - '.github/workflows/runtime-application-gate.yml'
       - 'scripts/runtime-application-gate.cjs'
+      - 'runtime-gate-trigger.txt'
 permissions:
   contents: read
 jobs:
