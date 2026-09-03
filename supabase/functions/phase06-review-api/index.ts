@@ -42,6 +42,9 @@ async function resolveReviewer(authorization: string) {
 
   const staffPayload = await staffRes.json().catch(() => ({}));
   const staff = staffPayload?.staff ?? staffPayload;
+  const permissionSet = new Set<string>(Array.isArray(staffPayload?.permissions) ? staffPayload.permissions : []);
+  if (!permissionSet.has("assessment.review")) return { ok: false as const, status: 403, error: "ASSESSMENT_REVIEW_PERMISSION_REQUIRED" };
+
   const email = String(staff?.email ?? "").trim().toLowerCase();
   if (!email) return { ok: false as const, status: 403, error: "STAFF_EMAIL_REQUIRED" };
 
@@ -67,6 +70,15 @@ async function resolveReviewer(authorization: string) {
   return { ok: true as const, reviewerId: authUserId, email };
 }
 
+async function isItemInReviewerScope(reviewerId: string, itemVersionId: string) {
+  const { data, error } = await admin.rpc("phase06_is_reviewer_for_item", {
+    p_auth_user_id: reviewerId,
+    p_item_version_id: itemVersionId,
+  });
+  if (error) throw error;
+  return data === true;
+}
+
 Deno.serve(async (req) => {
   const origin = req.headers.get("origin");
 
@@ -89,7 +101,9 @@ Deno.serve(async (req) => {
 
   try {
     if (action === "progress") {
-      const { data, error } = await admin.rpc("phase06_get_review_progress");
+      const { data, error } = await admin.rpc("phase06_get_review_progress_scoped", {
+        p_reviewer_id: reviewer.reviewerId,
+      });
       if (error) throw error;
       return json(data, 200, origin);
     }
@@ -97,23 +111,13 @@ Deno.serve(async (req) => {
     if (action === "queue") {
       const level = txt(body?.level, 2);
       const skill = txt(body?.skill, 3);
-
-      if (level || skill) {
-        const { data: scoped, error: scopedError } = await admin.rpc("phase06_is_reviewer", {
-          p_auth_user_id: reviewer.reviewerId,
-          p_cefr_level: level,
-          p_skill_code: skill,
-        });
-        if (scopedError) throw scopedError;
-        if (!scoped) return json({ error: "REVIEW_SCOPE_NOT_AUTHORIZED" }, 403, origin);
-      }
-
       const requestedLimit = Number(body?.limit ?? 100);
       const requestedOffset = Number(body?.offset ?? 0);
       const limit = Number.isFinite(requestedLimit) ? Math.min(Math.max(Math.trunc(requestedLimit), 1), 200) : 100;
       const offset = Number.isFinite(requestedOffset) ? Math.max(Math.trunc(requestedOffset), 0) : 0;
 
-      const { data, error } = await admin.rpc("phase06_get_review_queue", {
+      const { data, error } = await admin.rpc("phase06_get_review_queue_scoped", {
+        p_reviewer_id: reviewer.reviewerId,
         p_cefr_level: level,
         p_skill_code: skill,
         p_status: txt(body?.status, 40),
@@ -128,6 +132,9 @@ Deno.serve(async (req) => {
     if (action === "item") {
       const itemVersionId = txt(body?.itemVersionId, 80);
       if (!itemVersionId) return json({ error: "ITEM_VERSION_ID_REQUIRED" }, 400, origin);
+      if (!(await isItemInReviewerScope(reviewer.reviewerId, itemVersionId))) {
+        return json({ error: "REVIEW_SCOPE_NOT_AUTHORIZED" }, 403, origin);
+      }
       const { data, error } = await admin.rpc("phase06_get_review_item", { p_item_version_id: itemVersionId });
       if (error) throw error;
       if (!data) return json({ error: "ITEM_NOT_FOUND" }, 404, origin);
@@ -139,7 +146,11 @@ Deno.serve(async (req) => {
       if (!itemVersionId) return json({ error: "ITEM_VERSION_ID_REQUIRED" }, 400, origin);
       const direction = String(body?.direction ?? "NEXT").toUpperCase();
       if (!new Set(["NEXT", "PREVIOUS"]).has(direction)) return json({ error: "INVALID_DIRECTION" }, 400, origin);
-      const { data, error } = await admin.rpc("phase06_get_review_neighbor", {
+      if (!(await isItemInReviewerScope(reviewer.reviewerId, itemVersionId))) {
+        return json({ error: "REVIEW_SCOPE_NOT_AUTHORIZED" }, 403, origin);
+      }
+      const { data, error } = await admin.rpc("phase06_get_review_neighbor_scoped", {
+        p_reviewer_id: reviewer.reviewerId,
         p_item_version_id: itemVersionId,
         p_direction: direction,
         p_status: txt(body?.status, 40),
@@ -155,6 +166,9 @@ Deno.serve(async (req) => {
       const notes = txt(body?.notes, 5000);
       const visibleActions = new Set(["APPROVE", "APPROVE_WITH_CHANGES", "NEEDS_REVISION", "REJECT", "RETIRE"]);
       if (!itemVersionId || !qaGate || !visibleActions.has(actionCode)) return json({ error: "INVALID_REVIEW_SUBMISSION" }, 400, origin);
+      if (!(await isItemInReviewerScope(reviewer.reviewerId, itemVersionId))) {
+        return json({ error: "REVIEW_SCOPE_NOT_AUTHORIZED" }, 403, origin);
+      }
 
       const { data, error } = await admin.rpc("phase06_submit_review_action", {
         p_item_version_id: itemVersionId,
