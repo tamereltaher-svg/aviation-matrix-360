@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
-      - name: Verify and build deterministic replay chunks
+      - name: Verify and build adaptive deterministic replay chunks
         run: |
           python - <<'PY'
           import hashlib, json, pathlib, re, shutil
@@ -25,31 +25,46 @@ jobs:
           rows = manifest['migrations']
           assert manifest['count'] == 119 and len(rows) == 119
           assert [int(x['rn']) for x in rows] == list(range(1,120))
-          forbidden = re.compile(r'(?is)\b(create\s+index\s+concurrently|drop\s+index\s+concurrently|refresh\s+materialized\s+view\s+concurrently|vacuum\b|reindex\s+.*concurrently|create\s+database\b|alter\s+system\b|\bbegin\s*;|\bcommit\s*;)')
+          sensitive = re.compile(r'(?is)\b(create\s+index\s+concurrently|drop\s+index\s+concurrently|refresh\s+materialized\s+view\s+concurrently|vacuum\b|reindex\s+.*concurrently|create\s+database\b|alter\s+system\b|alter\s+type\b.*?add\s+value|\bbegin\s*;|\bcommit\s*;)')
           out = root/'supabase/reproducibility/rebuild-chunks'
           if out.exists(): shutil.rmtree(out)
           out.mkdir(parents=True)
+          loaded=[]
+          for x in rows:
+              p=root/x['path']; data=p.read_bytes()
+              assert hashlib.sha256(data).hexdigest()==x['sha256']
+              text=data.decode()
+              hit=sensitive.search(text)
+              loaded.append((x,text,hit.group(0) if hit else None))
           chunks=[]
-          for start in range(0,119,10):
-              subset=rows[start:start+10]
+          current=[]
+          def emit(subset, reason):
+              if not subset: return
               parts=[]
-              for x in subset:
-                  p=root/x['path']
-                  data=p.read_bytes()
-                  assert hashlib.sha256(data).hexdigest()==x['sha256']
-                  text=data.decode()
-                  hit=forbidden.search(text)
-                  assert hit is None, (x['rn'], x['path'], hit.group(0) if hit else None)
+              for x,text,_ in subset:
                   parts.append(f"-- BEGIN CANONICAL MIGRATION {int(x['rn']):04d} {x['version']} {x['name']}\n{text.rstrip()}\n-- END CANONICAL MIGRATION {int(x['rn']):04d}\n")
-              first=int(subset[0]['rn']); last=int(subset[-1]['rn'])
+              first=int(subset[0][0]['rn']); last=int(subset[-1][0]['rn'])
               body='\n'.join(parts)+'\n'
               path=out/f'chunk_{first:04d}_{last:04d}.sql'
               path.write_text(body)
-              chunks.append({'first':first,'last':last,'path':str(path),'sha256':hashlib.sha256(body.encode()).hexdigest(),'bytes':len(body.encode())})
-          (out/'manifest.json').write_text(json.dumps({'count':len(chunks),'migration_count':119,'cutoff':manifest['cutoff'],'chunks':chunks},indent=2)+'\n')
+              chunks.append({'first':first,'last':last,'path':str(path),'sha256':hashlib.sha256(body.encode()).hexdigest(),'bytes':len(body.encode()),'reason':reason,'migration_count':len(subset)})
+          sensitive_hits=[]
+          for item in loaded:
+              x,text,hit=item
+              if hit:
+                  emit(current,'safe_batch'); current=[]
+                  emit([item],'sensitive_single')
+                  sensitive_hits.append({'rn':int(x['rn']),'path':x['path'],'match':re.sub(r'\s+',' ',hit)[:120]})
+              else:
+                  current.append(item)
+                  if len(current)==10:
+                      emit(current,'safe_batch'); current=[]
+          emit(current,'safe_batch')
+          assert sum(c['migration_count'] for c in chunks)==119
+          (out/'manifest.json').write_text(json.dumps({'count':len(chunks),'migration_count':119,'cutoff':manifest['cutoff'],'sensitive_hits':sensitive_hits,'chunks':chunks},indent=2)+'\n')
           print('MIGRATIONS=119')
           print('CHUNKS='+str(len(chunks)))
-          print('TRANSACTION_BREAKING_SCAN=PASS')
+          print('SENSITIVE_HITS='+json.dumps(sensitive_hits,separators=(',',':')))
           print('HASH_ORDER_SCAN=PASS')
           PY
       - name: Commit chunks
@@ -57,5 +72,5 @@ jobs:
           git config user.name "aviation-matrix-repro-bot"
           git config user.email "actions@users.noreply.github.com"
           git add supabase/reproducibility/rebuild-chunks
-          git commit -m "Build temporary deterministic repro replay chunks"
+          git commit -m "Build temporary adaptive repro replay chunks"
           git push origin HEAD:main
