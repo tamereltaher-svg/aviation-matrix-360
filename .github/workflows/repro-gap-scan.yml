@@ -1,0 +1,32 @@
+name: Temporary Repro Gap Scan
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/repro-gap-scan.yml']
+permissions:
+  contents: read
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          python - <<'PY'
+          import json, pathlib, re
+          m=json.loads(pathlib.Path('supabase/reproducibility/replay-manifest.json').read_text())['migrations']
+          texts=[]
+          for x in m[67:85]:
+              t=pathlib.Path(x['path']).read_text()
+              texts.append((x['rn'],t))
+          refs={'assessment':set(),'assessment_staging':set()}
+          creates={'assessment':set(),'assessment_staging':set()}
+          for rn,t in texts:
+              for s in refs:
+                  for name in re.findall(r'\b'+s+r'\.([a-zA-Z_][a-zA-Z0-9_]*)',t): refs[s].add(name.lower())
+                  for name in re.findall(r'(?is)\bcreate\s+(?:or\s+replace\s+)?(?:table|view|function)\s+(?:if\s+not\s+exists\s+)?'+s+r'\.([a-zA-Z_][a-zA-Z0-9_]*)',t): creates[s].add(name.lower())
+          for s in refs:
+              print('SCHEMA='+s)
+              print('REFS='+','.join(sorted(refs[s])))
+              print('CREATES='+','.join(sorted(creates[s])))
+              print('PREEXISTING_REFERENCES='+','.join(sorted(refs[s]-creates[s])))
+          PY
