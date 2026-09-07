@@ -1,0 +1,41 @@
+{
+  "checkpoint": 90,
+  "purpose": "Historical Phase06 dependency closure required before canonical migration RN90 during fresh rebuild.",
+  "objects": [
+    {
+      "name": "phase06_views",
+      "path": "supabase/reproducibility/bootstrap/pre_rn90_phase06_views.sql.b64",
+      "decoded_sha256": "4b1708902ba71caabba75ce68affc948f13f141af452b3827d7a453b432b280c",
+      "kind": "6 security-invoker views"
+    },
+    {
+      "name": "is_phase06_reviewer",
+      "path": "supabase/reproducibility/bootstrap/pre_rn90_is_phase06_reviewer.sql.b64",
+      "decoded_sha256": "d81202cdad020c85026a54c6efb658370c91569c7c4894cbf9357e94367b252f",
+      "kind": "service-role-only function"
+    },
+    {
+      "name": "record_item_review_action",
+      "paths": [
+        "supabase/reproducibility/bootstrap/pre_rn90_record_item_review_action_01.b64",
+        "supabase/reproducibility/bootstrap/pre_rn90_record_item_review_action_02.b64",
+        "supabase/reproducibility/bootstrap/pre_rn90_record_item_review_action_03.b64",
+        "supabase/reproducibility/bootstrap/pre_rn90_record_item_review_action_04.b64"
+      ],
+      "decoded_sha256": "0cef17d320a61e320fd00b83b3f10f061772c0db3b6432831fc0562597aa871b",
+      "kind": "service-role-only function"
+    },
+    {
+      "name": "get_phase06_review_item",
+      "path": "supabase/reproducibility/bootstrap/pre_rn90_get_phase06_review_item.sql.b64",
+      "decoded_sha256": "90c2edfa519256fc8d412bdfadcb4d860d1f41823e0a753246e1f478b3c7f02d",
+      "kind": "service-role-only function"
+    }
+  ],
+  "forbidden_identity_patterns": [
+    "insert into public.staff_accounts",
+    "insert into public.store_admins",
+    "insert into auth.users",
+    "email_literal"
+  ]
+}
