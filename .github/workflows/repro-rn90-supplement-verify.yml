@@ -32,9 +32,14 @@ jobs:
           decoded = {}
           for obj in manifest['objects']:
               paths = obj.get('paths') or [obj['path']]
-              b64 = ''.join((root/p).read_text().strip() for p in paths)
+              parts = [(root/p).read_text().strip() for p in paths]
+              if obj['name'] == 'record_item_review_action':
+                  print('RECORD_CHUNK_LENGTHS=' + ','.join(str(len(p)) for p in parts))
+                  print('RECORD_TOTAL_B64=' + str(sum(len(p) for p in parts)))
+              b64 = ''.join(parts)
               raw = base64.b64decode(b64, validate=True)
               sha = hashlib.sha256(raw).hexdigest()
+              print(f"{obj['name']}_SHA={sha}")
               assert sha == obj['decoded_sha256'], (obj['name'], sha, obj['decoded_sha256'])
               sql = raw.decode('utf-8')
               for rx in forbidden:
