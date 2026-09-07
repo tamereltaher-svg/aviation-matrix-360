@@ -1,0 +1,59 @@
+name: Repro RN90 Supplement Verify
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/reproducibility/bootstrap/pre_rn90_**'
+      - '.github/workflows/repro-rn90-supplement-verify.yml'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify deterministic RN90 supplement
+        shell: python
+        run: |
+          import base64, hashlib, json, pathlib, re
+
+          root = pathlib.Path('.')
+          manifest = json.loads((root/'supabase/reproducibility/bootstrap/pre_rn90_supplement_manifest.json').read_text())
+          assert manifest['checkpoint'] == 90
+
+          forbidden = [
+              re.compile(r'insert\s+into\s+public\.staff_accounts', re.I),
+              re.compile(r'insert\s+into\s+public\.store_admins', re.I),
+              re.compile(r'insert\s+into\s+auth\.users', re.I),
+              re.compile(r'\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b', re.I),
+          ]
+
+          decoded = {}
+          for obj in manifest['objects']:
+              paths = obj.get('paths') or [obj['path']]
+              b64 = ''.join((root/p).read_text().strip() for p in paths)
+              raw = base64.b64decode(b64, validate=True)
+              sha = hashlib.sha256(raw).hexdigest()
+              assert sha == obj['decoded_sha256'], (obj['name'], sha, obj['decoded_sha256'])
+              sql = raw.decode('utf-8')
+              for rx in forbidden:
+                  assert not rx.search(sql), (obj['name'], rx.pattern)
+              decoded[obj['name']] = sql
+
+          views = decoded['phase06_views']
+          assert views.lower().count('create or replace view assessment.') == 6
+          assert views.lower().count('security_invoker=true') == 6
+          assert views.lower().count('to service_role') >= 6
+
+          for fn in ('is_phase06_reviewer','record_item_review_action','get_phase06_review_item'):
+              sql = decoded[fn].lower()
+              assert 'create or replace function assessment.' in sql
+              assert 'to service_role' in sql
+              assert 'from public, anon, authenticated' in sql
+
+          print('RN90_SUPPLEMENT_VERIFY=PASS')
+          print('OBJECT_GROUPS=4')
+          print('VIEWS=6')
+          print('FUNCTIONS=3')
+          print('IDENTITY_SCAN=PASS')
