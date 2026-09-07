@@ -14,21 +14,14 @@ jobs:
           python - <<'PY'
           import json, pathlib, re
           rows=json.loads(pathlib.Path('supabase/reproducibility/replay-manifest.json').read_text())['migrations'][67:]
-          base={'accepted_answers','assessment_banks','competencies','deployment_gate_runs','difficulty_distribution_targets','form_assembly_attempts','form_assembly_runs','form_blueprint_requirements','form_finalization_runs','form_items','form_versions','forms','item_lo_mappings','item_options','item_scoring_keys','item_versions','items','learning_outcomes','listening_stimulus_audio','lo_capacity_requirements','phase06_expected_item_identities','phase06_item_import_batches','phase06_item_import_findings','phase06_item_source_documents','pilot_cohorts','psychometric_stats','ref_balance_pool_gates','ref_constructs','ref_deployment_gate_checks','ref_domains','ref_form_assembly_pool_gates','ref_hydration_tiers','ref_item_types','ref_scoring_modes','ref_source_expectations','ref_source_states','registry_source_documents','releases','stimuli','stimulus_versions'}
+          refs={'assessment':set(),'assessment_staging':set()}; creates={'assessment':set(),'assessment_staging':set()}
           for x in rows:
               t=pathlib.Path(x['path']).read_text()
-              hits=[]
-              for name in sorted(base):
-                  if re.search(r'\bassessment\.'+re.escape(name)+r'\b',t,re.I):
-                      stmts=[]
-                      for s in re.split(r';\s*(?:\n|$)',t):
-                          if re.search(r'\bassessment\.'+re.escape(name)+r'\b',s,re.I):
-                              one=' '.join(s.strip().split())[:500]
-                              if one: stmts.append(one)
-                      hits.append((name,stmts))
-              if hits:
-                  print(f'RN={x["rn"]} PATH={x["path"]}')
-                  for name,stmts in hits:
-                      print('OBJECT='+name)
-                      for s in stmts: print('  '+s)
+              for s in refs:
+                  refs[s].update(n.lower() for n in re.findall(r'\b'+s+r'\.([a-zA-Z_][a-zA-Z0-9_]*)',t))
+                  creates[s].update(n.lower() for n in re.findall(r'(?is)\bcreate\s+(?:or\s+replace\s+)?(?:table|view|materialized\s+view|function)\s+(?:if\s+not\s+exists\s+)?'+s+r'\.([a-zA-Z_][a-zA-Z0-9_]*)',t))
+          for s in refs:
+              print('SCHEMA='+s)
+              print('PREEXISTING_REFERENCES='+','.join(sorted(refs[s]-creates[s])))
+              print('COUNT='+str(len(refs[s]-creates[s])))
           PY
