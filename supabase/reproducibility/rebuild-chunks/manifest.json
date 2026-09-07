@@ -1,0 +1,154 @@
+{
+  "count": 15,
+  "migration_count": 119,
+  "cutoff": "20260903144840",
+  "sensitive_hits": [
+    {
+      "rn": 39,
+      "path": "supabase/reproducibility/replay/0039_20260823140542_kam_phase3_content_production_engine.sql",
+      "match": "begin;"
+    },
+    {
+      "rn": 62,
+      "path": "supabase/reproducibility/replay/0062_20260825135440_kam_brand_logo_registry_v1.sql",
+      "match": "begin;"
+    }
+  ],
+  "chunks": [
+    {
+      "first": 1,
+      "last": 10,
+      "path": "supabase/reproducibility/rebuild-chunks/chunk_0001_0010.sql",
+      "sha256": "faf187a178a0f29a00489a94ca009ab94a3b1ee2ac72d01b89aa68d18fe2e37c",
+      "bytes": 41960,
+      "reason": "safe_batch",
+      "migration_count": 10
+    },
+    {
+      "first": 11,
+      "last": 20,
+      "path": "supabase/reproducibility/rebuild-chunks/chunk_0011_0020.sql",
+      "sha256": "3b9b3ec148ebcc03c08bbe7d4c9f0c9433e2cd6e9a1f2aae530b7404fa315137",
+      "bytes": 39303,
+      "reason": "safe_batch",
+      "migration_count": 10
+    },
+    {
+      "first": 21,
+      "last": 30,
+      "path": "supabase/reproducibility/rebuild-chunks/chunk_0021_0030.sql",
+      "sha256": "395ad32667f2399b6ccb139095dab1d86438e6fbf37e0633fa80d2855c850858",
+      "bytes": 46602,
+      "reason": "safe_batch",
+      "migration_count": 10
+    },
+    {
+      "first": 31,
+      "last": 38,
+      "path": "supabase/reproducibility/rebuild-chunks/chunk_0031_0038.sql",
+      "sha256": "5d5dc169c6279317fa6fff72d392e1829d20e4bc61b03cb05faff702619a7b35",
+      "bytes": 70930,
+      "reason": "safe_batch",
+      "migration_count": 8
+    },
+    {
+      "first": 39,
+      "last": 39,
+      "path": "supabase/reproducibility/rebuild-chunks/chunk_0039_0039.sql",
+      "sha256": "ef1a711c8eee9a31ea67d290b81dd8dcded40f1a975b616f3d89a7d26e5354d3",
+      "bytes": 9737,
+      "reason": "sensitive_single",
+      "migration_count": 1
+    },
+    {
+      "first": 40,
+      "last": 49,
+      "path": "supabase/reproducibility/rebuild-chunks/chunk_0040_0049.sql",
+      "sha256": "fdead86735d478bcbe3ca5a3c9f403498e1fc26b704bddaad2d343aaa92528f0",
+      "bytes": 71800,
+      "reason": "safe_batch",
+      "migration_count": 10
+    },
+    {
+      "first": 50,
+      "last": 59,
+      "path": "supabase/reproducibility/rebuild-chunks/chunk_0050_0059.sql",
+      "sha256": "a74e70686788a0e3da7830955678f46c296cdd49ea9a9e0b2e6a0b083480835e",
+      "bytes": 101012,
+      "reason": "safe_batch",
+      "migration_count": 10
+    },
+    {
+      "first": 60,
+      "last": 61,
+      "path": "supabase/reproducibility/rebuild-chunks/chunk_0060_0061.sql",
+      "sha256": "b6fa3ee71fbf4c301cb3696b848320b98c453c274e7d20d5ba85ed0359282921",
+      "bytes": 10571,
+      "reason": "safe_batch",
+      "migration_count": 2
+    },
+    {
+      "first": 62,
+      "last": 62,
+      "path": "supabase/reproducibility/rebuild-chunks/chunk_0062_0062.sql",
+      "sha256": "d08e60cc06b82d1ecf4a283ade5d43e9e3990765bf43b58b524dac2a682e5484",
+      "bytes": 15278,
+      "reason": "sensitive_single",
+      "migration_count": 1
+    },
+    {
+      "first": 63,
+      "last": 72,
+      "path": "supabase/reproducibility/rebuild-chunks/chunk_0063_0072.sql",
+      "sha256": "b358636e5e97d28c437e56c0c7860dbf8fcbe07002cfe41f1a03b3152a9df07a",
+      "bytes": 65334,
+      "reason": "safe_batch",
+      "migration_count": 10
+    },
+    {
+      "first": 73,
+      "last": 82,
+      "path": "supabase/reproducibility/rebuild-chunks/chunk_0073_0082.sql",
+      "sha256": "bf869e06ec66a8e4595a35c1bf747d6375109d9b9c3120df6c7279e4b61058c7",
+      "bytes": 82713,
+      "reason": "safe_batch",
+      "migration_count": 10
+    },
+    {
+      "first": 83,
+      "last": 92,
+      "path": "supabase/reproducibility/rebuild-chunks/chunk_0083_0092.sql",
+      "sha256": "4560ac35ca7140df750cdc95053abb5554282b6e379ea18d8b97f7c93fa0fe09",
+      "bytes": 43927,
+      "reason": "safe_batch",
+      "migration_count": 10
+    },
+    {
+      "first": 93,
+      "last": 102,
+      "path": "supabase/reproducibility/rebuild-chunks/chunk_0093_0102.sql",
+      "sha256": "84eedaea02aa4138f20900a6fe3af733766be99221b326f65e1134bb4041c6e2",
+      "bytes": 30660,
+      "reason": "safe_batch",
+      "migration_count": 10
+    },
+    {
+      "first": 103,
+      "last": 112,
+      "path": "supabase/reproducibility/rebuild-chunks/chunk_0103_0112.sql",
+      "sha256": "3fc8af292424ea6650e74f27df62a0e86fa506606b76302445e007aa4bfc0c06",
+      "bytes": 4992,
+      "reason": "safe_batch",
+      "migration_count": 10
+    },
+    {
+      "first": 113,
+      "last": 119,
+      "path": "supabase/reproducibility/rebuild-chunks/chunk_0113_0119.sql",
+      "sha256": "b91282fe9dc51b8bd7f849bf02a9fa5155608fd0910a06a54ab429b54c26ed82",
+      "bytes": 16002,
+      "reason": "safe_batch",
+      "migration_count": 7
+    }
+  ]
+}
