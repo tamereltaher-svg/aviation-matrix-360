@@ -1,19 +1,51 @@
-name: Wake Supabase Once
+name: Final Security Edge Smoke
 on:
   push:
     paths:
       - '.github/workflows/wake-supabase-once.yml'
   workflow_dispatch:
 jobs:
-  wake:
+  smoke:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Wake database through public kids catalog
+      - name: Verify public Edge flows after security migration
         run: |
           set -euo pipefail
-          code=$(curl -sS -o /tmp/body.json -w '%{http_code}' --max-time 60 'https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/kids-public-catalog')
-          echo "HTTP_STATUS=$code"
-          head -c 500 /tmp/body.json || true
-          echo
-          test "$code" = "200"
+          base='https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1'
+          suffix="${GITHUB_RUN_ID}"
+          email="security-probe-${suffix}@example.com"
+          mobile="+20155${suffix: -8}"
+
+          reg_code=$(curl -sS -o /tmp/reg.json -w '%{http_code}' --max-time 60 \
+            -H 'content-type: application/json' \
+            -d "{\"action\":\"register\",\"full_name\":\"Security Probe\",\"mobile\":\"${mobile}\",\"email\":\"${email}\",\"date_of_birth\":\"1990-01-01\",\"education_stage\":\"graduate\",\"current_city\":\"Cairo\",\"aviation_interest\":\"ground_operations\",\"preferred_language\":\"en\",\"consent\":true}" \
+            "$base/application-login")
+          echo "APPLICATION_LOGIN_REGISTER_HTTP=$reg_code"
+          echo "APPLICATION_LOGIN_APPLICATION=$(jq -r '.application_number // "unknown"' /tmp/reg.json)"
+          test "$reg_code" = "200"
+
+          cat_code=$(curl -sS -o /tmp/catalog.json -w '%{http_code}' --max-time 60 "$base/kids-public-catalog")
+          echo "KIDS_PUBLIC_CATALOG_HTTP=$cat_code"
+          test "$cat_code" = "200"
+
+          assess_token="probe-${suffix}-$(date +%s%N)"
+          assess_code=$(curl -sS -o /tmp/assess.json -w '%{http_code}' --max-time 60 \
+            -H 'content-type: application/json' \
+            -d "{\"action\":\"my_journey\",\"registration_token\":\"${assess_token}\"}" \
+            "$base/assessment-public-api")
+          echo "ASSESSMENT_PUBLIC_API_HTTP=$assess_code"
+          echo "ASSESSMENT_PUBLIC_API_ERROR=$(jq -r '.error // "none"' /tmp/assess.json)"
+          test "$assess_code" = "401"
+
+          passport_token="passport-probe-${suffix}-$(date +%s%N)"
+          kids_code=$(curl -sS -o /tmp/kids.json -w '%{http_code}' --max-time 60 \
+            -H 'content-type: application/json' \
+            -H "authorization: Bearer ${passport_token}" \
+            -d '{"action":"me"}' \
+            "$base/kids-experience-api")
+          echo "KIDS_EXPERIENCE_API_HTTP=$kids_code"
+          echo "KIDS_EXPERIENCE_API_ERROR=$(jq -r '.error // "none"' /tmp/kids.json)"
+          test "$kids_code" = "401"
+
+          echo "PROBE_EMAIL=$email"
