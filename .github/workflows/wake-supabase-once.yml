@@ -1,0 +1,19 @@
+name: Wake Supabase Once
+on:
+  push:
+    paths:
+      - '.github/workflows/wake-supabase-once.yml'
+  workflow_dispatch:
+jobs:
+  wake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Wake database through public kids catalog
+        run: |
+          set -euo pipefail
+          code=$(curl -sS -o /tmp/body.json -w '%{http_code}' --max-time 60 'https://vsuekfzyebqnhthyvwpf.supabase.co/functions/v1/kids-public-catalog')
+          echo "HTTP_STATUS=$code"
+          head -c 500 /tmp/body.json || true
+          echo
+          test "$code" = "200"
