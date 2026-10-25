@@ -20,7 +20,7 @@ This register distinguishes earlier **confirmed** commitments from **newly propo
 | D-014 | **APPROVED FOR ORGANIZATION** | Store Master Blueprint metadata as a private, versioned Supabase projection with GitHub as its authoring reference | New `am_blueprint` schema; Draft |
 | D-015 | **TO VERIFY** | Identify authoritative deployed public website route (React/Vite vs root index.html) | Deployment audit |
 | D-016 | **TO VERIFY** | Resolve root `app.js` legacy RPC calls denied by current DB grants | Compatibility and security audit |
-| D-017 | **INVENTORY COMPLETE / REPLAY BLOCKED** | Reconcile 39 post-freeze migrations: 37 unreviewed SQL files, 2 already matched GitHub; isolated replay pending | DB replay gate; [SHA-256 ledger](migration-ledger-2026-10-25.json) |
+| D-017 | **INVENTORY COMPLETE / REPLAY BLOCKED** | Reconcile 39 post-freeze migrations: 36 byte-exact archived SQL files, 2 earlier GitHub matches, 1 sensitive temporary helper withheld; isolated replay and editorial data preservation pending | DB replay gate; [SHA-256 ledger](migration-ledger-2026-10-25.json) |
 | D-018 | **IMPLEMENTED ON DRAFT BRANCH / NOT YET RELEASED** | `scripts/post-merge.sh` no longer pushes DB and has offline CI guard; current `main` still requires reviewed merge | Deploy safety |
 | D-019 | **TO VERIFY** | Map Supabase Auth application identity into activated candidate record and student identity | Identity bridge gate |
 | D-020 | **PROPOSED** | Integrate student UI into existing academy/candidate experience instead of launching a duplicate portal | Requires design review |
