@@ -12,7 +12,8 @@
 | [Decision & status contract](STATUS_AND_GOVERNANCE.md) | Define what is frozen, draft, verified, planned, or blocked and where decisions belong |
 | [Integration gates](INTEGRATION_GATES.md) | Protected order of operations before any changes to candidate paths, scoring, or deployment |
 | [Production migration ledger](migration-ledger-2026-10-25.json) | Read-only SHA-256 inventory of all 39 post-freeze migration entries |
-| [Reconciliation guide](MIGRATION_RECONCILIATION.md) | Why 37 SQL sources need review and how to rebuild safely |
+| [Recovered migration SQL archive](../../supabase/recovered-history/README.md) | All 36 byte-exact historical SQL files plus the sensitive-source quarantine rule |
+| [Reconciliation guide](MIGRATION_RECONCILIATION.md) | How 36 SQL files were recovered exactly; one identity-bearing helper is withheld, and rebuild is pending |
 | [Post-merge safety validator](validate_deploy_safety.py) | CI guard against automatic database operations triggered by merging code |
 | [Registry SQL](../../supabase/migrations/20261025_master_blueprint_registry_v1.sql) | An **additive private-schema** Supabase projection; no edits to existing architecture tables |
 | [Seed SQL](../../supabase/blueprint/seed_master_blueprint_20261025_v1.sql) | Reproducible mapping of this graph into the private database registry |
