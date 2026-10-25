@@ -9,6 +9,9 @@ on:
     paths:
       - '.github/workflows/free-isolated-rebuild.yml'
       - 'docs/blueprint/run_free_local_rebuild.py'
+      - 'docs/blueprint/free-rebuild-bootstrap.json'
+      - 'docs/blueprint/free_local_schema_counts.sql'
+      - 'docs/blueprint/schema-parity-target-v1.json'
       - 'docs/blueprint/validate_migration_ledger.py'
       - 'docs/blueprint/migration-ledger-2026-10-25.json'
       - 'supabase/reproducibility/replay/**'
