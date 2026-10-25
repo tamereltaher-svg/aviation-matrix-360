@@ -186,10 +186,12 @@
       ],
       "tracked_source": "supabase/migrations/20260917_p1_close_final_public_data_api_bypasses.sql",
       "tracked_source_branch": "main",
-      "source_verified": "normalized_match",
+      "source_verified": "normalized_sql_sha256_matched",
       "candidate_for_reviewed_export": false,
       "replay_approved": false,
-      "public_source_class": "existing_verified_repo_source"
+      "public_source_class": "existing_verified_repo_source",
+      "normalized_sql_sha256": "e3c88f550fb2505e92840d26066eacbc30b2aa2bfc8b721281949f4b1cbac148",
+      "normalization_rule": "replace CRLF with LF, strip trailing CR and LF, UTF-8 SHA-256"
     },
     {
       "version": "20261024200829",
