@@ -32,3 +32,5 @@ jobs:
         run: python docs/blueprint/validate_blueprint.py
       - name: Guard Replit post-merge against implicit database writes
         run: python docs/blueprint/validate_deploy_safety.py
+      - name: Validate Supabase production migration fingerprint ledger (offline)
+        run: python docs/blueprint/validate_migration_ledger.py
