@@ -126,7 +126,7 @@ The registered `am_platform_screens.route_hint` is **not** proof of a valid depl
 - Professional assessment and traceability: `am_candidate_assessment_journeys`, `am_candidate_stage_attempts`, `am_candidate_evidence`, `am_candidate_lifetime_events`.
 - Learning and student engine: `am_learning_curricula`, `am_learning_paths`, `am_learning_courses`, `am_candidate_learning_enrollments`, `am_student_auth_bindings`, `am_student_lesson_progress`, `am_student_lesson_attempts`.
 - Governed content: `avi_knowledge` schema including `lesson_versions`, `role_profiles`, `connected_flight_phases`, `sources`.
-- Standalone historical build freeze: `supabase/reproducibility/replay-manifest.json` documents **119** past migrations, vs **157** currently in production (38 post-freeze).
+- Standalone historical build freeze: `supabase/reproducibility/replay-manifest.json` documents **119** past migrations, vs **158** currently in production (39 post-freeze); SHA-256 metadata indexed, 37 later SQL sources not yet reviewed for public GitHub.
 
 ## 7. High-risk mismatches (all unresolved)
 
