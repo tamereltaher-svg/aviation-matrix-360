@@ -13,7 +13,10 @@
 | [Integration gates](INTEGRATION_GATES.md) | Protected order of operations before any changes to candidate paths, scoring, or deployment |
 | [Production migration ledger](migration-ledger-2026-10-25.json) | Read-only SHA-256 inventory of all 39 post-freeze migration entries |
 | [Recovered migration SQL archive](../../supabase/recovered-history/README.md) | All 36 byte-exact historical SQL files plus the sensitive-source quarantine rule |
-| [Reconciliation guide](MIGRATION_RECONCILIATION.md) | How 36 SQL files were recovered exactly; one identity-bearing helper is withheld, and rebuild is pending |
+| [Reconciliation guide](MIGRATION_RECONCILIATION.md) | 36 exact SQL recoveries, one private helper withheld, and historical replay caveats |
+| [Free isolated rebuild](FREE_REBUILD.md) | GitHub Actions public runner + local disposable Supabase (no paid branch) |
+| [Actual free-test results](FREE_REBUILD_EXECUTION_REPORT.md) | 152 SQL scripts passed; 14 historical assessment/staging structure gaps remain |
+| [Read-only parity target](schema-parity-target-v1.json) | Production metadata counts for 5 schemas × 8 object types |
 | [Post-merge safety validator](validate_deploy_safety.py) | CI guard against automatic database operations triggered by merging code |
 | [Registry SQL](../../supabase/migrations/20261025_master_blueprint_registry_v1.sql) | An **additive private-schema** Supabase projection; no edits to existing architecture tables |
 | [Seed SQL](../../supabase/blueprint/seed_master_blueprint_20261025_v1.sql) | Reproducible mapping of this graph into the private database registry |
@@ -30,7 +33,7 @@
 - **6** registered domains, **46** module records, **22** screen records, **6** lifecycle flows, **9** role records.
 - Registered module statuses: **12 existing**, **32 partial**, **2 planned**. These are *registry status*, **not** evidence that each screen runs.
 - **3** draft foundation courses, **24** lesson versions, **0** published. Student binding/enrollment: **0**.
-- **158** live Supabase migrations; the historical reproducibility manifest documents **119**. **39 later migrations** require reconciliation prior to any rebuild test.
+- **158** live Supabase migrations; the historical reproducibility manifest documents **119**. **39 later migrations** have source provenance accounted for; isolated SQL replay passed 152/152 but full structural parity is still blocked by 14 gaps.
 - Master Blueprint V1: **118 mapped nodes**, **47 mapped links**, **58 source references**; all need ongoing verification.
 
 ## Governance principles
