@@ -47,7 +47,7 @@ def run():
     check(set(x["code"] for x in g["architecture"]["historical_manifest_status_vs_live"])==old_codes,"Original history crosswalk incomplete")
 
     html=PRINT.read_text(encoding="utf-8")
-    match=re.search(r"const MAPS=(\[[^;]+\]);\s*const esc=",html,re.S)
+    match=re.search(r"const MAPS=(\[[\s\S]*?\]);\s*const esc=",html,re.S)
     check(match is not None,"Embedded offline 21-map data missing")
     maps=json.loads(match.group(1))
     check(len(maps)==21 and len({x["id"] for x in maps})==21,"Expected 21 unique independent maps")
