@@ -11,6 +11,9 @@
 | [Traceability](TRACEABILITY.md) | Connect domains to real repository surfaces, backend areas, and known data objects |
 | [Decision & status contract](STATUS_AND_GOVERNANCE.md) | Define what is frozen, draft, verified, planned, or blocked and where decisions belong |
 | [Integration gates](INTEGRATION_GATES.md) | Protected order of operations before any changes to candidate paths, scoring, or deployment |
+| [Production migration ledger](migration-ledger-2026-10-25.json) | Read-only SHA-256 inventory of all 39 post-freeze migration entries |
+| [Reconciliation guide](MIGRATION_RECONCILIATION.md) | Why 37 SQL sources need review and how to rebuild safely |
+| [Post-merge safety validator](validate_deploy_safety.py) | CI guard against automatic database operations triggered by merging code |
 | [Registry SQL](../../supabase/migrations/20261025_master_blueprint_registry_v1.sql) | An **additive private-schema** Supabase projection; no edits to existing architecture tables |
 | [Seed SQL](../../supabase/blueprint/seed_master_blueprint_20261025_v1.sql) | Reproducible mapping of this graph into the private database registry |
 
@@ -26,7 +29,7 @@
 - **6** registered domains, **46** module records, **22** screen records, **6** lifecycle flows, **9** role records.
 - Registered module statuses: **12 existing**, **32 partial**, **2 planned**. These are *registry status*, **not** evidence that each screen runs.
 - **3** draft foundation courses, **24** lesson versions, **0** published. Student binding/enrollment: **0**.
-- **157** live Supabase migrations; the historical reproducibility manifest documents **119**. **38 later migrations** require reconciliation prior to any rebuild test.
+- **158** live Supabase migrations; the historical reproducibility manifest documents **119**. **39 later migrations** require reconciliation prior to any rebuild test.
 - Master Blueprint V1: **118 mapped nodes**, **47 mapped links**, **58 source references**; all need ongoing verification.
 
 ## Governance principles
