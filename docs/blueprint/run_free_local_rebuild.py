@@ -78,7 +78,7 @@ def historical_bootstrap():
         source = ROOT / obj["path"]
         raw = source.read_bytes()
         actual_blob = hashlib.sha1(
-            b"blob " + str(len(raw)).encode("ascii") + b"\\0" + raw
+            b"blob " + str(len(raw)).encode("ascii") + bytes([0]) + raw
         ).hexdigest()
         if actual_blob != obj["blob_sha1"]:
             raise ValueError("Historical dependency source changed: " + obj["path"])
