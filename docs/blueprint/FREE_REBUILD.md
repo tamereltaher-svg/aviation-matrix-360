@@ -43,9 +43,11 @@ This `--replay` command REQUIRES exactly one `supabase_db_*` **Docker** containe
 
 ## Gate definitions
 
+The tested [free GitHub Actions run](https://github.com/tamereltaher-svg/aviation-matrix-360/actions/runs/40207166353) passed all 152 recorded structural SQL scripts, then failed strictly at the independent structural parity gate. The temporary Docker instance was destroyed after the run.
+
 - **G1A — Provenance:** SHA-256 file sources matching the live ledger, complete version inventory, sensitive helper withheld. This has passed for all 39 entries (36 recovered, 2 existing, 1 withheld).
-- **G1B — Isolated schema replay:** the new free workflow must finish all 119+33 steps and verify the actual database objects. A **failing run** is a finding, not proof of parity.
-- **G1C — Full schema parity:** compare generated tables, RLS, functions, triggers, indexes and constraints against production metadata; no privileged grant broadening. Even if G1B passes, G1C is a separate certification.
+- **G1B — Isolated schema replay: PASS.** The free workflow executed all **119+33 SQL scripts = 152**, with the documented original Phase06 supplements. The four primary application object families exist. See [execution evidence](FREE_REBUILD_EXECUTION_REPORT.md).
+- **G1C — Full schema parity: FAIL, investigation needed.** Exact counts differ in **14 of 40** application schema metrics, predominantly the historic assessment/staging systems. G1B success does NOT prove G1C. See [14 gap details](FREE_REBUILD_EXECUTION_REPORT.md).
 - **G1D — Content restoration:** live student learning data (3 draft courses, 24 draft lessons, 28 role profiles, 14 flight phases) was authored separately and is **not seeded by migration history**; a private, reviewed content-backup strategy is required before declaring a completely restorable platform.
 - **G1E — Human release sign-off:** GitHub PR remains DRAFT until reviewed. Never move reconstructed SQL straight into auto-executable `supabase/migrations/` as part of this test.
 
