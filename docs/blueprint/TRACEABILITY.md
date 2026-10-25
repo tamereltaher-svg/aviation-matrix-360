@@ -126,12 +126,12 @@ The registered `am_platform_screens.route_hint` is **not** proof of a valid depl
 - Professional assessment and traceability: `am_candidate_assessment_journeys`, `am_candidate_stage_attempts`, `am_candidate_evidence`, `am_candidate_lifetime_events`.
 - Learning and student engine: `am_learning_curricula`, `am_learning_paths`, `am_learning_courses`, `am_candidate_learning_enrollments`, `am_student_auth_bindings`, `am_student_lesson_progress`, `am_student_lesson_attempts`.
 - Governed content: `avi_knowledge` schema including `lesson_versions`, `role_profiles`, `connected_flight_phases`, `sources`.
-- Standalone historical build freeze: `supabase/reproducibility/replay-manifest.json` documents **119** past migrations, vs **158** currently in production (39 post-freeze); SHA-256 metadata indexed, 37 later SQL sources not yet reviewed for public GitHub.
+- Standalone historical build freeze: `supabase/reproducibility/replay-manifest.json` documents **119** past migrations, vs **158** currently in production (39 post-freeze); SHA-256 metadata indexed, 36 post-freeze SQL statements are now archived byte-exact, two were already verified, and one identity-bearing transient helper is deliberately withheld; full replay remains untested.
 
 ## 7. High-risk mismatches (all unresolved)
 
 1. `app.js` calls the legacy `public_start_assessment` / `public_submit_assessment_answer` / `public_finish_assessment` and `public_register_application` RPCs. Current production denies `anon/authenticated` EXECUTE. Correct through secure Edge API compatibility, not grants.
-2. `scripts/post-merge.sh` executes `pnpm --filter db push`; prohibit production invocation pending reproducibility investigation.
+2. `scripts/post-merge.sh` on `main` still executes `pnpm --filter db push`, but the draft branch removes that invocation and checks it in CI; preserve the production ban until an explicitly approved merge.
 3. The React/Vite corporate site and root candidate HTML shell both exist. Actual production route selection is **unverified**.
 4. Learner activation is not complete merely when an application OTP is verified; verify a trusted `auth_user_id → candidate_id` binding and candidate activation state.
 5. Original portal language includes English/French/Russian in `app.js`; the agreed current platform/student UI is **English visible only**, Arabic translations retained in storage. Treat cross-surface language consistency as a future integration gate (do not delete other content in code in this phase).
