@@ -9,6 +9,7 @@
 - [Agreed decisions vs open proposals](docs/blueprint/ARCHITECTURE_DECISIONS.md)
 - [Integration gates and rollout controls](docs/blueprint/INTEGRATION_GATES.md)
 - [Supabase migration reconciliation and SHA-256 ledger](docs/blueprint/MIGRATION_RECONCILIATION.md)
+- [36 recovered SQL files — provenance, restrictions, and content restoration gap](supabase/recovered-history/README.md)
 - [Post-merge database safety guard](docs/blueprint/validate_deploy_safety.py)
 - [Execution and security report](docs/blueprint/IMPLEMENTATION_REPORT_2026-10-25.md)
 
