@@ -1,0 +1,77 @@
+name: Free Isolated Supabase Rebuild
+
+# PUBLIC repository on GitHub standard ubuntu runner (no paid Supabase branch).
+# Never provide or read production secrets. No production connection or migration push.
+on:
+  push:
+    branches:
+      - feature/master-blueprint-organization-20261025
+    paths:
+      - '.github/workflows/free-isolated-rebuild.yml'
+      - 'docs/blueprint/run_free_local_rebuild.py'
+      - 'docs/blueprint/validate_migration_ledger.py'
+      - 'docs/blueprint/migration-ledger-2026-10-25.json'
+      - 'supabase/reproducibility/replay/**'
+      - 'supabase/reproducibility/replay-manifest.json'
+      - 'supabase/recovered-history/**'
+      - 'supabase/migrations/*master_blueprint*'
+      - 'supabase/migrations/20260917_p1_close_final_public_data_api_bypasses.sql'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: free-db-rebuild-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  isolated-rebuild:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      SUPABASE_ACCESS_TOKEN: ""
+      SUPABASE_DB_PASSWORD: ""
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Validate frozen and newly recovered SQL source fingerprints (offline)
+        run: |
+          python docs/blueprint/validate_migration_ledger.py
+          python docs/blueprint/run_free_local_rebuild.py --check-only
+
+      - name: Boot disposable LOCAL Supabase (no account, no paid branch)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -n "${SUPABASE_ACCESS_TOKEN:-}" ]]; then
+            echo "Production or remote token is forbidden"; exit 1
+          fi
+          mkdir -p "$RUNNER_TEMP/am360-free-local"
+          cd "$RUNNER_TEMP/am360-free-local"
+          supabase init --yes
+          supabase start
+          echo "Temporary local Docker Supabase started successfully"
+
+      - name: Replay recorded SQL into ONLY the disposable local Docker database
+        shell: bash
+        run: |
+          set -euo pipefail
+          python docs/blueprint/run_free_local_rebuild.py --replay
+
+      - name: Remove disposable local instance
+        if: always()
+        shell: bash
+        run: |
+          if [[ -f "$RUNNER_TEMP/am360-free-local/supabase/config.toml" ]]; then
+            cd "$RUNNER_TEMP/am360-free-local"
+            supabase stop --no-backup || true
+          fi
