@@ -4,8 +4,8 @@ This is the **required sequence**, not a claim of completion. Draft Master Bluep
 
 | Gate | State at 2026-10-25 | Deliverable | Pass evidence |
 | --- | --- | --- | --- |
-| **G0** Snapshot/preserve baseline | In progress | Main commit pinned; PR feature branch; production schema inventory | Git SHA; DB read-only snapshot; no old table writes |
-| **G1** Migration reconciliation | Blocked | Reconcile **157 live** vs **119 historical replay** migrations (38 post-freeze), verify idempotence & isolated rebuild | Full ordered list and test DB comparison, checksum verification |
+| **G0** Snapshot/preserve baseline | In progress — draft branch hook now safe; main remains unchanged | Main commit pinned; post-merge DB push removed in branch; no old data writes | Git SHA; CI release guard; manual merge and backup still required |
+| **G1** Migration reconciliation | Blocked — SHA-256 inventory complete; isolated rebuild pending | Reconcile **158 live** vs **119 historical replay** migrations (**39** post-freeze, **37** SQL files still unreviewed), verify isolated rebuild | [Migration ledger](migration-ledger-2026-10-25.json) and [reconciliation plan](MIGRATION_RECONCILIATION.md); reproducible SQL and isolated test not yet complete |
 | **G2** Registration and assessment API compatibility | Blocked | Old direct browser RPCs refactored into supported secure Edge/API workflow | Anonymous access denied, legitimate candidate registration/assessment E2E pass |
 | **G3** Identity continuity | Blocked | Supabase Auth user verified against canonical activated Candidate Record | Cannot impersonate a second candidate; invalid user and inactive candidate denied |
 | **G4** Learning experience integration | Not started | Integrate English-first, Arabic-hidden learning within existing repo surfaces | React/legacy regression, nav, responsive UI, only published catalog displayed |
@@ -27,10 +27,10 @@ This is the **required sequence**, not a claim of completion. Draft Master Bluep
 
 ## Known current blockers
 
-1. Last GitHub `main` commit 2026-09-17, yet 28 of the 38 post-frozen migrations are from October; no new rebuild claimed until all reconciled.
+1. Last GitHub `main` commit 2026-09-17; live migration ledger now contains 158 total entries (39 after the original 119 freeze), 29 post-September-17 including the private blueprint schema. 37/39 later SQL bodies are not yet represented by verified GitHub source files; no fresh rebuild certified.
 2. Historical `am_platform_screens` row `SCR-TAL-C360` points at `candidate_360.html` while `candidate_360_dashboard.html` exists in repo. Runtime route not yet confirmed.
 3. `app.js` calls legacy RPCs which are currently not executable by `anon`/`authenticated`; do not weaken server permissions.
-4. `scripts/post-merge.sh` runs a database push; ensure this is disabled/reworked before any deployment or merging process.
+4. `scripts/post-merge.sh` still runs a DB push on `main`, but **the draft branch removes it** and a CI test guards against regression. No safety fix is deployed until this PR is approved and merged.
 5. Three draft courses with 24 lessons still cannot be released.
 
 ## Rollback and operation
