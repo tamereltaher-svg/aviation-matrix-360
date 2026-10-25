@@ -1,0 +1,1 @@
+drop policy if exists "Public student language presentation policy" on public.am_platform_language_settings;create policy "Read public English-only presentation policy" on public.am_platform_language_settings for select to anon,authenticated using(surface in ('platform','student'));

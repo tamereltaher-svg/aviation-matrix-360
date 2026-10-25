@@ -1,0 +1,53 @@
+{
+  "schema": "aviation-matrix-free-rebuild-dependencies/v1",
+  "scope": "CI disposable local PostgreSQL only",
+  "intro": "Historical 119-migration replay omitted existing pre-September Phase06 assessment objects. These exact files already live in GitHub and are inserted into the isolated replay plan, not production.",
+  "before_rn68": {
+    "reason": "RN68 references assessment.assessment_banks and assessment.item_versions even though the first 67 migrations never created assessment schema; Phase06 foundations were supplied later as explicit reproducibility supplements.",
+    "files": [
+      {
+        "path": "supabase/reproducibility/bootstrap/0000_phase06_foundation_tables_01.sql",
+        "blob_sha1": "1bf08e4cf81d7c4dfe9fcc875dce203cb828ec9c"
+      },
+      {
+        "path": "supabase/reproducibility/bootstrap/0000_phase06_foundation_tables_02.sql",
+        "blob_sha1": "8af069004493c8108830e09466e0660f9262e950"
+      },
+      {
+        "path": "supabase/reproducibility/bootstrap/0000_phase06_foundation_tables_03.sql",
+        "blob_sha1": "ad67dc26a81f9e499bf46bcc0457015f2f576496"
+      },
+      {
+        "path": "supabase/reproducibility/bootstrap/0000_phase06_staging_table.sql",
+        "blob_sha1": "718f0868f89a3c483174a40b091a8360c46463b0"
+      },
+      {
+        "path": "supabase/reproducibility/bootstrap/0000_phase06_constraints_keys.sql",
+        "blob_sha1": "5038e1251ecf925ca930ec3e98d48e9627bf6349"
+      }
+    ]
+  },
+  "before_rn90": {
+    "reason": "Known Phase06 reviewer grant/view historical supplement already tracked and independently SHA-256-verifiable in repo.",
+    "manifest": "supabase/reproducibility/bootstrap/pre_rn90_supplement_manifest.json"
+  },
+  "disclaimer": "This produces a reproducible isolated reconstruction with supplements; it does not assert that historic 119 SQL alone suffices.",
+  "before_rn84": {
+    "reason": "RN84 patches assessment.validate_phase06_item_import_batch(uuid) using pg_get_functiondef but original pre-image of function is absent from the 119 sanitized replay; use the pinned historic pre-fix source file.",
+    "files": [
+      {
+        "path": "supabase/reproducibility/bootstrap/0000_phase06_validate_item_import_batch_prefx.sql",
+        "blob_sha1": "cf1a89ec9b729652f7de94e182b5e6140d0756b7"
+      }
+    ]
+  },
+  "before_rn85": {
+    "reason": "RN85 patches assessment.validate_phase06_form_assembly_attempt(uuid) using pg_get_functiondef; exact earlier function is preserved separately.",
+    "files": [
+      {
+        "path": "supabase/reproducibility/bootstrap/0000_phase06_validate_form_assembly_attempt_prefx.sql",
+        "blob_sha1": "dcc8fe4c276de884fb1f911023694017dab36441"
+      }
+    ]
+  }
+}

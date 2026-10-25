@@ -1,0 +1,36 @@
+name: Master Blueprint integrity
+
+on:
+  pull_request:
+    paths:
+      - 'docs/blueprint/**'
+      - 'master_platform_architecture_v1.json'
+      - 'supabase/blueprint/**'
+      - 'supabase/migrations/*master_blueprint*'
+      - '.github/workflows/master-blueprint-validation.yml'
+  push:
+    branches:
+      - 'feature/master-blueprint-organization-20261025'
+    paths:
+      - 'docs/blueprint/**'
+      - 'supabase/blueprint/**'
+      - 'supabase/migrations/*master_blueprint*'
+      - '.github/workflows/master-blueprint-validation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  blueprint-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate canonical graph, printable maps, SQL projection and permissions
+        run: python docs/blueprint/validate_blueprint.py
+      - name: Guard Replit post-merge against implicit database writes
+        run: python docs/blueprint/validate_deploy_safety.py
+      - name: Validate Supabase production migration fingerprint ledger (offline)
+        run: python docs/blueprint/validate_migration_ledger.py
