@@ -139,7 +139,7 @@ def local_db_container() -> str:
 
 def query(db_container: str, payload: bytes, timeout=120):
     cmd = ["docker","exec","-i",db_container,"psql",
-           "-X","-q","-U","postgres","-d","postgres",
+           "-X","-q","-A","-t","-F","|","-U","postgres","-d","postgres",
            "-v","ON_ERROR_STOP=1","-v","VERBOSITY=terse"]
     result = subprocess.run(cmd, input=payload, capture_output=True, timeout=timeout)
     if result.returncode != 0:
@@ -216,10 +216,37 @@ select
  (to_regclass('public.am_student_auth_bindings') is not null)::text || ',' ||
  (to_regclass('am_blueprint.nodes') is not null)::text as contract;
 """)
-    if "t,t,t,t" not in check:
-        raise RuntimeError("Schema parity smoke checks failed: required objects absent")
-    print("PASS: all 119 historical and 33 lasting post-freeze SQL scripts were replayed in disposable local Supabase",flush=True)
-    print("PASS: key schema families exist; data/content parity and production release remain separately unverified",flush=True)
+    if check.strip() != "true,true,true,true":
+        raise RuntimeError("Required application schema objects missing; contract=" + check[:200])
+    print("G1B_SCHEMA_REPLAY_PASS: all 119 frozen plus 33 lasting later SQL statements executed successfully",flush=True)
+    print("G1B_OBJECT_SMOKE_PASS: four required application object families present",flush=True)
+
+    target = json.loads((ROOT / "docs/blueprint/schema-parity-target-v1.json").read_text(encoding="utf-8"))
+    fields = ("tables","views","indexes","rls_tables","functions","constraints","policies","triggers")
+    actual = {}
+    count_output = query(db,(ROOT / "docs/blueprint/free_local_schema_counts.sql").read_bytes())
+    for record in count_output.splitlines():
+        values = record.split("|")
+        if len(values) != 1 + len(fields):
+            raise RuntimeError("Unexpected local pg_catalog parity query format")
+        actual[values[0]] = {name:int(v) for name,v in zip(fields,values[1:])}
+    expected = {row["schema_name"]:{k:row[k] for k in fields} for row in target["domains"]}
+    issues = []
+    for schema in sorted(set(actual)|set(expected)):
+        if schema not in expected or schema not in actual:
+            issues.append(schema + ": missing target or local schema")
+            continue
+        for field in fields:
+            if actual[schema][field] != expected[schema][field]:
+                issues.append(f"{schema}.{field}: local={actual[schema][field]} production={expected[schema][field]}")
+    print("PARITY_TARGET: read-only five-schema production inventory, 8 structure metrics each",flush=True)
+    if issues:
+        print("G1C_STRUCTURE_PARITY_GAPS: " + str(len(issues)),flush=True)
+        for issue in issues[:60]:
+            print("  PARITY_DIFF: " + issue,flush=True)
+        raise RuntimeError("Application schema structure count parity not established")
+    print("G1C_STRUCTURE_COUNT_PARITY_PASS: all 5 schema families agree across all 8 recorded metrics",flush=True)
+    print("LIMITATION: metadata counts do not prove byte-identical function bodies or educational content restoration",flush=True)
     print(f"NOTE: elapsed local test seconds = {round(time.monotonic()-now)}",flush=True)
 
 if __name__=="__main__":
