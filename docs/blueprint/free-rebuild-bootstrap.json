@@ -31,5 +31,23 @@
     "reason": "Known Phase06 reviewer grant/view historical supplement already tracked and independently SHA-256-verifiable in repo.",
     "manifest": "supabase/reproducibility/bootstrap/pre_rn90_supplement_manifest.json"
   },
-  "disclaimer": "This produces a reproducible isolated reconstruction with supplements; it does not assert that historic 119 SQL alone suffices."
+  "disclaimer": "This produces a reproducible isolated reconstruction with supplements; it does not assert that historic 119 SQL alone suffices.",
+  "before_rn84": {
+    "reason": "RN84 patches assessment.validate_phase06_item_import_batch(uuid) using pg_get_functiondef but original pre-image of function is absent from the 119 sanitized replay; use the pinned historic pre-fix source file.",
+    "files": [
+      {
+        "path": "supabase/reproducibility/bootstrap/0000_phase06_validate_item_import_batch_prefx.sql",
+        "blob_sha1": "cf1a89ec9b729652f7de94e182b5e6140d0756b7"
+      }
+    ]
+  },
+  "before_rn85": {
+    "reason": "RN85 patches assessment.validate_phase06_form_assembly_attempt(uuid) using pg_get_functiondef; exact earlier function is preserved separately.",
+    "files": [
+      {
+        "path": "supabase/reproducibility/bootstrap/0000_phase06_validate_form_assembly_attempt_prefx.sql",
+        "blob_sha1": "dcc8fe4c276de884fb1f911023694017dab36441"
+      }
+    ]
+  }
 }
