@@ -14,11 +14,14 @@
     "baseline_replay_count": 119,
     "post_baseline_count": 39,
     "post_baseline_statement_bytes": 169215,
-    "tracked_post_baseline_sources": 2,
-    "missing_repo_sql_sources": 37,
+    "tracked_post_baseline_sources": 38,
+    "missing_repo_sql_sources": 1,
     "runtime_temporary_migrations": 6,
     "sql_mutation_flags": 22,
-    "sql_schema_removal_flags": 4
+    "sql_schema_removal_flags": 4,
+    "exact_archived_recovered_sources": 36,
+    "intentionally_withheld_sensitive_sources": 1,
+    "archival_sources_are_replay_certified": false
   },
   "post_baseline_migrations": [
     {
@@ -31,10 +34,12 @@
       "caution_flags": [
         "changes_extension_state"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/transient/20260903145756_runtime_gate_enable_http_extension_temp.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20260903150959",
@@ -46,10 +51,12 @@
       "caution_flags": [
         "changes_extension_state"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/transient/20260903150959_runtime_gate_remove_http_extension_temp.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20260903164652",
@@ -59,10 +66,12 @@
       "statement_bytes": 503,
       "statement_sha256": "82854a418033c5eaa21a8ffffbea475f354a7f82336556678c774b8005edc02f",
       "caution_flags": [],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20260903164652_p1_lock_public_register_application_to_service_role.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20260903165128",
@@ -74,10 +83,12 @@
       "caution_flags": [
         "changes_extension_state"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/transient/20260903165128_runtime_enable_http_for_registration_rpc_gate.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20260903165237",
@@ -89,10 +100,12 @@
       "caution_flags": [
         "changes_extension_state"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/transient/20260903165237_runtime_disable_http_after_registration_rpc_gate.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20260903171748",
@@ -106,8 +119,11 @@
       ],
       "tracked_source": null,
       "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "source_verified": "restricted_source_not_committed",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "withheld_sensitive_historical_admin_identifiers",
+      "requires_private_manual_review": true
     },
     {
       "version": "20260903172740",
@@ -119,10 +135,12 @@
       "caution_flags": [
         "contains_schema_removal"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/transient/20260903172740_cleanup_temporary_reproducibility_export_rpc.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20260907084335",
@@ -134,10 +152,12 @@
       "caution_flags": [
         "contains_schema_removal"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20260907084335_p1_close_direct_data_api_registration_and_kids_entitlement_bypasses.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20260907094431",
@@ -147,10 +167,12 @@
       "statement_bytes": 648,
       "statement_sha256": "6125885412482abfd0f3a12d16a94c4325ea077e36755d79b08d838b173758a3",
       "caution_flags": [],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20260907094431_p0_lock_legacy_public_assessment_rpc_execution.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20260917141305",
@@ -165,7 +187,9 @@
       "tracked_source": "supabase/migrations/20260917_p1_close_final_public_data_api_bypasses.sql",
       "tracked_source_branch": "main",
       "source_verified": "normalized_match",
-      "candidate_for_reviewed_export": false
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "existing_verified_repo_source"
     },
     {
       "version": "20261024200829",
@@ -175,10 +199,12 @@
       "statement_bytes": 7489,
       "statement_sha256": "0cc6cbbd0ceb7e9b96c20f5374630347dc71197d8c4d574369267899ebd89f20",
       "caution_flags": [],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261024200829_aviation_knowledge_core_v1_private_foundation.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261024203737",
@@ -190,10 +216,12 @@
       "caution_flags": [
         "contains_sql_data_mutation"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261024203737_aviation_knowledge_lesson_engine_v11.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261024204419",
@@ -205,10 +233,12 @@
       "caution_flags": [
         "contains_sql_data_mutation"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261024204419_aviation_knowledge_release_integrity_v12.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261024204650",
@@ -220,10 +250,12 @@
       "caution_flags": [
         "contains_sql_data_mutation"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261024204650_aviation_knowledge_claim_scope_taxonomy_v13.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261024204759",
@@ -235,10 +267,12 @@
       "caution_flags": [
         "contains_sql_data_mutation"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261024204759_aviation_knowledge_relationship_basis_v14.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261024214953",
@@ -250,10 +284,12 @@
       "caution_flags": [
         "contains_sql_data_mutation"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261024214953_aviation_foundation_course_path_release_gates_v15.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261024215024",
@@ -265,10 +301,12 @@
       "caution_flags": [
         "contains_sql_data_mutation"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261024215024_aviation_foundation_release_guard_hardening_v16.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261024220822",
@@ -280,10 +318,12 @@
       "caution_flags": [
         "contains_sql_data_mutation"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261024220822_aviation_role_genesis_multidimensional_v1.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261024221940",
@@ -295,10 +335,12 @@
       "caution_flags": [
         "contains_sql_data_mutation"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261024221940_aviation_role_dimension_coverage_and_storyline_v1.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261024222240",
@@ -310,10 +352,12 @@
       "caution_flags": [
         "contains_sql_data_mutation"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261024222240_aviation_role_historical_editorial_gates_v1.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261024222354",
@@ -325,10 +369,12 @@
       "caution_flags": [
         "contains_sql_data_mutation"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261024222354_aviation_role_matrix_auto_coverage_v1.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261024222938",
@@ -338,10 +384,12 @@
       "statement_bytes": 294,
       "statement_sha256": "20bfc31ce7fa5a39dfba45ed0a8a79e26ece09d65b525c00e165aaef1c35d4d6",
       "caution_flags": [],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261024222938_aviation_role_matrix_foreign_key_indexes_v1.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261024223957",
@@ -353,10 +401,12 @@
       "caution_flags": [
         "contains_sql_data_mutation"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261024223957_aviation_role_genesis_lesson_traceability_v2.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261024224942",
@@ -368,10 +418,12 @@
       "caution_flags": [
         "contains_sql_data_mutation"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261024224942_aviation_role_educational_release_quality_gates_v2.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261024225128",
@@ -383,10 +435,12 @@
       "caution_flags": [
         "contains_sql_data_mutation"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261024225128_aviation_role_research_gaps_priority_v2.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261025063530",
@@ -398,10 +452,12 @@
       "caution_flags": [
         "contains_sql_data_mutation"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261025063530_connected_flight_learning_network_v1.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261025064544",
@@ -413,10 +469,12 @@
       "caution_flags": [
         "contains_sql_data_mutation"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261025064544_connected_flight_capstone_crosslinks_and_release_gate_v1.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261025065046",
@@ -426,10 +484,12 @@
       "statement_bytes": 1283,
       "statement_sha256": "780b8d5ad2480767285d975040f00188fb733e69ae32dc49f38e8966afca71d3",
       "caution_flags": [],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261025065046_connected_flight_composite_fk_performance_indexes_v1.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261025065748",
@@ -441,10 +501,12 @@
       "caution_flags": [
         "contains_sql_data_mutation"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261025065748_connected_flight_phase_incident_expert_review_gates_v2.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261025085351",
@@ -456,10 +518,12 @@
       "caution_flags": [
         "contains_sql_data_mutation"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261025085351_am_student_learning_engine_core_v1.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261025085527",
@@ -469,10 +533,12 @@
       "statement_bytes": 8238,
       "statement_sha256": "5f298962e910bcf9c5fece1dc5adbd4472fd857e210730dac3497eeda723ea41",
       "caution_flags": [],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261025085527_am_student_learning_access_and_catalog_v1.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261025085641",
@@ -484,10 +550,12 @@
       "caution_flags": [
         "contains_sql_data_mutation"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261025085641_am_student_learning_enrollment_lesson_api_v1.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261025085727",
@@ -499,10 +567,12 @@
       "caution_flags": [
         "contains_sql_data_mutation"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261025085727_am_student_learning_scoring_and_progress_v1.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261025090509",
@@ -512,10 +582,12 @@
       "statement_bytes": 104,
       "statement_sha256": "0f31b2aa6641015fa7093f26059b8ebd358cdc088d50d1d7cf4d1106d91a99a5",
       "caution_flags": [],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261025090509_am_student_learning_event_lesson_fk_index_v1.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261025091354",
@@ -525,10 +597,12 @@
       "statement_bytes": 4861,
       "statement_sha256": "481a981496bd63fc6c725fab0beeafc8a1785716177112d6d63a5e8936239ee3",
       "caution_flags": [],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261025091354_am_student_catalog_unlock_state_and_event_throttle_v1.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261025094742",
@@ -540,10 +614,12 @@
       "caution_flags": [
         "contains_sql_data_mutation"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261025094742_am_platform_language_policy_english_primary_ar_hidden_v1.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261025095031",
@@ -555,10 +631,12 @@
       "caution_flags": [
         "contains_sql_data_mutation"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261025095031_am_platform_global_locale_english_only_visible_v1.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261025095046",
@@ -570,10 +648,12 @@
       "caution_flags": [
         "contains_schema_removal"
       ],
-      "tracked_source": null,
-      "tracked_source_branch": null,
-      "source_verified": "sql_stored_in_supabase_ledger_only",
-      "candidate_for_reviewed_export": true
+      "tracked_source": "supabase/recovered-history/unverified/20261025095046_am_platform_language_readonly_policy_v1.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "exact_sha256_and_git_blob_match",
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "archival_not_auto_executable"
     },
     {
       "version": "20261025125459",
@@ -586,7 +666,10 @@
       "tracked_source": "supabase/migrations/20261025_master_blueprint_registry_v1.sql",
       "tracked_source_branch": "feature/master-blueprint-organization-20261025",
       "source_verified": "byte_exact_match",
-      "candidate_for_reviewed_export": false
+      "candidate_for_reviewed_export": false,
+      "replay_approved": false,
+      "public_source_class": "existing_verified_repo_source"
     }
-  ]
+  ],
+  "public_recovery_status": "36 exact archived; 2 existing; 1 sensitive identity-seed helper withheld; no isolated replay yet"
 }
