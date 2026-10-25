@@ -1,0 +1,592 @@
+{
+  "schema": "aviation-matrix-db-migration-ledger/v1",
+  "snapshot_date": "2026-10-25",
+  "source": "Supabase production supabase_migrations.schema_migrations read-only metadata",
+  "github_repository": "tamereltaher-svg/aviation-matrix-360",
+  "baseline_cutoff": "20260903144840",
+  "baseline_reference": "supabase/reproducibility/replay-manifest.json",
+  "canonical_replay_ready": false,
+  "schema_replay_tested": false,
+  "snapshot_status": "metadata_index_for_review",
+  "hash_note": "SHA-256 of stored single SQL statement bytes (not necessarily normalized to GitHub newline); never use this index alone as a runnable migration",
+  "summary": {
+    "live_migration_count": 158,
+    "baseline_replay_count": 119,
+    "post_baseline_count": 39,
+    "post_baseline_statement_bytes": 169215,
+    "tracked_post_baseline_sources": 2,
+    "missing_repo_sql_sources": 37,
+    "runtime_temporary_migrations": 6,
+    "sql_mutation_flags": 22,
+    "sql_schema_removal_flags": 4
+  },
+  "post_baseline_migrations": [
+    {
+      "version": "20260903145756",
+      "name": "runtime_gate_enable_http_extension_temp",
+      "group": "temporary_runtime_history",
+      "statement_count": 1,
+      "statement_bytes": 59,
+      "statement_sha256": "b5b79f616c8cc09827b263ca33c134a193821285b414e16488b6bd533cd7480b",
+      "caution_flags": [
+        "changes_extension_state"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20260903150959",
+      "name": "runtime_gate_remove_http_extension_temp",
+      "group": "temporary_runtime_history",
+      "statement_count": 1,
+      "statement_bytes": 38,
+      "statement_sha256": "5522e9645da2e2394423218536671f8e9c2ebee199d58531d0ff663c77644115",
+      "caution_flags": [
+        "changes_extension_state"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20260903164652",
+      "name": "p1_lock_public_register_application_to_service_role",
+      "group": "security_hardening",
+      "statement_count": 1,
+      "statement_bytes": 503,
+      "statement_sha256": "82854a418033c5eaa21a8ffffbea475f354a7f82336556678c774b8005edc02f",
+      "caution_flags": [],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20260903165128",
+      "name": "runtime_enable_http_for_registration_rpc_gate",
+      "group": "temporary_runtime_history",
+      "statement_count": 1,
+      "statement_bytes": 59,
+      "statement_sha256": "b5b79f616c8cc09827b263ca33c134a193821285b414e16488b6bd533cd7480b",
+      "caution_flags": [
+        "changes_extension_state"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20260903165237",
+      "name": "runtime_disable_http_after_registration_rpc_gate",
+      "group": "temporary_runtime_history",
+      "statement_count": 1,
+      "statement_bytes": 30,
+      "statement_sha256": "8419b07ee2e3bba32f0274caa5f7942102cc69c31f0b66e5af237aa5ac7ef15b",
+      "caution_flags": [
+        "changes_extension_state"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20260903171748",
+      "name": "temporary_reproducibility_export_rpc",
+      "group": "temporary_runtime_history",
+      "statement_count": 1,
+      "statement_bytes": 2267,
+      "statement_sha256": "612d11779afb25eb51268926dbb9b6d793da3db868187cbc3a55dbed1a4597ec",
+      "caution_flags": [
+        "contains_sql_data_mutation"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20260903172740",
+      "name": "cleanup_temporary_reproducibility_export_rpc",
+      "group": "temporary_runtime_history",
+      "statement_count": 1,
+      "statement_bytes": 67,
+      "statement_sha256": "913c83845ee9a929a5044a544f5fcc1c6f846d8e04648be699f4f7edc801c6b5",
+      "caution_flags": [
+        "contains_schema_removal"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20260907084335",
+      "name": "p1_close_direct_data_api_registration_and_kids_entitlement_bypasses",
+      "group": "security_hardening",
+      "statement_count": 1,
+      "statement_bytes": 4063,
+      "statement_sha256": "ac6947c0ca6483f7015a5e464b74eb25e6e97b8196d9ab2fc1ee728f1d55b4e8",
+      "caution_flags": [
+        "contains_schema_removal"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20260907094431",
+      "name": "p0_lock_legacy_public_assessment_rpc_execution",
+      "group": "security_hardening",
+      "statement_count": 1,
+      "statement_bytes": 648,
+      "statement_sha256": "6125885412482abfd0f3a12d16a94c4325ea077e36755d79b08d838b173758a3",
+      "caution_flags": [],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20260917141305",
+      "name": "p1_close_final_public_data_api_bypasses",
+      "group": "security_hardening",
+      "statement_count": 1,
+      "statement_bytes": 2137,
+      "statement_sha256": "e3c88f550fb2505e92840d26066eacbc30b2aa2bfc8b721281949f4b1cbac148",
+      "caution_flags": [
+        "contains_schema_removal"
+      ],
+      "tracked_source": "supabase/migrations/20260917_p1_close_final_public_data_api_bypasses.sql",
+      "tracked_source_branch": "main",
+      "source_verified": "normalized_match",
+      "candidate_for_reviewed_export": false
+    },
+    {
+      "version": "20261024200829",
+      "name": "aviation_knowledge_core_v1_private_foundation",
+      "group": "knowledge_and_role_foundation",
+      "statement_count": 1,
+      "statement_bytes": 7489,
+      "statement_sha256": "0cc6cbbd0ceb7e9b96c20f5374630347dc71197d8c4d574369267899ebd89f20",
+      "caution_flags": [],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261024203737",
+      "name": "aviation_knowledge_lesson_engine_v11",
+      "group": "knowledge_and_role_foundation",
+      "statement_count": 1,
+      "statement_bytes": 13990,
+      "statement_sha256": "eb002f6806b10c243488eb53f58adb4851afdd22e69d3c45e0fdb27511be7014",
+      "caution_flags": [
+        "contains_sql_data_mutation"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261024204419",
+      "name": "aviation_knowledge_release_integrity_v12",
+      "group": "knowledge_and_role_foundation",
+      "statement_count": 1,
+      "statement_bytes": 6156,
+      "statement_sha256": "3bf0da128362f396accaf5f4abaca81f8022c67bb530b0efebc0082762cbfc5d",
+      "caution_flags": [
+        "contains_sql_data_mutation"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261024204650",
+      "name": "aviation_knowledge_claim_scope_taxonomy_v13",
+      "group": "knowledge_and_role_foundation",
+      "statement_count": 1,
+      "statement_bytes": 1355,
+      "statement_sha256": "76cc0027e27cacb93585114ffa7be41f3c47fba01d8b679722fb4d4129752863",
+      "caution_flags": [
+        "contains_sql_data_mutation"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261024204759",
+      "name": "aviation_knowledge_relationship_basis_v14",
+      "group": "knowledge_and_role_foundation",
+      "statement_count": 1,
+      "statement_bytes": 1093,
+      "statement_sha256": "05ca48e27e55e7265edbf7e8e00d81b67f46e5c274787d8e04a35e934a1722da",
+      "caution_flags": [
+        "contains_sql_data_mutation"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261024214953",
+      "name": "aviation_foundation_course_path_release_gates_v15",
+      "group": "knowledge_and_role_foundation",
+      "statement_count": 1,
+      "statement_bytes": 3150,
+      "statement_sha256": "a21bf73d06dcadc874c62a0aebb23f729eba73af21f2daa18624327c072b4230",
+      "caution_flags": [
+        "contains_sql_data_mutation"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261024215024",
+      "name": "aviation_foundation_release_guard_hardening_v16",
+      "group": "knowledge_and_role_foundation",
+      "statement_count": 1,
+      "statement_bytes": 4434,
+      "statement_sha256": "bc23dcf575de8e38a6cfbd4adeccec922543eacb49635233683787bd43922dc6",
+      "caution_flags": [
+        "contains_sql_data_mutation"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261024220822",
+      "name": "aviation_role_genesis_multidimensional_v1",
+      "group": "knowledge_and_role_foundation",
+      "statement_count": 1,
+      "statement_bytes": 16002,
+      "statement_sha256": "dc6826f1207b477095dd06becffa93b987cf48c22c39c136628577e6b1b13b95",
+      "caution_flags": [
+        "contains_sql_data_mutation"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261024221940",
+      "name": "aviation_role_dimension_coverage_and_storyline_v1",
+      "group": "knowledge_and_role_foundation",
+      "statement_count": 1,
+      "statement_bytes": 5571,
+      "statement_sha256": "1b61b5aa0b2411a337b113df247ef4d1115427538a2a58b81621bf372e270049",
+      "caution_flags": [
+        "contains_sql_data_mutation"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261024222240",
+      "name": "aviation_role_historical_editorial_gates_v1",
+      "group": "knowledge_and_role_foundation",
+      "statement_count": 1,
+      "statement_bytes": 4633,
+      "statement_sha256": "0db3e6423ed39d94820dc7961679ddccdd2a650e616d514aad30f0bbaaa50b00",
+      "caution_flags": [
+        "contains_sql_data_mutation"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261024222354",
+      "name": "aviation_role_matrix_auto_coverage_v1",
+      "group": "knowledge_and_role_foundation",
+      "statement_count": 1,
+      "statement_bytes": 3291,
+      "statement_sha256": "0b8175afaeb03b2593dd01c4dfe7e6b184b6c0d682a5d3c9879d83902e74baca",
+      "caution_flags": [
+        "contains_sql_data_mutation"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261024222938",
+      "name": "aviation_role_matrix_foreign_key_indexes_v1",
+      "group": "knowledge_and_role_foundation",
+      "statement_count": 1,
+      "statement_bytes": 294,
+      "statement_sha256": "20bfc31ce7fa5a39dfba45ed0a8a79e26ece09d65b525c00e165aaef1c35d4d6",
+      "caution_flags": [],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261024223957",
+      "name": "aviation_role_genesis_lesson_traceability_v2",
+      "group": "knowledge_and_role_foundation",
+      "statement_count": 1,
+      "statement_bytes": 5717,
+      "statement_sha256": "a4a2a619d5bec3e2f5fb8987b26b28402bee4543896eb0106fcd9e3fa2da7358",
+      "caution_flags": [
+        "contains_sql_data_mutation"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261024224942",
+      "name": "aviation_role_educational_release_quality_gates_v2",
+      "group": "knowledge_and_role_foundation",
+      "statement_count": 1,
+      "statement_bytes": 7628,
+      "statement_sha256": "b65514ae290e7199e8ba841cf5d05573fae455e3db9642dd8eacb8e1e002e2dd",
+      "caution_flags": [
+        "contains_sql_data_mutation"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261024225128",
+      "name": "aviation_role_research_gaps_priority_v2",
+      "group": "knowledge_and_role_foundation",
+      "statement_count": 1,
+      "statement_bytes": 2239,
+      "statement_sha256": "9ac629f7823603d211566b6b80ea006c0823311b2e9b7707285ce86889d46a30",
+      "caution_flags": [
+        "contains_sql_data_mutation"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261025063530",
+      "name": "connected_flight_learning_network_v1",
+      "group": "connected_flight",
+      "statement_count": 1,
+      "statement_bytes": 15254,
+      "statement_sha256": "38fe5f83cf02f183d7e73dc83e7bdfd3e651a314679b0df5797c09a95fe95876",
+      "caution_flags": [
+        "contains_sql_data_mutation"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261025064544",
+      "name": "connected_flight_capstone_crosslinks_and_release_gate_v1",
+      "group": "connected_flight",
+      "statement_count": 1,
+      "statement_bytes": 4042,
+      "statement_sha256": "bf31388da347c86909066bfa7a865d2cbbf8eadc7ae3bf3798a3bf53977de4f7",
+      "caution_flags": [
+        "contains_sql_data_mutation"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261025065046",
+      "name": "connected_flight_composite_fk_performance_indexes_v1",
+      "group": "connected_flight",
+      "statement_count": 1,
+      "statement_bytes": 1283,
+      "statement_sha256": "780b8d5ad2480767285d975040f00188fb733e69ae32dc49f38e8966afca71d3",
+      "caution_flags": [],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261025065748",
+      "name": "connected_flight_phase_incident_expert_review_gates_v2",
+      "group": "connected_flight",
+      "statement_count": 1,
+      "statement_bytes": 10588,
+      "statement_sha256": "91e1995e220935bd6f09ea00527f5120ed42f604e36f725439e314ac182f86cc",
+      "caution_flags": [
+        "contains_sql_data_mutation"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261025085351",
+      "name": "am_student_learning_engine_core_v1",
+      "group": "student_learning_engine",
+      "statement_count": 1,
+      "statement_bytes": 6956,
+      "statement_sha256": "364ba5b35d345370f0b2832f3566c58d911f419952b7dabe01cc58c187740350",
+      "caution_flags": [
+        "contains_sql_data_mutation"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261025085527",
+      "name": "am_student_learning_access_and_catalog_v1",
+      "group": "student_learning_engine",
+      "statement_count": 1,
+      "statement_bytes": 8238,
+      "statement_sha256": "5f298962e910bcf9c5fece1dc5adbd4472fd857e210730dac3497eeda723ea41",
+      "caution_flags": [],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261025085641",
+      "name": "am_student_learning_enrollment_lesson_api_v1",
+      "group": "student_learning_engine",
+      "statement_count": 1,
+      "statement_bytes": 7399,
+      "statement_sha256": "dea393bdc05d82e64f7eecb1f91cd9a7bf71b4b2770c4e9b21e272e34f5ea7eb",
+      "caution_flags": [
+        "contains_sql_data_mutation"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261025085727",
+      "name": "am_student_learning_scoring_and_progress_v1",
+      "group": "student_learning_engine",
+      "statement_count": 1,
+      "statement_bytes": 8421,
+      "statement_sha256": "61735e1119afa6716aab3f0ac061a9a18b4eb4c2791848d0db58d2359797f062",
+      "caution_flags": [
+        "contains_sql_data_mutation"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261025090509",
+      "name": "am_student_learning_event_lesson_fk_index_v1",
+      "group": "student_learning_engine",
+      "statement_count": 1,
+      "statement_bytes": 104,
+      "statement_sha256": "0f31b2aa6641015fa7093f26059b8ebd358cdc088d50d1d7cf4d1106d91a99a5",
+      "caution_flags": [],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261025091354",
+      "name": "am_student_catalog_unlock_state_and_event_throttle_v1",
+      "group": "student_learning_engine",
+      "statement_count": 1,
+      "statement_bytes": 4861,
+      "statement_sha256": "481a981496bd63fc6c725fab0beeafc8a1785716177112d6d63a5e8936239ee3",
+      "caution_flags": [],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261025094742",
+      "name": "am_platform_language_policy_english_primary_ar_hidden_v1",
+      "group": "locale_policy",
+      "statement_count": 1,
+      "statement_bytes": 2443,
+      "statement_sha256": "2da000dc61fd9bee38b437425270e7ec2f968464365f812598b9e01da760570f",
+      "caution_flags": [
+        "contains_sql_data_mutation"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261025095031",
+      "name": "am_platform_global_locale_english_only_visible_v1",
+      "group": "locale_policy",
+      "statement_count": 1,
+      "statement_bytes": 1090,
+      "statement_sha256": "54ad86f49bb44ace8c28443ef6167901c1702a178cc49ad6d042948f7fbba9b1",
+      "caution_flags": [
+        "contains_sql_data_mutation"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261025095046",
+      "name": "am_platform_language_readonly_policy_v1",
+      "group": "locale_policy",
+      "statement_count": 1,
+      "statement_bytes": 283,
+      "statement_sha256": "20fda7469af3b6af4602555d2b50d80b2adefff975d8217816e512ca4b3088fe",
+      "caution_flags": [
+        "contains_schema_removal"
+      ],
+      "tracked_source": null,
+      "tracked_source_branch": null,
+      "source_verified": "sql_stored_in_supabase_ledger_only",
+      "candidate_for_reviewed_export": true
+    },
+    {
+      "version": "20261025125459",
+      "name": "am_blueprint_private_graph_projection_v1",
+      "group": "master_blueprint_registry",
+      "statement_count": 1,
+      "statement_bytes": 5340,
+      "statement_sha256": "0d33cf839e6f2efaee4cade3ee7ec4d0a81dba802b7aab88a28f574ea1a67fc2",
+      "caution_flags": [],
+      "tracked_source": "supabase/migrations/20261025_master_blueprint_registry_v1.sql",
+      "tracked_source_branch": "feature/master-blueprint-organization-20261025",
+      "source_verified": "byte_exact_match",
+      "candidate_for_reviewed_export": false
+    }
+  ]
+}
