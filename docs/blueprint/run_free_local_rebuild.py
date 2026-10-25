@@ -8,6 +8,7 @@ temporary project directory. Never connects to production.
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 import json
 import pathlib
@@ -19,6 +20,7 @@ import time
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 BASELINE = ROOT / "supabase/reproducibility/replay-manifest.json"
 LEDGER = ROOT / "docs/blueprint/migration-ledger-2026-10-25.json"
+BOOTSTRAP = ROOT / "docs/blueprint/free-rebuild-bootstrap.json"
 
 def file_with_hash(relative_path: str, expected_sha: str) -> bytes:
     path = ROOT / relative_path
@@ -64,6 +66,39 @@ def plan():
         raise ValueError(f"Unexpected replay scope: {len(jobs)} files, {len(skipped)} transients")
     return jobs, skipped
 
+def historical_bootstrap():
+    """Verify the original pinned pre-RN68 and pre-RN90 recovery dependencies.
+
+    These are existing source files already present in the original GitHub
+    reproducibility bootstrap folder. No generated placeholder schemas.
+    """
+    d = json.loads(BOOTSTRAP.read_text(encoding="utf-8"))
+    before_68 = []
+    for obj in d["before_rn68"]["files"]:
+        source = ROOT / obj["path"]
+        raw = source.read_bytes()
+        actual_blob = hashlib.sha1(
+            b"blob " + str(len(raw)).encode("ascii") + b"\\0" + raw
+        ).hexdigest()
+        if actual_blob != obj["blob_sha1"]:
+            raise ValueError("Historical dependency source changed: " + obj["path"])
+        before_68.append((obj["path"], raw))
+
+    supp = json.loads((ROOT / d["before_rn90"]["manifest"]).read_text(encoding="utf-8"))
+    if supp["checkpoint"] != 90:
+        raise ValueError("Unexpected reviewer supplement checkpoint")
+    before_90 = []
+    for entry in supp["objects"]:
+        parts = [ (ROOT / path).read_text(encoding="utf-8").strip()
+                  for path in entry.get("paths", [entry.get("path")]) ]
+        raw = base64.b64decode("".join(parts), validate=True)
+        if hashlib.sha256(raw).hexdigest() != entry["decoded_sha256"]:
+            raise ValueError("Reviewer historical supplement checksum mismatch: " + entry["name"])
+        before_90.append((entry["name"],raw))
+    if len(before_68) != 5 or len(before_90) != 4:
+        raise ValueError("Wrong number of historical reproducibility supplements")
+    return before_68, before_90
+
 def local_db_container() -> str:
     r = subprocess.run(
         ["docker","ps","--format","{{.Names}}"],
@@ -96,10 +131,11 @@ def main():
     if args.check_only == args.replay:
         parser.error("Choose exactly one of --check-only or --replay")
     jobs, skipped = plan()
+    before_68, before_90 = historical_bootstrap()
     for label, path, sha in jobs:
         if sha is not None:
             file_with_hash(path, sha)
-    print(f"PLAN_OK: 119 frozen + 33 lasting migrations = {len(jobs)} scripts, {len(skipped)} excluded temporary operations", flush=True)
+    print(f"PLAN_OK: 119 frozen + 33 lasting migrations = {len(jobs)} scripts; {len(before_68)} pre-RN68 and {len(before_90)} pre-RN90 pinned supplements; {len(skipped)} historical transients excluded", flush=True)
     if args.check_only:
         return
     db = local_db_container()
@@ -109,6 +145,24 @@ def main():
     print("ISOLATED_DB_OK: Supabase local Docker Postgres available; production is not connected", flush=True)
     now = time.monotonic()
     for idx, (label,path,sha) in enumerate(jobs,1):
+        if label.startswith("historical:068:"):
+            print("APPLY_RECOVERY: pre-RN68 assessment foundations (5 pinned SQL sources)", flush=True)
+            for supplement_name,supplement_sql in before_68:
+                try:
+                    query(db,supplement_sql,timeout=160)
+                except Exception as exc:
+                    print("BOOTSTRAP_FAILURE: before historical RN68 " + supplement_name, file=sys.stderr)
+                    print("FAILURE_DETAIL: " + str(exc)[:400],file=sys.stderr)
+                    raise SystemExit(1)
+        if label.startswith("historical:090:"):
+            print("APPLY_RECOVERY: pre-RN90 Phase06 review objects (4 SHA-256-verified sources)",flush=True)
+            for supplement_name,supplement_sql in before_90:
+                try:
+                    query(db,supplement_sql,timeout=160)
+                except Exception as exc:
+                    print("BOOTSTRAP_FAILURE: before historical RN90 " + supplement_name, file=sys.stderr)
+                    print("FAILURE_DETAIL: " + str(exc)[:400],file=sys.stderr)
+                    raise SystemExit(1)
         script = file_with_hash(path,sha) if sha else (ROOT/path).read_bytes()
         try:
             query(db,script,timeout=160)
