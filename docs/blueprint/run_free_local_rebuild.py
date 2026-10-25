@@ -97,7 +97,21 @@ def historical_bootstrap():
         before_90.append((entry["name"],raw))
     if len(before_68) != 5 or len(before_90) != 4:
         raise ValueError("Wrong number of historical reproducibility supplements")
-    return before_68, before_90
+    pre_images = {}
+    for checkpoint in (84, 85):
+        items = []
+        for obj in d[f"before_rn{checkpoint}"]["files"]:
+            raw = (ROOT / obj["path"]).read_bytes()
+            actual = hashlib.sha1(
+                b"blob " + str(len(raw)).encode("ascii") + bytes([0]) + raw
+            ).hexdigest()
+            if actual != obj["blob_sha1"]:
+                raise ValueError("Historic validator pre-image changed: " + obj["path"])
+            items.append((obj["path"], raw))
+        if len(items) != 1:
+            raise ValueError("Expected one original validator pre-image at RN" + str(checkpoint))
+        pre_images[checkpoint] = items
+    return before_68, pre_images, before_90
 
 def local_db_container() -> str:
     r = subprocess.run(
@@ -131,11 +145,11 @@ def main():
     if args.check_only == args.replay:
         parser.error("Choose exactly one of --check-only or --replay")
     jobs, skipped = plan()
-    before_68, before_90 = historical_bootstrap()
+    before_68, pre_images, before_90 = historical_bootstrap()
     for label, path, sha in jobs:
         if sha is not None:
             file_with_hash(path, sha)
-    print(f"PLAN_OK: 119 frozen + 33 lasting migrations = {len(jobs)} scripts; {len(before_68)} pre-RN68 and {len(before_90)} pre-RN90 pinned supplements; {len(skipped)} historical transients excluded", flush=True)
+    print(f"PLAN_OK: 119 frozen + 33 lasting migrations = {len(jobs)} scripts; {len(before_68)} pre-RN68, {len(pre_images[84])+len(pre_images[85])} validator pre-images and {len(before_90)} pre-RN90 pinned supplements; {len(skipped)} historical transients excluded", flush=True)
     if args.check_only:
         return
     db = local_db_container()
@@ -154,6 +168,16 @@ def main():
                     print("BOOTSTRAP_FAILURE: before historical RN68 " + supplement_name, file=sys.stderr)
                     print("FAILURE_DETAIL: " + str(exc)[:400],file=sys.stderr)
                     raise SystemExit(1)
+        for checkpoint in (84, 85):
+            if label.startswith(f"historical:{checkpoint:03d}:"):
+                print(f"APPLY_RECOVERY: original pinned validator pre-image before RN{checkpoint}",flush=True)
+                for supplement_name,supplement_sql in pre_images[checkpoint]:
+                    try:
+                        query(db,supplement_sql,timeout=160)
+                    except Exception as exc:
+                        print(f"BOOTSTRAP_FAILURE: before RN{checkpoint} " + supplement_name,file=sys.stderr)
+                        print("FAILURE_DETAIL: " + str(exc)[:400],file=sys.stderr)
+                        raise SystemExit(1)
         if label.startswith("historical:090:"):
             print("APPLY_RECOVERY: pre-RN90 Phase06 review objects (4 SHA-256-verified sources)",flush=True)
             for supplement_name,supplement_sql in before_90:
