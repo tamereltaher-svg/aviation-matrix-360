@@ -40,7 +40,7 @@
 | Candidate records | 4, unchanged |
 | Student course enrollments / attempts | 0 / 0, unchanged |
 | Published lesson versions | 0, unchanged |
-| Live database migration ledger | 158; 119 belong to historical reproducibility baseline; 39 entries after cutoff; 37 SQL sources not yet reviewed |
+| Live database migration ledger | 158; 119 belong to historical reproducibility baseline; 39 entries after cutoff; 36 exact recovered SQL files, 2 previously matched, 1 sensitive temporary source withheld |
 
 ### Advisor notes
 
@@ -51,7 +51,7 @@ Supabase security advisor shows **4 INFO** findings `rls_enabled_no_policy` for 
 - No changes to `main`, no production frontend deployment, no automatic workflow merge.
 - No change to original `public.am_platform_*` rows, candidate identity, assessment data, staff credentials or Kids modules.
 - No changes to student enrollment/progress, no publication of any draft aviation content.
-- Post-merge DB push was removed **on the draft branch**, with a new CI safety check; this is NOT yet in `main`. 39 post-freeze migrations are inventoried with SHA-256, but 37 SQL sources and isolated replay remain unresolved, as do the old direct RPC calls.
+- Post-merge DB push was removed **on the draft branch**, with a new CI safety check; this is NOT yet in `main`. 39 post-freeze migrations are inventoried with SHA-256; 36 additional sources are archived byte-exact, 2 already existed, and 1 sensitive temporary source is withheld; isolated replay and private curriculum data restoration remain unresolved, as do the old direct RPC calls.
 - No assertion of an end-to-end working student application or validated production hosting route.
 - No replacement of old independent V2 print packet; both serve as historical references, while the 21-sheet GitHub map is now tracked in the repo.
 
@@ -59,7 +59,7 @@ Supabase security advisor shows **4 INFO** findings `rls_enabled_no_policy` for 
 
 1. Review proposed blueprint Pull Request. Keep PR as **draft**, review its coverage and correct any factual statuses.
 2. Confirm production hosting, backup/rollback, and review/merge the draft branch removal of the uncontrolled automatic DB schema push.
-3. Review the [39-entry migration fingerprint ledger](migration-ledger-2026-10-25.json), safely recover the 37 missing source files, and prove isolated database rebuild.
+3. Review the [39-entry migration fingerprint ledger](migration-ledger-2026-10-25.json), verify 36 archived source files and 2 preexisting sources, review the withheld historical helper privately, then prove isolated rebuild and controlled content restoration.
 4. Repair old registration/assessment API path without granting removed public privileges.
 5. Bind authorized candidate/student identity to learning path and account, then integrate UI without duplicate screens.
 6. Perform content review, regression and explicit final approval prior to enabling courses.
