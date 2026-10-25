@@ -94,6 +94,19 @@ def historical_bootstrap():
         raw = base64.b64decode("".join(parts), validate=True)
         if hashlib.sha256(raw).hexdigest() != entry["decoded_sha256"]:
             raise ValueError("Reviewer historical supplement checksum mismatch: " + entry["name"])
+        # Historical b64 exports have pg_get_functiondef's closing $function$
+        # directly followed by REVOKE without a semicolon. Keep the immutable
+        # SHA-256-verified original, adding just the missing SQL terminator
+        # in-memory in the disposable test database. Never edit original b64.
+        if entry["name"] != "phase06_views":
+            raw, fixes = re.subn(
+                rb"(\$function\$)(\s*)(REVOKE ALL PRIVILEGES)",
+                rb"\1;\2\3",
+                raw,
+                flags=re.IGNORECASE,
+            )
+            if fixes != 1:
+                raise ValueError("Expected one historic SQL terminator correction: " + entry["name"])
         before_90.append((entry["name"],raw))
     if len(before_68) != 5 or len(before_90) != 4:
         raise ValueError("Wrong number of historical reproducibility supplements")
