@@ -11,7 +11,9 @@
 
 ## Validation
 
-- JavaScript syntax checked with Node.
+- JavaScript syntax checked with Node; HTML element IDs checked for uniqueness.
+- Live API checked using a disposable confirmed QA account: invalid token rejected; profile saved; draft saved; applicant submitted; one existing admission binding returned; client-supplied owner ignored; duplicate submission blocked; member denied the staff review queue. The disposable account and generated application were then removed. Initial short HTTP timeouts were rerun with sufficient response time.
+- GitHub Pages deployment succeeded. Browser checked sign-in, signup and recovery screens and staff review queue. No real mailbox verification was attempted.
 - Deployed `identity-access-api` with explicit server authentication despite gateway JWT checking being disabled, to support the existing custom staff token.
 - Database transaction test, rolled back: draft; submit; application binding; duplicate prevention; more-information response; resubmit preserving one binding; anonymous and authenticated roles denied direct table and transaction-function access.
 - Security advisors consulted; project-wide existing findings are not a clean security certification. Advisor timestamps may precede this migration.
