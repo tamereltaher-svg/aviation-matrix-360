@@ -54,7 +54,7 @@ input{width:100%;border:1.5px solid #bbcddd;border-radius:12px;font-size:20px;pa
 .status{min-height:18px;font-size:14px;color:#137740}
 .hidden{display:none!important}
 @media(max-width:350px){.option{font-size:15px}.choice-card{gap:10px;padding:13px}}
-.topic-cards{display:grid;gap:14px;margin-top:24px}.topic-card{display:flex;align-items:center;text-align:left;gap:16px;cursor:pointer;width:100%;padding:19px;border:1.5px solid #d8e6f2;background:#f8fbff;border-radius:16px;color:#17334e}.topic-card:hover,.topic-card:focus-visible{background:#ecf6ff;border-color:#2373b7}.topic-icon{display:grid;place-items:center;flex-shrink:0;width:66px;height:66px;border-radius:16px;background:#e5effb;color:#195b98;font-size:25px;font-weight:900}.topic-txt{display:grid;gap:5px}.topic-txt strong{font-size:20px}.topic-txt small{font-size:13px;color:#678198}.color-icon{display:flex;align-items:center;justify-content:center;gap:3px}.color-icon i{width:13px;height:28px;border-radius:10px;display:block}.color-icon i:nth-child(1){background:#e94b4b}.color-icon i:nth-child(2){background:#f2cd40}.color-icon i:nth-child(3){background:#248cc3}.number-display{margin:24px auto;width:min(240px,100%);height:148px;border-radius:18px;border:1px solid #dbe3eb;box-shadow:0 6px 20px #0f2e4a14;display:grid;place-items:center;background:#f0f7ff;color:#185789;font-size:95px;font-weight:900}.subject-desc{color:#688099;font-size:14px;line-height:1.5}@media(max-width:360px){.topic-icon{width:53px;height:53px;font-size:21px}.topic-card{gap:11px;padding:13px}}.emoji-display,.shape-display{margin:24px auto;width:min(240px,100%);height:148px;display:grid;place-items:center;border:1px solid #dbe3eb;border-radius:18px;background:#f2f7fd;font-size:91px}.shape-display svg{width:180px;height:125px}.dash-item{border:1px solid #d8e5f0;border-radius:13px;padding:14px;background:#f8fbff;margin:12px 0}.dash-item strong{display:block;margin-bottom:6px}.dash-item p{font-size:13px;color:#526b82;margin:4px 0}</style>
+.topic-cards{display:grid;gap:14px;margin-top:24px}.topic-card{display:flex;align-items:center;text-align:left;gap:16px;cursor:pointer;width:100%;padding:19px;border:1.5px solid #d8e6f2;background:#f8fbff;border-radius:16px;color:#17334e}.topic-card:hover,.topic-card:focus-visible{background:#ecf6ff;border-color:#2373b7}.topic-icon{display:grid;place-items:center;flex-shrink:0;width:66px;height:66px;border-radius:16px;background:#e5effb;color:#195b98;font-size:25px;font-weight:900}.topic-txt{display:grid;gap:5px}.topic-txt strong{font-size:20px}.topic-txt small{font-size:13px;color:#678198}.color-icon{display:flex;align-items:center;justify-content:center;gap:3px}.color-icon i{width:13px;height:28px;border-radius:10px;display:block}.color-icon i:nth-child(1){background:#e94b4b}.color-icon i:nth-child(2){background:#f2cd40}.color-icon i:nth-child(3){background:#248cc3}.number-display{margin:24px auto;width:min(240px,100%);height:148px;border-radius:18px;border:1px solid #dbe3eb;box-shadow:0 6px 20px #0f2e4a14;display:grid;place-items:center;background:#f0f7ff;color:#185789;font-size:95px;font-weight:900}.subject-desc{color:#688099;font-size:14px;line-height:1.5}@media(max-width:360px){.topic-icon{width:53px;height:53px;font-size:21px}.topic-card{gap:11px;padding:13px}}.emoji-display,.shape-display{margin:24px auto;width:min(240px,100%);height:148px;display:grid;place-items:center;border:1px solid #dbe3eb;border-radius:18px;background:#f2f7fd;font-size:91px}.shape-display svg{width:180px;height:125px}.dash-item{border:1px solid #d8e5f0;border-radius:13px;padding:14px;background:#f8fbff;margin:12px 0}.dash-item strong{display:block;margin-bottom:6px}.dash-item p{font-size:13px;color:#526b82;margin:4px 0}.general-banner{width:100%;margin:18px 0 0;padding:17px 16px;display:flex;gap:15px;align-items:center;text-align:left;background:#eaf5ff;border:1.5px solid #bfd9ee;border-radius:16px;color:#154875;cursor:pointer}.general-banner:hover{background:#deefff;border-color:#397fba}.general-icon{width:53px;height:53px;border-radius:14px;background:#d0e7fb;display:grid;place-items:center;font-size:25px;flex-shrink:0}.general-label{display:grid;gap:5px}.general-label strong{font-size:19px}.general-label small{color:#4f7393;font-size:13px}.general-label em{font-size:12px;font-weight:850;font-style:normal;color:#17689c}</style>
 </head>
 <body>
 <main>
@@ -62,6 +62,7 @@ input{width:100%;border:1.5px solid #bbcddd;border-radius:12px;font-size:20px;pa
 <section id="home">
 <h1>Choisis ton thème</h1>
 <p class="muted">Apprends le français en choisissant d'abord le thème de ton examen.</p>
+<button class="general-banner" id="generalBtn"><span class="general-icon" aria-hidden="true">🎓</span><span class="general-label"><strong>Examen Général</strong><small>6 thèmes · 18 questions · Choisir, écrire, compléter</small><em id="mixedAttempts">0/3 tentatives utilisées</em></span></button>
 <div class="topic-cards">
 <button class="topic-card" data-subject="colors"><span class="topic-icon color-icon" aria-hidden="true"><i></i><i></i><i></i></span><span class="topic-txt"><strong>Les Couleurs</strong><small>10 couleurs · 3 exercices</small></span></button>
 <button class="topic-card" data-subject="numbers"><span class="topic-icon" aria-hidden="true">123</span><span class="topic-txt"><strong>Les Nombres</strong><small>De 1 à 10 · 3 exercices</small></span></button>
@@ -222,7 +223,11 @@ function safeMigration(){
   }catch(e){}
   save();
 }
-function home(){active=null;subject=null;show('home');}
+function home(){
+  active=null;subject=null;show('home');
+  const total=Array.isArray(data.mixed?.attempts)?data.mixed.attempts.length:0;
+  $('mixedAttempts').textContent=total+'/3 tentatives utilisées';
+}
 function allReport(){
   const lines=['Résultats — Exercices de Français','Élève : '+data.name.trim(),''];
   let count=0;
@@ -236,6 +241,14 @@ function allReport(){
       g.attempts.forEach((a,i)=>lines.push('    Tentative '+(i+1)+' : '+a.score+'/10 ('+(a.score*10)+' %)'));
     }
     lines.push('');
+  }
+  if(Array.isArray(data.mixed?.attempts)&&data.mixed.attempts.length){
+    lines.push('Examen Général — 18 questions');
+    for(const [i,a] of data.mixed.attempts.entries()){
+      lines.push('  Tentative '+(i+1)+' : '+a.score+'/18 ('+Math.round(a.score/18*100)+' %)');
+      for(const topic of SUBJECTS)lines.push('    '+SUBJECT_NAMES[topic]+' : '+(a.breakdown?.[topic]??0)+'/3');
+    }
+    count+=data.mixed.attempts.length;
   }
   return {text:lines.join('\n').trim(),count};
 }
@@ -252,6 +265,14 @@ function updateAll(){
     for(const g of groups){
       const p=document.createElement('p');p.textContent=TITLES[g.mode]+' : '+g.attempts.map((a,i)=>(i+1)+'. '+a.score+'/10').join(' · ');
       div.appendChild(p);
+    }
+    list.appendChild(div);
+  }
+  if(Array.isArray(data.mixed?.attempts)&&data.mixed.attempts.length){
+    const div=document.createElement('div');div.className='dash-item';
+    const h=document.createElement('strong');h.textContent='Examen Général';div.appendChild(h);
+    for(const [i,a] of data.mixed.attempts.entries()){
+      const p=document.createElement('p');p.textContent='Tentative '+(i+1)+' : '+a.score+'/18';div.appendChild(p);
     }
     list.appendChild(div);
   }
@@ -393,6 +414,7 @@ function result(){
   $('status').textContent='';
   updateName();
 }
+$('generalBtn').addEventListener('click',()=>{window.location.href='./general.html';});
 for(const card of document.querySelectorAll('[data-subject]'))card.addEventListener('click',()=>selectSubject(card.getAttribute('data-subject')));
 $('allResultsBtn').addEventListener('click',allResults);
 $('allBack').addEventListener('click',home);
