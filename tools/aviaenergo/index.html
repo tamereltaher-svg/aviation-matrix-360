@@ -19,7 +19,7 @@ main{max-width:1460px;margin:auto;padding:22px 25px 45px}.intro{border-radius:20
 </head>
 <body>
 <header><div class="bar"><div class="brand"><span class="mark">AE</span><span><b>AVIAENERGO</b><small>AIP KNOWLEDGE & AIRPORT INTELLIGENCE</small></span></div><span class="chip">COMPLETE STAFF PORTAL · LEARNING & REFERENCE</span></div></header>
-<nav aria-label="Main navigation"><div class="navinner"><button class="navbtn" data-tab="home" aria-current="page">Overview</button><button class="navbtn" data-tab="tree">AIP Knowledge Tree</button><button class="navbtn" data-tab="intelligence">Airport Intelligence & Matrix</button></div></nav>
+<nav aria-label="Main navigation"><div class="navinner"><button class="navbtn" data-tab="home" aria-current="page">Overview</button><button class="navbtn" data-tab="tree">AIP Knowledge Tree</button><button class="navbtn" data-tab="intelligence">Airport Intelligence & Matrix</button><button class="navbtn" data-tab="route">ENR Route Explorer</button></div></nav>
 <main>
 <section id="home">
 <div class="intro"><div><span class="eyebrow">THE COMPLETE AIP WORKSPACE</span><h1>One system. From ICAO rules to airport service decisions.</h1><p>Explore the AIP foundations, airport facilities, passenger and aircraft services, restrictions, official references and a plain-English operational dictionary — in one place.</p></div><div class="kpi"><div><b>24</b><span>Airports</span></div><div><b>58</b><span>Services</span></div><div><b>837</b><span>Dictionary entries</span></div><div><b>45</b><span>Indexed SUP</span></div></div></div>
@@ -27,6 +27,7 @@ main{max-width:1460px;margin:auto;padding:22px 25px 45px}.intro{border-radius:20
 <div class="sectiontitle"><h2>Start with a module</h2><p>Tap a module to open the complete interactive tool.</p></div>
 <div class="grid">
 <button class="module" data-open="tree"><span class="icon">◎</span><b>AIP Foundation Tree</b><small>Start with Chicago Convention, ICAO, State authorities, AIS and how the AIP is published and updated.</small><span class="go">Open learning tree →</span></button>
+<button class="module" data-open="route"><span class="icon">↝</span><b>ENR Route Explorer</b><small>Choose two airports to explore published ATS airway corridors, navigation fixes, distances and a schematic chart.</small><span class="go">Open route explorer →</span></button>
 <button class="module" data-open="service"><span class="icon">⌕</span><b>Find a Service</b><small>Choose check-in, fuel, cargo or another service and see the published situation across airports.</small><span class="go">Open service search →</span></button>
 <button class="module" data-open="matrix"><span class="icon">▦</span><b>Airport Capability Matrix</b><small>Compare airports side by side: published, restricted, conditional, NIL, or needs verification.</small><span class="go">Open matrix →</span></button>
 <button class="module" data-open="request"><span class="icon">✈</span><b>Flight Request Check</b><small>Select a set of requested services and review gaps and restrictions before committing.</small><span class="go">Open flight check →</span></button>
@@ -38,24 +39,24 @@ main{max-width:1460px;margin:auto;padding:22px 25px 45px}.intro{border-radius:20
 <button class="module" data-open="control"><span class="icon">⚙</span><b>Source Control Tower</b><small>See source gaps, checklists, reconciliation warnings and review status.</small><span class="go">Open control tower →</span></button>
 <button class="module" data-open="brief"><span class="icon">▣</span><b>Service Evidence Brief</b><small>Build an internal review brief for a chosen airport and service set.</small><span class="go">Open review brief →</span></button>
 </div></section>
-<section class="viewer" id="viewer"><div class="vtoolbar"><b id="viewerTitle">AIP Knowledge Tree</b><span class="toolbarRight"><button class="simplebtn" id="overviewBtn">← Overview</button><button class="simplebtn" id="openSeparate">Open in full page ↗</button></span></div><iframe id="treeFrame" title="AIP Knowledge Tree" loading="eager" src="aip-foundation-tree/index.html" hidden></iframe><iframe id="intelFrame" title="Airport Intelligence V8" loading="eager" src="airport-intelligence/index.html" hidden></iframe></section>
+<section class="viewer" id="viewer"><div class="vtoolbar"><b id="viewerTitle">AIP Knowledge Tree</b><span class="toolbarRight"><button class="simplebtn" id="overviewBtn">← Overview</button><button class="simplebtn" id="openSeparate">Open in full page ↗</button></span></div><iframe id="treeFrame" title="AIP Knowledge Tree" loading="eager" src="aip-foundation-tree/index.html" hidden></iframe><iframe id="intelFrame" title="Airport Intelligence V8" loading="eager" src="airport-intelligence/index.html" hidden></iframe><iframe id="routeFrame" title="ENR Route Explorer" loading="lazy" src="enr-route-explorer/index.html" hidden></iframe></section>
 <footer>AVIAENERGO · AIP Intelligence · Educational and reference use · Snapshot 29 October 2026 · Not an operational approval</footer>
 </main>
 <script>
 (function(){
- const titles={tree:'The AIP Knowledge Tree',service:'Find a Service',matrix:'Airport Capability Matrix',request:'Flight Request Check',company:'Company Readiness',sup:'Supplements & Restrictions',library:'AIP Source Library',dictionary:'Operational Dictionary',accuracy:'Evidence Verification',control:'Source Control Tower',brief:'Service Evidence Brief'};
- const viewer=document.getElementById('viewer'),home=document.getElementById('home'),t=document.getElementById('treeFrame'),i=document.getElementById('intelFrame');
+ const titles={route:'ENR Route Explorer',tree:'The AIP Knowledge Tree',service:'Find a Service',matrix:'Airport Capability Matrix',request:'Flight Request Check',company:'Company Readiness',sup:'Supplements & Restrictions',library:'AIP Source Library',dictionary:'Operational Dictionary',accuracy:'Evidence Verification',control:'Source Control Tower',brief:'Service Evidence Brief'};
+ const viewer=document.getElementById('viewer'),home=document.getElementById('home'),t=document.getElementById('treeFrame'),i=document.getElementById('intelFrame'),r=document.getElementById('routeFrame');
  let pending='service',current='home';
  function updateNav(tab){document.querySelectorAll('.navbtn').forEach(x=>{if(x.dataset.tab===tab)x.setAttribute('aria-current','page');else x.removeAttribute('aria-current');});}
  function openModule(k){if(k==='home'){current='home';home.hidden=false;viewer.classList.remove('open');updateNav('home');window.scrollTo({top:0});return;}
- current=k;home.hidden=true;viewer.classList.add('open');const isTree=k==='tree';t.hidden=!isTree;i.hidden=isTree;document.getElementById('viewerTitle').textContent=titles[k]||'Airport Intelligence';updateNav(isTree?'tree':'intelligence');pending=k;
- if(!isTree){const frame=i;function activate(){try{const f=frame.contentWindow?.showView;if(typeof f==='function') f(k);}catch(err){/* embedded app remains independently navigable */}}
+ current=k;home.hidden=true;viewer.classList.add('open');const isTree=k==='tree',isRoute=k==='route';t.hidden=!isTree;i.hidden=isTree||isRoute;r.hidden=!isRoute;document.getElementById('viewerTitle').textContent=titles[k]||'Airport Intelligence';updateNav(isTree?'tree':(isRoute?'route':'intelligence'));pending=k;
+ if(!isTree&&!isRoute){const frame=i;function activate(){try{const f=frame.contentWindow?.showView;if(typeof f==='function') f(k);}catch(err){/* embedded app remains independently navigable */}}
  frame.addEventListener('load',activate,{once:true});if(frame.contentDocument?.readyState==='complete')activate();}
  window.scrollTo({top:0});}
  document.querySelectorAll('.navbtn').forEach(b=>b.addEventListener('click',()=>openModule(b.dataset.tab==='intelligence'?'service':b.dataset.tab)));
  document.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>openModule(b.dataset.open)));
  document.getElementById('overviewBtn').addEventListener('click',()=>openModule('home'));
- document.getElementById('openSeparate').addEventListener('click',()=>{const f=current==='tree'?t:i;window.open(f.getAttribute('src'),'_blank','noopener');});
+ document.getElementById('openSeparate').addEventListener('click',()=>{const f=current==='tree'?t:(current==='route'?r:i);window.open(f.getAttribute('src'),'_blank','noopener');});
  const match=location.hash.slice(1);if(titles[match])openModule(match);
 })();
 </script>
