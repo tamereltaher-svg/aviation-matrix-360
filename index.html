@@ -23,8 +23,8 @@
 <label for="nameResult">Prénom et nom</label><input id="nameResult" placeholder="Écris ton nom pour envoyer ton résultat" autocomplete="name" maxlength="100">
 <div class="info" id="summary"></div>
 <button class="retry" id="retryBtn">Recommencer l’examen</button>
-<button class="wa" id="shareBtn" disabled>Envoyer mon résultat sur WhatsApp</button>
-<button class="secondary" id="copyBtn">Copier le résultat</button><p id="notice" role="status"></p>
+<button class="wa" id="shareBtn" disabled>Envoyer mes résultats sur WhatsApp</button>
+<button class="secondary" id="copyBtn">Copier toutes les notes</button><p id="notice" role="status"></p>
 <p class="micro">La note est calculée sur cet appareil. Elle n'est pas vérifiée par un serveur.</p>
 </section>
 </main>
@@ -67,7 +67,19 @@ function draw(){
   $('nextBtn').disabled=!Number.isInteger(state.selected);
   $('nextBtn').textContent=state.index===9?'Terminer':'Suivant';
 }
-function message(){let p=Math.round(state.score*10);return 'Résultat — Les Couleurs\nÉlève : '+state.name.trim()+'\nTentative : '+state.attempts.length+'/'+MAX_ATTEMPTS+'\nNote : '+state.score+'/10 ('+p+' %)\nExamen : Français — Les Couleurs';}
+function message(){
+  const lines=[
+    'Résultats — Les Couleurs',
+    'Élève : '+state.name.trim(),
+    'Examen : Français — Les Couleurs',
+    'Tentatives effectuées : '+state.attempts.length+'/'+MAX_ATTEMPTS,
+    ''
+  ];
+  state.attempts.forEach((attempt,i)=>{
+    lines.push('Tentative '+(i+1)+' : '+attempt.score+'/10 ('+(attempt.score*10)+' %)');
+  });
+  return lines.join('\n');
+}
 function updateResultName(){
   $('shareBtn').disabled=!state.name.trim();
   $('copyBtn').disabled=!state.name.trim();
