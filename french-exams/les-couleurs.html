@@ -2,141 +2,289 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#102947">
-<title>Examen de Français — Les Couleurs</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#12385c">
+<meta name="description" content="Examen de français : les couleurs, trois types d'exercices.">
+<title>Les Couleurs — Examen de Français</title>
 <style>
-:root{font-family:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#152944;background:#f3f7fb;font-synthesis:none}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px}main{width:min(100%,500px);background:#fff;border:1px solid #dde7f1;border-radius:22px;padding:clamp(20px,5vw,32px);box-shadow:0 15px 45px #10294712}.eyebrow{color:#5f7896;letter-spacing:.12em;font-weight:800;font-size:11px;text-transform:uppercase}.muted{color:#677b95}h1{font-size:clamp(27px,6vw,33px);line-height:1.16;margin:8px 0 12px}h2{font-size:23px;margin:14px 0}label{display:block;margin:22px 0 7px;font-weight:700;font-size:14px}input{width:100%;padding:15px 16px;border:1.5px solid #b6c6d7;border-radius:12px;font-size:17px;outline-offset:3px}input:focus{border-color:#1a70c9}button{width:100%;border:0;border-radius:12px;padding:16px 20px;margin-top:17px;background:#12385c;color:#fff;font-size:16px;font-weight:750;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible{outline:3px solid #3b82f6;outline-offset:3px}.secondary{background:#eef3f9;color:#17416a}.wa{background:#128c48}.progress{width:100%;height:7px;background:#e9eff6;border-radius:20px;overflow:hidden;margin:14px 0}.bar{height:100%;background:#3579bc;transition:width .2s}.topline{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:13px;color:#677b95}.swatch{width:min(100%,245px);height:164px;border-radius:20px;margin:29px auto;box-shadow:0 9px 20px #173a5a18;border:1px solid #dae2eb}.center{text-align:center}.score{font-size:58px;font-weight:900;letter-spacing:-.06em;margin:14px 0;color:#134972}.score small{font-size:19px;letter-spacing:normal}.info{padding:13px;border-radius:12px;background:#f0f6fb;margin:16px 0;text-align:left;line-height:1.8;overflow-wrap:anywhere}.micro{font-size:12px;color:#708198;line-height:1.6;margin-top:20px}#notice{font-size:14px;color:#137840;min-height:20px}.hidden{display:none!important}
-.choose-label{font-size:15px;font-weight:750;margin:10px 0}.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.option{margin:0;min-height:62px;display:flex;align-items:center;justify-content:center;background:#f3f7fc;border:2px solid #d7e3ef;color:#173859;border-radius:14px;padding:12px;transition:background .12s,border-color .12s;line-height:1.3}.option[aria-pressed="true"]{border-color:#1358a2;background:#dcecff;color:#103c6d;box-shadow:0 0 0 2px #1358a222}.option:hover{background:#e6f1fd}.option:focus-visible{outline:3px solid #3b82f6;outline-offset:3px}@media(max-width:360px){.choices{gap:8px}.option{font-size:14px}}.attempt-panel{border:1px solid #d6e5f2;background:#f3f8fe;border-radius:15px;text-align:center;padding:17px 12px;margin:16px 0}.attempt-number{font-size:18px;font-weight:850;color:#17416a}.attempt-dots{display:flex;justify-content:center;gap:11px;margin:13px 0 9px}.attempt-dot{width:34px;height:34px;border:2px solid #b8cddd;background:#fff;border-radius:50%;display:flex;justify-content:center;align-items:center;font-size:14px;font-weight:800;color:#60798e}.attempt-dot.used{background:#17558f;color:#fff;border-color:#17558f}.attempt-remain{color:#536f86;font-size:14px;margin:0}.retry{background:#195b97}.history{font-size:13px;color:#63798c;margin:10px 0 0}</style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#17334e;background:#f3f7fc;font-synthesis:none}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;padding:18px}
+main{width:min(100%,560px);background:white;border:1px solid #dee8f2;border-radius:22px;box-shadow:0 12px 45px #13314f13;padding:clamp(19px,5vw,34px)}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.13em;color:#577995;font-weight:850}
+h1{font-size:clamp(28px,6vw,36px);line-height:1.16;margin:10px 0}
+h2{font-size:22px;margin:10px 0}
+.muted{color:#667e94;line-height:1.55}
+.grid{display:grid;gap:13px;margin-top:25px}
+.choice-card{width:100%;margin:0;padding:18px;display:flex;gap:16px;align-items:center;text-align:left;border-radius:15px;background:#f8fbff;color:#163959;border:1.5px solid #d7e5f2;cursor:pointer}
+.choice-card:hover,.choice-card:focus-visible{border-color:#2674bc;background:#edf6ff}
+.card-icon{display:grid;place-items:center;flex-shrink:0;width:49px;height:49px;border-radius:12px;font-size:23px;font-weight:900;background:#e0eefb;color:#195b97}
+.card-txt{display:grid;gap:4px}
+.card-txt strong{font-size:16px}
+.card-txt small{font-size:13px;color:#6a7e92;line-height:1.4}
+.card-txt em{font-style:normal;color:#276294;font-size:12px;font-weight:750;margin-top:4px}
+button{font-family:inherit}
+.primary,.secondary,.wa{display:block;width:100%;border:0;border-radius:12px;font-size:16px;font-weight:770;padding:15px 18px;margin-top:14px;cursor:pointer}
+.primary{background:#123d65;color:#fff}
+.wa{background:#168349;color:#fff}
+.secondary{background:#eaf1f8;color:#184469}
+button:disabled{opacity:.43;cursor:not-allowed}
+button:focus-visible,input:focus-visible{outline:3px solid #459ade;outline-offset:3px}
+.back{background:none;color:#1a618e;border:0;padding:0 0 13px;font-size:14px;font-weight:750;cursor:pointer}
+.topline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0;color:#667e94;font-size:13px}
+.progress{height:7px;background:#e8eff6;border-radius:20px;overflow:hidden;margin-bottom:22px}
+.bar{height:100%;background:#2776b7;transition:width .2s}
+.swatch{margin:24px auto;width:min(240px,100%);height:148px;border:1px solid #dbe3eb;border-radius:18px;box-shadow:0 6px 20px #0f2e4a14}
+.center{text-align:center}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.option{min-height:64px;margin:0;padding:13px 9px;border-radius:13px;border:2px solid #dae5ef;color:#183c5e;background:#f7faff;font-size:17px;font-weight:730;cursor:pointer}
+.option[aria-pressed="true"]{border-color:#185f9d;background:#ddedff}
+label,.fieldtitle{display:block;font-weight:800;font-size:15px;margin:12px 0 8px}
+input{width:100%;border:1.5px solid #bbcddd;border-radius:12px;font-size:20px;padding:15px 16px;outline-offset:3px}
+.missing{font-size:clamp(32px,8vw,44px);font-weight:850;letter-spacing:.13em;text-align:center;margin:8px 0 18px;white-space:pre-wrap;color:#164d7d}
+.result-score{font-size:57px;font-weight:900;letter-spacing:-.05em;margin:15px 0 4px;color:#144f7c}
+.panel{border-radius:15px;background:#f1f7fd;border:1px solid #d9e7f3;text-align:center;padding:18px 12px;margin:18px 0}
+.attempt-title{font-weight:850;font-size:17px}
+.dots{display:flex;justify-content:center;gap:12px;margin:12px 0}
+.dot{display:grid;place-items:center;border:2px solid #b5cbdc;color:#6a8499;background:#fff;border-radius:50%;width:34px;height:34px;font-size:14px;font-weight:850}
+.dot.used{background:#195d9a;border-color:#195d9a;color:white}
+.history{margin:8px auto 0;color:#52738f;font-size:14px;line-height:1.6}
+.info{background:#f2f7fb;border-radius:12px;padding:14px;line-height:1.8;white-space:pre-line;overflow-wrap:anywhere;margin:15px 0}
+.micro{color:#718498;font-size:12px;line-height:1.6;margin-top:18px}
+.status{min-height:18px;font-size:14px;color:#137740}
+.hidden{display:none!important}
+@media(max-width:350px){.option{font-size:15px}.choice-card{gap:10px;padding:13px}}
+</style>
 </head>
-<body><main>
+<body>
+<main>
 <div class="eyebrow">Examen de Français</div>
-<section id="exam">
-<div class="topline"><strong>Les Couleurs</strong><span id="count"></span></div><div class="progress"><div class="bar" id="bar"></div></div>
-<h2 class="center">Quelle est cette couleur ?</h2><div id="swatch" class="swatch" role="img" aria-label="Échantillon de couleur à identifier"></div>
-<p class="choose-label">Choisis la bonne réponse :</p><div id="choices" class="choices" role="group" aria-label="Choisis la bonne réponse"></div>
-<button id="nextBtn" disabled>Suivant</button>
+<section id="home">
+<h1>Les Couleurs</h1>
+<p class="muted">Choisis le type d'exercice. Chaque exercice comporte 10 questions et 3 tentatives maximum.</p>
+<div class="grid">
+<button class="choice-card" data-mode="choose"><span class="card-icon" aria-hidden="true">✓</span><span class="card-txt"><strong>Choisir la bonne réponse</strong><small>Reconnais la couleur parmi 4 propositions.</small><em id="remaining-choose"></em></span></button>
+<button class="choice-card" data-mode="write"><span class="card-icon" aria-hidden="true">Aa</span><span class="card-txt"><strong>Écrire le mot</strong><small>Écris le nom complet de chaque couleur.</small><em id="remaining-write"></em></span></button>
+<button class="choice-card" data-mode="letter"><span class="card-icon" aria-hidden="true">_</span><span class="card-txt"><strong>Compléter la lettre</strong><small>Écris la lettre manquante dans le mot.</small><em id="remaining-letter"></em></span></button>
+</div>
+<p class="micro">Le suivi des tentatives est enregistré uniquement dans ce navigateur.</p>
+</section>
+<section id="exam" class="hidden">
+<button id="examBack" class="back">← Tous les exercices</button>
+<div class="topline"><strong id="modeTitle"></strong><span id="questionCount"></span></div>
+<div class="progress"><div id="bar" class="bar"></div></div>
+<h2 class="center" id="questionTitle">Quelle est cette couleur ?</h2>
+<div class="swatch" id="swatch" role="img" aria-label="Couleur à identifier"></div>
+<div id="choices" class="choices hidden" role="group" aria-label="Choisis une réponse"></div>
+<div id="writeArea" class="hidden"><label for="answer">Écris le nom de la couleur :</label><input id="answer" type="text" maxlength="30" autocapitalize="none" autocomplete="off" spellcheck="false" placeholder="Ta réponse..."></div>
+<div id="letterArea" class="hidden"><div id="missing" class="missing" aria-label="Mot avec une lettre manquante"></div><label for="letter">Quelle lettre manque ?</label><input id="letter" type="text" maxlength="1" autocapitalize="none" autocomplete="off" spellcheck="false" placeholder="Une lettre..."></div>
+<button id="nextBtn" class="primary" disabled>Suivant</button>
 </section>
 <section id="result" class="hidden">
-<div class="center"><h1>Examen terminé !</h1><div class="score" id="score"></div><p id="congrats" class="muted"></p></div>
-<div class="attempt-panel" aria-live="polite"><div class="attempt-number" id="attemptNumber"></div><div class="attempt-dots" id="attemptDots"></div><p class="attempt-remain" id="remaining"></p><p class="history" id="history"></p></div>
-<label for="nameResult">Prénom et nom</label><input id="nameResult" placeholder="Écris ton nom pour envoyer ton résultat" autocomplete="name" maxlength="100">
+<button id="resultBack" class="back">← Tous les exercices</button>
+<h1 class="center">Examen terminé !</h1>
+<p class="center muted" id="resultTitle"></p>
+<div id="score" class="center result-score"></div>
+<p class="center muted" id="percent"></p>
+<div class="panel" aria-live="polite"><div class="attempt-title" id="attemptTitle"></div><div class="dots" id="dots"></div><div id="remaining"></div><div class="history" id="history"></div></div>
+<label for="studentName">Prénom et nom</label><input id="studentName" maxlength="100" autocomplete="name" placeholder="Écris ton nom pour envoyer tes notes">
 <div class="info" id="summary"></div>
-<button class="retry" id="retryBtn">Recommencer l’examen</button>
-<button class="wa" id="shareBtn" disabled>Envoyer mes résultats sur WhatsApp</button>
-<button class="secondary" id="copyBtn">Copier toutes les notes</button><p id="notice" role="status"></p>
-<p class="micro">La note est calculée sur cet appareil. Elle n'est pas vérifiée par un serveur.</p>
+<button id="retryBtn" class="primary">Recommencer l'examen</button>
+<button id="shareBtn" class="wa" disabled>Envoyer mes résultats sur WhatsApp</button>
+<button id="copyBtn" class="secondary" disabled>Copier toutes les notes</button>
+<p id="status" class="status" role="status"></p>
+<p class="micro">Les notes sont calculées sur cet appareil, sans vérification par un serveur.</p>
 </section>
 </main>
 <script>
 (()=>{'use strict';
-const COLORS=[{name:'Rouge',hex:'#e53935'},{name:'Bleu',hex:'#1976d2'},{name:'Vert',hex:'#43a047'},{name:'Jaune',hex:'#fdd835'},{name:'Noir',hex:'#151515'},{name:'Blanc',hex:'#ffffff'},{name:'Rose',hex:'#f48fb1'},{name:'Orange',hex:'#fb8c00'},{name:'Violet',hex:'#8e44ad'},{name:'Marron',hex:'#795548'}];
-const KEY='les_couleurs_fr_mcq_v2_20261112';const MAX_ATTEMPTS=3;let state=null;
+const COLORS=[
+{name:'Rouge',hex:'#e53935',missing:1},
+{name:'Bleu',hex:'#1976d2',missing:2},
+{name:'Vert',hex:'#43a047',missing:2},
+{name:'Jaune',hex:'#fdd835',missing:1},
+{name:'Noir',hex:'#151515',missing:2},
+{name:'Blanc',hex:'#ffffff',missing:2},
+{name:'Rose',hex:'#f48fb1',missing:2},
+{name:'Orange',hex:'#fb8c00',missing:2},
+{name:'Violet',hex:'#8e44ad',missing:2},
+{name:'Marron',hex:'#795548',missing:2}
+];
+const MODES=['choose','write','letter'];
+const TITLES={choose:'Choisir la bonne réponse',write:'Écrire le mot',letter:'Compléter la lettre'};
+const STORAGE='les_couleurs_fr_hub_v1_20261112';
+const LEGACY='les_couleurs_fr_mcq_v2_20261112';
+const LIMIT=3;
 const $=id=>document.getElementById(id);
-function normal(s){return String(s||'').trim().normalize('NFC').toLocaleLowerCase('fr-FR').replace(/\s+/g,' ');}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
-function show(id){for(const x of ['exam','result'])$(x).classList.toggle('hidden',x!==id);}
+let data,active=null;
+function clean(s){return String(s??'').trim().normalize('NFC').toLocaleLowerCase('fr-FR').replace(/\s+/g,' ');}
 function shuffle(){const a=COLORS.map((_,i)=>i);for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-function questionChoices(order){
-  return order.map(correct=>{
-    const wrong=shuffle().filter(i=>i!==correct).slice(0,3);
-    const choices=[correct,...wrong];
-    for(let i=choices.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[choices[i],choices[j]]=[choices[j],choices[i]];}
-    return choices;
-  });
-}
-function draw(){
-  if(state.completed){renderResult();return;}
-  show('exam');
-  $('count').textContent='Question '+(state.index+1)+' / 10';
-  $('bar').style.width=(state.index/10*100)+'%';
-  $('swatch').style.backgroundColor=COLORS[state.order[state.index]].hex;
-  const choices=$('choices');choices.replaceChildren();
-  for(const optionIndex of state.options[state.index]){
-    const btn=document.createElement('button');btn.type='button';btn.className='option';
-    btn.textContent=COLORS[optionIndex].name;
-    btn.setAttribute('aria-pressed',String(state.selected===optionIndex));
-    btn.addEventListener('click',()=>{
-      if(state.completed)return;
-      state.selected=optionIndex;save();
-      for(const el of choices.children)el.setAttribute('aria-pressed',String(el===btn));
-      $('nextBtn').disabled=false;
-    });
-    choices.appendChild(btn);
-  }
-  $('nextBtn').disabled=!Number.isInteger(state.selected);
-  $('nextBtn').textContent=state.index===9?'Terminer':'Suivant';
-}
-function message(){
-  const lines=[
-    'Résultats — Les Couleurs',
-    'Élève : '+state.name.trim(),
-    'Examen : Français — Les Couleurs',
-    'Tentatives effectuées : '+state.attempts.length+'/'+MAX_ATTEMPTS,
-    ''
-  ];
-  state.attempts.forEach((attempt,i)=>{
-    lines.push('Tentative '+(i+1)+' : '+attempt.score+'/10 ('+(attempt.score*10)+' %)');
-  });
-  return lines.join('\n');
-}
-function updateResultName(){
-  $('shareBtn').disabled=!state.name.trim();
-  $('copyBtn').disabled=!state.name.trim();
-  $('summary').textContent='Examen : Français — Les Couleurs\nÉlève : '+(state.name||'À compléter')+'\nQuestions : 10\nTentative : '+state.attempts.length+'/'+MAX_ATTEMPTS+'\nNote : '+state.score+'/10\nTerminé le : '+new Date(state.completedAt).toLocaleString('fr-FR');
-}
-function renderResult(){
-  show('result');
-  $('score').textContent=state.score+' / 10';
-  $('congrats').textContent=state.score*10+' %';
-  $('nameResult').value=state.name||'';
-  const used=state.attempts.length;
-  $('attemptNumber').textContent='Tentative '+used+' sur '+MAX_ATTEMPTS;
-  $('attemptDots').replaceChildren();
-  for(let i=1;i<=MAX_ATTEMPTS;i++){
-    const dot=document.createElement('span');
-    dot.className='attempt-dot'+(i<=used?' used':'');
-    dot.textContent=String(i);
-    dot.setAttribute('aria-label','Tentative '+i+(i<=used?' terminée':' disponible'));
-    $('attemptDots').appendChild(dot);
-  }
-  const left=MAX_ATTEMPTS-used;
-  $('remaining').textContent=left===0?'3 tentatives utilisées — examen terminé':('Il vous reste '+left+(left===1?' tentative':' tentatives'));
-  $('history').textContent='Notes : '+state.attempts.map((a,i)=>(i+1)+'. '+a.score+'/10').join(' · ');
-  $('retryBtn').classList.toggle('hidden',left===0);
-  $('summary').style.whiteSpace='pre-line';
-  updateResultName();
-}
-$('nameResult').addEventListener('input',e=>{if(!state?.completed)return;state.name=e.target.value.trimStart();save();updateResultName();});
-$('retryBtn').addEventListener('click',()=>{
-  if(!state?.completed||state.attempts.length>=MAX_ATTEMPTS)return;
-  const order=shuffle();
-  state={name:state.name,attempts:state.attempts,order,options:questionChoices(order),index:0,answers:[],selected:null,completed:false};
-  save();draw();
-});
-$('nextBtn').addEventListener('click',()=>{if(!state||state.completed)return;if(!Number.isInteger(state.selected))return;state.answers.push(state.selected);state.index++;state.selected=null;if(state.index===10){state.score=state.answers.reduce((n,a,i)=>n+(a===state.order[i]?1:0),0);state.completed=true;state.completedAt=new Date().toISOString();state.attempts.push({score:state.score,completedAt:state.completedAt});save();renderResult();}else{save();draw();}});
-$('shareBtn').addEventListener('click',()=>{if(!state?.completed||!state.name.trim())return;window.open('https://api.whatsapp.com/send?text='+encodeURIComponent(message()),'_blank','noopener,noreferrer');});
-$('copyBtn').addEventListener('click',async()=>{if(!state?.completed||!state.name.trim())return;try{await navigator.clipboard.writeText(message());$('notice').textContent='Résultat copié !';}catch(e){const t=document.createElement('textarea');t.value=message();document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();$('notice').textContent='Résultat copié !';}});
-try{
-  const raw=localStorage.getItem(KEY);
-  if(raw){
-    const saved=JSON.parse(raw);
-    if(saved&&typeof saved.name==='string'&&Array.isArray(saved.order)&&saved.order.length===10&&Array.isArray(saved.options)&&saved.options.length===10&&Array.isArray(saved.answers)&&Number.isInteger(saved.index)&&saved.index>=0&&saved.index<=10&&typeof saved.completed==='boolean'){
-      if(Array.isArray(saved.attempts)){
-        saved.attempts=saved.attempts.slice(0,MAX_ATTEMPTS);
-      }else{
-        saved.attempts=saved.completed ? [{score:saved.score,completedAt:saved.completedAt}] : [];
+function choicesFor(order){return order.map(correct=>{const a=[correct,...shuffle().filter(i=>i!==correct).slice(0,3)];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;});}
+function fresh(){return {name:'',modes:{choose:{attempts:[],current:null},write:{attempts:[],current:null},letter:{attempts:[],current:null}}};}
+function save(){try{localStorage.setItem(STORAGE,JSON.stringify(data));}catch(e){}}
+function get(){return data.modes[active];}
+function show(id){for(const p of ['home','exam','result'])$(p).classList.toggle('hidden',p!==id);}
+function safeMigration(){
+  try{
+    const raw=localStorage.getItem(STORAGE);
+    if(raw){
+      const obj=JSON.parse(raw);
+      if(obj&&obj.modes&&MODES.every(m=>obj.modes[m]&&Array.isArray(obj.modes[m].attempts))){
+        data=obj;return;
       }
-      state=saved;
-      save();
     }
-  }
-}catch(e){}
-if(!state){
-  const order=shuffle();
-  state={name:'',attempts:[],order,options:questionChoices(order),index:0,answers:[],selected:null,completed:false};
+  }catch(e){}
+  data=fresh();
+  try{
+    const old=JSON.parse(localStorage.getItem(LEGACY)||'null');
+    if(old&&Array.isArray(old.order)&&old.order.length===10&&Array.isArray(old.answers)&&typeof old.name==='string'){
+      data.name=old.name;
+      const choose=data.modes.choose;
+      choose.attempts=(Array.isArray(old.attempts)?old.attempts:(old.completed?[{score:old.score,completedAt:old.completedAt}]:[])).slice(0,LIMIT).filter(x=>x&&Number.isInteger(x.score));
+      if(Array.isArray(old.options)&&old.options.length===10&&Number.isInteger(old.index)){
+        choose.current={order:old.order,options:old.options,index:old.index,answers:old.answers,selected:old.selected,completed:!!old.completed,score:old.score,completedAt:old.completedAt};
+      }
+    }
+  }catch(e){}
   save();
 }
-state.completed?renderResult():draw();
+function home(){
+  active=null;
+  show('home');
+  for(const mode of MODES){
+    const n=data.modes[mode].attempts.length;
+    $('remaining-'+mode).textContent=n>=LIMIT?'3/3 tentatives utilisées':n+'/3 tentatives utilisées';
+  }
+}
+function startAttempt(){
+  const box=get();
+  if(box.attempts.length>=LIMIT){result();return;}
+  const order=shuffle();
+  box.current={order,options:active==='choose'?choicesFor(order):null,index:0,answers:[],selected:null,completed:false};
+  save();exam();
+}
+function selectMode(mode){
+  active=mode;const box=get();
+  if(box.current){
+    if(box.current.completed)result();
+    else exam();
+  }else if(box.attempts.length>=LIMIT)result();
+  else startAttempt();
+}
+function exam(){
+  const c=get().current;
+  if(!c){home();return;}
+  if(c.completed){result();return;}
+  show('exam');
+  $('modeTitle').textContent=TITLES[active];
+  $('questionCount').textContent='Question '+(c.index+1)+' / 10';
+  $('bar').style.width=(c.index/10*100)+'%';
+  const color=COLORS[c.order[c.index]];
+  $('swatch').style.backgroundColor=color.hex;
+  $('choices').classList.toggle('hidden',active!=='choose');
+  $('writeArea').classList.toggle('hidden',active!=='write');
+  $('letterArea').classList.toggle('hidden',active!=='letter');
+  if(active==='choose'){
+    $('choices').replaceChildren();
+    for(const i of c.options[c.index]){
+      const b=document.createElement('button');b.type='button';b.className='option';
+      b.textContent=COLORS[i].name;b.setAttribute('aria-pressed',String(c.selected===i));
+      b.addEventListener('click',()=>{
+        c.selected=i;save();
+        for(const node of $('choices').children)node.setAttribute('aria-pressed',String(node===b));
+        $('nextBtn').disabled=false;
+      });
+      $('choices').appendChild(b);
+    }
+  }
+  if(active==='write')$('answer').value=typeof c.selected==='string'?c.selected:'';
+  if(active==='letter'){
+    $('missing').textContent=color.name.slice(0,color.missing)+' _ '+color.name.slice(color.missing+1);
+    $('letter').value=typeof c.selected==='string'?c.selected:'';
+  }
+  $('nextBtn').disabled=active==='choose'?!Number.isInteger(c.selected):!String(c.selected??'').trim();
+  $('nextBtn').textContent=c.index===9?'Terminer':'Suivant';
+}
+function correct(c,i,answer){
+  const color=COLORS[c.order[i]];
+  if(active==='choose')return answer===c.order[i];
+  if(active==='write')return clean(answer)===clean(color.name);
+  return clean(answer)===clean(color.name[color.missing]);
+}
+function next(){
+  const box=get(),c=box.current;
+  if(!c||c.completed)return;
+  if(active==='choose'&&!Number.isInteger(c.selected))return;
+  if(active!=='choose'&&!String(c.selected??'').trim())return;
+  c.answers.push(c.selected);
+  c.index++;
+  c.selected=null;
+  if(c.index===10){
+    c.score=c.answers.reduce((sum,a,i)=>sum+(correct(c,i,a)?1:0),0);
+    c.completed=true;c.completedAt=new Date().toISOString();
+    box.attempts.push({score:c.score,completedAt:c.completedAt});
+    save();result();
+  }else{save();exam();}
+}
+function shareText(){
+  const b=get(),lines=['Résultats — Les Couleurs','Élève : '+data.name.trim(),'Exercice : '+TITLES[active],'Tentatives effectuées : '+b.attempts.length+'/'+LIMIT,''];
+  b.attempts.forEach((a,i)=>lines.push('Tentative '+(i+1)+' : '+a.score+'/10 ('+(a.score*10)+' %)'));
+  return lines.join('\n');
+}
+function updateName(){
+  $('shareBtn').disabled=!data.name.trim();
+  $('copyBtn').disabled=!data.name.trim();
+  const b=get();
+  $('summary').textContent='Examen : Français — Les Couleurs\nExercice : '+TITLES[active]+'\nÉlève : '+(data.name.trim()||'À compléter')+'\nTentatives : '+b.attempts.length+'/'+LIMIT+'\nDernière note : '+b.attempts[b.attempts.length-1].score+'/10';
+}
+function result(){
+  const b=get();
+  if(!b.attempts.length){home();return;}
+  show('result');
+  const last=b.attempts[b.attempts.length-1];
+  $('resultTitle').textContent=TITLES[active];
+  $('score').textContent=last.score+' / 10';
+  $('percent').textContent=(last.score*10)+' %';
+  $('attemptTitle').textContent='Tentative '+b.attempts.length+' sur '+LIMIT;
+  $('dots').replaceChildren();
+  for(let i=1;i<=LIMIT;i++){
+    const dot=document.createElement('span');
+    dot.className='dot'+(i<=b.attempts.length?' used':'');
+    dot.textContent=i;
+    $('dots').appendChild(dot);
+  }
+  const remaining=LIMIT-b.attempts.length;
+  $('remaining').textContent=remaining===0?'3 tentatives utilisées — exercice terminé':'Il vous reste '+remaining+(remaining===1?' tentative':' tentatives');
+  $('history').textContent='Notes : '+b.attempts.map((a,i)=>(i+1)+'. '+a.score+'/10').join(' · ');
+  $('retryBtn').classList.toggle('hidden',remaining===0);
+  $('studentName').value=data.name||'';
+  $('status').textContent='';
+  updateName();
+}
+for(const card of document.querySelectorAll('[data-mode]'))card.addEventListener('click',()=>selectMode(card.getAttribute('data-mode')));
+$('examBack').addEventListener('click',home);
+$('resultBack').addEventListener('click',home);
+$('nextBtn').addEventListener('click',next);
+$('answer').addEventListener('input',e=>{if(active!=='write')return;get().current.selected=e.target.value;save();$('nextBtn').disabled=!e.target.value.trim();});
+$('letter').addEventListener('input',e=>{if(active!=='letter')return;get().current.selected=e.target.value;save();$('nextBtn').disabled=!e.target.value.trim();});
+$('answer').addEventListener('keydown',e=>{if(e.key==='Enter')next();});
+$('letter').addEventListener('keydown',e=>{if(e.key==='Enter')next();});
+$('retryBtn').addEventListener('click',()=>{if(get().attempts.length<LIMIT)startAttempt();});
+$('studentName').addEventListener('input',e=>{data.name=e.target.value.trimStart();save();updateName();});
+$('shareBtn').addEventListener('click',()=>{if(!data.name.trim())return;window.open('https://api.whatsapp.com/send?text='+encodeURIComponent(shareText()),'_blank','noopener,noreferrer');});
+$('copyBtn').addEventListener('click',async()=>{
+  if(!data.name.trim())return;
+  const msg=shareText();
+  try{await navigator.clipboard.writeText(msg);$('status').textContent='Résultats copiés !';}
+  catch(e){
+    const input=document.createElement('textarea');input.value=msg;document.body.appendChild(input);input.select();
+    const done=document.execCommand('copy');input.remove();
+    $('status').textContent=done?'Résultats copiés !':'Copie indisponible sur cet appareil.';
+  }
+});
+safeMigration();
+home();
 })();
-</script></body></html>
+</script>
+</body>
+</html>
