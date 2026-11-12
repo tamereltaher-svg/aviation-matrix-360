@@ -54,7 +54,7 @@ input{width:100%;border:1.5px solid #bbcddd;border-radius:12px;font-size:20px;pa
 .status{min-height:18px;font-size:14px;color:#137740}
 .hidden{display:none!important}
 @media(max-width:350px){.option{font-size:15px}.choice-card{gap:10px;padding:13px}}
-.topic-cards{display:grid;gap:14px;margin-top:24px}.topic-card{display:flex;align-items:center;text-align:left;gap:16px;cursor:pointer;width:100%;padding:19px;border:1.5px solid #d8e6f2;background:#f8fbff;border-radius:16px;color:#17334e}.topic-card:hover,.topic-card:focus-visible{background:#ecf6ff;border-color:#2373b7}.topic-icon{display:grid;place-items:center;flex-shrink:0;width:66px;height:66px;border-radius:16px;background:#e5effb;color:#195b98;font-size:25px;font-weight:900}.topic-txt{display:grid;gap:5px}.topic-txt strong{font-size:20px}.topic-txt small{font-size:13px;color:#678198}.color-icon{display:flex;align-items:center;justify-content:center;gap:3px}.color-icon i{width:13px;height:28px;border-radius:10px;display:block}.color-icon i:nth-child(1){background:#e94b4b}.color-icon i:nth-child(2){background:#f2cd40}.color-icon i:nth-child(3){background:#248cc3}.number-display{margin:24px auto;width:min(240px,100%);height:148px;border-radius:18px;border:1px solid #dbe3eb;box-shadow:0 6px 20px #0f2e4a14;display:grid;place-items:center;background:#f0f7ff;color:#185789;font-size:95px;font-weight:900}.subject-desc{color:#688099;font-size:14px;line-height:1.5}@media(max-width:360px){.topic-icon{width:53px;height:53px;font-size:21px}.topic-card{gap:11px;padding:13px}}</style>
+.topic-cards{display:grid;gap:14px;margin-top:24px}.topic-card{display:flex;align-items:center;text-align:left;gap:16px;cursor:pointer;width:100%;padding:19px;border:1.5px solid #d8e6f2;background:#f8fbff;border-radius:16px;color:#17334e}.topic-card:hover,.topic-card:focus-visible{background:#ecf6ff;border-color:#2373b7}.topic-icon{display:grid;place-items:center;flex-shrink:0;width:66px;height:66px;border-radius:16px;background:#e5effb;color:#195b98;font-size:25px;font-weight:900}.topic-txt{display:grid;gap:5px}.topic-txt strong{font-size:20px}.topic-txt small{font-size:13px;color:#678198}.color-icon{display:flex;align-items:center;justify-content:center;gap:3px}.color-icon i{width:13px;height:28px;border-radius:10px;display:block}.color-icon i:nth-child(1){background:#e94b4b}.color-icon i:nth-child(2){background:#f2cd40}.color-icon i:nth-child(3){background:#248cc3}.number-display{margin:24px auto;width:min(240px,100%);height:148px;border-radius:18px;border:1px solid #dbe3eb;box-shadow:0 6px 20px #0f2e4a14;display:grid;place-items:center;background:#f0f7ff;color:#185789;font-size:95px;font-weight:900}.subject-desc{color:#688099;font-size:14px;line-height:1.5}@media(max-width:360px){.topic-icon{width:53px;height:53px;font-size:21px}.topic-card{gap:11px;padding:13px}}.emoji-display,.shape-display{margin:24px auto;width:min(240px,100%);height:148px;display:grid;place-items:center;border:1px solid #dbe3eb;border-radius:18px;background:#f2f7fd;font-size:91px}.shape-display svg{width:180px;height:125px}.dash-item{border:1px solid #d8e5f0;border-radius:13px;padding:14px;background:#f8fbff;margin:12px 0}.dash-item strong{display:block;margin-bottom:6px}.dash-item p{font-size:13px;color:#526b82;margin:4px 0}</style>
 </head>
 <body>
 <main>
@@ -65,9 +65,14 @@ input{width:100%;border:1.5px solid #bbcddd;border-radius:12px;font-size:20px;pa
 <div class="topic-cards">
 <button class="topic-card" data-subject="colors"><span class="topic-icon color-icon" aria-hidden="true"><i></i><i></i><i></i></span><span class="topic-txt"><strong>Les Couleurs</strong><small>10 couleurs · 3 exercices</small></span></button>
 <button class="topic-card" data-subject="numbers"><span class="topic-icon" aria-hidden="true">123</span><span class="topic-txt"><strong>Les Nombres</strong><small>De 1 à 10 · 3 exercices</small></span></button>
+<button class="topic-card" data-subject="alphabet"><span class="topic-icon" aria-hidden="true">ABC</span><span class="topic-txt"><strong>L'Alphabet</strong><small>26 lettres · 10 questions</small></span></button>
+<button class="topic-card" data-subject="shapes"><span class="topic-icon" aria-hidden="true">◇</span><span class="topic-txt"><strong>Les Formes</strong><small>10 formes · 3 exercices</small></span></button>
+<button class="topic-card" data-subject="animals"><span class="topic-icon" aria-hidden="true">🐱</span><span class="topic-txt"><strong>Les Animaux</strong><small>10 animaux · 3 exercices</small></span></button>
+<button class="topic-card" data-subject="fruits"><span class="topic-icon" aria-hidden="true">🍎</span><span class="topic-txt"><strong>Les Fruits</strong><small>10 fruits · 3 exercices</small></span></button>
 </div>
-<p class="micro">Choisis un thème pour découvrir ses exercices.</p>
+<button id="allResultsBtn" class="secondary">Voir toutes mes notes</button><p class="micro">Choisis un thème pour découvrir ses exercices.</p>
 </section>
+<section id="allResults" class="hidden"><button id="allBack" class="back">← Tous les thèmes</button><h1>Mes résultats</h1><p class="muted">Toutes mes notes, par thème et par exercice.</p><label for="allName">Prénom et nom</label><input id="allName" maxlength="100" autocomplete="name" placeholder="Ton nom"><div id="allList"></div><button id="allWhatsApp" class="wa" disabled>Envoyer toutes mes notes sur WhatsApp</button><button id="allCopy" class="secondary" disabled>Copier toutes mes notes</button><p id="allStatus" class="status" role="status"></p><p class="micro">Résultats enregistrés localement dans ce navigateur ; non vérifiés par un serveur.</p></section>
 <section id="subject" class="hidden">
 <button class="back" id="subjectBack">← Tous les thèmes</button>
 <h1 id="subjectTitle">Les Couleurs</h1>
@@ -86,6 +91,9 @@ input{width:100%;border:1.5px solid #bbcddd;border-radius:12px;font-size:20px;pa
 <h2 class="center" id="questionTitle">Quelle est cette couleur ?</h2>
 <div class="swatch" id="swatch" role="img" aria-label="Couleur à identifier"></div>
 <div class="number-display hidden" id="numberDisplay" role="img" aria-label="Nombre à identifier"></div>
+<div class="number-display hidden" id="alphabetDisplay" role="img" aria-label="Lettre à identifier"></div>
+<div class="shape-display hidden" id="shapeDisplay" role="img" aria-label="Forme à identifier"></div>
+<div class="emoji-display hidden" id="emojiDisplay" role="img" aria-label="Image à identifier"></div>
 <div id="choices" class="choices hidden" role="group" aria-label="Choisis une réponse"></div>
 <div id="writeArea" class="hidden"><label for="answer">Écris le nom de la couleur :</label><input id="answer" type="text" maxlength="30" autocapitalize="none" autocomplete="off" spellcheck="false" placeholder="Ta réponse..."></div>
 <div id="letterArea" class="hidden"><div id="missing" class="missing" aria-label="Mot avec une lettre manquante"></div><label for="letter">Quelle lettre manque ?</label><input id="letter" type="text" maxlength="1" autocapitalize="none" autocomplete="off" spellcheck="false" placeholder="Une lettre..."></div>
@@ -128,8 +136,36 @@ const NUMBERS=[
 {name:'Sept',number:7,missing:2},{name:'Huit',number:8,missing:2},
 {name:'Neuf',number:9,missing:2},{name:'Dix',number:10,missing:1}
 ];
-const SUBJECTS=['colors','numbers'];
-const SUBJECT_NAMES={colors:'Les Couleurs',numbers:'Les Nombres'};
+const ALPHABET='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map((symbol,position)=>({name:symbol.toLowerCase(),symbol,position,missing:0}));
+const SHAPES=[
+{name:'Cercle',figure:'<circle cx="90" cy="62" r="47"/>',missing:2},
+{name:'Carré',figure:'<rect x="43" y="16" width="94" height="94"/>',missing:2},
+{name:'Triangle',figure:'<polygon points="90,9 30,115 150,115"/>',missing:3},
+{name:'Rectangle',figure:'<rect x="17" y="32" width="146" height="66"/>',missing:3},
+{name:'Ovale',figure:'<ellipse cx="90" cy="64" rx="73" ry="42"/>',missing:2},
+{name:'Étoile',figure:'<polygon points="90,7 106,46 149,46 116,73 128,116 90,92 52,116 64,73 31,46 74,46"/>',missing:3},
+{name:'Cœur',figure:'<path d="M90 114 C68 94 22 68 22 42 C22 8 69 4 90 37 C111 4 158 8 158 42 C158 68 112 94 90 114Z"/>',missing:2},
+{name:'Losange',figure:'<polygon points="90,8 155,65 90,122 25,65"/>',missing:2},
+{name:'Pentagone',figure:'<polygon points="90,8 154,56 130,116 50,116 26,56"/>',missing:4},
+{name:'Hexagone',figure:'<polygon points="55,12 125,12 161,64 125,116 55,116 19,64"/>',missing:3}
+];
+const ANIMALS=[
+{name:'Chat',symbol:'🐈',missing:1},{name:'Chien',symbol:'🐕',missing:2},
+{name:'Lion',symbol:'🦁',missing:2},{name:'Éléphant',symbol:'🐘',missing:3},
+{name:'Lapin',symbol:'🐇',missing:2},{name:'Cheval',symbol:'🐎',missing:3},
+{name:'Vache',symbol:'🐄',missing:2},{name:'Mouton',symbol:'🐑',missing:3},
+{name:'Poisson',symbol:'🐟',missing:3},{name:'Oiseau',symbol:'🐦',missing:3}
+];
+const FRUITS=[
+{name:'Pomme',symbol:'🍎',missing:2},{name:'Banane',symbol:'🍌',missing:2},
+{name:'Orange',symbol:'🍊',missing:3},{name:'Fraise',symbol:'🍓',missing:3},
+{name:'Raisin',symbol:'🍇',missing:3},{name:'Poire',symbol:'🍐',missing:2},
+{name:'Pastèque',symbol:'🍉',missing:3},{name:'Citron',symbol:'🍋',missing:3},
+{name:'Cerise',symbol:'🍒',missing:3},{name:'Ananas',symbol:'🍍',missing:2}
+];
+const BANK={colors:COLORS,numbers:NUMBERS,alphabet:ALPHABET,shapes:SHAPES,animals:ANIMALS,fruits:FRUITS};
+const SUBJECTS=['colors','numbers','alphabet','shapes','animals','fruits'];
+const SUBJECT_NAMES={colors:'Les Couleurs',numbers:'Les Nombres',alphabet:"L'Alphabet",shapes:'Les Formes',animals:'Les Animaux',fruits:'Les Fruits'};
 const MODES=['choose','write','letter'];
 const TITLES={choose:'Choisir la bonne réponse',write:'Écrire le mot',letter:'Compléter la lettre'};
 const STORAGE='francais_exams_topics_v1_20261112';
@@ -138,23 +174,30 @@ const LEGACY='les_couleurs_fr_mcq_v2_20261112';
 const LIMIT=3;
 const $=id=>document.getElementById(id);
 let data,active=null,subject=null;
-function items(){return subject==='numbers'?NUMBERS:COLORS;}
-function clean(s){return String(s??'').trim().normalize('NFC').toLocaleLowerCase('fr-FR').replace(/\s+/g,' ');}
+function items(){return BANK[subject];}
+function clean(s){return String(s??'').trim().normalize('NFC').toLocaleLowerCase('fr-FR').replace(/œ/g,'oe').replace(/\s+/g,' ');}
 function shuffle(){const a=items().map((_,i)=>i);for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function choicesFor(order){return order.map(correct=>{const a=[correct,...shuffle().filter(i=>i!==correct).slice(0,3)];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;});}
 function freshModes(){return {choose:{attempts:[],current:null},write:{attempts:[],current:null},letter:{attempts:[],current:null}};}
-function fresh(){return {name:'',subjects:{colors:{modes:freshModes()},numbers:{modes:freshModes()}}};}
+function fresh(){const subjects={};for(const s of SUBJECTS)subjects[s]={modes:freshModes()};return {name:'',subjects};}
 function save(){try{localStorage.setItem(STORAGE,JSON.stringify(data));}catch(e){}}
 function get(){return data.subjects[subject].modes[active];}
-function show(id){for(const p of ['home','subject','exam','result'])$(p).classList.toggle('hidden',p!==id);}
+function show(id){for(const p of ['home','subject','exam','result','allResults'])$(p).classList.toggle('hidden',p!==id);}
 function safeMigration(){
   data=fresh();
   try{
     const raw=localStorage.getItem(STORAGE);
     if(raw){
       const obj=JSON.parse(raw);
-      if(obj&&obj.subjects&&SUBJECTS.every(s=>obj.subjects[s]&&obj.subjects[s].modes&&MODES.every(m=>Array.isArray(obj.subjects[s].modes[m].attempts)))){
-        data=obj;return;
+      if(obj&&obj.subjects&&['colors','numbers'].every(s=>obj.subjects[s]&&obj.subjects[s].modes&&MODES.every(m=>Array.isArray(obj.subjects[s].modes[m].attempts)))){
+        data=obj;
+        for(const s of SUBJECTS){
+          if(!data.subjects[s]||!data.subjects[s].modes)data.subjects[s]={modes:freshModes()};
+          for(const m of MODES){
+            if(!data.subjects[s].modes[m]||!Array.isArray(data.subjects[s].modes[m].attempts))data.subjects[s].modes[m]={attempts:[],current:null};
+          }
+        }
+        save();return;
       }
     }
   }catch(e){}
@@ -180,6 +223,41 @@ function safeMigration(){
   save();
 }
 function home(){active=null;subject=null;show('home');}
+function allReport(){
+  const lines=['Résultats — Exercices de Français','Élève : '+data.name.trim(),''];
+  let count=0;
+  for(const s of SUBJECTS){
+    const groups=MODES.map(m=>({mode:m,attempts:data.subjects[s].modes[m].attempts})).filter(g=>g.attempts.length);
+    if(!groups.length)continue;
+    lines.push(SUBJECT_NAMES[s]);
+    for(const g of groups){
+      count+=g.attempts.length;
+      lines.push('  '+TITLES[g.mode]+' ('+g.attempts.length+'/3)');
+      g.attempts.forEach((a,i)=>lines.push('    Tentative '+(i+1)+' : '+a.score+'/10 ('+(a.score*10)+' %)'));
+    }
+    lines.push('');
+  }
+  return {text:lines.join('\n').trim(),count};
+}
+function updateAll(){
+  const report=allReport();
+  $('allWhatsApp').disabled=!data.name.trim()||!report.count;
+  $('allCopy').disabled=!data.name.trim()||!report.count;
+  const list=$('allList');list.replaceChildren();
+  for(const s of SUBJECTS){
+    const groups=MODES.map(m=>({mode:m,attempts:data.subjects[s].modes[m].attempts})).filter(g=>g.attempts.length);
+    if(!groups.length)continue;
+    const div=document.createElement('div');div.className='dash-item';
+    const h=document.createElement('strong');h.textContent=SUBJECT_NAMES[s];div.appendChild(h);
+    for(const g of groups){
+      const p=document.createElement('p');p.textContent=TITLES[g.mode]+' : '+g.attempts.map((a,i)=>(i+1)+'. '+a.score+'/10').join(' · ');
+      div.appendChild(p);
+    }
+    list.appendChild(div);
+  }
+  if(!report.count){const p=document.createElement('p');p.className='muted';p.textContent='Aucun exercice terminé pour le moment.';list.appendChild(p);}
+}
+function allResults(){active=null;subject=null;show('allResults');$('allName').value=data.name||'';$('allStatus').textContent='';updateAll();}
 function subjectMenu(){
   if(!subject){home();return;}
   active=null;show('subject');
@@ -197,7 +275,7 @@ function selectSubject(s){
 function startAttempt(){
   const box=get();
   if(box.attempts.length>=LIMIT){result();return;}
-  const order=shuffle();
+  const order=shuffle().slice(0,10);
   box.current={order,options:active==='choose'?choicesFor(order):null,index:0,answers:[],selected:null,completed:false};
   save();exam();
 }
@@ -218,12 +296,18 @@ function exam(){
   $('questionCount').textContent='Question '+(c.index+1)+' / 10';
   $('bar').style.width=(c.index/10*100)+'%';
   const item=items()[c.order[c.index]];
-  $('questionTitle').textContent=subject==='numbers'?'Quel est ce nombre ?':'Quelle est cette couleur ?';
+  $('questionTitle').textContent=subject==='numbers'?'Quel est ce nombre ?':subject==='alphabet'?'Quelle est cette lettre ?':subject==='colors'?'Quelle est cette couleur ?':'Quel est ce mot en français ?';
   $('swatch').classList.toggle('hidden',subject!=='colors');
   $('numberDisplay').classList.toggle('hidden',subject!=='numbers');
+  $('alphabetDisplay').classList.toggle('hidden',subject!=='alphabet'||active==='letter');
+  $('shapeDisplay').classList.toggle('hidden',subject!=='shapes');
+  $('emojiDisplay').classList.toggle('hidden',subject!=='animals'&&subject!=='fruits');
+  if(subject==='colors')$('swatch').style.backgroundColor=item.hex;
   if(subject==='numbers')$('numberDisplay').textContent=String(item.number);
-  else $('swatch').style.backgroundColor=item.hex;
-  document.querySelector('label[for="answer"]').textContent=subject==='numbers'?'Écris le nombre en lettres :':'Écris le nom de la couleur :';
+  if(subject==='alphabet')$('alphabetDisplay').textContent=item.symbol;
+  if(subject==='shapes')$('shapeDisplay').innerHTML='<svg viewBox="0 0 180 128" xmlns="http://www.w3.org/2000/svg" fill="#75B9E8" stroke="#195B97" stroke-width="3" stroke-linejoin="round">'+item.figure+'</svg>';
+  if(subject==='animals'||subject==='fruits')$('emojiDisplay').textContent=item.symbol;
+  document.querySelector('label[for="answer"]').textContent=subject==='numbers'?'Écris le nombre en lettres :':subject==='alphabet'?'Écris la lettre en minuscule :':'Écris le mot en français :';
   $('choices').classList.toggle('hidden',active!=='choose');
   $('writeArea').classList.toggle('hidden',active!=='write');
   $('letterArea').classList.toggle('hidden',active!=='letter');
@@ -242,7 +326,11 @@ function exam(){
   }
   if(active==='write')$('answer').value=typeof c.selected==='string'?c.selected:'';
   if(active==='letter'){
-    $('missing').textContent=item.name.slice(0,item.missing)+' _ '+item.name.slice(item.missing+1);
+    if(subject==='alphabet'){
+      const p=item.position,letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      $('missing').textContent=p===0?'_ B C':p===25?'X Y _':letters[p-1]+' _ '+letters[p+1];
+      $('questionTitle').textContent='Quelle lettre manque ?';
+    }else $('missing').textContent=item.name.slice(0,item.missing)+' _ '+item.name.slice(item.missing+1);
     $('letter').value=typeof c.selected==='string'?c.selected:'';
   }
   $('nextBtn').disabled=active==='choose'?!Number.isInteger(c.selected):!String(c.selected??'').trim();
@@ -252,7 +340,7 @@ function correct(c,i,answer){
   const item=items()[c.order[i]];
   if(active==='choose')return answer===c.order[i];
   if(active==='write')return clean(answer)===clean(item.name);
-  return clean(answer)===clean(item.name[item.missing]);
+  return clean(answer)===clean(subject==='alphabet'?item.name:item.name[item.missing]);
 }
 function next(){
   const box=get(),c=box.current;
@@ -306,6 +394,12 @@ function result(){
   updateName();
 }
 for(const card of document.querySelectorAll('[data-subject]'))card.addEventListener('click',()=>selectSubject(card.getAttribute('data-subject')));
+$('allResultsBtn').addEventListener('click',allResults);
+$('allBack').addEventListener('click',home);
+$('allName').addEventListener('input',e=>{data.name=e.target.value.trimStart();save();updateAll();});
+$('allWhatsApp').addEventListener('click',()=>{const r=allReport();if(!data.name.trim()||!r.count)return;window.open('https://api.whatsapp.com/send?text='+encodeURIComponent(r.text),'_blank','noopener,noreferrer');});
+$('allCopy').addEventListener('click',async()=>{const r=allReport();if(!data.name.trim()||!r.count)return;try{await navigator.clipboard.writeText(r.text);$('allStatus').textContent='Toutes les notes ont été copiées !';}catch(e){const t=document.createElement('textarea');t.value=r.text;document.body.appendChild(t);t.select();const ok=document.execCommand('copy');t.remove();$('allStatus').textContent=ok?'Toutes les notes ont été copiées !':'Copie indisponible.';}});
+
 for(const card of document.querySelectorAll('[data-mode]'))card.addEventListener('click',()=>selectMode(card.getAttribute('data-mode')));
 $('subjectBack').addEventListener('click',home);
 $('examBack').addEventListener('click',subjectMenu);
