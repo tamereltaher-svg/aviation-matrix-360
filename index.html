@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#12385c">
-<meta name="description" content="Examen de français : les couleurs, trois types d'exercices.">
-<title>Les Couleurs — Examen de Français</title>
+<meta name="description" content="Exercices de français : les couleurs et les nombres, trois types de questions.">
+<title>Exercices de Français — Les Couleurs et Les Nombres</title>
 <style>
 :root{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#17334e;background:#f3f7fc;font-synthesis:none}
 *{box-sizing:border-box}
@@ -54,14 +54,24 @@ input{width:100%;border:1.5px solid #bbcddd;border-radius:12px;font-size:20px;pa
 .status{min-height:18px;font-size:14px;color:#137740}
 .hidden{display:none!important}
 @media(max-width:350px){.option{font-size:15px}.choice-card{gap:10px;padding:13px}}
-</style>
+.topic-cards{display:grid;gap:14px;margin-top:24px}.topic-card{display:flex;align-items:center;text-align:left;gap:16px;cursor:pointer;width:100%;padding:19px;border:1.5px solid #d8e6f2;background:#f8fbff;border-radius:16px;color:#17334e}.topic-card:hover,.topic-card:focus-visible{background:#ecf6ff;border-color:#2373b7}.topic-icon{display:grid;place-items:center;flex-shrink:0;width:66px;height:66px;border-radius:16px;background:#e5effb;color:#195b98;font-size:25px;font-weight:900}.topic-txt{display:grid;gap:5px}.topic-txt strong{font-size:20px}.topic-txt small{font-size:13px;color:#678198}.color-icon{display:flex;align-items:center;justify-content:center;gap:3px}.color-icon i{width:13px;height:28px;border-radius:10px;display:block}.color-icon i:nth-child(1){background:#e94b4b}.color-icon i:nth-child(2){background:#f2cd40}.color-icon i:nth-child(3){background:#248cc3}.number-display{margin:24px auto;width:min(240px,100%);height:148px;border-radius:18px;border:1px solid #dbe3eb;box-shadow:0 6px 20px #0f2e4a14;display:grid;place-items:center;background:#f0f7ff;color:#185789;font-size:95px;font-weight:900}.subject-desc{color:#688099;font-size:14px;line-height:1.5}@media(max-width:360px){.topic-icon{width:53px;height:53px;font-size:21px}.topic-card{gap:11px;padding:13px}}</style>
 </head>
 <body>
 <main>
 <div class="eyebrow">Examen de Français</div>
 <section id="home">
-<h1>Les Couleurs</h1>
-<p class="muted">Choisis le type d'exercice. Chaque exercice comporte 10 questions et 3 tentatives maximum.</p>
+<h1>Choisis ton thème</h1>
+<p class="muted">Apprends le français en choisissant d'abord le thème de ton examen.</p>
+<div class="topic-cards">
+<button class="topic-card" data-subject="colors"><span class="topic-icon color-icon" aria-hidden="true"><i></i><i></i><i></i></span><span class="topic-txt"><strong>Les Couleurs</strong><small>10 couleurs · 3 exercices</small></span></button>
+<button class="topic-card" data-subject="numbers"><span class="topic-icon" aria-hidden="true">123</span><span class="topic-txt"><strong>Les Nombres</strong><small>De 1 à 10 · 3 exercices</small></span></button>
+</div>
+<p class="micro">Choisis un thème pour découvrir ses exercices.</p>
+</section>
+<section id="subject" class="hidden">
+<button class="back" id="subjectBack">← Tous les thèmes</button>
+<h1 id="subjectTitle">Les Couleurs</h1>
+<p class="subject-desc">Choisis le type d'exercice. 10 questions, 3 tentatives par exercice.</p>
 <div class="grid">
 <button class="choice-card" data-mode="choose"><span class="card-icon" aria-hidden="true">✓</span><span class="card-txt"><strong>Choisir la bonne réponse</strong><small>Reconnais la couleur parmi 4 propositions.</small><em id="remaining-choose"></em></span></button>
 <button class="choice-card" data-mode="write"><span class="card-icon" aria-hidden="true">Aa</span><span class="card-txt"><strong>Écrire le mot</strong><small>Écris le nom complet de chaque couleur.</small><em id="remaining-write"></em></span></button>
@@ -70,20 +80,21 @@ input{width:100%;border:1.5px solid #bbcddd;border-radius:12px;font-size:20px;pa
 <p class="micro">Le suivi des tentatives est enregistré uniquement dans ce navigateur.</p>
 </section>
 <section id="exam" class="hidden">
-<button id="examBack" class="back">← Tous les exercices</button>
+<button id="examBack" class="back">← Les exercices</button>
 <div class="topline"><strong id="modeTitle"></strong><span id="questionCount"></span></div>
 <div class="progress"><div id="bar" class="bar"></div></div>
 <h2 class="center" id="questionTitle">Quelle est cette couleur ?</h2>
 <div class="swatch" id="swatch" role="img" aria-label="Couleur à identifier"></div>
+<div class="number-display hidden" id="numberDisplay" role="img" aria-label="Nombre à identifier"></div>
 <div id="choices" class="choices hidden" role="group" aria-label="Choisis une réponse"></div>
 <div id="writeArea" class="hidden"><label for="answer">Écris le nom de la couleur :</label><input id="answer" type="text" maxlength="30" autocapitalize="none" autocomplete="off" spellcheck="false" placeholder="Ta réponse..."></div>
 <div id="letterArea" class="hidden"><div id="missing" class="missing" aria-label="Mot avec une lettre manquante"></div><label for="letter">Quelle lettre manque ?</label><input id="letter" type="text" maxlength="1" autocapitalize="none" autocomplete="off" spellcheck="false" placeholder="Une lettre..."></div>
 <button id="nextBtn" class="primary" disabled>Suivant</button>
 </section>
 <section id="result" class="hidden">
-<button id="resultBack" class="back">← Tous les exercices</button>
+<button id="resultBack" class="back">← Les exercices</button>
 <h1 class="center">Examen terminé !</h1>
-<p class="center muted" id="resultTitle"></p>
+<p class="center muted" id="resultTopic"></p><p class="center muted" id="resultTitle"></p>
 <div id="score" class="center result-score"></div>
 <p class="center muted" id="percent"></p>
 <div class="panel" aria-live="polite"><div class="attempt-title" id="attemptTitle"></div><div class="dots" id="dots"></div><div id="remaining"></div><div class="history" id="history"></div></div>
@@ -110,36 +121,56 @@ const COLORS=[
 {name:'Violet',hex:'#8e44ad',missing:2},
 {name:'Marron',hex:'#795548',missing:2}
 ];
+const NUMBERS=[
+{name:'Un',number:1,missing:1},{name:'Deux',number:2,missing:1},
+{name:'Trois',number:3,missing:2},{name:'Quatre',number:4,missing:2},
+{name:'Cinq',number:5,missing:2},{name:'Six',number:6,missing:1},
+{name:'Sept',number:7,missing:2},{name:'Huit',number:8,missing:2},
+{name:'Neuf',number:9,missing:2},{name:'Dix',number:10,missing:1}
+];
+const SUBJECTS=['colors','numbers'];
+const SUBJECT_NAMES={colors:'Les Couleurs',numbers:'Les Nombres'};
 const MODES=['choose','write','letter'];
 const TITLES={choose:'Choisir la bonne réponse',write:'Écrire le mot',letter:'Compléter la lettre'};
-const STORAGE='les_couleurs_fr_hub_v1_20261112';
+const STORAGE='francais_exams_topics_v1_20261112';
+const COLOR_HUB='les_couleurs_fr_hub_v1_20261112';
 const LEGACY='les_couleurs_fr_mcq_v2_20261112';
 const LIMIT=3;
 const $=id=>document.getElementById(id);
-let data,active=null;
+let data,active=null,subject=null;
+function items(){return subject==='numbers'?NUMBERS:COLORS;}
 function clean(s){return String(s??'').trim().normalize('NFC').toLocaleLowerCase('fr-FR').replace(/\s+/g,' ');}
-function shuffle(){const a=COLORS.map((_,i)=>i);for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function shuffle(){const a=items().map((_,i)=>i);for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function choicesFor(order){return order.map(correct=>{const a=[correct,...shuffle().filter(i=>i!==correct).slice(0,3)];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;});}
-function fresh(){return {name:'',modes:{choose:{attempts:[],current:null},write:{attempts:[],current:null},letter:{attempts:[],current:null}}};}
+function freshModes(){return {choose:{attempts:[],current:null},write:{attempts:[],current:null},letter:{attempts:[],current:null}};}
+function fresh(){return {name:'',subjects:{colors:{modes:freshModes()},numbers:{modes:freshModes()}}};}
 function save(){try{localStorage.setItem(STORAGE,JSON.stringify(data));}catch(e){}}
-function get(){return data.modes[active];}
-function show(id){for(const p of ['home','exam','result'])$(p).classList.toggle('hidden',p!==id);}
+function get(){return data.subjects[subject].modes[active];}
+function show(id){for(const p of ['home','subject','exam','result'])$(p).classList.toggle('hidden',p!==id);}
 function safeMigration(){
+  data=fresh();
   try{
     const raw=localStorage.getItem(STORAGE);
     if(raw){
       const obj=JSON.parse(raw);
-      if(obj&&obj.modes&&MODES.every(m=>obj.modes[m]&&Array.isArray(obj.modes[m].attempts))){
+      if(obj&&obj.subjects&&SUBJECTS.every(s=>obj.subjects[s]&&obj.subjects[s].modes&&MODES.every(m=>Array.isArray(obj.subjects[s].modes[m].attempts)))){
         data=obj;return;
       }
     }
   }catch(e){}
-  data=fresh();
+  try{
+    const hub=JSON.parse(localStorage.getItem(COLOR_HUB)||'null');
+    if(hub&&hub.modes&&MODES.every(m=>hub.modes[m]&&Array.isArray(hub.modes[m].attempts))){
+      data.name=typeof hub.name==='string'?hub.name:'';
+      data.subjects.colors.modes=hub.modes;
+      save();return;
+    }
+  }catch(e){}
   try{
     const old=JSON.parse(localStorage.getItem(LEGACY)||'null');
     if(old&&Array.isArray(old.order)&&old.order.length===10&&Array.isArray(old.answers)&&typeof old.name==='string'){
       data.name=old.name;
-      const choose=data.modes.choose;
+      const choose=data.subjects.colors.modes.choose;
       choose.attempts=(Array.isArray(old.attempts)?old.attempts:(old.completed?[{score:old.score,completedAt:old.completedAt}]:[])).slice(0,LIMIT).filter(x=>x&&Number.isInteger(x.score));
       if(Array.isArray(old.options)&&old.options.length===10&&Number.isInteger(old.index)){
         choose.current={order:old.order,options:old.options,index:old.index,answers:old.answers,selected:old.selected,completed:!!old.completed,score:old.score,completedAt:old.completedAt};
@@ -148,13 +179,20 @@ function safeMigration(){
   }catch(e){}
   save();
 }
-function home(){
-  active=null;
-  show('home');
+function home(){active=null;subject=null;show('home');}
+function subjectMenu(){
+  if(!subject){home();return;}
+  active=null;show('subject');
+  $('subjectTitle').textContent=SUBJECT_NAMES[subject];
   for(const mode of MODES){
-    const n=data.modes[mode].attempts.length;
+    const n=data.subjects[subject].modes[mode].attempts.length;
     $('remaining-'+mode).textContent=n>=LIMIT?'3/3 tentatives utilisées':n+'/3 tentatives utilisées';
   }
+}
+function selectSubject(s){
+  if(!SUBJECTS.includes(s))return;
+  subject=s;
+  subjectMenu();
 }
 function startAttempt(){
   const box=get();
@@ -179,8 +217,13 @@ function exam(){
   $('modeTitle').textContent=TITLES[active];
   $('questionCount').textContent='Question '+(c.index+1)+' / 10';
   $('bar').style.width=(c.index/10*100)+'%';
-  const color=COLORS[c.order[c.index]];
-  $('swatch').style.backgroundColor=color.hex;
+  const item=items()[c.order[c.index]];
+  $('questionTitle').textContent=subject==='numbers'?'Quel est ce nombre ?':'Quelle est cette couleur ?';
+  $('swatch').classList.toggle('hidden',subject!=='colors');
+  $('numberDisplay').classList.toggle('hidden',subject!=='numbers');
+  if(subject==='numbers')$('numberDisplay').textContent=String(item.number);
+  else $('swatch').style.backgroundColor=item.hex;
+  document.querySelector('label[for="answer"]').textContent=subject==='numbers'?'Écris le nombre en lettres :':'Écris le nom de la couleur :';
   $('choices').classList.toggle('hidden',active!=='choose');
   $('writeArea').classList.toggle('hidden',active!=='write');
   $('letterArea').classList.toggle('hidden',active!=='letter');
@@ -188,7 +231,7 @@ function exam(){
     $('choices').replaceChildren();
     for(const i of c.options[c.index]){
       const b=document.createElement('button');b.type='button';b.className='option';
-      b.textContent=COLORS[i].name;b.setAttribute('aria-pressed',String(c.selected===i));
+      b.textContent=items()[i].name;b.setAttribute('aria-pressed',String(c.selected===i));
       b.addEventListener('click',()=>{
         c.selected=i;save();
         for(const node of $('choices').children)node.setAttribute('aria-pressed',String(node===b));
@@ -199,17 +242,17 @@ function exam(){
   }
   if(active==='write')$('answer').value=typeof c.selected==='string'?c.selected:'';
   if(active==='letter'){
-    $('missing').textContent=color.name.slice(0,color.missing)+' _ '+color.name.slice(color.missing+1);
+    $('missing').textContent=item.name.slice(0,item.missing)+' _ '+item.name.slice(item.missing+1);
     $('letter').value=typeof c.selected==='string'?c.selected:'';
   }
   $('nextBtn').disabled=active==='choose'?!Number.isInteger(c.selected):!String(c.selected??'').trim();
   $('nextBtn').textContent=c.index===9?'Terminer':'Suivant';
 }
 function correct(c,i,answer){
-  const color=COLORS[c.order[i]];
+  const item=items()[c.order[i]];
   if(active==='choose')return answer===c.order[i];
-  if(active==='write')return clean(answer)===clean(color.name);
-  return clean(answer)===clean(color.name[color.missing]);
+  if(active==='write')return clean(answer)===clean(item.name);
+  return clean(answer)===clean(item.name[item.missing]);
 }
 function next(){
   const box=get(),c=box.current;
@@ -227,7 +270,7 @@ function next(){
   }else{save();exam();}
 }
 function shareText(){
-  const b=get(),lines=['Résultats — Les Couleurs','Élève : '+data.name.trim(),'Exercice : '+TITLES[active],'Tentatives effectuées : '+b.attempts.length+'/'+LIMIT,''];
+  const b=get(),lines=['Résultats — '+SUBJECT_NAMES[subject],'Élève : '+data.name.trim(),'Exercice : '+TITLES[active],'Tentatives effectuées : '+b.attempts.length+'/'+LIMIT,''];
   b.attempts.forEach((a,i)=>lines.push('Tentative '+(i+1)+' : '+a.score+'/10 ('+(a.score*10)+' %)'));
   return lines.join('\n');
 }
@@ -235,13 +278,14 @@ function updateName(){
   $('shareBtn').disabled=!data.name.trim();
   $('copyBtn').disabled=!data.name.trim();
   const b=get();
-  $('summary').textContent='Examen : Français — Les Couleurs\nExercice : '+TITLES[active]+'\nÉlève : '+(data.name.trim()||'À compléter')+'\nTentatives : '+b.attempts.length+'/'+LIMIT+'\nDernière note : '+b.attempts[b.attempts.length-1].score+'/10';
+  $('summary').textContent='Examen : Français — '+SUBJECT_NAMES[subject]+'\nExercice : '+TITLES[active]+'\nÉlève : '+(data.name.trim()||'À compléter')+'\nTentatives : '+b.attempts.length+'/'+LIMIT+'\nDernière note : '+b.attempts[b.attempts.length-1].score+'/10';
 }
 function result(){
   const b=get();
   if(!b.attempts.length){home();return;}
   show('result');
   const last=b.attempts[b.attempts.length-1];
+  $('resultTopic').textContent=SUBJECT_NAMES[subject];
   $('resultTitle').textContent=TITLES[active];
   $('score').textContent=last.score+' / 10';
   $('percent').textContent=(last.score*10)+' %';
@@ -261,9 +305,11 @@ function result(){
   $('status').textContent='';
   updateName();
 }
+for(const card of document.querySelectorAll('[data-subject]'))card.addEventListener('click',()=>selectSubject(card.getAttribute('data-subject')));
 for(const card of document.querySelectorAll('[data-mode]'))card.addEventListener('click',()=>selectMode(card.getAttribute('data-mode')));
-$('examBack').addEventListener('click',home);
-$('resultBack').addEventListener('click',home);
+$('subjectBack').addEventListener('click',home);
+$('examBack').addEventListener('click',subjectMenu);
+$('resultBack').addEventListener('click',subjectMenu);
 $('nextBtn').addEventListener('click',next);
 $('answer').addEventListener('input',e=>{if(active!=='write')return;get().current.selected=e.target.value;save();$('nextBtn').disabled=!e.target.value.trim();});
 $('letter').addEventListener('input',e=>{if(active!=='letter')return;get().current.selected=e.target.value;save();$('nextBtn').disabled=!e.target.value.trim();});
