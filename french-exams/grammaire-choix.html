@@ -117,7 +117,7 @@ function advance(){
    const autoCorrect=ITEMS.reduce((total,item,i)=>total+(item.correct!==null&&cur.answers[i]===item.correct?1:0),0);
    const answer5Index=cur.answers[4];
    cur.finished=true;cur.completedAt=new Date().toISOString();cur.autoScore=autoCorrect;
-   const rec={autoScore,answer5Index,answer5Text:ITEMS[4].options[answer5Index],completedAt:cur.completedAt};
+   const rec={autoScore:autoCorrect,answer5Index,answer5Text:ITEMS[4].options[answer5Index],completedAt:cur.completedAt};
    state.attempts.push(rec);save();renderResult();
  }else{save();renderQuestion();}
 }
