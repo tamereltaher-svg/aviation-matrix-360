@@ -86,3 +86,22 @@ The guardian-managed pilot has been deployed with these additional resources:
 4. Policy governing minors' data processing, guardian verification, exact retention/deletion periods and institutional data controller responsibilities needs final approval. Keep this adult-supervised pilot in non-production until completed.
 5. Public HTML quizzes continue to use localStorage independently. No backfill of old local results or automatic live roll-out has been performed.
 6. Before full launch, test 3-attempt concurrency, session expiration, tampered user IDs, consent revocation, teacher access assignment/revocation, report access isolation and actual grading accuracy.
+
+## Registration approval workflow — 2026-11-13
+
+**Deployed on AviationMatrix-Core, not a separate Supabase account.** This release intentionally keeps the older public quizzes unchanged and adds a separately gated cloud pilot.
+
+- Registration: `/enroll.html` → Supabase confirmed email/password → explicitly submitted `account_requests` → `pending`.
+- Administration: `/admin-approval.html` → `admin-queue`, `admin-decide` for accounts and learners. Decisions use atomic updates and write to `registration_decisions` audit log.
+- Account transitions: `pending → active` (Approve), `pending → rejected` (Reject), `active → suspended`, `suspended → active` (Reactivate); previously rejected requests may be approved on review.
+- Learner profiles separately start as `pending`, even when the guardian account is active. Their exams and teacher-sharing remain blocked until an admin approves the learner profile.
+- Adult student can register and manage a learner profile. A minor must be represented by a guardian-controlled account with explicit consent. No underage independent email/password login is being deployed in the pilot.
+- Teacher account cannot self-assign a role. A verified administrator's approval can grant `teacher` role to a self-registered teacher, and only explicitly guardian-shared learners appear on teacher dashboard.
+- Every protected API action checks the current status on the server. Client-side disabled buttons are supplemental, not the enforcement.
+- No admin role has been bootstrapped automatically. At last verification `fr_edu.user_roles` contained **0 admins** and `account_requests` contained **0 applications**. To activate administrative approvals, obtain the intended admin's exact verified Supabase Auth email and confirm ownership; only then, in a reviewed migration/SQL operation, assign `fr_edu.user_roles.role_name='admin'` to that existing `auth.users.id`. Never bootstrap based on a user-editable claim or auto-promote the first registrant.
+- New tables: `fr_edu.account_requests`, `fr_edu.registration_decisions`. All tables retain private-schema RLS / deny-by-default access; anonymous and authenticated roles have no direct table reads.
+- After a learner is deleted on guardian request, the audit log's learner foreign key is detached, so the learner's profile can be deleted without an FK-check failure.
+
+**Not yet verified end to end:** live email delivery and allowed Auth callback URL, creation of a real test account, actual admin-approved login with a real session, a learner's server-scored attempt. These must be tested with consenting adults before going live. The public HTML demo exams remain accessible without cloud authentication and must not be represented as locked.
+
+**Supabase migration files:** `fr_edu_registration_admin_approval_gate.sql`, `fr_edu_registration_audit_learner_delete_fix.sql`.
