@@ -1,0 +1,113 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Administration — Validation des comptes</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:#193b5d;background:#f3f7fb}*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:17px;display:grid;place-items:center}
+main{width:min(100%,810px);padding:clamp(20px,4vw,32px);border-radius:20px;background:white;border:1px solid #e0e9f2;box-shadow:0 12px 40px #102d4a12}
+.eyebrow{color:#527c9c;font-size:12px;font-weight:850;text-transform:uppercase;letter-spacing:.12em}
+h1{font-size:30px;margin:8px 0}h2{margin:24px 0 14px;font-size:21px}
+.muted{font-size:14px;color:#637f96;line-height:1.5}.micro{font-size:12px;line-height:1.6;color:#7890a4}
+label{display:block;margin:12px 0 6px;font-size:14px;font-weight:700}
+input{display:block;width:100%;border:1.5px solid #bccede;padding:13px 15px;border-radius:10px;font-size:16px}
+.btn{border:0;border-radius:11px;padding:13px 16px;font-weight:800;font-size:14px;background:#194872;color:white;cursor:pointer}
+.btn.secondary{background:#e8f1f9;color:#22587c}.btn:disabled{opacity:.5;cursor:not-allowed}.btn.tiny{padding:10px 13px;font-size:13px}
+.actionRow{display:flex;flex-wrap:wrap;gap:8px;margin:11px 0}.card{border:1px solid #d9e6f0;border-radius:13px;padding:14px 16px;margin:11px 0;background:#fafcff}.card strong{display:block;font-size:16px;overflow-wrap:anywhere}.card p{font-size:13px;color:#617d95;margin:6px 0;overflow-wrap:anywhere}
+.pill{display:inline-block;font-size:12px;font-weight:800;border-radius:20px;background:#e8f2fb;color:#1c658e;padding:6px 11px}.pending{background:#f2f0de;color:#7a660b}.active{background:#e1f4e8;color:#157140}.rejected,.suspended{background:#fae8e8;color:#a82e31}
+.hidden{display:none!important}.error{color:#b83131}.ok{color:#16814a}#status{margin:13px 0;min-height:20px;font-size:14px}
+.flex{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.stats{display:flex;gap:12px;flex-wrap:wrap}.stats>div{flex:1;min-width:140px;border-radius:13px;padding:14px;background:#f4f8fc;text-align:center}.stats strong{display:block;font-size:26px;color:#1b5985}
+a{color:#246b9d}.search{margin-top:15px}
+</style></head><body><main>
+<div class="eyebrow">Français · Administration</div>
+<h1>Validation des inscriptions</h1>
+<p class="muted">Approbation des comptes et des profils élèves — accès réservé à l'administrateur autorisé.</p>
+<div id="status" role="status"></div>
+<section id="login">
+<h2>Connexion administrateur</h2>
+<label for="email">Email</label><input id="email" type="email" autocomplete="email" placeholder="adresse@email.com">
+<label for="password">Mot de passe</label><input id="password" type="password" autocomplete="current-password" placeholder="Mot de passe">
+<button id="loginButton" class="btn" style="width:100%;margin:15px 0">Se connecter</button>
+<p class="micro">L'inscription à l'application ne donne jamais automatiquement des droits administrateur. Un administrateur doit être nommé dans la base après vérification de son identité.</p>
+</section>
+<section id="admin" class="hidden">
+<div class="flex"><strong id="identity"></strong><button id="logout" class="btn secondary">Se déconnecter</button></div>
+<div class="stats"><div><strong id="accountsPending">0</strong><span>Comptes à approuver</span></div><div><strong id="learnersPending">0</strong><span>Élèves à approuver</span></div></div>
+<div class="actionRow"><button id="refresh" class="btn">Actualiser les demandes</button></div>
+<h2>Demandes de comptes</h2>
+<div id="accounts"></div>
+<h2>Profils élèves</h2>
+<p class="micro">Avant d'approuver un élève, son responsable légal doit disposer d'un compte actif.</p>
+<div id="learners"></div>
+</section>
+<p class="micro">Toutes les décisions sont enregistrées avec l'identifiant de l'administrateur et la date. L'approbation d'un compte enseignant n'accorde aucun accès aux élèves sans accord explicite de leur responsable légal.</p>
+<a href="./enroll.html">Retour à l'inscription</a>
+</main>
+<script type="module">
+import {createClient} from "https://esm.sh/@supabase/supabase-js@2.95.0";
+const URL="https://vsuekfzyebqnhthyvwpf.supabase.co",KEY="sb_publishable_sRvoFKXyDEzQPLaAk3xZOQ_RLVxh5g3",API=URL+"/functions/v1/french-education-pilot";
+const sb=createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const $=id=>document.getElementById(id);
+function status(t,bad=false){$('status').textContent=t;$('status').className=bad?'error':'ok';}
+async function action(a,payload={}){
+ const {data:{session}}=await sb.auth.getSession();
+ if(!session)throw Error("Connexion requise.");
+ const r=await fetch(API,{method:"POST",headers:{apikey:KEY,authorization:"Bearer "+session.access_token,"Content-Type":"application/json"},body:JSON.stringify({action:a,...payload})});
+ const d=await r.json().catch(()=>({error:"Réponse invalide"}));
+ if(!r.ok||!d.ok)throw Error(d.error||"Erreur serveur");
+ return d.result;
+}
+async function protectedCall(fn){try{status('');await fn();}catch(e){status(e.message||String(e),true);}}
+async function check(){
+ const {data:{session}}=await sb.auth.getSession();
+ if(!session){$('login').classList.remove('hidden');$('admin').classList.add('hidden');return;}
+ const state=await action('session');
+ if(state.role!=='admin'){$('login').classList.add('hidden');$('admin').classList.add('hidden');throw Error("Ce compte ne possède pas les droits d'administration.");}
+ $('identity').textContent=state.email;$('login').classList.add('hidden');$('admin').classList.remove('hidden');
+ await refresh();
+}
+async function login(){
+ const email=$('email').value.trim(),password=$('password').value;
+ if(!email||!password)throw Error("Email et mot de passe requis.");
+ const {error}=await sb.auth.signInWithPassword({email,password});
+ if(error)throw error;
+ await check();
+}
+function textNode(element,tag,value,className){
+ const c=document.createElement(tag);c.textContent=value;if(className)c.className=className;element.appendChild(c);return c;
+}
+function makeDecision(target,id,decision,label){
+ const b=document.createElement('button');b.className='btn secondary tiny';b.type='button';b.textContent=label;
+ b.addEventListener('click',()=>protectedCall(async()=>{
+   if(!confirm(label+" cette demande ?"))return;
+   const note=decision==='reject'||decision==='suspend'?(prompt("Motif facultatif (500 caractères maximum) :","")||"").slice(0,500):"";
+   await action('admin-decide',{target,target_id:id,decision,note});
+   status('Décision enregistrée : '+label);await refresh();
+ }));
+ return b;
+}
+function renderItem(container,target,id,title,subtitle,approval){
+ const card=document.createElement('div');card.className='card';
+ textNode(card,'strong',title);
+ textNode(card,'p',subtitle);
+ textNode(card,'span',approval,'pill '+approval);
+ const actions=document.createElement('div');actions.className='actionRow';
+ const buttons=approval==='pending'?[['approve','Approuver'],['reject','Refuser']]:
+   approval==='active'?[['suspend','Suspendre']]:
+   approval==='suspended'?[['reactivate','Réactiver']]:
+   approval==='rejected'?[['approve','Approuver']]:[];
+ for(const [decision,label] of buttons)actions.appendChild(makeDecision(target,id,decision,label));
+ card.appendChild(actions);container.appendChild(card);
+}
+async function refresh(){
+ const data=await action('admin-queue');
+ const ac=$('accounts'),le=$('learners');ac.replaceChildren();le.replaceChildren();
+ $('accountsPending').textContent=data.accounts.filter(a=>a.approval_status==='pending').length;
+ $('learnersPending').textContent=data.learners.filter(l=>l.approval_status==='pending').length;
+ if(!data.accounts.length)textNode(ac,'p','Aucun compte enregistré.');
+ for(const x of data.accounts)renderItem(ac,'account',x.user_id,x.email||x.user_id,x.account_type+' · '+new Date(x.requested_at).toLocaleDateString('fr-FR'),x.approval_status);
+ if(!data.learners.length)textNode(le,'p','Aucun profil élève enregistré.');
+ for(const x of data.learners)renderItem(le,'learner',x.id,x.display_name,(x.grade_code||'Non classé')+' · Responsable : '+x.guardian_email+' ('+(x.guardian_status||'non confirmé')+')',x.approval_status);
+}
+$('loginButton').addEventListener('click',()=>protectedCall(login));
+$('refresh').addEventListener('click',()=>protectedCall(refresh));
+$('logout').addEventListener('click',()=>protectedCall(async()=>{await sb.auth.signOut();location.reload();}));
+protectedCall(check);
+</script></body></html>
