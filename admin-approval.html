@@ -15,7 +15,7 @@ input{display:block;width:100%;border:1.5px solid #bccede;padding:13px 15px;bord
 .flex{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .stats{display:flex;gap:12px;flex-wrap:wrap}.stats>div{flex:1;min-width:140px;border-radius:13px;padding:14px;background:#f4f8fc;text-align:center}.stats strong{display:block;font-size:26px;color:#1b5985}
 a{color:#246b9d}.search{margin-top:15px}
-body{text-align:right}input[type=email],input[type=password]{direction:ltr;text-align:left}.eyebrow{letter-spacing:0}.flex{flex-direction:row}</style></head><body><main>
+body{text-align:right}input[type=email],input[type=password]{direction:ltr;text-align:left}.eyebrow{letter-spacing:0}.flex{flex-direction:row}.timer-row{border:1px solid #d8e6f1;background:#f8fbff;border-radius:13px;padding:14px;margin:12px 0;display:grid;gap:10px}.timer-row strong{font-size:14px}.timer-row input[type=number]{width:92px;padding:8px;font-size:15px;text-align:center;direction:ltr}.timer-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.timer-controls label{margin:0;display:flex;gap:7px;align-items:center}.timer-controls input[type=checkbox]{width:18px;height:18px}.timer-controls button{margin-inline-start:auto}.timer-label{font-size:12px;color:#648199}</style></head><body><main>
 <div class="eyebrow">اللغة الفرنسية · الإدارة</div>
 <h1>مراجعة طلبات التسجيل</h1>
 <p class="muted">الموافقة على حسابات المستخدمين وملفات الطلاب — الوصول للأدمن المعتمد فقط.</p>
@@ -33,6 +33,9 @@ body{text-align:right}input[type=email],input[type=password]{direction:ltr;text-
 <div class="actionRow"><button id="refresh" class="btn">تحديث الطلبات</button></div>
 <h2>طلبات الحسابات</h2>
 <div id="accounts"></div>
+<h2>إعدادات وقت الامتحانات</h2>
+<p class="micro">يمكن تحديد عداد مختلف لكل امتحان أو إيقافه. التعديلات تسري على المحاولات الجديدة فقط، ولا تغيّر الوقت المتبقي للمحاولات التي بدأت بالفعل.</p>
+<div id="timerSettings"></div>
 <h2>ملفات الطلاب</h2>
 <p class="micro">قبل الموافقة على الطالب، لازم يكون حساب ولي الأمر مفعّلًا.</p>
 <div id="learners"></div>
@@ -104,6 +107,36 @@ function renderItem(container,target,id,title,subtitle,approval){
  for(const [decision,label] of buttons)actions.appendChild(makeDecision(target,id,decision,label));
  card.appendChild(actions);container.appendChild(card);
 }
+async function refreshTimers(){
+ const data=await action('admin-timers'),box=$('timerSettings');
+ box.replaceChildren();
+ if(!data.length){box.textContent='لا توجد امتحانات مفعلة حاليًا.';return;}
+ for(const exam of data){
+  const wrap=document.createElement('div');wrap.className='timer-row';
+  textNode(wrap,'strong',exam.title_fr+' — '+exam.question_count+' أسئلة');
+  const controls=document.createElement('div');controls.className='timer-controls';
+  const timerLabel=document.createElement('label');
+  const enabled=document.createElement('input');enabled.type='checkbox';enabled.checked=!!exam.timer_enabled;
+  timerLabel.appendChild(enabled);
+  timerLabel.appendChild(document.createTextNode('تفعيل العداد'));
+  controls.appendChild(timerLabel);
+  const mins=document.createElement('input');mins.type='number';mins.min='1';mins.max='120';mins.step='1';
+  mins.value=String(Math.round((exam.timer_duration_seconds||600)/60));
+  mins.setAttribute('aria-label','مدة الامتحان بالدقائق');
+  controls.appendChild(mins);
+  controls.appendChild(document.createTextNode('دقيقة'));
+  const save=document.createElement('button');save.type='button';save.className='btn secondary tiny';save.textContent='حفظ';
+  save.addEventListener('click',()=>protectedCall(async()=>{
+   const value=Number(mins.value);
+   if(!Number.isInteger(value)||value<1||value>120)throw Error('المدة لازم تكون عددًا صحيحًا بين 1 و120 دقيقة.');
+   const result=await action('admin-set-timer',{assessment_code:exam.code,timer_enabled:enabled.checked,duration_seconds:value*60});
+   status('تم حفظ مدة '+exam.title_fr+': '+(result.timer_enabled?value+' دقيقة':'بدون عداد'));
+   await refreshTimers();
+  }));
+  controls.appendChild(save);wrap.appendChild(controls);
+  box.appendChild(wrap);
+ }
+}
 async function refresh(){
  const data=await action('admin-queue');
  const ac=$('accounts'),le=$('learners');ac.replaceChildren();le.replaceChildren();
@@ -113,6 +146,7 @@ async function refresh(){
  for(const x of data.accounts)renderItem(ac,'account',x.user_id,x.email||x.user_id,({guardian:'ولي أمر',adult_student:'طالب بالغ',teacher:'مدرس'}[x.account_type]||x.account_type)+' · '+new Date(x.requested_at).toLocaleDateString('ar-EG'),x.approval_status);
  if(!data.learners.length)textNode(le,'p','لا توجد ملفات طلاب حاليًا.');
  for(const x of data.learners)renderItem(le,'learner',x.id,x.display_name,(x.grade_code||'غير مصنف')+' · ولي الأمر: '+x.guardian_email+' ('+(x.guardian_status||'غير مؤكد')+')',x.approval_status);
+ await refreshTimers();
 }
 $('loginButton').addEventListener('click',()=>protectedCall(login));
 $('refresh').addEventListener('click',()=>protectedCall(refresh));
