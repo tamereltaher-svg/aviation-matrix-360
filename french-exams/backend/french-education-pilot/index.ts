@@ -185,13 +185,14 @@ async function checkAttempt(uid,id){
  return x[0];
 }
 async function questions(id){
- const rows=await run("select r.display_order,r.answer_mode,l.topic_code,l.visual_type,l.visual_value,l.missing_index,l.canonical_fr from fr_edu.responses r join fr_edu.lexemes l on l.id=r.lexeme_id where r.attempt_id=$1 order by r.display_order",[id]);
+ const rows=await run("select r.display_order,r.answer_mode,r.answer_value as saved_answer,l.topic_code,l.visual_type,l.visual_value,l.missing_index,l.canonical_fr from fr_edu.responses r join fr_edu.lexemes l on l.id=r.lexeme_id where r.attempt_id=$1 order by r.display_order",[id]);
  const out=[];
  for(const row of rows){
-  const q={order:row.display_order,mode:row.answer_mode,topic:row.topic_code,visual_type:row.visual_type,visual_value:row.visual_value};
+  const q={order:row.display_order,mode:row.answer_mode,topic:row.topic_code,visual_type:row.visual_type,visual_value:row.answer_mode==="letter"&&row.topic_code==="alphabet"?null:row.visual_value,saved_answer:row.saved_answer};
   if(row.answer_mode==="choose"){
-   const opts=await run("select canonical_fr from fr_edu.lexemes where topic_code=$1 and canonical_fr<>$2 order by random() limit 3",[row.topic_code,row.canonical_fr]);
-   q.options=shuffled([row.canonical_fr,...opts.map(x=>x.canonical_fr)]);
+   const previous=row.saved_answer&&row.saved_answer!==row.canonical_fr?row.saved_answer:null;
+   const opts=await run("select canonical_fr from fr_edu.lexemes where topic_code=$1 and canonical_fr<>$2 and ($3::text is null or canonical_fr<>$3) order by random() limit $4",[row.topic_code,row.canonical_fr,previous,previous?2:3]);
+   q.options=shuffled([row.canonical_fr,...(previous?[previous]:[]),...opts.map(x=>x.canonical_fr)]);
   }
   if(row.answer_mode==="letter"){
    const term=row.canonical_fr;
@@ -207,24 +208,62 @@ async function questions(id){
  }
  return out;
 }
+
+async function adminTimers(uid){
+ if(!await isAdmin(uid))error(403,"Administrateur non autorisé");
+ return await run("select code,title_fr,question_count,timer_enabled,timer_duration_seconds from fr_edu.assessments where pilot_enabled=true order by title_fr");
+}
+async function adminSetTimer(uid,b){
+ if(!await isAdmin(uid))error(403,"Administrateur non autorisé");
+ const code=field(b,"assessment_code",100);
+ const enabled=b.timer_enabled;
+ const duration=b.duration_seconds;
+ if(typeof enabled!=="boolean"||!Number.isInteger(duration)||duration<60||duration>7200)
+  error(400,"Durée invalide : 1 à 120 minutes");
+ return await sql.begin(async tx=>{
+  const a=await run("update fr_edu.assessments set timer_enabled=$1,timer_duration_seconds=$2 where code=$3 and pilot_enabled=true returning code,timer_enabled,timer_duration_seconds",[enabled,duration,code],tx);
+  if(!a.length)error(404,"Examen pilote non disponible");
+  await run("insert into fr_edu.audit_events(actor_user_id,event_code,object_kind,object_id,context) values($1,'timer_updated','assessment',$2,$3::jsonb)",[uid,code,JSON.stringify({timer_enabled:enabled,duration_seconds:duration})],tx);
+  return a[0];
+ });
+}
+function attemptTime(a){
+ return {attempt_id:a.id,attempt_number:a.attempt_number,state:a.state,
+  time_limit_seconds:a.time_limit_seconds??null,deadline_at:a.deadline_at??null,
+  server_now:a.server_now,submission_reason:a.submission_reason??null};
+}
+async function finalizeTimedOut(id){
+ const rows=await run("select * from fr_edu.finalize_attempt($1::uuid,'timeout')",[id]);
+ return rows[0];
+}
 async function start(uid,b){
  await requireAccount(uid);
  const own=await learner(uid,b.learner_id);
  if(own.approval_status!=="active")error(403,"Profil élève en attente de validation");
  const code=field(b,"assessment_code",100);
- const assessments=await run("select code,question_count,max_attempts from fr_edu.assessments where code=$1 and pilot_enabled=true",[code]);
+ const assessments=await run("select code,question_count,max_attempts,timer_enabled,timer_duration_seconds from fr_edu.assessments where code=$1 and pilot_enabled=true",[code]);
  if(!assessments.length)error(404,"Examen indisponible");
  const def=assessments[0];
- const previous=await run("select id,attempt_number,state from fr_edu.attempts where student_user_id=$1 and learner_id=$2 and assessment_code=$3 order by attempt_number desc",[uid,own.id,code]);
+ const previous=await run("select id,attempt_number,state,deadline_at,time_limit_seconds,clock_timestamp() as server_now,(deadline_at is not null and deadline_at<=clock_timestamp()) as expired from fr_edu.attempts where student_user_id=$1 and learner_id=$2 and assessment_code=$3 order by attempt_number desc",[uid,own.id,code]);
  const current=previous.find(x=>x.state==="in_progress");
- if(current)return {attempt_id:current.id,attempt_number:current.attempt_number,questions:await questions(current.id),resumed:true};
+ if(current){
+  if(current.expired){
+   const r=await finalizeTimedOut(current.id);
+   return {...attemptTime(current),state:r.state,score:r.auto_score,maximum:r.maximum_score,submission_reason:"timeout",expired:true};
+  }
+  return {...attemptTime(current),questions:await questions(current.id),resumed:true};
+ }
  if(previous.length>=Number(def.max_attempts))error(409,"Trois tentatives déjà utilisées");
  const pool=await run("select topic_code,mode,question_count from fr_edu.assessment_pool where assessment_code=$1 order by topic_code,mode",[code]);
  if(!pool.length)error(422,"Examen sans banque de questions");
  const no=previous.length+1;
- const id=await sql.begin(async tx=>{
-  const created=await run("insert into fr_edu.attempts(student_user_id,learner_id,assessment_code,attempt_number) values($1,$2,$3,$4) returning id",[uid,own.id,code,no],tx);
-  const id=created[0].id,selected=[];
+ let id;
+ try{
+ id=await sql.begin(async tx=>{
+  const created=await run(
+   "insert into fr_edu.attempts(student_user_id,learner_id,assessment_code,attempt_number,time_limit_seconds,deadline_at) values($1,$2,$3,$4,case when $5::boolean then $6::integer else null end,case when $5::boolean then clock_timestamp()+($6::integer * interval '1 second') else null end) returning id",
+   [uid,own.id,code,no,Boolean(def.timer_enabled),def.timer_duration_seconds??null],tx);
+  const attemptId=created[0].id,selected=[];
   for(const block of pool){
    const lex=await run("select id from fr_edu.lexemes where topic_code=$1 and content_status<>'retired' order by random() limit $2",[block.topic_code,block.question_count],tx);
    if(lex.length!==Number(block.question_count))error(422,"Banque incomplète");
@@ -232,44 +271,76 @@ async function start(uid,b){
   }
   if(selected.length!==Number(def.question_count))error(422,"Nombre de questions incohérent");
   let order=1;
-  for(const q of shuffled(selected))await run("insert into fr_edu.responses(attempt_id,display_order,lexeme_id,answer_mode) values($1,$2,$3,$4)",[id,order++,q.id,q.mode],tx);
-  return id;
+  for(const q of shuffled(selected))await run("insert into fr_edu.responses(attempt_id,display_order,lexeme_id,answer_mode) values($1,$2,$3,$4)",[attemptId,order++,q.id,q.mode],tx);
+  return attemptId;
  });
- return {attempt_id:id,attempt_number:no,questions:await questions(id),resumed:false};
+ }catch(e){
+  if(e?.code==="23505")error(409,"Une autre tentative a été ouverte ; actualisez pour la reprendre.");
+  throw e;
+ }
+ const info=await run("select id,attempt_number,state,time_limit_seconds,deadline_at,submission_reason,clock_timestamp() as server_now from fr_edu.attempts where id=$1",[id]);
+ return {...attemptTime(info[0]),questions:await questions(id),resumed:false};
 }
 async function getAttempt(uid,b){
  const a=await checkAttempt(uid,b.attempt_id);
- return a.state==="in_progress"?{attempt_id:a.id,attempt_number:a.attempt_number,state:a.state,questions:await questions(a.id)}:{attempt_id:a.id,attempt_number:a.attempt_number,state:a.state,score:a.auto_score,maximum:a.maximum_score};
+ const rows=await run("select id,attempt_number,state,deadline_at,time_limit_seconds,submission_reason,auto_score,maximum_score,clock_timestamp() as server_now,(deadline_at is not null and deadline_at<=clock_timestamp()) as expired from fr_edu.attempts where id=$1",[a.id]);
+ const v=rows[0];
+ if(v.state!=="in_progress")return {...attemptTime(v),score:v.auto_score,maximum:v.maximum_score};
+ if(v.expired){
+  const result=await finalizeTimedOut(v.id);
+  return {...attemptTime(v),state:result.state,score:result.auto_score,maximum:result.maximum_score,submission_reason:"timeout",expired:true};
+ }
+ return {...attemptTime(v),questions:await questions(v.id)};
 }
-async function submit(uid,b){
- const id=field(b,"attempt_id",36),answers=b.answers;
- if(!Array.isArray(answers)||answers.length>200)error(400,"Réponses invalides");
+async function saveAnswer(uid,b){
+ const id=field(b,"attempt_id",36);
+ if(!Number.isInteger(b.order)||b.order<1||b.order>200||typeof b.answer!=="string"||b.answer.length>100||!b.answer.trim())error(400,"Réponse invalide");
  await checkAttempt(uid,id);
  return await sql.begin(async tx=>{
-  const checked=await run("select state,student_user_id from fr_edu.attempts where id=$1 for update",[id],tx);
-  if(!checked.length||checked[0].student_user_id!==uid)error(403,"Accès refusé");
-  if(checked[0].state!=="in_progress"){
-   const old=await run("select state,auto_score,maximum_score from fr_edu.attempts where id=$1",[id],tx);
-   return {score:old[0].auto_score,maximum:old[0].maximum_score,state:old[0].state,already_submitted:true};
+  const a=await run("select id,state,deadline_at,clock_timestamp() as server_now,(deadline_at is not null and deadline_at<=clock_timestamp()) as expired from fr_edu.attempts where id=$1 for update",[id],tx);
+  if(!a.length)error(404,"Tentative introuvable");
+  if(a[0].state!=="in_progress")return {saved:false,finished:true,state:a[0].state};
+  if(a[0].expired){
+   const finished=await run("select * from fr_edu.finalize_attempt($1::uuid,'timeout')",[id],tx);
+   return {saved:false,finished:true,state:finished[0].state,score:finished[0].auto_score,maximum:finished[0].maximum_score,submission_reason:"timeout"};
   }
-  const questions=await run("select r.display_order,r.answer_mode,l.canonical_fr,l.missing_index,l.topic_code from fr_edu.responses r join fr_edu.lexemes l on l.id=r.lexeme_id where r.attempt_id=$1 order by r.display_order for update of r",[id],tx);
-  if(answers.length!==questions.length||!questions.length)error(400,"Toutes les réponses sont requises");
-  const map=new Map();
-  for(const a of answers){
-   if(!a||!Number.isInteger(a.order)||a.order<1||typeof a.answer!=="string"||a.answer.length>100||!a.answer.trim()||map.has(a.order))error(400,"Réponse invalide");
-   map.set(a.order,a.answer);
+  const changed=await run("update fr_edu.responses set answer_value=$1,score=null,checked_at=null where attempt_id=$2 and display_order=$3 returning display_order",[b.answer.trim(),id,b.order],tx);
+  if(!changed.length)error(404,"Question introuvable");
+  return {saved:true,finished:false,server_now:a[0].server_now};
+ });
+}
+async function submit(uid,b){
+ const id=field(b,"attempt_id",36),provided=b.answers;
+ if(provided!==undefined&&(!Array.isArray(provided)||provided.length>200))error(400,"Réponses invalides");
+ await checkAttempt(uid,id);
+ return await sql.begin(async tx=>{
+  const a=await run("select id,state,student_user_id,deadline_at,(deadline_at is not null and deadline_at<=clock_timestamp()) as expired from fr_edu.attempts where id=$1 for update",[id],tx);
+  if(!a.length||a[0].student_user_id!==uid)error(403,"Accès refusé");
+  if(a[0].state!=="in_progress"){
+   const x=await run("select state,auto_score,maximum_score,submission_reason from fr_edu.attempts where id=$1",[id],tx);
+   return {score:x[0].auto_score,maximum:x[0].maximum_score,state:x[0].state,submission_reason:x[0].submission_reason,already_submitted:true};
   }
-  let score=0;
-  for(const q of questions){
-   const ans=map.get(q.display_order);
-   if(typeof ans!=="string")error(400,"Réponse manquante");
-   const expected=q.answer_mode==="letter"?(q.topic_code==="alphabet"?q.canonical_fr:q.canonical_fr[q.missing_index??1]):q.canonical_fr;
-   const pts=normalized(ans)===normalized(expected)?1:0;
-   score+=pts;
-   await run("update fr_edu.responses set answer_value=$1,score=$2,checked_at=now() where attempt_id=$3 and display_order=$4",[ans,pts,id,q.display_order],tx);
+  if(a[0].expired){
+   const x=await run("select * from fr_edu.finalize_attempt($1::uuid,'timeout')",[id],tx);
+   return {score:x[0].auto_score,maximum:x[0].maximum_score,state:x[0].state,submission_reason:"timeout",already_submitted:false};
   }
-  await run("update fr_edu.attempts set state='scored',auto_score=$1,maximum_score=$2,submitted_at=now() where id=$3",[score,questions.length,id],tx);
-  return {score,maximum:questions.length,state:"scored",already_submitted:false};
+  const items=await run("select display_order,answer_value from fr_edu.responses where attempt_id=$1 order by display_order for update",[id],tx);
+  if(!items.length)error(422,"Aucune question");
+  if(Array.isArray(provided)){
+   if(provided.length!==items.length)error(400,"Toutes les réponses sont requises");
+   const entries=new Map();
+   for(const value of provided){
+    if(!value||!Number.isInteger(value.order)||value.order<1||typeof value.answer!=="string"||value.answer.length>100||!value.answer.trim()||entries.has(value.order))error(400,"Réponse invalide");
+    entries.set(value.order,value.answer.trim());
+   }
+   for(const item of items){
+    const answer=entries.get(item.display_order);
+    if(typeof answer!=="string")error(400,"Réponses manquantes");
+    await run("update fr_edu.responses set answer_value=$1 where attempt_id=$2 and display_order=$3",[answer,id,item.display_order],tx);
+   }
+  }else if(items.some(x=>!x.answer_value?.trim()))error(400,"Toutes les réponses doivent être enregistrées");
+  const x=await run("select * from fr_edu.finalize_attempt($1::uuid,'manual')",[id],tx);
+  return {score:x[0].auto_score,maximum:x[0].maximum_score,state:x[0].state,submission_reason:x[0].submission_reason,already_submitted:false};
  });
 }
 Deno.serve(async req=>{
@@ -288,7 +359,9 @@ Deno.serve(async req=>{
    case "register-account":value=await registerAccount(uid,b);break;
    case "admin-queue":value=await adminQueue(uid);break;
    case "admin-decide":value=await adminDecide(uid,b);break;
-   case "catalog":await requireAccount(uid);value=await run("select code,title_fr,question_count,max_attempts from fr_edu.assessments where pilot_enabled=true order by code");break;
+   case "catalog":await requireAccount(uid);value=await run("select code,title_fr,question_count,max_attempts,timer_enabled,timer_duration_seconds from fr_edu.assessments where pilot_enabled=true order by code");break;
+   case "admin-timers":value=await adminTimers(uid);break;
+   case "admin-set-timer":value=await adminSetTimer(uid,b);break;
    case "list-learners":value=await listLearners(uid);break;
    case "create-learner":value=await createLearner(uid,b);break;
    case "teacher-code":await requireAccount(uid,"teacher");value=await teacherCode(uid);break;
@@ -299,6 +372,7 @@ Deno.serve(async req=>{
    case "own-report":value=await accountReport(uid,b.learner_id);break;
    case "start":value=await start(uid,b);break;
    case "get-attempt":value=await getAttempt(uid,b);break;
+   case "save-answer":value=await saveAnswer(uid,b);break;
    case "submit":value=await submit(uid,b);break;
    default:error(400,"Action inconnue");
   }
