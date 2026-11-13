@@ -91,7 +91,8 @@ const CATALOG=[
  {id:'fruits-choose',title:'Les Fruits — Choisir',subject:'fruits',grades:[]},
  {id:'fruits-write',title:'Les Fruits — Écrire',subject:'fruits',grades:[]},
  {id:'fruits-letter',title:'Les Fruits — Compléter',subject:'fruits',grades:[]},
- {id:'general',title:'Examen Général',subject:null,grades:[]}
+ {id:'general',title:'Examen Général',subject:null,grades:[]},
+ {id:'grammar-choice',title:'Grammaire — Choisis la bonne réponse',subject:null,url:'./grammaire-choix.html',grades:[]}
 ];
 const $=id=>document.getElementById(id);
 let stage=null;
@@ -138,7 +139,7 @@ function renderGrade(id){
    const name=document.createElement('strong');name.textContent=activity.title;
    const info=document.createElement('span');info.className='tag';info.textContent='Ouvrir';
    b.appendChild(name);b.appendChild(info);
-   b.addEventListener('click',()=>{window.location.href=activity.subject?'./library.html?subject='+encodeURIComponent(activity.subject):'./general.html';});
+   b.addEventListener('click',()=>{window.location.href=activity.url||(activity.subject?'./library.html?subject='+encodeURIComponent(activity.subject):'./general.html');});
    content.appendChild(b);
   }
  }
