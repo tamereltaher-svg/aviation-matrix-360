@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#133d62">
+<meta name="description" content="Exercices de français : de la maternelle au secondaire.">
+<title>Exercices de Français — Choisis ta classe</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:#193b59;background:#f3f7fc;font-synthesis:none}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;padding:18px;display:grid;place-items:center}
+main{width:min(100%,660px);padding:clamp(20px,5vw,35px);background:#fff;border:1px solid #dfebf5;border-radius:22px;box-shadow:0 14px 40px #0a365613}
+.eyebrow{font-size:12px;font-weight:850;text-transform:uppercase;letter-spacing:.13em;color:#5b7e9c}
+h1{font-size:clamp(28px,6vw,36px);line-height:1.17;margin:11px 0}h2{font-size:23px;margin:10px 0 18px}
+.muted{color:#6a8299;line-height:1.6}.small{font-size:13px;color:#668097}
+.stage-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:22px 0}
+.stage-card{min-height:156px;padding:17px 12px;display:flex;flex-direction:column;align-items:flex-start;gap:8px;border:1.5px solid #d7e5f0;background:#f7fbff;border-radius:16px;text-align:left;color:#173f62;cursor:pointer}
+.stage-card:hover,.grade-card:hover,.exam-card:hover{border-color:#347fb9;background:#eaf5ff}
+.stage-card .stage-icon{width:47px;height:47px;background:#e0f0ff;border-radius:14px;display:grid;place-items:center;font-size:25px}
+.stage-card strong{font-size:17px}.stage-card small{font-size:12px;color:#647f97;line-height:1.4}
+.grade-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:18px 0}
+.grade-card{background:#f7fbff;border:1.5px solid #d9e7f2;border-radius:13px;padding:17px 12px;color:#1b4b72;min-height:79px;cursor:pointer;text-align:center;font-weight:800;font-size:15px}
+.back{display:inline-block;border:0;background:none;padding:2px 0 15px;font-size:14px;font-weight:750;color:#226c9f;cursor:pointer}
+.library-card{border:1.5px solid #bcd8ec;background:#ebf5ff;color:#16456d;border-radius:16px;padding:19px;display:flex;align-items:center;gap:14px;text-decoration:none;margin:22px 0 0}
+.library-card .ico{width:51px;height:51px;background:#d8eaf9;display:grid;place-items:center;border-radius:13px;font-size:23px;flex-shrink:0}
+.library-card .body{display:grid;gap:5px}.library-card strong{font-size:17px}.library-card small{font-size:13px;line-height:1.5;color:#607f9a}
+.library-card:hover{background:#e1f1ff}
+.empty{background:#f6f9fc;border:1px dashed #c7d9e8;border-radius:15px;padding:20px;margin-top:15px;color:#647e95;line-height:1.65}
+.exam-card{width:100%;border:1.5px solid #d9e6f0;background:#f7fbff;border-radius:12px;padding:15px;text-align:left;display:flex;justify-content:space-between;align-items:center;color:#204d70;margin-top:10px;cursor:pointer}
+.exam-card strong{font-size:15px}
+.tag{font-size:12px;color:#5e7e98}
+.hidden{display:none!important}
+button{font-family:inherit}
+.note{font-size:12px;color:#778ca0;line-height:1.6;margin-top:20px}
+@media(max-width:370px){.stage-grid,.grade-grid{gap:9px}.stage-card{padding:13px 10px;min-height:146px}.stage-card strong{font-size:15px}.grade-card{font-size:13px;padding:12px 8px}.library-card{padding:14px}}
+</style>
+</head>
+<body><main>
+<div class="eyebrow">Exercices de Français</div>
+<section id="stages">
+<h1>Choisis ton niveau</h1>
+<p class="muted">De la maternelle à la troisième année secondaire. Choisis ton étape scolaire pour découvrir ta classe.</p>
+<div id="stageGrid" class="stage-grid"></div>
+<a href="./library.html" class="library-card"><span class="ico" aria-hidden="true">📚</span><span class="body"><strong>Bibliothèque d'exercices</strong><small>Les examens déjà créés, en attendant leur classement par année.</small></span></a>
+<p class="note">Le classement des exercices par classe sera ajouté progressivement. Aucun contenu n'est attribué automatiquement à un niveau.</p>
+</section>
+<section id="years" class="hidden">
+<button id="backStages" class="back">← Tous les niveaux</button>
+<h1 id="stageTitle"></h1>
+<p class="muted">Choisis ton année scolaire.</p>
+<div id="yearGrid" class="grade-grid"></div>
+</section>
+<section id="grade" class="hidden">
+<button id="backYears" class="back">← Les années</button>
+<div class="eyebrow" id="gradeStage"></div>
+<h1 id="gradeTitle"></h1>
+<p class="muted" id="gradeDescription"></p>
+<div id="gradeMaterial"></div>
+<a href="./library.html" class="library-card"><span class="ico" aria-hidden="true">📚</span><span class="body"><strong>Explorer les exercices existants</strong><small>6 thèmes et l'examen général, sans classement par classe pour l'instant.</small></span></a>
+</section>
+</main>
+<script>
+(()=>{'use strict';
+const STAGES=[
+ {id:'maternelle',title:'Maternelle',icon:'🧸',years:[{id:'kg1',title:'KG1 — 1re année'},{id:'kg2',title:'KG2 — 2e année'}]},
+ {id:'primaire',title:'Primaire',icon:'✏️',years:Array.from({length:6},(_,i)=>({id:'p'+(i+1),title:(i+1)+'e année primaire'}))},
+ {id:'preparatoire',title:'Préparatoire',icon:'📘',years:Array.from({length:3},(_,i)=>({id:'prep'+(i+1),title:(i+1)+'e année préparatoire'}))},
+ {id:'secondaire',title:'Secondaire',icon:'🎓',years:Array.from({length:3},(_,i)=>({id:'sec'+(i+1),title:(i+1)+'e année secondaire'}))}
+];
+/* Programme de classement :
+Chaque entrée représente un examen déjà disponible.
+Une même activité pourra recevoir plusieurs années dans grades, par exemple ['kg2','p1'].
+Aucun niveau n'est attribué sans validation pédagogique explicite. */
+const CATALOG=[
+ {id:'colors-choose',title:'Les Couleurs — Choisir',subject:'colors',grades:[]},
+ {id:'colors-write',title:'Les Couleurs — Écrire',subject:'colors',grades:[]},
+ {id:'colors-letter',title:'Les Couleurs — Compléter',subject:'colors',grades:[]},
+ {id:'numbers-choose',title:'Les Nombres — Choisir',subject:'numbers',grades:[]},
+ {id:'numbers-write',title:'Les Nombres — Écrire',subject:'numbers',grades:[]},
+ {id:'numbers-letter',title:'Les Nombres — Compléter',subject:'numbers',grades:[]},
+ {id:'alphabet-choose',title:"L'Alphabet — Choisir",subject:'alphabet',grades:[]},
+ {id:'alphabet-write',title:"L'Alphabet — Écrire",subject:'alphabet',grades:[]},
+ {id:'alphabet-letter',title:"L'Alphabet — Compléter",subject:'alphabet',grades:[]},
+ {id:'shapes-choose',title:'Les Formes — Choisir',subject:'shapes',grades:[]},
+ {id:'shapes-write',title:'Les Formes — Écrire',subject:'shapes',grades:[]},
+ {id:'shapes-letter',title:'Les Formes — Compléter',subject:'shapes',grades:[]},
+ {id:'animals-choose',title:'Les Animaux — Choisir',subject:'animals',grades:[]},
+ {id:'animals-write',title:'Les Animaux — Écrire',subject:'animals',grades:[]},
+ {id:'animals-letter',title:'Les Animaux — Compléter',subject:'animals',grades:[]},
+ {id:'fruits-choose',title:'Les Fruits — Choisir',subject:'fruits',grades:[]},
+ {id:'fruits-write',title:'Les Fruits — Écrire',subject:'fruits',grades:[]},
+ {id:'fruits-letter',title:'Les Fruits — Compléter',subject:'fruits',grades:[]},
+ {id:'general',title:'Examen Général',subject:null,grades:[]}
+];
+const $=id=>document.getElementById(id);
+let stage=null;
+function show(id){for(const s of ['stages','years','grade'])$(s).classList.toggle('hidden',s!==id);}
+function renderStages(){
+ $('stageGrid').replaceChildren();
+ for(const s of STAGES){
+  const b=document.createElement('button');b.className='stage-card';b.type='button';
+  const ico=document.createElement('span');ico.className='stage-icon';ico.textContent=s.icon;
+  const name=document.createElement('strong');name.textContent=s.title;
+  const count=document.createElement('small');count.textContent=s.years.length+' années scolaires';
+  b.appendChild(ico);b.appendChild(name);b.appendChild(count);
+  b.addEventListener('click',()=>renderYears(s.id));$('stageGrid').appendChild(b);
+ }
+ show('stages');
+}
+function renderYears(id){
+ stage=STAGES.find(x=>x.id===id);
+ if(!stage){renderStages();return;}
+ $('stageTitle').textContent=stage.title;
+ $('yearGrid').replaceChildren();
+ for(const y of stage.years){
+  const b=document.createElement('button');b.type='button';b.className='grade-card';b.textContent=y.title;
+  b.addEventListener('click',()=>renderGrade(y.id));$('yearGrid').appendChild(b);
+ }
+ show('years');
+}
+function renderGrade(id){
+ if(!stage){renderStages();return;}
+ const grade=stage.years.find(x=>x.id===id);
+ if(!grade){renderYears(stage.id);return;}
+ $('gradeStage').textContent=stage.title;
+ $('gradeTitle').textContent=grade.title;
+ $('gradeDescription').textContent='Les exercices de cette classe seront affichés ici après validation de leur niveau.';
+ const content=$('gradeMaterial');content.replaceChildren();
+ const applicable=CATALOG.filter(x=>x.grades.includes(id));
+ if(!applicable.length){
+  const box=document.createElement('div');box.className='empty';
+  box.textContent='Aucun exercice n’est encore classé pour cette année. Tu peux consulter la bibliothèque actuelle.';
+  content.appendChild(box);
+ }else{
+  for(const activity of applicable){
+   const b=document.createElement('button');b.type='button';b.className='exam-card';
+   const name=document.createElement('strong');name.textContent=activity.title;
+   const info=document.createElement('span');info.className='tag';info.textContent='Ouvrir';
+   b.appendChild(name);b.appendChild(info);
+   b.addEventListener('click',()=>{window.location.href=activity.subject?'./library.html?subject='+encodeURIComponent(activity.subject):'./general.html';});
+   content.appendChild(b);
+  }
+ }
+ show('grade');
+}
+$('backStages').addEventListener('click',renderStages);
+$('backYears').addEventListener('click',()=>stage?renderYears(stage.id):renderStages());
+renderStages();
+})();
+</script></body></html>
