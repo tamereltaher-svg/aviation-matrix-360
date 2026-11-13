@@ -1,0 +1,124 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Inscription — Français</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:#1b405f;background:#f2f6fb}*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:16px;display:grid;place-items:center}
+main{width:min(100%,540px);padding:clamp(20px,5vw,35px);background:#fff;border:1px solid #dfeaf3;border-radius:20px;box-shadow:0 12px 35px #173b5714}
+small,.micro{color:#657e95;line-height:1.55}small{font-size:13px}.micro{font-size:12px}.muted{color:#6d859c;line-height:1.55}
+h1{font-size:30px;margin:8px 0 10px}h2{font-size:21px;margin:20px 0 10px}
+.top{color:#48789b;font-size:12px;text-transform:uppercase;letter-spacing:.1em;font-weight:800}
+label{font-weight:750;font-size:14px;display:block;margin:14px 0 7px}
+input:not([type=checkbox]),select{display:block;width:100%;font:inherit;border:1.5px solid #bdcfdd;border-radius:11px;padding:13px 15px;background:#fff}
+.choice{display:flex;gap:9px;font-size:13px;line-height:1.5;align-items:flex-start;margin:13px 0}.choice input{margin:3px 0 0;flex-shrink:0}
+.btn{display:block;width:100%;padding:14px 16px;margin-top:13px;background:#153e64;color:white;border:0;border-radius:11px;font-size:15px;font-weight:800;cursor:pointer}.btn.secondary{background:#e9f1fa;color:#215375}.btn:disabled{opacity:.5;cursor:not-allowed}
+.panel{padding:17px;margin:18px 0;border:1px solid #dbe6f0;border-radius:13px;background:#f7faff}
+.hidden{display:none!important}.error{color:#b23131}.good{color:#137941}.status{font-size:14px;margin-top:15px;min-height:20px}
+.badge{display:inline-block;padding:7px 11px;border-radius:40px;background:#e5eff9;font-size:13px;font-weight:850;color:#20567e}
+a{color:#206a9e}
+</style></head><body><main>
+<div class="top">Français · Plateforme d'apprentissage</div>
+<h1>Inscription et validation</h1>
+<p class="muted">Inscription libre, activation exclusivement après confirmation de l'email et validation de l'administration.</p>
+<div id="status" class="status" role="status"></div>
+<section id="login">
+<h2>Connexion ou création de compte</h2>
+<label for="email">Adresse email</label><input id="email" type="email" autocomplete="email" placeholder="exemple@email.com">
+<label for="password">Mot de passe</label><input id="password" type="password" autocomplete="new-password" minlength="8" placeholder="8 caractères minimum">
+<label for="accountType">Type de demande</label>
+<select id="accountType">
+<option value="guardian">Parent ou responsable légal</option>
+<option value="adult_student">Élève majeur (18 ans ou plus)</option>
+<option value="teacher">Enseignant</option>
+</select>
+<label class="choice"><input type="checkbox" id="adult"><span>Je confirme être majeur ou représenter légalement un élève mineur. Les élèves mineurs utilisent un profil géré par leur responsable légal.</span></label>
+<label class="choice"><input type="checkbox" id="privacy"><span>J'ai compris qu'il s'agit d'une version pilote et que mes données de connexion seront traitées pour gérer mon inscription. La validation administrative est distincte du consentement du responsable légal.</span></label>
+<button id="signup" class="btn">Créer un compte</button>
+<button id="signin" class="btn secondary">J'ai déjà un compte — Connexion</button>
+<p class="micro">Confirmez l'adresse email avec le message de Supabase, puis reconnectez-vous pour demander la validation.</p>
+</section>
+<section id="myAccount" class="hidden">
+<h2>Mon compte</h2><p id="emailLabel" class="muted"></p>
+<span class="badge" id="badge"></span>
+<div class="panel" id="explanation"></div>
+<button id="apply" class="btn hidden">Envoyer ma demande à l'administration</button>
+<button id="refresh" class="btn secondary">Vérifier mon statut</button>
+<button id="continue" class="btn hidden">Accéder à mon espace</button>
+<button id="logout" class="btn secondary">Se déconnecter</button>
+</section>
+<p class="micro">Une inscription refusée ou suspendue n'autorise pas la participation aux examens. Aucun enfant n'est enregistré directement sans intervention d'un adulte responsable.</p>
+<a href="./">Retour au site des exercices</a>
+</main>
+<script type="module">
+import {createClient} from "https://esm.sh/@supabase/supabase-js@2.95.0";
+const URL="https://vsuekfzyebqnhthyvwpf.supabase.co";
+const PUBLIC_KEY="sb_publishable_sRvoFKXyDEzQPLaAk3xZOQ_RLVxh5g3";
+const api=URL+"/functions/v1/french-education-pilot";
+const sb=createClient(URL,PUBLIC_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const $=id=>document.getElementById(id);
+function msg(v,bad=false){$('status').textContent=v;$('status').className='status '+(bad?'error':'good');}
+function show(id){$('login').classList.toggle('hidden',id!=='login');$('myAccount').classList.toggle('hidden',id!=='myAccount');}
+async function call(action,body={}){
+ const {data:{session}}=await sb.auth.getSession();
+ if(!session)throw Error("Veuillez vous connecter après confirmation de votre email.");
+ const res=await fetch(api,{method:"POST",headers:{apikey:PUBLIC_KEY,authorization:"Bearer "+session.access_token,"Content-Type":"application/json"},body:JSON.stringify({action,...body})});
+ const json=await res.json().catch(()=>({error:"Réponse inattendue"}));
+ if(!res.ok||!json.ok)throw Error(json.error||"Erreur serveur");
+ return json.result;
+}
+function checkInput(){
+ const email=$('email').value.trim(),password=$('password').value;
+ if(!email||password.length<8)throw Error("Email et mot de passe (8 caractères minimum) requis");
+ return {email,password};
+}
+async function create(){
+ const {email,password}=checkInput();
+ if(!$('adult').checked||!$('privacy').checked)throw Error("Confirmez les deux cases avant de créer votre compte.");
+ const {data,error}=await sb.auth.signUp({email,password,options:{emailRedirectTo:location.href}});
+ if(error)throw error;
+ if(data.session){
+   await call('register-account',{account_type:$('accountType').value,adult_confirmed:true,accept_notice:true});
+   await check();
+ }else{
+   msg("Compte créé. Consultez votre email pour confirmer l'inscription, puis connectez-vous.");
+ }
+}
+async function signin(){
+ const {email,password}=checkInput();
+ const {error}=await sb.auth.signInWithPassword({email,password});
+ if(error)throw error;
+ await check();
+}
+async function apply(){
+ if(!$('adult').checked||!$('privacy').checked){
+   show('login');throw Error("Cochez les deux cases et confirmez que vous êtes majeur ou responsable légal.");
+ }
+ await call('register-account',{account_type:$('accountType').value,adult_confirmed:true,accept_notice:true});
+ await check();
+}
+async function check(){
+ const {data:{session}}=await sb.auth.getSession();
+ if(!session){show('login');return;}
+ const info=await call('session');
+ show('myAccount');
+ $('emailLabel').textContent=info.email||'';
+ const st=info.approval_status;
+ $('badge').textContent=st==='active'?'ACTIVE':st==='pending'?'PENDING':st==='rejected'?'REJECTED':st==='suspended'?'SUSPENDED':'NOT REGISTERED';
+ const desc={
+ active:"Votre compte est approuvé. Les profils élèves doivent également être validés avant de passer les examens.",
+ pending:"Demande enregistrée. Attendez l'approbation de l'administration. Vérifiez votre statut ultérieurement.",
+ rejected:"Demande refusée. Contactez l'administration pour une révision.",
+ suspended:"Compte suspendu. Les examens ne sont plus accessibles.",
+ unregistered:"Email confirmé. Vous pouvez envoyer votre demande de validation à l'administration."
+ };
+ $('explanation').textContent=(desc[st]||'Statut inconnu')+(info.admin_note?' — Note: '+info.admin_note:'');
+ $('apply').classList.toggle('hidden',st!=='unregistered');
+ $('continue').classList.toggle('hidden',st!=='active');
+ $('continue').textContent=info.role==='admin'?'Ouvrir la console administrateur':'Ouvrir mon espace';
+ $('continue').onclick=()=>{location.href=info.role==='admin'?'./admin-approval.html':'./cloud-beta.html';};
+}
+async function protect(f){try{msg('');await f();}catch(e){msg(e.message||String(e),true);}}
+$('signup').addEventListener('click',()=>protect(create));
+$('signin').addEventListener('click',()=>protect(signin));
+$('apply').addEventListener('click',()=>protect(apply));
+$('refresh').addEventListener('click',()=>protect(check));
+$('logout').addEventListener('click',()=>protect(async()=>{await sb.auth.signOut();show('login');msg('Déconnecté.');}));
+protect(check);
+</script></body></html>
