@@ -38,6 +38,16 @@ a{color:#206a9e}
 <h2>Mon compte</h2><p id="emailLabel" class="muted"></p>
 <span class="badge" id="badge"></span>
 <div class="panel" id="explanation"></div>
+<div id="requestForm" class="panel hidden">
+<label for="requestKind">Choisissez le type de demande</label>
+<select id="requestKind">
+<option value="guardian">Parent ou responsable légal</option>
+<option value="adult_student">Élève majeur</option>
+<option value="teacher">Enseignant</option>
+</select>
+<label class="choice"><input id="requestAdult" type="checkbox"><span>Je confirme être majeur ou responsable légal d'un élève mineur.</span></label>
+<label class="choice"><input id="requestNotice" type="checkbox"><span>J'ai compris qu'une validation administrative est nécessaire et que cette version est un pilote.</span></label>
+</div>
 <button id="apply" class="btn hidden">Envoyer ma demande à l'administration</button>
 <button id="refresh" class="btn secondary">Vérifier mon statut</button>
 <button id="continue" class="btn hidden">Accéder à mon espace</button>
@@ -87,10 +97,9 @@ async function signin(){
  await check();
 }
 async function apply(){
- if(!$('adult').checked||!$('privacy').checked){
-   show('login');throw Error("Cochez les deux cases et confirmez que vous êtes majeur ou responsable légal.");
- }
- await call('register-account',{account_type:$('accountType').value,adult_confirmed:true,accept_notice:true});
+ if(!$('requestAdult').checked||!$('requestNotice').checked)
+   throw Error("Confirmez les deux cases de la demande avant l'envoi.");
+ await call('register-account',{account_type:$('requestKind').value,adult_confirmed:true,accept_notice:true});
  await check();
 }
 async function check(){
@@ -110,6 +119,7 @@ async function check(){
  };
  $('explanation').textContent=(desc[st]||'Statut inconnu')+(info.admin_note?' — Note: '+info.admin_note:'');
  $('apply').classList.toggle('hidden',st!=='unregistered');
+ $('requestForm').classList.toggle('hidden',st!=='unregistered');
  $('continue').classList.toggle('hidden',st!=='active');
  $('continue').textContent=info.role==='admin'?'Ouvrir la console administrateur':'Ouvrir mon espace';
  $('continue').onclick=()=>{location.href=info.role==='admin'?'./admin-approval.html':'./cloud-beta.html';};
