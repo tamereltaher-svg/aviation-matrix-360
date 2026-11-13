@@ -1,0 +1,2598 @@
+{
+  "schema": "aviation-matrix-master-blueprint/1.0.0",
+  "snapshot": "AM-BLUEPRINT-2026-10-25-V1",
+  "state": "draft_for_review",
+  "generated_from": {
+    "github_repo": "tamereltaher-svg/aviation-matrix-360",
+    "git_branch": "feature/master-blueprint-organization-20261025",
+    "baseline_sha": "fec97237f2b2b067eae30e0128b18acbbf58ce38",
+    "supabase_project_name": "AviationMatrix-Core",
+    "supabase_project_id": "vsuekfzyebqnhthyvwpf",
+    "data_classification": "non-personal metadata only",
+    "verification_scope": "Github file existence + registered Supabase architecture; no end-to-end deployment certification"
+  },
+  "canonical_truth": {
+    "code": "GitHub main (until PR merged); branch carries proposed blueprint",
+    "architecture": "existing public.am_platform_architecture_versions (AM-ARCH-1.0)",
+    "operational_data": "existing Supabase",
+    "blueprint": "docs/blueprint/master-blueprint.json",
+    "note": "Supabase blueprint tables are a versioned read-only projection; no editing authority"
+  },
+  "principles": [
+    "One Person Record",
+    "One Evidence Engine",
+    "One Requirements Engine",
+    "One Competency Language",
+    "Every Decision Traceable",
+    "Input → Process → Evidence → Decision → Output",
+    "AI assists; structured data remains source of truth",
+    "Role-based portals",
+    "Case/Journey separated from Person",
+    "No orphan modules"
+  ],
+  "architecture": {
+    "frozen_version": "AM-ARCH-1.0",
+    "domain_count": 6,
+    "module_count": 46,
+    "screen_count": 22,
+    "flow_count": 6,
+    "role_count": 9,
+    "module_status_snapshot": {
+      "existing": 12,
+      "partial": 32,
+      "planned": 2
+    },
+    "historical_manifest_status_vs_live": [
+      {
+        "code": "BUS-PROD",
+        "historical_status": "existing",
+        "current_db_status": "existing"
+      },
+      {
+        "code": "BUS-PROG",
+        "historical_status": "existing",
+        "current_db_status": "existing"
+      },
+      {
+        "code": "BUS-REQ",
+        "historical_status": "existing",
+        "current_db_status": "existing"
+      },
+      {
+        "code": "BUS-INST",
+        "historical_status": "existing",
+        "current_db_status": "existing"
+      },
+      {
+        "code": "BUS-PRC",
+        "historical_status": "partial",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "KID-JRN",
+        "historical_status": "existing",
+        "current_db_status": "existing"
+      },
+      {
+        "code": "KID-AI",
+        "historical_status": "existing",
+        "current_db_status": "existing"
+      },
+      {
+        "code": "KID-MEDIA",
+        "historical_status": "partial",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "KID-ACT",
+        "historical_status": "partial",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "KID-UNI",
+        "historical_status": "existing",
+        "current_db_status": "existing"
+      },
+      {
+        "code": "KID-RWD",
+        "historical_status": "existing",
+        "current_db_status": "existing"
+      },
+      {
+        "code": "KID-BOOK",
+        "historical_status": "existing",
+        "current_db_status": "existing"
+      },
+      {
+        "code": "KID-COM",
+        "historical_status": "existing",
+        "current_db_status": "existing"
+      },
+      {
+        "code": "KID-EXP",
+        "historical_status": "existing",
+        "current_db_status": "existing"
+      },
+      {
+        "code": "TAL-PER",
+        "historical_status": "partial",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "TAL-APP",
+        "historical_status": "partial",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "TAL-CAN",
+        "historical_status": "planned",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "TAL-FIT",
+        "historical_status": "partial",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "TAL-EVD",
+        "historical_status": "planned",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "TAL-DOC",
+        "historical_status": "planned",
+        "current_db_status": "planned"
+      },
+      {
+        "code": "TAL-TIM",
+        "historical_status": "planned",
+        "current_db_status": "planned"
+      },
+      {
+        "code": "TAL-DOS",
+        "historical_status": "planned",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "LRN-CUR",
+        "historical_status": "planned",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "LRN-CRS",
+        "historical_status": "planned",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "LRN-QB",
+        "historical_status": "partial",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "LRN-ASM",
+        "historical_status": "partial",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "LRN-EXM",
+        "historical_status": "planned",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "LRN-SCR",
+        "historical_status": "partial",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "LRN-CRD",
+        "historical_status": "partial",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "AIR-ORG",
+        "historical_status": "planned",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "AIR-ROLE",
+        "historical_status": "planned",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "AIR-REQ",
+        "historical_status": "planned",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "AIR-CMP",
+        "historical_status": "planned",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "AIR-MAT",
+        "historical_status": "planned",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "AIR-SHL",
+        "historical_status": "planned",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "AIR-HIR",
+        "historical_status": "planned",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "PLT-IAM",
+        "historical_status": "existing",
+        "current_db_status": "existing"
+      },
+      {
+        "code": "PLT-REF",
+        "historical_status": "partial",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "PLT-CMP",
+        "historical_status": "planned",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "PLT-WF",
+        "historical_status": "planned",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "PLT-DEC",
+        "historical_status": "planned",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "PLT-COM",
+        "historical_status": "planned",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "PLT-AUD",
+        "historical_status": "partial",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "PLT-AI",
+        "historical_status": "partial",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "PLT-HLT",
+        "historical_status": "partial",
+        "current_db_status": "partial"
+      },
+      {
+        "code": "PLT-RPT",
+        "historical_status": "planned",
+        "current_db_status": "partial"
+      }
+    ],
+    "domains": [
+      {
+        "code": "BUS",
+        "name": "Business Operations",
+        "purpose": "Commercial, institutional and operational administration.",
+        "modules": [
+          {
+            "code": "BUS-PROD",
+            "name": "Products & Store",
+            "status": "existing"
+          },
+          {
+            "code": "BUS-PROG",
+            "name": "Programs",
+            "status": "existing"
+          },
+          {
+            "code": "BUS-REQ",
+            "name": "Requests & Quotations",
+            "status": "existing"
+          },
+          {
+            "code": "BUS-INST",
+            "name": "Institutions & Relationships",
+            "status": "existing"
+          },
+          {
+            "code": "BUS-PRC",
+            "name": "Pricing & Commercial Rules",
+            "status": "partial"
+          }
+        ]
+      },
+      {
+        "code": "KIDS",
+        "name": "Kids Aviation",
+        "purpose": "Kids Aviation Matrix learning universe, production and learner experience.",
+        "modules": [
+          {
+            "code": "KID-JRN",
+            "name": "Journey & Missions",
+            "status": "existing"
+          },
+          {
+            "code": "KID-AI",
+            "name": "AI Production Studio",
+            "status": "existing"
+          },
+          {
+            "code": "KID-MEDIA",
+            "name": "Stories & Media",
+            "status": "partial"
+          },
+          {
+            "code": "KID-ACT",
+            "name": "Creative Activities",
+            "status": "partial"
+          },
+          {
+            "code": "KID-UNI",
+            "name": "Characters & Universe",
+            "status": "existing"
+          },
+          {
+            "code": "KID-RWD",
+            "name": "Rewards & Passport",
+            "status": "existing"
+          },
+          {
+            "code": "KID-BOOK",
+            "name": "Books & Publishing",
+            "status": "existing"
+          },
+          {
+            "code": "KID-COM",
+            "name": "Kids Products & Store",
+            "status": "existing"
+          },
+          {
+            "code": "KID-EXP",
+            "name": "Kids Public Experience",
+            "status": "existing"
+          }
+        ]
+      },
+      {
+        "code": "TALENT",
+        "name": "Talent Intelligence",
+        "purpose": "One person, applicant, candidate and learner intelligence.",
+        "modules": [
+          {
+            "code": "TAL-PER",
+            "name": "Person & Identity",
+            "status": "partial"
+          },
+          {
+            "code": "TAL-APP",
+            "name": "Applicant & Application",
+            "status": "partial"
+          },
+          {
+            "code": "TAL-CAN",
+            "name": "Candidate 360 Profile",
+            "status": "planned"
+          },
+          {
+            "code": "TAL-FIT",
+            "name": "Career Fit & Development",
+            "status": "partial"
+          },
+          {
+            "code": "TAL-EVD",
+            "name": "Evidence Portfolio",
+            "status": "planned"
+          },
+          {
+            "code": "TAL-DOC",
+            "name": "Document & Credential Vault",
+            "status": "planned"
+          },
+          {
+            "code": "TAL-TIM",
+            "name": "Candidate Timeline",
+            "status": "planned"
+          },
+          {
+            "code": "TAL-DOS",
+            "name": "Candidate Dossier",
+            "status": "planned"
+          }
+        ]
+      },
+      {
+        "code": "LEARN",
+        "name": "Learning & Assessment",
+        "purpose": "Curriculum, courses, assessments, exams, scoring and credentials.",
+        "modules": [
+          {
+            "code": "LRN-CUR",
+            "name": "Curriculum Architecture",
+            "status": "planned"
+          },
+          {
+            "code": "LRN-CRS",
+            "name": "Courses & Learning Paths",
+            "status": "planned"
+          },
+          {
+            "code": "LRN-QB",
+            "name": "Question Bank",
+            "status": "partial"
+          },
+          {
+            "code": "LRN-ASM",
+            "name": "Assessment Builder",
+            "status": "partial"
+          },
+          {
+            "code": "LRN-EXM",
+            "name": "Exam Builder & Sessions",
+            "status": "planned"
+          },
+          {
+            "code": "LRN-SCR",
+            "name": "Scoring & Results",
+            "status": "partial"
+          },
+          {
+            "code": "LRN-CRD",
+            "name": "Certificates & Credentials",
+            "status": "partial"
+          }
+        ]
+      },
+      {
+        "code": "AIR",
+        "name": "Airline & Employer",
+        "purpose": "Requirements, campaigns, matching, shortlists and hiring outcomes.",
+        "modules": [
+          {
+            "code": "AIR-ORG",
+            "name": "Airline & Employer Profiles",
+            "status": "planned"
+          },
+          {
+            "code": "AIR-ROLE",
+            "name": "Job Roles",
+            "status": "planned"
+          },
+          {
+            "code": "AIR-REQ",
+            "name": "Requirements Engine",
+            "status": "planned"
+          },
+          {
+            "code": "AIR-CMP",
+            "name": "Recruitment Campaigns",
+            "status": "planned"
+          },
+          {
+            "code": "AIR-MAT",
+            "name": "Candidate Matching",
+            "status": "planned"
+          },
+          {
+            "code": "AIR-SHL",
+            "name": "Shortlists & Interviews",
+            "status": "planned"
+          },
+          {
+            "code": "AIR-HIR",
+            "name": "Hiring Outcomes",
+            "status": "planned"
+          }
+        ]
+      },
+      {
+        "code": "PLAT",
+        "name": "Platform & Governance",
+        "purpose": "Identity, master data, workflow, audit, AI and platform control.",
+        "modules": [
+          {
+            "code": "PLT-IAM",
+            "name": "Identity & Access",
+            "status": "existing"
+          },
+          {
+            "code": "PLT-REF",
+            "name": "Master Reference Data",
+            "status": "partial"
+          },
+          {
+            "code": "PLT-CMP",
+            "name": "Competency Framework",
+            "status": "planned"
+          },
+          {
+            "code": "PLT-WF",
+            "name": "Workflow & Approvals",
+            "status": "planned"
+          },
+          {
+            "code": "PLT-DEC",
+            "name": "Decision History",
+            "status": "planned"
+          },
+          {
+            "code": "PLT-COM",
+            "name": "Communications Timeline",
+            "status": "planned"
+          },
+          {
+            "code": "PLT-AUD",
+            "name": "Audit & Event Bus",
+            "status": "partial"
+          },
+          {
+            "code": "PLT-AI",
+            "name": "AI Governance & Configuration",
+            "status": "partial"
+          },
+          {
+            "code": "PLT-HLT",
+            "name": "System Health & Control Tower",
+            "status": "partial"
+          },
+          {
+            "code": "PLT-RPT",
+            "name": "Reporting & Export Layer",
+            "status": "planned"
+          }
+        ]
+      }
+    ],
+    "flows": [
+      {
+        "name": "Candidate Lifecycle",
+        "path": "Registration → Screening → Applicant → Assessment → Candidate Activation → Enrollment → Learning → Exams → Evidence → Requirements → Matching → Outcome"
+      },
+      {
+        "name": "Kids Explorer Lifecycle",
+        "path": "Passport → Level → Season → Mission → Stamp → Badge → Certificate → Content/Product Experience"
+      },
+      {
+        "name": "Assessment & Exam Lifecycle",
+        "path": "Blueprint → Question Bank → Version → Eligibility → Session/Attempt → Integrity → Scoring → Result → Evidence → Credential/Retake"
+      },
+      {
+        "name": "Airline Recruitment Lifecycle",
+        "path": "Employer → Role → Requirements → Campaign → Matching → Review → Shortlist → Interview → Offer/Hiring Outcome"
+      },
+      {
+        "name": "Candidate Dossier Lifecycle",
+        "path": "Identity → Entry Profile → Assessment → Development → Training → Exams → Credentials → Requirements → Readiness → Controlled Release"
+      },
+      {
+        "name": "Requirement Evaluation Lifecycle",
+        "path": "Requirement → Evidence Lookup → Rule Evaluation → Gap → Decision → Trace → Re-evaluate"
+      }
+    ]
+  },
+  "locale_policy": {
+    "default": "en",
+    "visible": [
+      "en"
+    ],
+    "supported_stored": [
+      "en",
+      "ar"
+    ],
+    "arabic_visible": false,
+    "arabic_content_retained": true
+  },
+  "learning_snapshot": {
+    "path_code": "AVI_INDUSTRY_DISCOVERY_FOUNDATION",
+    "course_count": 3,
+    "lesson_versions": 24,
+    "published_lessons": 0,
+    "published_courses": 0,
+    "student_enrollments": 0,
+    "verified_student_bindings": 0,
+    "flight_phases": 14,
+    "role_profiles": 28,
+    "notes": "All course previews are drafts; no public release"
+  },
+  "traceability_rules": {
+    "status_dimensions": [
+      "baseline_status",
+      "verification"
+    ],
+    "file_exists_is_not_operational": "true",
+    "tests_required": "End-to-end auth, role permission, scoring, navigation, deploy route, migrations",
+    "no_pii_in_repo": true
+  },
+  "nodes": [
+    {
+      "key": "project:AVIATION-MATRIX-360",
+      "kind": "project",
+      "parent": null,
+      "title": "Aviation Matrix 360",
+      "domain": null,
+      "baseline_status": "frozen",
+      "verification": "confirmed_architecture",
+      "purpose": "One connected aviation industry ecosystem; one candidate and evidence backbone"
+    },
+    {
+      "key": "domain:AIR",
+      "kind": "domain",
+      "parent": "project:AVIATION-MATRIX-360",
+      "title": "Airline & Employer",
+      "domain": "AIR",
+      "baseline_status": "registered",
+      "verification": "confirmed_database",
+      "purpose": "Employer requirements, roles, recruitment campaigns, matching, shortlisting, interviews and hiring outcomes."
+    },
+    {
+      "key": "domain:BUS",
+      "kind": "domain",
+      "parent": "project:AVIATION-MATRIX-360",
+      "title": "Business Operations",
+      "domain": "BUS",
+      "baseline_status": "registered",
+      "verification": "confirmed_database",
+      "purpose": "Commercial, institutional and operational administration for programs, products, pricing, requests and relationships."
+    },
+    {
+      "key": "domain:KIDS",
+      "kind": "domain",
+      "parent": "project:AVIATION-MATRIX-360",
+      "title": "Kids Aviation",
+      "domain": "KIDS",
+      "baseline_status": "registered",
+      "verification": "confirmed_database",
+      "purpose": "Complete Kids Aviation Matrix learning universe, production, learner experience, publishing, rewards and products."
+    },
+    {
+      "key": "domain:LEARN",
+      "kind": "domain",
+      "parent": "project:AVIATION-MATRIX-360",
+      "title": "Learning & Assessment",
+      "domain": "LEARN",
+      "baseline_status": "registered",
+      "verification": "confirmed_database",
+      "purpose": "Curriculum, courses, learning paths, assessments, examinations, scoring, results and credentials."
+    },
+    {
+      "key": "domain:PLAT",
+      "kind": "domain",
+      "parent": "project:AVIATION-MATRIX-360",
+      "title": "Platform & Governance",
+      "domain": "PLAT",
+      "baseline_status": "registered",
+      "verification": "confirmed_database",
+      "purpose": "Identity, permissions, master data, workflow, audit, rules, integrations, system health, AI and governance."
+    },
+    {
+      "key": "domain:TALENT",
+      "kind": "domain",
+      "parent": "project:AVIATION-MATRIX-360",
+      "title": "Talent Intelligence",
+      "domain": "TALENT",
+      "baseline_status": "registered",
+      "verification": "confirmed_database",
+      "purpose": "Unified person, applicant, candidate and learner intelligence from entry through readiness and employment."
+    },
+    {
+      "key": "module:AIR-CMP",
+      "kind": "module",
+      "parent": "domain:AIR",
+      "title": "Recruitment Campaigns",
+      "domain": "AIR",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Employer campaigns and candidate pipelines."
+    },
+    {
+      "key": "module:AIR-HIR",
+      "kind": "module",
+      "parent": "domain:AIR",
+      "title": "Hiring Outcomes",
+      "domain": "AIR",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Offers, acceptance and employment outcomes."
+    },
+    {
+      "key": "module:AIR-MAT",
+      "kind": "module",
+      "parent": "domain:AIR",
+      "title": "Candidate Matching",
+      "domain": "AIR",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Candidate-role matching with evidence trace."
+    },
+    {
+      "key": "module:AIR-ORG",
+      "kind": "module",
+      "parent": "domain:AIR",
+      "title": "Airline & Employer Profiles",
+      "domain": "AIR",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Employer profiles, relationships and hiring history."
+    },
+    {
+      "key": "module:AIR-REQ",
+      "kind": "module",
+      "parent": "domain:AIR",
+      "title": "Requirements Engine",
+      "domain": "AIR",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Reusable requirement engine for airline, job, course and eligibility rules."
+    },
+    {
+      "key": "module:AIR-ROLE",
+      "kind": "module",
+      "parent": "domain:AIR",
+      "title": "Job Roles",
+      "domain": "AIR",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Aviation roles and normalized competency expectations."
+    },
+    {
+      "key": "module:AIR-SHL",
+      "kind": "module",
+      "parent": "domain:AIR",
+      "title": "Shortlists & Interviews",
+      "domain": "AIR",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Shortlisting, release, interviews and review."
+    },
+    {
+      "key": "module:BUS-INST",
+      "kind": "module",
+      "parent": "domain:BUS",
+      "title": "Institutions & Relationships",
+      "domain": "BUS",
+      "baseline_status": "existing",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Institution profiles and relationship history."
+    },
+    {
+      "key": "module:BUS-PRC",
+      "kind": "module",
+      "parent": "domain:BUS",
+      "title": "Pricing & Commercial Rules",
+      "domain": "BUS",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Pricing, add-ons, units and approvals."
+    },
+    {
+      "key": "module:BUS-PROD",
+      "kind": "module",
+      "parent": "domain:BUS",
+      "title": "Products & Store",
+      "domain": "BUS",
+      "baseline_status": "existing",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Products, variants, personalization and store publication."
+    },
+    {
+      "key": "module:BUS-PROG",
+      "kind": "module",
+      "parent": "domain:BUS",
+      "title": "Programs",
+      "domain": "BUS",
+      "baseline_status": "existing",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Programs, delivery models, audiences and content linkage."
+    },
+    {
+      "key": "module:BUS-REQ",
+      "kind": "module",
+      "parent": "domain:BUS",
+      "title": "Requests & Quotations",
+      "domain": "BUS",
+      "baseline_status": "existing",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Requests, quotations and commercial follow-up."
+    },
+    {
+      "key": "module:KID-ACT",
+      "kind": "module",
+      "parent": "domain:KIDS",
+      "title": "Creative Activities",
+      "domain": "KIDS",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Coloring, worksheets, printables, activities and quizzes."
+    },
+    {
+      "key": "module:KID-AI",
+      "kind": "module",
+      "parent": "domain:KIDS",
+      "title": "AI Production Studio",
+      "domain": "KIDS",
+      "baseline_status": "existing",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "AI-assisted mission, story, script, artwork and scene production."
+    },
+    {
+      "key": "module:KID-BOOK",
+      "kind": "module",
+      "parent": "domain:KIDS",
+      "title": "Books & Publishing",
+      "domain": "KIDS",
+      "baseline_status": "existing",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Story, coloring and activity books plus publishing readiness."
+    },
+    {
+      "key": "module:KID-COM",
+      "kind": "module",
+      "parent": "domain:KIDS",
+      "title": "Kids Products & Store",
+      "domain": "KIDS",
+      "baseline_status": "existing",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Kids commercial products separate from learning content."
+    },
+    {
+      "key": "module:KID-EXP",
+      "kind": "module",
+      "parent": "domain:KIDS",
+      "title": "Kids Public Experience",
+      "domain": "KIDS",
+      "baseline_status": "existing",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Child and parent-facing Kids Aviation World."
+    },
+    {
+      "key": "module:KID-JRN",
+      "kind": "module",
+      "parent": "domain:KIDS",
+      "title": "Journey & Missions",
+      "domain": "KIDS",
+      "baseline_status": "existing",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Levels, seasons, missions and learner progression."
+    },
+    {
+      "key": "module:KID-MEDIA",
+      "kind": "module",
+      "parent": "domain:KIDS",
+      "title": "Stories & Media",
+      "domain": "KIDS",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Stories, songs, audio, video and Around-the-World media."
+    },
+    {
+      "key": "module:KID-RWD",
+      "kind": "module",
+      "parent": "domain:KIDS",
+      "title": "Rewards & Passport",
+      "domain": "KIDS",
+      "baseline_status": "existing",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Explorer Passport, stamps, badges and certificates."
+    },
+    {
+      "key": "module:KID-UNI",
+      "kind": "module",
+      "parent": "domain:KIDS",
+      "title": "Characters & Universe",
+      "domain": "KIDS",
+      "baseline_status": "existing",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Characters, rules, locations, timeline, brand, IP and localization."
+    },
+    {
+      "key": "module:LRN-ASM",
+      "kind": "module",
+      "parent": "domain:LEARN",
+      "title": "Assessment Builder",
+      "domain": "LEARN",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Assessments aligned to competencies and evidence needs."
+    },
+    {
+      "key": "module:LRN-CRD",
+      "kind": "module",
+      "parent": "domain:LEARN",
+      "title": "Certificates & Credentials",
+      "domain": "LEARN",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Issue, verify, revoke and expire credentials."
+    },
+    {
+      "key": "module:LRN-CRS",
+      "kind": "module",
+      "parent": "domain:LEARN",
+      "title": "Courses & Learning Paths",
+      "domain": "LEARN",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Courses, modules, lessons and learner paths."
+    },
+    {
+      "key": "module:LRN-CUR",
+      "kind": "module",
+      "parent": "domain:LEARN",
+      "title": "Curriculum Architecture",
+      "domain": "LEARN",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Curriculum, outcomes, standards and competencies."
+    },
+    {
+      "key": "module:LRN-EXM",
+      "kind": "module",
+      "parent": "domain:LEARN",
+      "title": "Exam Builder & Sessions",
+      "domain": "LEARN",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Formal exams, sessions, timing and integrity."
+    },
+    {
+      "key": "module:LRN-QB",
+      "kind": "module",
+      "parent": "domain:LEARN",
+      "title": "Question Bank",
+      "domain": "LEARN",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Controlled questions, scenarios, options and references."
+    },
+    {
+      "key": "module:LRN-SCR",
+      "kind": "module",
+      "parent": "domain:LEARN",
+      "title": "Scoring & Results",
+      "domain": "LEARN",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Scoring, thresholds, explanations, retakes and transcripts."
+    },
+    {
+      "key": "module:PLT-AI",
+      "kind": "module",
+      "parent": "domain:PLAT",
+      "title": "AI Governance & Configuration",
+      "domain": "PLAT",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Models, prompts, generation logs and human approvals."
+    },
+    {
+      "key": "module:PLT-AUD",
+      "kind": "module",
+      "parent": "domain:PLAT",
+      "title": "Audit & Event Bus",
+      "domain": "PLAT",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Platform event and audit layer."
+    },
+    {
+      "key": "module:PLT-CMP",
+      "kind": "module",
+      "parent": "domain:PLAT",
+      "title": "Competency Framework",
+      "domain": "PLAT",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "One competency language across learning, assessment, fit and matching."
+    },
+    {
+      "key": "module:PLT-COM",
+      "kind": "module",
+      "parent": "domain:PLAT",
+      "title": "Communications Timeline",
+      "domain": "PLAT",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Central email, WhatsApp, SMS, call and meeting history."
+    },
+    {
+      "key": "module:PLT-DEC",
+      "kind": "module",
+      "parent": "domain:PLAT",
+      "title": "Decision History",
+      "domain": "PLAT",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Traceable history of human/system decisions and rule versions."
+    },
+    {
+      "key": "module:PLT-HLT",
+      "kind": "module",
+      "parent": "domain:PLAT",
+      "title": "System Health & Control Tower",
+      "domain": "PLAT",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Health, readiness, alerts and integrity checks."
+    },
+    {
+      "key": "module:PLT-IAM",
+      "kind": "module",
+      "parent": "domain:PLAT",
+      "title": "Identity & Access",
+      "domain": "PLAT",
+      "baseline_status": "existing",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Roles, permissions, sessions and access control."
+    },
+    {
+      "key": "module:PLT-REF",
+      "kind": "module",
+      "parent": "domain:PLAT",
+      "title": "Master Reference Data",
+      "domain": "PLAT",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Canonical reference masters."
+    },
+    {
+      "key": "module:PLT-RPT",
+      "kind": "module",
+      "parent": "domain:PLAT",
+      "title": "Reporting & Export Layer",
+      "domain": "PLAT",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Dashboards, PDFs, transcripts and controlled exports."
+    },
+    {
+      "key": "module:PLT-WF",
+      "kind": "module",
+      "parent": "domain:PLAT",
+      "title": "Workflow & Approvals",
+      "domain": "PLAT",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Reusable workflow, approval, escalation and exception controls."
+    },
+    {
+      "key": "module:TAL-APP",
+      "kind": "module",
+      "parent": "domain:TALENT",
+      "title": "Applicant & Application",
+      "domain": "TALENT",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Pre-activation application and screening."
+    },
+    {
+      "key": "module:TAL-CAN",
+      "kind": "module",
+      "parent": "domain:TALENT",
+      "title": "Candidate 360 Profile",
+      "domain": "TALENT",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Unified candidate view across evidence, learning and readiness."
+    },
+    {
+      "key": "module:TAL-DOC",
+      "kind": "module",
+      "parent": "domain:TALENT",
+      "title": "Document & Credential Vault",
+      "domain": "TALENT",
+      "baseline_status": "planned",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Documents, credentials, verification and expiry."
+    },
+    {
+      "key": "module:TAL-DOS",
+      "kind": "module",
+      "parent": "domain:TALENT",
+      "title": "Candidate Dossier",
+      "domain": "TALENT",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Entry, live and final candidate dossier generation."
+    },
+    {
+      "key": "module:TAL-EVD",
+      "kind": "module",
+      "parent": "domain:TALENT",
+      "title": "Evidence Portfolio",
+      "domain": "TALENT",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Central verified evidence across all modules."
+    },
+    {
+      "key": "module:TAL-FIT",
+      "kind": "module",
+      "parent": "domain:TALENT",
+      "title": "Career Fit & Development",
+      "domain": "TALENT",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Career fit, gaps and development planning."
+    },
+    {
+      "key": "module:TAL-PER",
+      "kind": "module",
+      "parent": "domain:TALENT",
+      "title": "Person & Identity",
+      "domain": "TALENT",
+      "baseline_status": "partial",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "One permanent person record across all applications and journeys."
+    },
+    {
+      "key": "module:TAL-TIM",
+      "kind": "module",
+      "parent": "domain:TALENT",
+      "title": "Candidate Timeline",
+      "domain": "TALENT",
+      "baseline_status": "planned",
+      "verification": "registry_present_not_runtime_tested",
+      "purpose": "Chronological candidate events and decisions."
+    },
+    {
+      "key": "flow:FLOW-AIR",
+      "kind": "flow",
+      "parent": "domain:AIR",
+      "title": "Airline Recruitment Lifecycle",
+      "domain": "AIR",
+      "baseline_status": "registered",
+      "verification": "confirmed_database",
+      "purpose": "Traceable employer hiring outcome",
+      "stages": "Employer → Role → Requirements → Campaign → Matching → Review → Shortlist → Interview → Offer/Hiring Outcome"
+    },
+    {
+      "key": "flow:FLOW-CAND",
+      "kind": "flow",
+      "parent": "domain:TALENT",
+      "title": "Candidate Lifecycle",
+      "domain": "TALENT",
+      "baseline_status": "registered",
+      "verification": "confirmed_database",
+      "purpose": "Candidate 360 record with traceable readiness and outcome",
+      "stages": "Registration → Screening → Applicant → Assessment → Candidate Activation → Enrollment → Learning → Exams → Evidence → Requirements → Matching → Outcome"
+    },
+    {
+      "key": "flow:FLOW-DOS",
+      "kind": "flow",
+      "parent": "domain:TALENT",
+      "title": "Candidate Dossier Lifecycle",
+      "domain": "TALENT",
+      "baseline_status": "registered",
+      "verification": "confirmed_database",
+      "purpose": "Candidate Entry Profile / Live Dashboard / Final Aviation Talent Dossier",
+      "stages": "Identity → Entry Profile → Assessment → Development → Training → Exams → Credentials → Requirements → Readiness → Controlled Release"
+    },
+    {
+      "key": "flow:FLOW-EXAM",
+      "kind": "flow",
+      "parent": "domain:LEARN",
+      "title": "Assessment & Exam Lifecycle",
+      "domain": "LEARN",
+      "baseline_status": "registered",
+      "verification": "confirmed_database",
+      "purpose": "Verified assessment result and competency evidence",
+      "stages": "Blueprint → Question Bank → Version → Eligibility → Session/Attempt → Integrity → Scoring → Result → Evidence → Credential/Retake"
+    },
+    {
+      "key": "flow:FLOW-KIDS",
+      "kind": "flow",
+      "parent": "domain:KIDS",
+      "title": "Kids Explorer Lifecycle",
+      "domain": "KIDS",
+      "baseline_status": "registered",
+      "verification": "confirmed_database",
+      "purpose": "Explorer Passport with rewards and learning history",
+      "stages": "Passport → Level → Season → Mission → Stamp → Badge → Certificate → Content/Product Experience"
+    },
+    {
+      "key": "flow:FLOW-REQ",
+      "kind": "flow",
+      "parent": "domain:AIR",
+      "title": "Requirement Evaluation Lifecycle",
+      "domain": "AIR",
+      "baseline_status": "registered",
+      "verification": "confirmed_database",
+      "purpose": "Met / Conditional / Gap / Not Eligible with evidence trace",
+      "stages": "Requirement → Evidence Lookup → Rule Evaluation → Gap → Decision → Trace → Re-evaluate"
+    },
+    {
+      "key": "group:roles",
+      "kind": "group",
+      "parent": "project:AVIATION-MATRIX-360",
+      "title": "Nine governed audience roles",
+      "domain": "PLAT",
+      "baseline_status": "registered",
+      "verification": "confirmed_database"
+    },
+    {
+      "key": "role:ADMIN",
+      "kind": "role",
+      "parent": "group:roles",
+      "title": "Platform Administrator",
+      "domain": "PLAT",
+      "baseline_status": "registered",
+      "verification": "confirmed_database",
+      "purpose": "Full platform configuration, security, governance and administration."
+    },
+    {
+      "key": "role:AIRLINE",
+      "kind": "role",
+      "parent": "group:roles",
+      "title": "Airline / Employer",
+      "domain": "PLAT",
+      "baseline_status": "registered",
+      "verification": "confirmed_database",
+      "purpose": "Requirements, campaigns, approved candidate shortlists, interviews and hiring outcomes."
+    },
+    {
+      "key": "role:CAND",
+      "kind": "role",
+      "parent": "group:roles",
+      "title": "Candidate / Learner",
+      "domain": "PLAT",
+      "baseline_status": "registered",
+      "verification": "confirmed_database",
+      "purpose": "Personal profile, journey, assessments, learning, evidence, documents and readiness."
+    },
+    {
+      "key": "role:EXAM",
+      "kind": "role",
+      "parent": "group:roles",
+      "title": "Examiner / Assessor",
+      "domain": "PLAT",
+      "baseline_status": "registered",
+      "verification": "confirmed_database",
+      "purpose": "Assessment delivery, integrity, review and evidence responsibilities."
+    },
+    {
+      "key": "role:INST",
+      "kind": "role",
+      "parent": "group:roles",
+      "title": "Institution",
+      "domain": "PLAT",
+      "baseline_status": "registered",
+      "verification": "confirmed_database",
+      "purpose": "Programs, learners, delivery visibility, requests and reports for schools/nurseries/universities."
+    },
+    {
+      "key": "role:INSTR",
+      "kind": "role",
+      "parent": "group:roles",
+      "title": "Instructor",
+      "domain": "PLAT",
+      "baseline_status": "registered",
+      "verification": "confirmed_database",
+      "purpose": "Assigned courses, cohorts, attendance, learning evidence and feedback."
+    },
+    {
+      "key": "role:PARENT",
+      "kind": "role",
+      "parent": "group:roles",
+      "title": "Parent / Guardian",
+      "domain": "PLAT",
+      "baseline_status": "registered",
+      "verification": "confirmed_database",
+      "purpose": "Guardian visibility and approvals for eligible learner journeys."
+    },
+    {
+      "key": "role:PUBLIC",
+      "kind": "role",
+      "parent": "group:roles",
+      "title": "Public Visitor",
+      "domain": "PLAT",
+      "baseline_status": "registered",
+      "verification": "confirmed_database",
+      "purpose": "Public discovery, registration, program/store browsing and initial engagement."
+    },
+    {
+      "key": "role:STAFF",
+      "kind": "role",
+      "parent": "group:roles",
+      "title": "Operations Staff",
+      "domain": "PLAT",
+      "baseline_status": "registered",
+      "verification": "confirmed_database",
+      "purpose": "Operational work across assigned business, talent, learning or Kids modules."
+    },
+    {
+      "key": "group:screens",
+      "kind": "group",
+      "parent": "project:AVIATION-MATRIX-360",
+      "title": "Architecture screen register",
+      "domain": "PLAT",
+      "baseline_status": "registered",
+      "verification": "confirmed_database"
+    },
+    {
+      "key": "screen:SCR-AIR-CMP",
+      "kind": "screen",
+      "parent": "module:AIR-CMP",
+      "title": "Recruitment Campaigns",
+      "domain": "AIR",
+      "baseline_status": "planned",
+      "verification": "route_hint_requires_validation",
+      "purpose": "Manage employer campaigns and candidate pipelines."
+    },
+    {
+      "key": "screen:SCR-AIR-MAT",
+      "kind": "screen",
+      "parent": "module:AIR-MAT",
+      "title": "Candidate Matching",
+      "domain": "AIR",
+      "baseline_status": "planned",
+      "verification": "route_hint_requires_validation",
+      "purpose": "Rank and explain candidate-role matches."
+    },
+    {
+      "key": "screen:SCR-AIR-REQ",
+      "kind": "screen",
+      "parent": "module:AIR-REQ",
+      "title": "Requirements Builder",
+      "domain": "AIR",
+      "baseline_status": "planned",
+      "verification": "route_hint_requires_validation",
+      "purpose": "Define and evaluate airline/job requirements."
+    },
+    {
+      "key": "screen:SCR-BUS-PROD",
+      "kind": "screen",
+      "parent": "module:BUS-PROD",
+      "title": "Products & Store",
+      "domain": "BUS",
+      "baseline_status": "existing",
+      "verification": "route_hint_requires_validation",
+      "purpose": "Manage products, variants, personalization and store readiness."
+    },
+    {
+      "key": "screen:SCR-BUS-PROG",
+      "kind": "screen",
+      "parent": "module:BUS-PROG",
+      "title": "Programs",
+      "domain": "BUS",
+      "baseline_status": "existing",
+      "verification": "route_hint_requires_validation",
+      "purpose": "Manage program catalog and delivery configuration."
+    },
+    {
+      "key": "screen:SCR-BUS-REQ",
+      "kind": "screen",
+      "parent": "module:BUS-REQ",
+      "title": "Requests",
+      "domain": "BUS",
+      "baseline_status": "existing",
+      "verification": "route_hint_requires_validation",
+      "purpose": "Review and progress commercial requests."
+    },
+    {
+      "key": "screen:SCR-KID-AI",
+      "kind": "screen",
+      "parent": "module:KID-AI",
+      "title": "AI Production Studio",
+      "domain": "KIDS",
+      "baseline_status": "existing",
+      "verification": "route_hint_requires_validation",
+      "purpose": "Generate and review KAM mission drafts and artwork."
+    },
+    {
+      "key": "screen:SCR-KID-BADGES",
+      "kind": "screen",
+      "parent": "module:KID-EXP",
+      "title": "Badge Gallery",
+      "domain": "KIDS",
+      "baseline_status": "existing",
+      "verification": "route_hint_requires_validation",
+      "purpose": "Learner rewards gallery."
+    },
+    {
+      "key": "screen:SCR-KID-JRN",
+      "kind": "screen",
+      "parent": "module:KID-JRN",
+      "title": "Journey & Missions",
+      "domain": "KIDS",
+      "baseline_status": "planned",
+      "verification": "route_hint_requires_validation",
+      "purpose": "Manage levels, seasons, missions and production state."
+    },
+    {
+      "key": "screen:SCR-KID-MAP",
+      "kind": "screen",
+      "parent": "module:KID-EXP",
+      "title": "Mission Map",
+      "domain": "KIDS",
+      "baseline_status": "existing",
+      "verification": "route_hint_requires_validation",
+      "purpose": "Learner mission journey map."
+    },
+    {
+      "key": "screen:SCR-KID-PASS",
+      "kind": "screen",
+      "parent": "module:KID-RWD",
+      "title": "Passport Manager",
+      "domain": "KIDS",
+      "baseline_status": "existing",
+      "verification": "route_hint_requires_validation",
+      "purpose": "Create and manage Explorer Passports and access."
+    },
+    {
+      "key": "screen:SCR-KID-PASSPORT",
+      "kind": "screen",
+      "parent": "module:KID-EXP",
+      "title": "Learner Passport",
+      "domain": "KIDS",
+      "baseline_status": "existing",
+      "verification": "route_hint_requires_validation",
+      "purpose": "Private learner Passport and progress view."
+    },
+    {
+      "key": "screen:SCR-KID-WORLD",
+      "kind": "screen",
+      "parent": "module:KID-EXP",
+      "title": "Kids Aviation World",
+      "domain": "KIDS",
+      "baseline_status": "existing",
+      "verification": "route_hint_requires_validation",
+      "purpose": "Child-facing aviation learning universe."
+    },
+    {
+      "key": "screen:SCR-LRN-EXM",
+      "kind": "screen",
+      "parent": "module:LRN-EXM",
+      "title": "Exam Builder & Sessions",
+      "domain": "LEARN",
+      "baseline_status": "planned",
+      "verification": "route_hint_requires_validation",
+      "purpose": "Build and operate formal exam sessions."
+    },
+    {
+      "key": "screen:SCR-LRN-QB",
+      "kind": "screen",
+      "parent": "module:LRN-QB",
+      "title": "Question Bank",
+      "domain": "LEARN",
+      "baseline_status": "planned",
+      "verification": "route_hint_requires_validation",
+      "purpose": "Question authoring, review and versioning."
+    },
+    {
+      "key": "screen:SCR-LRN-RESULT",
+      "kind": "screen",
+      "parent": "module:LRN-SCR",
+      "title": "Results & Transcripts",
+      "domain": "LEARN",
+      "baseline_status": "planned",
+      "verification": "route_hint_requires_validation",
+      "purpose": "Review results, competency evidence and transcripts."
+    },
+    {
+      "key": "screen:SCR-PLT-HLT",
+      "kind": "screen",
+      "parent": "module:PLT-HLT",
+      "title": "System Health",
+      "domain": "PLAT",
+      "baseline_status": "planned",
+      "verification": "route_hint_requires_validation",
+      "purpose": "Monitor platform health, alerts and readiness."
+    },
+    {
+      "key": "screen:SCR-PLT-IAM",
+      "kind": "screen",
+      "parent": "module:PLT-IAM",
+      "title": "Staff & Permissions",
+      "domain": "PLAT",
+      "baseline_status": "planned",
+      "verification": "route_hint_requires_validation",
+      "purpose": "Manage staff identities, roles and permissions."
+    },
+    {
+      "key": "screen:SCR-PLT-RPT",
+      "kind": "screen",
+      "parent": "module:PLT-RPT",
+      "title": "Reports & Exports",
+      "domain": "PLAT",
+      "baseline_status": "planned",
+      "verification": "route_hint_requires_validation",
+      "purpose": "Generate controlled platform reports and exports."
+    },
+    {
+      "key": "screen:SCR-TAL-APP",
+      "kind": "screen",
+      "parent": "module:TAL-APP",
+      "title": "Applicant Register",
+      "domain": "TALENT",
+      "baseline_status": "planned",
+      "verification": "route_hint_requires_validation",
+      "purpose": "Applicant intake, screening and status."
+    },
+    {
+      "key": "screen:SCR-TAL-C360",
+      "kind": "screen",
+      "parent": "module:TAL-CAN",
+      "title": "Candidate 360 Dashboard",
+      "domain": "TALENT",
+      "baseline_status": "planned",
+      "verification": "route_hint_requires_validation",
+      "purpose": "Unified candidate intelligence dashboard."
+    },
+    {
+      "key": "screen:SCR-TAL-DOS",
+      "kind": "screen",
+      "parent": "module:TAL-DOS",
+      "title": "Candidate Dossier",
+      "domain": "TALENT",
+      "baseline_status": "planned",
+      "verification": "route_hint_requires_validation",
+      "purpose": "Generate controlled candidate entry/live/final dossiers."
+    },
+    {
+      "key": "group:systems",
+      "kind": "group",
+      "parent": "project:AVIATION-MATRIX-360",
+      "title": "Systems and deployment surfaces",
+      "domain": "PLAT",
+      "baseline_status": "registered",
+      "verification": "mapped"
+    },
+    {
+      "key": "system:github",
+      "kind": "system",
+      "parent": "group:systems",
+      "title": "GitHub canonical repository",
+      "domain": "PLAT",
+      "baseline_status": "existing",
+      "verification": "source_check_required",
+      "source": "docs/blueprint/master-blueprint.json"
+    },
+    {
+      "key": "system:supabase",
+      "kind": "system",
+      "parent": "group:systems",
+      "title": "AviationMatrix-Core Supabase",
+      "domain": "PLAT",
+      "baseline_status": "existing",
+      "verification": "database_schema_verified",
+      "source": "public.am_platform_architecture_versions"
+    },
+    {
+      "key": "system:react-site",
+      "kind": "system",
+      "parent": "group:systems",
+      "title": "React corporate site & Academy",
+      "domain": "PLAT",
+      "baseline_status": "existing",
+      "verification": "file_present",
+      "source": "artifacts/aviation-matrix-360/src/App.tsx"
+    },
+    {
+      "key": "system:candidate-shell",
+      "kind": "system",
+      "parent": "group:systems",
+      "title": "Legacy candidate-facing shell",
+      "domain": "PLAT",
+      "baseline_status": "existing",
+      "verification": "file_present",
+      "source": "app.js"
+    },
+    {
+      "key": "system:staff-portal",
+      "kind": "system",
+      "parent": "group:systems",
+      "title": "Six staff domain hubs",
+      "domain": "PLAT",
+      "baseline_status": "existing",
+      "verification": "file_present",
+      "source": "portal.html"
+    },
+    {
+      "key": "system:edge",
+      "kind": "system",
+      "parent": "group:systems",
+      "title": "Supabase Edge Functions",
+      "domain": "PLAT",
+      "baseline_status": "existing",
+      "verification": "file_present",
+      "source": "supabase/functions/application-login/index.ts"
+    },
+    {
+      "key": "system:reviewer",
+      "kind": "system",
+      "parent": "group:systems",
+      "title": "Phase 06 editorial reviewer",
+      "domain": "PLAT",
+      "baseline_status": "existing",
+      "verification": "file_present",
+      "source": "apps/phase06-reviewer/app/page.tsx"
+    },
+    {
+      "key": "system:student-engine",
+      "kind": "system",
+      "parent": "group:systems",
+      "title": "Student Learning Engine V1",
+      "domain": "PLAT",
+      "baseline_status": "draft",
+      "verification": "database_schema_verified",
+      "source": "public.am_student_learning_rules"
+    },
+    {
+      "key": "system:knowledge",
+      "kind": "system",
+      "parent": "group:systems",
+      "title": "Aviation Knowledge Core",
+      "domain": "PLAT",
+      "baseline_status": "draft",
+      "verification": "database_schema_verified",
+      "source": "avi_knowledge.lesson_versions"
+    },
+    {
+      "key": "system:rebuild",
+      "kind": "system",
+      "parent": "group:systems",
+      "title": "Historical reproducibility baseline",
+      "domain": "PLAT",
+      "baseline_status": "existing",
+      "verification": "file_present",
+      "source": "supabase/reproducibility/replay-manifest.json"
+    },
+    {
+      "key": "group:learning-foundation",
+      "kind": "group",
+      "parent": "domain:LEARN",
+      "title": "New Aviation Knowledge Foundation",
+      "domain": "LEARN",
+      "baseline_status": "draft",
+      "verification": "database_present_not_published"
+    },
+    {
+      "key": "course:AVI_FOUNDATION_ORIGINS_01",
+      "kind": "course",
+      "parent": "group:learning-foundation",
+      "title": "Aviation origins, economics and why systems exist",
+      "domain": "LEARN",
+      "baseline_status": "draft",
+      "verification": "database_present_not_published",
+      "lesson_count": 10
+    },
+    {
+      "key": "course:AVI_FOUNDATION_ROLE_EVOLUTION_02",
+      "kind": "course",
+      "parent": "group:learning-foundation",
+      "title": "Role genesis and aviation job evolution",
+      "domain": "LEARN",
+      "baseline_status": "draft",
+      "verification": "database_present_not_published",
+      "lesson_count": 13
+    },
+    {
+      "key": "course:AVI_FOUNDATION_SYSTEM_FLIGHT_03",
+      "kind": "course",
+      "parent": "group:learning-foundation",
+      "title": "One connected passenger flight",
+      "domain": "LEARN",
+      "baseline_status": "draft",
+      "verification": "database_present_not_published",
+      "lesson_count": 1
+    },
+    {
+      "key": "system:connected-flight",
+      "kind": "system",
+      "parent": "group:learning-foundation",
+      "title": "Connected Flight Network · 14 phases",
+      "domain": "LEARN",
+      "baseline_status": "draft",
+      "verification": "database_present_not_published",
+      "source": "avi_knowledge.connected_flight_phases"
+    },
+    {
+      "key": "group:governance",
+      "kind": "group",
+      "parent": "project:AVIATION-MATRIX-360",
+      "title": "Governance, language & release gates",
+      "domain": "PLAT",
+      "baseline_status": "defined",
+      "verification": "policy_defined"
+    },
+    {
+      "key": "policy:locale",
+      "kind": "policy",
+      "parent": "group:governance",
+      "title": "English-first; Arabic retained and hidden",
+      "domain": "PLAT",
+      "baseline_status": "agreed",
+      "verification": "confirmed_database",
+      "purpose": "Platform and student locales: en visible; ar data retained"
+    },
+    {
+      "key": "policy:identity",
+      "kind": "policy",
+      "parent": "group:governance",
+      "title": "One Person Record",
+      "domain": "PLAT",
+      "baseline_status": "agreed",
+      "verification": "frozen_principle",
+      "purpose": "Reuse existing person/candidate master identities; no separate parallel profile"
+    },
+    {
+      "key": "policy:evidence",
+      "kind": "policy",
+      "parent": "group:governance",
+      "title": "One Evidence Engine",
+      "domain": "PLAT",
+      "baseline_status": "agreed",
+      "verification": "frozen_principle",
+      "purpose": "Learning quiz != career assessment != qualified exam evidence"
+    },
+    {
+      "key": "policy:content-review",
+      "kind": "policy",
+      "parent": "group:governance",
+      "title": "Human expert review gates",
+      "domain": "PLAT",
+      "baseline_status": "agreed",
+      "verification": "enabled_release_barrier",
+      "purpose": "No course or lesson publication until editorial, aviation, safety gates clear"
+    },
+    {
+      "key": "risk:migration-gap",
+      "kind": "risk",
+      "parent": "group:governance",
+      "title": "Historical migration reconciliation",
+      "domain": "PLAT",
+      "baseline_status": "risk",
+      "verification": "verified_risk",
+      "purpose": "157 live migrations vs 119 historical replay baseline; 38 after freeze"
+    },
+    {
+      "key": "risk:legacy-rpc",
+      "kind": "risk",
+      "parent": "group:governance",
+      "title": "Legacy direct-RPC compatibility gap",
+      "domain": "PLAT",
+      "baseline_status": "risk",
+      "verification": "verified_risk",
+      "purpose": "app.js invokes RPCs revoked to browser roles in hardened production"
+    },
+    {
+      "key": "risk:postmerge",
+      "kind": "risk",
+      "parent": "group:governance",
+      "title": "Automatic Drizzle database push",
+      "domain": "PLAT",
+      "baseline_status": "risk",
+      "verification": "verified_risk",
+      "purpose": "scripts/post-merge.sh runs pnpm --filter db push; must be isolated"
+    },
+    {
+      "key": "risk:identity-bridge",
+      "kind": "risk",
+      "parent": "group:governance",
+      "title": "Student identity bridge unverified",
+      "domain": "PLAT",
+      "baseline_status": "risk",
+      "verification": "pending_validation",
+      "purpose": "Candidate activation and binding guard must be verified in full journey"
+    },
+    {
+      "key": "risk:production-route",
+      "kind": "risk",
+      "parent": "group:governance",
+      "title": "Published route ambiguity",
+      "domain": "PLAT",
+      "baseline_status": "risk",
+      "verification": "pending_validation",
+      "purpose": "Public root shell and React Vite app coexist; production route must be established"
+    }
+  ],
+  "edges": [
+    {
+      "key": "edge:0001",
+      "from": "module:AIR-CMP",
+      "to": "screen:SCR-AIR-CMP",
+      "relation": "governs",
+      "verification": "confirmed_database_foreign_key"
+    },
+    {
+      "key": "edge:0002",
+      "from": "module:AIR-MAT",
+      "to": "screen:SCR-AIR-MAT",
+      "relation": "governs",
+      "verification": "confirmed_database_foreign_key"
+    },
+    {
+      "key": "edge:0003",
+      "from": "module:AIR-REQ",
+      "to": "screen:SCR-AIR-REQ",
+      "relation": "governs",
+      "verification": "confirmed_database_foreign_key"
+    },
+    {
+      "key": "edge:0004",
+      "from": "module:BUS-PROD",
+      "to": "screen:SCR-BUS-PROD",
+      "relation": "governs",
+      "verification": "confirmed_database_foreign_key"
+    },
+    {
+      "key": "edge:0005",
+      "from": "module:BUS-PROG",
+      "to": "screen:SCR-BUS-PROG",
+      "relation": "governs",
+      "verification": "confirmed_database_foreign_key"
+    },
+    {
+      "key": "edge:0006",
+      "from": "module:BUS-REQ",
+      "to": "screen:SCR-BUS-REQ",
+      "relation": "governs",
+      "verification": "confirmed_database_foreign_key"
+    },
+    {
+      "key": "edge:0007",
+      "from": "module:KID-AI",
+      "to": "screen:SCR-KID-AI",
+      "relation": "governs",
+      "verification": "confirmed_database_foreign_key"
+    },
+    {
+      "key": "edge:0008",
+      "from": "module:KID-EXP",
+      "to": "screen:SCR-KID-BADGES",
+      "relation": "governs",
+      "verification": "confirmed_database_foreign_key"
+    },
+    {
+      "key": "edge:0009",
+      "from": "module:KID-JRN",
+      "to": "screen:SCR-KID-JRN",
+      "relation": "governs",
+      "verification": "confirmed_database_foreign_key"
+    },
+    {
+      "key": "edge:0010",
+      "from": "module:KID-EXP",
+      "to": "screen:SCR-KID-MAP",
+      "relation": "governs",
+      "verification": "confirmed_database_foreign_key"
+    },
+    {
+      "key": "edge:0011",
+      "from": "module:KID-RWD",
+      "to": "screen:SCR-KID-PASS",
+      "relation": "governs",
+      "verification": "confirmed_database_foreign_key"
+    },
+    {
+      "key": "edge:0012",
+      "from": "module:KID-EXP",
+      "to": "screen:SCR-KID-PASSPORT",
+      "relation": "governs",
+      "verification": "confirmed_database_foreign_key"
+    },
+    {
+      "key": "edge:0013",
+      "from": "module:KID-EXP",
+      "to": "screen:SCR-KID-WORLD",
+      "relation": "governs",
+      "verification": "confirmed_database_foreign_key"
+    },
+    {
+      "key": "edge:0014",
+      "from": "module:LRN-EXM",
+      "to": "screen:SCR-LRN-EXM",
+      "relation": "governs",
+      "verification": "confirmed_database_foreign_key"
+    },
+    {
+      "key": "edge:0015",
+      "from": "module:LRN-QB",
+      "to": "screen:SCR-LRN-QB",
+      "relation": "governs",
+      "verification": "confirmed_database_foreign_key"
+    },
+    {
+      "key": "edge:0016",
+      "from": "module:LRN-SCR",
+      "to": "screen:SCR-LRN-RESULT",
+      "relation": "governs",
+      "verification": "confirmed_database_foreign_key"
+    },
+    {
+      "key": "edge:0017",
+      "from": "module:PLT-HLT",
+      "to": "screen:SCR-PLT-HLT",
+      "relation": "governs",
+      "verification": "confirmed_database_foreign_key"
+    },
+    {
+      "key": "edge:0018",
+      "from": "module:PLT-IAM",
+      "to": "screen:SCR-PLT-IAM",
+      "relation": "governs",
+      "verification": "confirmed_database_foreign_key"
+    },
+    {
+      "key": "edge:0019",
+      "from": "module:PLT-RPT",
+      "to": "screen:SCR-PLT-RPT",
+      "relation": "governs",
+      "verification": "confirmed_database_foreign_key"
+    },
+    {
+      "key": "edge:0020",
+      "from": "module:TAL-APP",
+      "to": "screen:SCR-TAL-APP",
+      "relation": "governs",
+      "verification": "confirmed_database_foreign_key"
+    },
+    {
+      "key": "edge:0021",
+      "from": "module:TAL-CAN",
+      "to": "screen:SCR-TAL-C360",
+      "relation": "governs",
+      "verification": "confirmed_database_foreign_key"
+    },
+    {
+      "key": "edge:0022",
+      "from": "module:TAL-DOS",
+      "to": "screen:SCR-TAL-DOS",
+      "relation": "governs",
+      "verification": "confirmed_database_foreign_key"
+    },
+    {
+      "key": "edge:0023",
+      "from": "system:github",
+      "to": "system:supabase",
+      "relation": "defines_migrations_and_contracts",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0024",
+      "from": "system:react-site",
+      "to": "domain:LEARN",
+      "relation": "presents_academy",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0025",
+      "from": "system:candidate-shell",
+      "to": "domain:TALENT",
+      "relation": "initiates_candidate_journey",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0026",
+      "from": "system:staff-portal",
+      "to": "domain:PLAT",
+      "relation": "provides_staff_navigation",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0027",
+      "from": "system:edge",
+      "to": "domain:TALENT",
+      "relation": "serves_registration_and_assessment",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0028",
+      "from": "system:reviewer",
+      "to": "domain:LEARN",
+      "relation": "supports_human_review",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0029",
+      "from": "system:knowledge",
+      "to": "system:student-engine",
+      "relation": "supplies_governed_learning_content",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0030",
+      "from": "system:student-engine",
+      "to": "domain:TALENT",
+      "relation": "extends_candidate_learning_record",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0031",
+      "from": "system:connected-flight",
+      "to": "course:AVI_FOUNDATION_SYSTEM_FLIGHT_03",
+      "relation": "defines_learning_capstone",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0032",
+      "from": "policy:identity",
+      "to": "module:TAL-PER",
+      "relation": "constrains_identity",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0033",
+      "from": "policy:evidence",
+      "to": "module:TAL-EVD",
+      "relation": "constrains_evidence",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0034",
+      "from": "policy:content-review",
+      "to": "system:knowledge",
+      "relation": "controls_publication",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0035",
+      "from": "risk:migration-gap",
+      "to": "system:rebuild",
+      "relation": "blocks_reproducibility",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0036",
+      "from": "risk:postmerge",
+      "to": "system:github",
+      "relation": "requires_release_guard",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0037",
+      "from": "risk:legacy-rpc",
+      "to": "system:candidate-shell",
+      "relation": "blocks_legacy_browser_calls",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0038",
+      "from": "risk:identity-bridge",
+      "to": "system:student-engine",
+      "relation": "blocks_real_student_activation",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0039",
+      "from": "risk:production-route",
+      "to": "system:react-site",
+      "relation": "requires_runtime_verification",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0040",
+      "from": "risk:production-route",
+      "to": "system:candidate-shell",
+      "relation": "requires_runtime_verification",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0041",
+      "from": "domain:TALENT",
+      "to": "domain:LEARN",
+      "relation": "candidate_can_become_learner",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0042",
+      "from": "domain:LEARN",
+      "to": "domain:TALENT",
+      "relation": "learning_progress_returns_to_candidate_record",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0043",
+      "from": "domain:TALENT",
+      "to": "domain:AIR",
+      "relation": "candidate_evidence_feeds_matching",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0044",
+      "from": "domain:LEARN",
+      "to": "domain:AIR",
+      "relation": "approved_competencies_inform_requirements",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0045",
+      "from": "domain:PLAT",
+      "to": "domain:KIDS",
+      "relation": "governs_access_and_audit",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0046",
+      "from": "domain:PLAT",
+      "to": "domain:BUS",
+      "relation": "governs_permissions_and_audit",
+      "verification": "design_relationship"
+    },
+    {
+      "key": "edge:0047",
+      "from": "domain:BUS",
+      "to": "domain:LEARN",
+      "relation": "programs_and_commercial_enrollment_boundary",
+      "verification": "design_relationship"
+    }
+  ],
+  "evidence": [
+    {
+      "node": "module:AIR-CMP",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=AIR-CMP]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:AIR-HIR",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=AIR-HIR]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:AIR-MAT",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=AIR-MAT]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:AIR-ORG",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=AIR-ORG]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:AIR-REQ",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=AIR-REQ]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:AIR-ROLE",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=AIR-ROLE]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:AIR-SHL",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=AIR-SHL]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:BUS-INST",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=BUS-INST]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:BUS-PRC",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=BUS-PRC]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:BUS-PROD",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=BUS-PROD]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:BUS-PROG",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=BUS-PROG]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:BUS-REQ",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=BUS-REQ]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:KID-ACT",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=KID-ACT]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:KID-AI",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=KID-AI]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:KID-BOOK",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=KID-BOOK]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:KID-COM",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=KID-COM]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:KID-EXP",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=KID-EXP]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:KID-JRN",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=KID-JRN]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:KID-MEDIA",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=KID-MEDIA]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:KID-RWD",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=KID-RWD]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:KID-UNI",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=KID-UNI]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:LRN-ASM",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=LRN-ASM]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:LRN-CRD",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=LRN-CRD]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:LRN-CRS",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=LRN-CRS]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:LRN-CUR",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=LRN-CUR]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:LRN-EXM",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=LRN-EXM]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:LRN-QB",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=LRN-QB]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:LRN-SCR",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=LRN-SCR]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:PLT-AI",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=PLT-AI]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:PLT-AUD",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=PLT-AUD]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:PLT-CMP",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=PLT-CMP]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:PLT-COM",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=PLT-COM]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:PLT-DEC",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=PLT-DEC]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:PLT-HLT",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=PLT-HLT]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:PLT-IAM",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=PLT-IAM]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:PLT-REF",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=PLT-REF]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:PLT-RPT",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=PLT-RPT]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:PLT-WF",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=PLT-WF]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:TAL-APP",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=TAL-APP]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:TAL-CAN",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=TAL-CAN]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:TAL-DOC",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=TAL-DOC]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:TAL-DOS",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=TAL-DOS]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:TAL-EVD",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=TAL-EVD]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:TAL-FIT",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=TAL-FIT]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:TAL-PER",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=TAL-PER]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "module:TAL-TIM",
+      "source_type": "database_object",
+      "locator": "public.am_platform_modules [code=TAL-TIM]",
+      "verification": "exists_in_database",
+      "notes": "Original registered module; recorded status is not proof of runtime readiness"
+    },
+    {
+      "node": "system:github",
+      "source_type": "github_repo",
+      "locator": "https://github.com/tamereltaher-svg/aviation-matrix-360",
+      "verification": "confirmed",
+      "notes": null
+    },
+    {
+      "node": "system:react-site",
+      "source_type": "github_path",
+      "locator": "artifacts/aviation-matrix-360/src/App.tsx",
+      "verification": "file_present",
+      "notes": null
+    },
+    {
+      "node": "system:candidate-shell",
+      "source_type": "github_path",
+      "locator": "app.js",
+      "verification": "file_present",
+      "notes": null
+    },
+    {
+      "node": "system:staff-portal",
+      "source_type": "github_path",
+      "locator": "portal.html",
+      "verification": "file_present",
+      "notes": null
+    },
+    {
+      "node": "system:edge",
+      "source_type": "github_path",
+      "locator": "supabase/functions/application-login/index.ts",
+      "verification": "file_present",
+      "notes": null
+    },
+    {
+      "node": "system:reviewer",
+      "source_type": "github_path",
+      "locator": "apps/phase06-reviewer/app/page.tsx",
+      "verification": "file_present",
+      "notes": null
+    },
+    {
+      "node": "system:knowledge",
+      "source_type": "database_object",
+      "locator": "avi_knowledge.lesson_versions",
+      "verification": "confirmed_database",
+      "notes": null
+    },
+    {
+      "node": "system:student-engine",
+      "source_type": "database_object",
+      "locator": "public.am_student_learning_rules",
+      "verification": "confirmed_database",
+      "notes": null
+    },
+    {
+      "node": "system:connected-flight",
+      "source_type": "database_object",
+      "locator": "avi_knowledge.connected_flight_phases",
+      "verification": "confirmed_database",
+      "notes": null
+    },
+    {
+      "node": "risk:postmerge",
+      "source_type": "github_path",
+      "locator": "scripts/post-merge.sh",
+      "verification": "confirmed",
+      "notes": null
+    },
+    {
+      "node": "risk:legacy-rpc",
+      "source_type": "github_path",
+      "locator": "supabase/migrations/20260917_p1_close_final_public_data_api_bypasses.sql",
+      "verification": "confirmed",
+      "notes": null
+    },
+    {
+      "node": "risk:migration-gap",
+      "source_type": "github_path",
+      "locator": "supabase/reproducibility/replay-manifest.json",
+      "verification": "confirmed",
+      "notes": null
+    }
+  ],
+  "route_discrepancies": [
+    {
+      "screen": "SCR-TAL-C360",
+      "registered_hint": "candidate_360.html",
+      "existing_candidate": "candidate_360_dashboard.html",
+      "verification": "needs_runtime_resolution"
+    }
+  ],
+  "gates": [
+    {
+      "id": "G0",
+      "title": "Baseline and branch protection",
+      "status": "partially_complete",
+      "requirement": "Preserve main; no automatic DB push; snapshot current Supabase"
+    },
+    {
+      "id": "G1",
+      "title": "Migration reconciliation",
+      "status": "blocked",
+      "requirement": "Bring 38 post-freeze migrations into reproducible sequence; test isolated rebuild"
+    },
+    {
+      "id": "G2",
+      "title": "Public registration / assessment compatibility",
+      "status": "blocked",
+      "requirement": "Retire browser calls to revoked RPC; use secure Edge APIs"
+    },
+    {
+      "id": "G3",
+      "title": "Student identity bridge",
+      "status": "blocked",
+      "requirement": "Verified auth→candidate binding and activated candidate; deny unauthorized access"
+    },
+    {
+      "id": "G4",
+      "title": "Learning UI integration",
+      "status": "not_started",
+      "requirement": "Preserve academy and candidate experiences, implement routed English only preview"
+    },
+    {
+      "id": "G5",
+      "title": "Evidence semantics",
+      "status": "not_started",
+      "requirement": "Lesson quiz, career-fit and approved examination remain distinct"
+    },
+    {
+      "id": "G6",
+      "title": "Editorial & professional release gates",
+      "status": "blocked",
+      "requirement": "Courses, lessons, assessments reviewed by subject experts"
+    },
+    {
+      "id": "G7",
+      "title": "Regression & staging deployment",
+      "status": "not_started",
+      "requirement": "Full cross-portal tests then reviewed PR"
+    }
+  ],
+  "known_caveats": [
+    "Public repo: do not commit user data, secrets, passwords, private exam answers.",
+    "Existing architecture module status is a design/registry status, not verified deployment status.",
+    "The baseline never changes the frozen AM-ARCH-1.0 rows.",
+    "One candidate screen legacy hint is not a verified route: candidate_360.html.",
+    "No published learning courses or lessons."
+  ]
+}
