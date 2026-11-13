@@ -64,9 +64,9 @@ button{font-family:inherit}
 (()=>{'use strict';
 const STAGES=[
  {id:'maternelle',title:'Maternelle',icon:'🧸',years:[{id:'kg1',title:'KG1 — 1re année'},{id:'kg2',title:'KG2 — 2e année'}]},
- {id:'primaire',title:'Primaire',icon:'✏️',years:Array.from({length:6},(_,i)=>({id:'p'+(i+1),title:(i+1)+'e année primaire'}))},
- {id:'preparatoire',title:'Préparatoire',icon:'📘',years:Array.from({length:3},(_,i)=>({id:'prep'+(i+1),title:(i+1)+'e année préparatoire'}))},
- {id:'secondaire',title:'Secondaire',icon:'🎓',years:Array.from({length:3},(_,i)=>({id:'sec'+(i+1),title:(i+1)+'e année secondaire'}))}
+ {id:'primaire',title:'Primaire',icon:'✏️',years:Array.from({length:6},(_,i)=>({id:'p'+(i+1),title:(i===0?'1re':(i+1)+'e')+' année primaire'}))},
+ {id:'preparatoire',title:'Préparatoire',icon:'📘',years:Array.from({length:3},(_,i)=>({id:'prep'+(i+1),title:(i===0?'1re':(i+1)+'e')+' année préparatoire'}))},
+ {id:'secondaire',title:'Secondaire',icon:'🎓',years:Array.from({length:3},(_,i)=>({id:'sec'+(i+1),title:(i===0?'1re':(i+1)+'e')+' année secondaire'}))}
 ];
 /* Programme de classement :
 Chaque entrée représente un examen déjà disponible.
