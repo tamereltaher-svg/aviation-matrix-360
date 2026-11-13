@@ -1,4 +1,4 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Inscription — Français</title>
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>التسجيل والموافقة — منصة الفرنسية</title>
 <style>
 :root{font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:#1b405f;background:#f2f6fb}*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:16px;display:grid;place-items:center}
 main{width:min(100%,540px);padding:clamp(20px,5vw,35px);background:#fff;border:1px solid #dfeaf3;border-radius:20px;box-shadow:0 12px 35px #173b5714}
@@ -13,48 +13,48 @@ input:not([type=checkbox]),select{display:block;width:100%;font:inherit;border:1
 .hidden{display:none!important}.error{color:#b23131}.good{color:#137941}.status{font-size:14px;margin-top:15px;min-height:20px}
 .badge{display:inline-block;padding:7px 11px;border-radius:40px;background:#e5eff9;font-size:13px;font-weight:850;color:#20567e}
 a{color:#206a9e}
-</style></head><body><main>
-<div class="top">Français · Plateforme d'apprentissage</div>
-<h1>Inscription et validation</h1>
-<p class="muted">Inscription libre, activation exclusivement après confirmation de l'email et validation de l'administration.</p>
+input[type="email"],input[type="password"]{direction:ltr;text-align:left}.badge{direction:ltr;unicode-bidi:isolate}body{text-align:right}.top{letter-spacing:0}</style></head><body><main>
+<div class="top">منصة تعلّم اللغة الفرنسية</div>
+<h1>التسجيل وتفعيل الحساب</h1>
+<p class="muted">يمكنك التسجيل بنفسك، لكن التفعيل يحتاج تأكيد البريد وموافقة الإدارة.</p>
 <div id="status" class="status" role="status"></div>
 <section id="login">
-<h2>Connexion ou création de compte</h2>
-<label for="email">Adresse email</label><input id="email" type="email" autocomplete="email" placeholder="exemple@email.com">
-<label for="password">Mot de passe</label><input id="password" type="password" autocomplete="new-password" minlength="8" placeholder="8 caractères minimum">
-<label for="accountType">Type de demande</label>
+<h2>إنشاء حساب أو تسجيل الدخول</h2>
+<label for="email">البريد الإلكتروني</label><input id="email" dir="ltr" type="email" autocomplete="email" placeholder="exemple@email.com">
+<label for="password">كلمة المرور</label><input id="password" type="password" autocomplete="new-password" minlength="8" placeholder="8 أحرف على الأقل">
+<label for="accountType">نوع الحساب</label>
 <select id="accountType">
-<option value="guardian">Parent ou responsable légal</option>
-<option value="adult_student">Élève majeur (18 ans ou plus)</option>
-<option value="teacher">Enseignant</option>
+<option value="guardian">ولي أمر / مسؤول قانوني</option>
+<option value="adult_student">طالب بالغ (18 سنة أو أكثر)</option>
+<option value="teacher">مدرس</option>
 </select>
-<label class="choice"><input type="checkbox" id="adult"><span>Je confirme être majeur ou représenter légalement un élève mineur. Les élèves mineurs utilisent un profil géré par leur responsable légal.</span></label>
-<label class="choice"><input type="checkbox" id="privacy"><span>J'ai compris qu'il s'agit d'une version pilote et que mes données de connexion seront traitées pour gérer mon inscription. La validation administrative est distincte du consentement du responsable légal.</span></label>
-<button id="signup" class="btn">Créer un compte</button>
-<button id="signin" class="btn secondary">J'ai déjà un compte — Connexion</button>
-<p class="micro">Confirmez l'adresse email avec le message de Supabase, puis reconnectez-vous pour demander la validation.</p>
+<label class="choice"><input type="checkbox" id="adult"><span>أؤكد أنني بالغ أو ولي أمر مسؤول قانونيًا عن الطالب القاصر، وأن حساب القاصر يُدار من خلال ولي الأمر.</span></label>
+<label class="choice"><input type="checkbox" id="privacy"><span>أفهم أن هذه نسخة تجريبية وبيانات التسجيل تُستخدم لإدارة الحساب. موافقة الإدارة ليست بديلًا عن موافقة ولي الأمر.</span></label>
+<button id="signup" class="btn">إنشاء حساب</button>
+<button id="signin" class="btn secondary">عندي حساب بالفعل — تسجيل الدخول</button>
+<p class="micro">راجع رسالة تأكيد بريدك الإلكتروني، ثم سجّل الدخول وأرسل طلب التفعيل.</p>
 </section>
 <section id="myAccount" class="hidden">
-<h2>Mon compte</h2><p id="emailLabel" class="muted"></p>
+<h2>حسابي</h2><p id="emailLabel" class="muted"></p>
 <span class="badge" id="badge"></span>
 <div class="panel" id="explanation"></div>
 <div id="requestForm" class="panel hidden">
-<label for="requestKind">Choisissez le type de demande</label>
+<label for="requestKind">اختر نوع التسجيل</label>
 <select id="requestKind">
-<option value="guardian">Parent ou responsable légal</option>
-<option value="adult_student">Élève majeur</option>
-<option value="teacher">Enseignant</option>
+<option value="guardian">ولي أمر / مسؤول قانوني</option>
+<option value="adult_student">طالب بالغ</option>
+<option value="teacher">مدرس</option>
 </select>
-<label class="choice"><input id="requestAdult" type="checkbox"><span>Je confirme être majeur ou responsable légal d'un élève mineur.</span></label>
-<label class="choice"><input id="requestNotice" type="checkbox"><span>J'ai compris qu'une validation administrative est nécessaire et que cette version est un pilote.</span></label>
+<label class="choice"><input id="requestAdult" type="checkbox"><span>أؤكد أنني بالغ أو ولي أمر مسؤول قانونيًا عن الطالب القاصر.</span></label>
+<label class="choice"><input id="requestNotice" type="checkbox"><span>أفهم أن التفعيل يحتاج موافقة الإدارة وأن هذه نسخة تجريبية.</span></label>
 </div>
-<button id="apply" class="btn hidden">Envoyer ma demande à l'administration</button>
-<button id="refresh" class="btn secondary">Vérifier mon statut</button>
-<button id="continue" class="btn hidden">Accéder à mon espace</button>
-<button id="logout" class="btn secondary">Se déconnecter</button>
+<button id="apply" class="btn hidden">إرسال طلب التفعيل للإدارة</button>
+<button id="refresh" class="btn secondary">التحقق من حالة الطلب</button>
+<button id="continue" class="btn hidden">الدخول إلى حسابي</button>
+<button id="logout" class="btn secondary">تسجيل الخروج</button>
 </section>
-<p class="micro">Une inscription refusée ou suspendue n'autorise pas la participation aux examens. Aucun enfant n'est enregistré directement sans intervention d'un adulte responsable.</p>
-<a href="./">Retour au site des exercices</a>
+<p class="micro">الحساب المرفوض أو الموقوف لا يستطيع دخول الامتحانات. القاصر يحتاج ولي أمر مسؤول.</p>
+<a href="./">الرجوع للامتحانات</a>
 </main>
 <script type="module">
 import {createClient} from "https://esm.sh/@supabase/supabase-js@2.95.0";
@@ -63,31 +63,42 @@ const PUBLIC_KEY="sb_publishable_sRvoFKXyDEzQPLaAk3xZOQ_RLVxh5g3";
 const api=URL+"/functions/v1/french-education-pilot";
 const sb=createClient(URL,PUBLIC_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const $=id=>document.getElementById(id);
-function msg(v,bad=false){$('status').textContent=v;$('status').className='status '+(bad?'error':'good');}
+function localError(v){
+ const t=String(v||'');
+ if(/invalid login credentials/i.test(t))return 'البريد الإلكتروني أو كلمة المرور غير صحيحة.';
+ if(/email not confirmed/i.test(t))return 'البريد الإلكتروني لم يتم تأكيده بعد.';
+ if(/user already registered|already been registered/i.test(t))return 'البريد الإلكتروني مسجّل بالفعل. استخدم تسجيل الدخول.';
+ if(/rate limit|too many requests/i.test(t))return 'محاولات كثيرة، حاول لاحقًا.';
+ if(/password should be/i.test(t))return 'كلمة المرور لا تستوفي شروط الأمان.';
+ if(/session expir|session not found/i.test(t))return 'انتهت الجلسة. سجل الدخول مرة أخرى.';
+ if(/connexion|confirmez|compte|champ invalide|approbation|administrateur|demande|statut/i.test(t))return 'تعذرت العملية. راجع البيانات وحالة موافقة الإدارة.';
+ return t;
+}
+function msg(v,bad=false){$('status').textContent=bad?localError(v):v;$('status').className='status '+(bad?'error':'good');}
 function show(id){$('login').classList.toggle('hidden',id!=='login');$('myAccount').classList.toggle('hidden',id!=='myAccount');}
 async function call(action,body={}){
  const {data:{session}}=await sb.auth.getSession();
- if(!session)throw Error("Veuillez vous connecter après confirmation de votre email.");
+ if(!session)throw Error("سجّل دخولك بعد تأكيد بريدك الإلكتروني.");
  const res=await fetch(api,{method:"POST",headers:{apikey:PUBLIC_KEY,authorization:"Bearer "+session.access_token,"Content-Type":"application/json"},body:JSON.stringify({action,...body})});
- const json=await res.json().catch(()=>({error:"Réponse inattendue"}));
- if(!res.ok||!json.ok)throw Error(json.error||"Erreur serveur");
+ const json=await res.json().catch(()=>({error:"استجابة غير متوقعة من الخادم"}));
+ if(!res.ok||!json.ok)throw Error(json.error||"خطأ في الخادم");
  return json.result;
 }
 function checkInput(){
  const email=$('email').value.trim(),password=$('password').value;
- if(!email||password.length<8)throw Error("Email et mot de passe (8 caractères minimum) requis");
+ if(!email||password.length<8)throw Error("أدخل البريد الإلكتروني وكلمة مرور من 8 أحرف على الأقل");
  return {email,password};
 }
 async function create(){
  const {email,password}=checkInput();
- if(!$('adult').checked||!$('privacy').checked)throw Error("Confirmez les deux cases avant de créer votre compte.");
+ if(!$('adult').checked||!$('privacy').checked)throw Error("وافق على الإقرارين قبل إنشاء الحساب.");
  const {data,error}=await sb.auth.signUp({email,password,options:{emailRedirectTo:location.href}});
  if(error)throw error;
  if(data.session){
    await call('register-account',{account_type:$('accountType').value,adult_confirmed:true,accept_notice:true});
    await check();
  }else{
-   msg("Compte créé. Consultez votre email pour confirmer l'inscription, puis connectez-vous.");
+   msg("تم إنشاء الحساب. راجع بريدك الإلكتروني للتأكيد ثم سجل الدخول.");
  }
 }
 async function signin(){
@@ -98,7 +109,7 @@ async function signin(){
 }
 async function apply(){
  if(!$('requestAdult').checked||!$('requestNotice').checked)
-   throw Error("Confirmez les deux cases de la demande avant l'envoi.");
+   throw Error("وافق على الإقرارين قبل إرسال الطلب.");
  await call('register-account',{account_type:$('requestKind').value,adult_confirmed:true,accept_notice:true});
  await check();
 }
@@ -109,19 +120,19 @@ async function check(){
  show('myAccount');
  $('emailLabel').textContent=info.email||'';
  const st=info.approval_status;
- $('badge').textContent=st==='active'?'ACTIVE':st==='pending'?'PENDING':st==='rejected'?'REJECTED':st==='suspended'?'SUSPENDED':'NOT REGISTERED';
+ $('badge').textContent=st==='active'?'مفعّل':st==='pending'?'بانتظار الموافقة':st==='rejected'?'مرفوض':st==='suspended'?'موقوف':'لم يقدَّم طلب';
  const desc={
- active:"Votre compte est approuvé. Les profils élèves doivent également être validés avant de passer les examens.",
- pending:"Demande enregistrée. Attendez l'approbation de l'administration. Vérifiez votre statut ultérieurement.",
- rejected:"Demande refusée. Contactez l'administration pour une révision.",
- suspended:"Compte suspendu. Les examens ne sont plus accessibles.",
- unregistered:"Email confirmé. Vous pouvez envoyer votre demande de validation à l'administration."
+ active:"تمت الموافقة على حسابك. ملف كل طالب يحتاج موافقة مستقلة قبل الامتحانات.",
+ pending:"تم استلام طلبك، وفي انتظار موافقة الإدارة. يمكنك متابعة حالته من هنا.",
+ rejected:"تم رفض الطلب. يمكنك مراجعة الإدارة.",
+ suspended:"الحساب موقوف ولا يمكن دخول الامتحانات حاليًا.",
+ unregistered:"تم تأكيد البريد الإلكتروني. أرسل الآن طلب التفعيل للإدارة."
  };
- $('explanation').textContent=(desc[st]||'Statut inconnu')+(info.admin_note?' — Note: '+info.admin_note:'');
+ $('explanation').textContent=(desc[st]||'حالة غير معروفة')+(info.admin_note?' — ملاحظة الإدارة: '+info.admin_note:'');
  $('apply').classList.toggle('hidden',st!=='unregistered');
  $('requestForm').classList.toggle('hidden',st!=='unregistered');
  $('continue').classList.toggle('hidden',st!=='active');
- $('continue').textContent=info.role==='admin'?'Ouvrir la console administrateur':'Ouvrir mon espace';
+ $('continue').textContent=info.role==='admin'?'فتح لوحة الإدارة':'فتح حسابي';
  $('continue').onclick=()=>{location.href=info.role==='admin'?'./admin-approval.html':'./cloud-beta.html';};
 }
 async function protect(f){try{msg('');await f();}catch(e){msg(e.message||String(e),true);}}
@@ -129,6 +140,6 @@ $('signup').addEventListener('click',()=>protect(create));
 $('signin').addEventListener('click',()=>protect(signin));
 $('apply').addEventListener('click',()=>protect(apply));
 $('refresh').addEventListener('click',()=>protect(check));
-$('logout').addEventListener('click',()=>protect(async()=>{await sb.auth.signOut();show('login');msg('Déconnecté.');}));
+$('logout').addEventListener('click',()=>protect(async()=>{await sb.auth.signOut();show('login');msg('تم تسجيل الخروج.');}));
 protect(check);
 </script></body></html>
