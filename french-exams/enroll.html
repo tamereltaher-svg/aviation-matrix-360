@@ -20,7 +20,7 @@ input[type="email"],input[type="password"]{direction:ltr;text-align:left}.badge{
 <div id="status" class="status" role="status"></div>
 <section id="login">
 <h2>إنشاء حساب أو تسجيل الدخول</h2>
-<label for="email">البريد الإلكتروني</label><input id="email" type="email" autocomplete="email" placeholder="exemple@email.com">
+<label for="email">البريد الإلكتروني</label><input id="email" dir="ltr" type="email" autocomplete="email" placeholder="exemple@email.com">
 <label for="password">كلمة المرور</label><input id="password" type="password" autocomplete="new-password" minlength="8" placeholder="8 أحرف على الأقل">
 <label for="accountType">نوع الحساب</label>
 <select id="accountType">
@@ -86,7 +86,7 @@ async function call(action,body={}){
 }
 function checkInput(){
  const email=$('email').value.trim(),password=$('password').value;
- if(!email||password.length<8)throw Error("Email et mot de passe (8 أحرف على الأقل) requis");
+ if(!email||password.length<8)throw Error("أدخل البريد الإلكتروني وكلمة مرور من 8 أحرف على الأقل");
  return {email,password};
 }
 async function create(){
