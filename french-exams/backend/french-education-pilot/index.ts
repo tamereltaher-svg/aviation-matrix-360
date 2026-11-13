@@ -117,7 +117,7 @@ async function learner(uid,id){
 }
 async function accountReport(uid,id){
  await requireAccount(uid);await learner(uid,id);
- return await run("select assessment_code,attempt_number,auto_score,maximum_score,state,submitted_at from fr_edu.attempts where learner_id=$1 and student_user_id=$2 and state in ('scored','review_required') order by submitted_at desc limit 150",[id,uid]);
+ return await run("select assessment_code,attempt_number,auto_score,maximum_score,state,submitted_at,submission_reason,time_limit_seconds,least(extract(epoch from (submitted_at-started_at)),coalesce(time_limit_seconds,99999999))::integer as time_spent_seconds from fr_edu.attempts where learner_id=$1 and student_user_id=$2 and state in ('scored','review_required') order by submitted_at desc limit 150",[id,uid]);
 }
 async function listLearners(uid){
  await requireAccount(uid);
@@ -174,7 +174,7 @@ async function deleteLearner(uid,b){
 async function teacherReport(uid){
  if(!await teacher(uid))error(403,"Compte enseignant non autorisé");
  const learners=await run("select l.id,l.display_name,l.grade_code from fr_edu.teacher_learner_access x join fr_edu.learners l on l.id=x.learner_id join fr_edu.account_requests ap on ap.user_id=l.guardian_user_id and ap.approval_status='active' where x.teacher_user_id=$1 and x.revoked_at is null and l.consent_revoked_at is null and l.approval_status='active' order by l.created_at desc limit 200",[uid]);
- const attempts=await run("select a.learner_id,a.assessment_code,a.attempt_number,a.auto_score,a.maximum_score,a.submitted_at,a.state from fr_edu.teacher_learner_access x join fr_edu.learners l on l.id=x.learner_id join fr_edu.attempts a on a.learner_id=l.id join fr_edu.account_requests ap on ap.user_id=l.guardian_user_id and ap.approval_status='active' where x.teacher_user_id=$1 and x.revoked_at is null and l.consent_revoked_at is null and l.approval_status='active' and a.state in ('scored','review_required') order by a.submitted_at desc limit 500",[uid]);
+ const attempts=await run("select a.learner_id,a.assessment_code,a.attempt_number,a.auto_score,a.maximum_score,a.submitted_at,a.state,a.submission_reason,a.time_limit_seconds,least(extract(epoch from (a.submitted_at-a.started_at)),coalesce(a.time_limit_seconds,99999999))::integer as time_spent_seconds from fr_edu.teacher_learner_access x join fr_edu.learners l on l.id=x.learner_id join fr_edu.attempts a on a.learner_id=l.id join fr_edu.account_requests ap on ap.user_id=l.guardian_user_id and ap.approval_status='active' where x.teacher_user_id=$1 and x.revoked_at is null and l.consent_revoked_at is null and l.approval_status='active' and a.state in ('scored','review_required') order by a.submitted_at desc limit 500",[uid]);
  return {learners,attempts};
 }
 async function checkAttempt(uid,id){
@@ -230,6 +230,7 @@ async function adminSetTimer(uid,b){
 function attemptTime(a){
  return {attempt_id:a.id,attempt_number:a.attempt_number,state:a.state,
   time_limit_seconds:a.time_limit_seconds??null,deadline_at:a.deadline_at??null,
+  started_at:a.started_at??null,submitted_at:a.submitted_at??null,
   server_now:a.server_now,submission_reason:a.submission_reason??null};
 }
 async function finalizeTimedOut(id){
@@ -244,7 +245,7 @@ async function start(uid,b){
  const assessments=await run("select code,question_count,max_attempts,timer_enabled,timer_duration_seconds from fr_edu.assessments where code=$1 and pilot_enabled=true",[code]);
  if(!assessments.length)error(404,"Examen indisponible");
  const def=assessments[0];
- const previous=await run("select id,attempt_number,state,deadline_at,time_limit_seconds,clock_timestamp() as server_now,(deadline_at is not null and deadline_at<=clock_timestamp()) as expired from fr_edu.attempts where student_user_id=$1 and learner_id=$2 and assessment_code=$3 order by attempt_number desc",[uid,own.id,code]);
+ const previous=await run("select id,attempt_number,state,started_at,submitted_at,deadline_at,time_limit_seconds,clock_timestamp() as server_now,(deadline_at is not null and deadline_at<=clock_timestamp()) as expired from fr_edu.attempts where student_user_id=$1 and learner_id=$2 and assessment_code=$3 order by attempt_number desc",[uid,own.id,code]);
  const current=previous.find(x=>x.state==="in_progress");
  if(current){
   if(current.expired){
@@ -278,12 +279,12 @@ async function start(uid,b){
   if(e?.code==="23505")error(409,"Une autre tentative a été ouverte ; actualisez pour la reprendre.");
   throw e;
  }
- const info=await run("select id,attempt_number,state,time_limit_seconds,deadline_at,submission_reason,clock_timestamp() as server_now from fr_edu.attempts where id=$1",[id]);
+ const info=await run("select id,attempt_number,state,started_at,submitted_at,time_limit_seconds,deadline_at,submission_reason,clock_timestamp() as server_now from fr_edu.attempts where id=$1",[id]);
  return {...attemptTime(info[0]),questions:await questions(id),resumed:false};
 }
 async function getAttempt(uid,b){
  const a=await checkAttempt(uid,b.attempt_id);
- const rows=await run("select id,attempt_number,state,deadline_at,time_limit_seconds,submission_reason,auto_score,maximum_score,clock_timestamp() as server_now,(deadline_at is not null and deadline_at<=clock_timestamp()) as expired from fr_edu.attempts where id=$1",[a.id]);
+ const rows=await run("select id,attempt_number,state,started_at,submitted_at,deadline_at,time_limit_seconds,submission_reason,auto_score,maximum_score,clock_timestamp() as server_now,(deadline_at is not null and deadline_at<=clock_timestamp()) as expired from fr_edu.attempts where id=$1",[a.id]);
  const v=rows[0];
  if(v.state!=="in_progress")return {...attemptTime(v),score:v.auto_score,maximum:v.maximum_score};
  if(v.expired){
