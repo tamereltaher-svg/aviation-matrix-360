@@ -62,6 +62,8 @@ a{color:#1b6eaa}
 <p class="small">Entrez le code communiqué par un enseignant autorisé.</p>
 <label for="teacherCode">Code enseignant</label><input id="teacherCode" maxlength="40" placeholder="FRXXXXXXXXXXXX">
 <button id="shareTeacher" class="btn light">Autoriser cet enseignant</button>
+<button id="revokeTeacher" class="btn light">Retirer l'accès de ce code enseignant</button>
+<button id="deleteLearner" class="btn light">Supprimer ce profil et ses résultats</button>
 <h3>Résultats de ce profil</h3><div id="ownResults" class="scroll"></div>
 </div>
 </div>
@@ -187,6 +189,21 @@ async function selectTeacher(){
  await call('share-teacher',{learner_id:activeLearner,teacher_code:$('teacherCode').value.trim()});
  $('teacherCode').value='';notice("Accès enseignant autorisé");
 }
+async function revokeTeacher(){
+ if(!activeLearner)throw Error("Sélectionne d'abord un élève");
+ await call('unshare-teacher',{learner_id:activeLearner,teacher_code:$('teacherCode').value.trim()});
+ $('teacherCode').value='';notice("Accès enseignant retiré");
+}
+async function deleteLearner(){
+ if(!activeLearner)throw Error("Sélectionne d'abord un élève");
+ const sure=window.confirm("Supprimer définitivement ce profil, ses tentatives et les accès partagés ?");
+ if(!sure)return;
+ await call('delete-learner',{learner_id:activeLearner,confirm_delete:true});
+ activeLearner=null;studentName='';
+ $('studentPanel').classList.add('hidden');
+ await refreshGuardian();
+ notice("Profil et résultats supprimés");
+}
 const title={colors:"Les Couleurs",numbers:"Les Nombres",alphabet:"L'Alphabet",shapes:"Les Formes",animals:"Les Animaux",fruits:"Les Fruits"};
 const shape={circle:'<circle cx="90" cy="62" r="47"/>',square:'<rect x="43" y="16" width="94" height="94"/>',triangle:'<polygon points="90,9 30,115 150,115"/>',rectangle:'<rect x="17" y="32" width="146" height="66"/>',oval:'<ellipse cx="90" cy="64" rx="73" ry="42"/>',star:'<polygon points="90,7 106,46 149,46 116,73 128,116 90,92 52,116 64,73 31,46 74,46"/>',heart:'<path d="M90 114 C68 94 22 68 22 42 C22 8 69 4 90 37 C111 4 158 8 158 42 C158 68 112 94 90 114Z"/>',diamond:'<polygon points="90,8 155,65 90,122 25,65"/>',pentagon:'<polygon points="90,8 154,56 130,116 50,116 26,56"/>',hexagon:'<polygon points="55,12 125,12 161,64 125,116 55,116 19,64"/>'};
 async function startQuiz(){
@@ -242,6 +259,8 @@ $('signUp').addEventListener('click',()=>guarded(signup));
 $('signOut').addEventListener('click',()=>guarded(async()=>{await sb.auth.signOut();location.reload();}));
 $('addLearner').addEventListener('click',()=>guarded(addLearner));
 $('shareTeacher').addEventListener('click',()=>guarded(selectTeacher));
+$('revokeTeacher').addEventListener('click',()=>guarded(revokeTeacher));
+$('deleteLearner').addEventListener('click',()=>guarded(deleteLearner));
 $('refreshTeacher').addEventListener('click',()=>guarded(refreshTeacher));
 $('beginExam').addEventListener('click',()=>guarded(startQuiz));
 $('next').addEventListener('click',()=>guarded(nextQuestion));
