@@ -60,6 +60,7 @@ input{width:100%;border:1.5px solid #bbcddd;border-radius:12px;font-size:20px;pa
 <main>
 <div class="eyebrow">Examen de Français</div>
 <section id="home">
+<a href="./" class="back" style="display:inline-block;text-decoration:none">← Choisir mon niveau</a>
 <h1>Choisis ton thème</h1>
 <p class="muted">Apprends le français en choisissant d'abord le thème de ton examen.</p>
 <button class="general-banner" id="generalBtn"><span class="general-icon" aria-hidden="true">🎓</span><span class="general-label"><strong>Examen Général</strong><small>6 thèmes · 18 questions · Choisir, écrire, compléter</small><em id="mixedAttempts">0/3 tentatives utilisées</em></span></button>
@@ -446,6 +447,10 @@ $('copyBtn').addEventListener('click',async()=>{
 });
 safeMigration();
 home();
+try {
+  const requested=new URLSearchParams(window.location.search).get('subject');
+  if(SUBJECTS.includes(requested))selectSubject(requested);
+}catch(e){}
 })();
 </script>
 </body>
