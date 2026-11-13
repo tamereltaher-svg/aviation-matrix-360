@@ -64,6 +64,26 @@ async function shareTeacher(uid,b){
  await run("insert into fr_edu.teacher_learner_access(teacher_user_id,learner_id,granted_by_guardian_id) values($1,$2,$3) on conflict(teacher_user_id,learner_id) do update set revoked_at=null,granted_at=now(),granted_by_guardian_id=excluded.granted_by_guardian_id",[rows[0].teacher_user_id,b.learner_id,uid]);
  return {shared:true};
 }
+async function unshareTeacher(uid,b){
+ await learner(uid,b.learner_id);
+ const code=field(b,"teacher_code",40).toUpperCase();
+ const rows=await run("select teacher_user_id from fr_edu.teacher_codes where share_code=$1",[code]);
+ if(!rows.length)error(404,"Code enseignant inconnu");
+ await run("update fr_edu.teacher_learner_access set revoked_at=now() where learner_id=$1 and teacher_user_id=$2 and granted_by_guardian_id=$3",[b.learner_id,rows[0].teacher_user_id,uid]);
+ return {revoked:true};
+}
+async function deleteLearner(uid,b){
+ const id=b.learner_id;
+ if(!validId(id)||b.confirm_delete!==true)error(400,"Confirmation de suppression requise");
+ const rows=await run("select id from fr_edu.learners where id=$1 and guardian_user_id=$2",[id,uid]);
+ if(!rows.length)error(403,"Ce profil ne vous appartient pas");
+ await sql.begin(async tx=>{
+   await run("delete from fr_edu.attempts where learner_id=$1 and student_user_id=$2",[id,uid],tx);
+   await run("delete from fr_edu.teacher_learner_access where learner_id=$1",[id],tx);
+   await run("delete from fr_edu.learners where id=$1 and guardian_user_id=$2",[id,uid],tx);
+ });
+ return {deleted:true};
+}
 async function teacherReport(uid){
  if(!await teacher(uid))error(403,"Compte enseignant non autorisé");
  const learners=await run("select l.id,l.display_name,l.grade_code from fr_edu.teacher_learner_access x join fr_edu.learners l on l.id=x.learner_id where x.teacher_user_id=$1 and x.revoked_at is null and l.consent_revoked_at is null order by l.created_at desc limit 200",[uid]);
@@ -180,6 +200,8 @@ Deno.serve(async req=>{
    case "create-learner":value=await createLearner(uid,b);break;
    case "teacher-code":value=await teacherCode(uid);break;
    case "share-teacher":value=await shareTeacher(uid,b);break;
+   case "unshare-teacher":value=await unshareTeacher(uid,b);break;
+   case "delete-learner":value=await deleteLearner(uid,b);break;
    case "teacher-report":value=await teacherReport(uid);break;
    case "own-report":value=await accountReport(uid,b.learner_id);break;
    case "start":value=await start(uid,b);break;
