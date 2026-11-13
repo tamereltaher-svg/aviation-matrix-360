@@ -157,8 +157,8 @@ $('writeInput').addEventListener('input',e=>{const c=data.mixed.current;c.select
 $('letterInput').addEventListener('input',e=>{const c=data.mixed.current;c.selected=e.target.value;save();$('next').disabled=!e.target.value.trim();});
 $('writeInput').addEventListener('keydown',e=>{if(e.key==='Enter')advance();});
 $('letterInput').addEventListener('keydown',e=>{if(e.key==='Enter')advance();});
-$('backExam').addEventListener('click',()=>{window.location.href='./';});
-$('backResult').addEventListener('click',()=>{window.location.href='./';});
+$('backExam').addEventListener('click',()=>{window.location.href='./library.html';});
+$('backResult').addEventListener('click',()=>{window.location.href='./library.html';});
 $('retry').addEventListener('click',()=>{if(data.mixed.attempts.length<3)start();});
 $('name').addEventListener('input',e=>{data.name=e.target.value.trimStart();save();updateName();});
 $('share').addEventListener('click',()=>{if(data.name.trim())window.open('https://api.whatsapp.com/send?text='+encodeURIComponent(report()),'_blank','noopener,noreferrer');});
