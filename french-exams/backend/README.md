@@ -59,3 +59,30 @@ The existing GitHub Pages exams still use browser-local state and manual WhatsAp
 - No grade classification is approved yet.
 - No database-backed live student application has been activated.
 - Any subsequent decision to expose the private schema or modify data handling is a separate security and governance change.
+
+
+## Cloud pilot extension — 2026-11-13
+
+The guardian-managed pilot has been deployed with these additional resources:
+
+- Migration: `fr_edu_guardian_teacher_pilot_linking.sql`.
+- Edge Function: `french-education-pilot` (version 2, ACTIVE).
+- Public test UI: `https://tamereltaher-svg.github.io/aviation-matrix-360/cloud-beta.html` — separated from the public demo.
+- Edge source: `french-education-pilot/index.ts` (pinned `npm:postgres@3.4.5`).
+
+**Security boundary:** Edge Function `verify_jwt=false` is intentional because the function explicitly checks the bearer user access token with the Supabase Auth `/auth/v1/user` endpoint on every POST action. Requests without valid confirmed Supabase Auth identity receive 401. Teacher reports require `fr_edu.user_roles` teacher/admin role and a guardian-granted `teacher_learner_access` row; authentication alone never authorizes teacher access. All SQL uses bound parameters.
+
+**Guardian and learners:** Adults authenticate with email/password. Minor profiles are aliases, attached to a guardian account, with explicit consent version/timestamp. The guardian can revoke a teacher's access or permanently delete their learner profile and attempts. The teacher access code is not sufficient by itself: the guardian must grant access.
+
+**Server grading:** The API generates and stores question selections in a transaction, then computes grades from private `lexemes`. It never sends the correct answer key for writing/letter items to the browser. The database enforces uniqueness on user/assessment/attempt number and limits attempts to 1–3. The general exam uses 18 question-pool slots. The pending-review grammar exam is deliberately excluded from the cloud pilot.
+
+**Verification performed:** Supabase reports 23 RLS-enabled tables in `fr_edu`, 19 pilot assessment definitions, 1 assessment blocked pending review, zero live learner records/attempts, no direct anonymous/authenticated access to the private tables. Edge Function deployment is ACTIVE; GitHub Pages publish job returned success.
+
+**Important remaining gates before production:**
+
+1. No verified teacher/admin account has yet been assigned to `fr_edu.user_roles`. Teacher dashboard requires approval by the application administrator using a verified auth user ID; it has no self-service elevation.
+2. A real adult authenticated end-to-end test was not possible without credentials; therefore actual remote start/submit/login and database connectivity via the Edge Function remain **unverified**. Deployed/ACTIVE does not establish full functionality.
+3. The Supabase Auth email confirmation redirect URL may need to be allowlisted in Auth settings for this GitHub Pages URL. Do not change other Aviation Matrix auth settings without reviewing existing flows.
+4. Policy governing minors' data processing, guardian verification, exact retention/deletion periods and institutional data controller responsibilities needs final approval. Keep this adult-supervised pilot in non-production until completed.
+5. Public HTML quizzes continue to use localStorage independently. No backfill of old local results or automatic live roll-out has been performed.
+6. Before full launch, test 3-attempt concurrency, session expiration, tampered user IDs, consent revocation, teacher access assignment/revocation, report access isolation and actual grading accuracy.
