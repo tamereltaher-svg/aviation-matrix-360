@@ -25,21 +25,106 @@ async function userFrom(req){
  if(!u?.id||!u.email_confirmed_at)error(401,"Confirmez d'abord votre adresse email");
  return u;
 }
-async function teacher(uid){return (await run("select 1 from fr_edu.user_roles where user_id=$1 and role_name in ('teacher','admin') limit 1",[uid])).length>0;}
+
+const ACCOUNT_TYPES=["guardian","adult_student","teacher"];
+async function isAdmin(uid){
+ return (await run("select 1 from fr_edu.user_roles where user_id=$1 and role_name='admin' limit 1",[uid])).length>0;
+}
+async function accountRequest(uid){
+ const a=await run("select account_type,approval_status,requested_at,decided_at,admin_note from fr_edu.account_requests where user_id=$1",[uid]);
+ return a[0]||null;
+}
+async function sessionInfo(u){
+ const uid=u.id;
+ if(await isAdmin(uid))return {role:"admin",approval_status:"active",email:u.email,consent_version:CONSENT};
+ const req=await accountRequest(uid);
+ if(!req)return {role:"unregistered",approval_status:"unregistered",email:u.email,consent_version:CONSENT};
+ if(req.approval_status!=="active")return {role:"pending",...req,email:u.email,consent_version:CONSENT};
+ return {role:req.account_type==="teacher"?"teacher":"guardian",account_type:req.account_type,approval_status:"active",email:u.email,consent_version:CONSENT};
+}
+async function registerAccount(uid,b){
+ if(await isAdmin(uid))error(409,"Compte administrateur existant");
+ const type=field(b,"account_type",30);
+ if(!ACCOUNT_TYPES.includes(type)||b.adult_confirmed!==true||b.accept_notice!==true)
+   error(400,"Inscription adulte et acceptation des informations requises");
+ const prior=await accountRequest(uid);
+ if(prior)return {...prior,existing:true};
+ const x=await run("insert into fr_edu.account_requests(user_id,account_type) values($1,$2) on conflict(user_id) do nothing returning account_type,approval_status,requested_at",[uid,type]);
+ return x[0]||await accountRequest(uid);
+}
+async function requireAccount(uid,kind="guardian"){
+ if(await isAdmin(uid))return;
+ const rec=await accountRequest(uid);
+ if(!rec||rec.approval_status!=="active")error(403,"Compte en attente de validation administrative");
+ if(kind==="teacher"&&rec.account_type!=="teacher")error(403,"Compte enseignant requis");
+ if(kind==="guardian"&&rec.account_type==="teacher")error(403,"Compte responsable requis");
+}
+async function adminQueue(uid){
+ if(!await isAdmin(uid))error(403,"Administrateur non autorisé");
+ const accounts=await run("select a.user_id,a.account_type,a.approval_status,a.requested_at,a.decided_at,u.email from fr_edu.account_requests a join auth.users u on u.id=a.user_id order by case when a.approval_status='pending' then 0 else 1 end,a.requested_at desc limit 250");
+ const learners=await run("select l.id,l.display_name,l.grade_code,l.approval_status,l.created_at,l.guardian_user_id,u.email as guardian_email,a.approval_status as guardian_status from fr_edu.learners l join auth.users u on u.id=l.guardian_user_id left join fr_edu.account_requests a on a.user_id=l.guardian_user_id where l.consent_revoked_at is null order by case when l.approval_status='pending' then 0 else 1 end,l.created_at desc limit 250");
+ return {accounts,learners};
+}
+async function adminDecide(uid,b){
+ if(!await isAdmin(uid))error(403,"Administrateur non autorisé");
+ const target=field(b,"target",12),action=field(b,"decision",15);
+ const note=typeof b.note==="string"?b.note.trim():"";
+ if(note.length>500||!["account","learner"].includes(target)||!["approve","reject","suspend","reactivate"].includes(action))error(400,"Décision invalide");
+ const id=field(b,"target_id",36);
+ if(!validId(id))error(400,"Identifiant invalide");
+ const transitions={
+  approve:{from:["pending","rejected"],to:"active"},
+  reject:{from:["pending"],to:"rejected"},
+  suspend:{from:["active"],to:"suspended"},
+  reactivate:{from:["suspended"],to:"active"}
+ };
+ const step=transitions[action];
+ return await sql.begin(async tx=>{
+  if(target==="account"){
+   if(id===uid)error(403,"Auto-approbation interdite");
+   const items=await run("select user_id,account_type,approval_status from fr_edu.account_requests where user_id=$1 for update",[id],tx);
+   if(!items.length)error(404,"Demande inconnue");
+   const current=items[0];
+   if(!step.from.includes(current.approval_status))error(409,"Transition non autorisée: "+current.approval_status);
+   const verified=await run("select email_confirmed_at from auth.users where id=$1",[id],tx);
+   if(step.to==="active"&&!verified[0]?.email_confirmed_at)error(409,"Email non confirmé");
+   await run("update fr_edu.account_requests set approval_status=$1,decided_at=now(),decided_by=$2,admin_note=$3 where user_id=$4",[step.to,uid,note||null,id],tx);
+   if(current.account_type==="teacher"&&step.to==="active"){
+    await run("insert into fr_edu.user_roles(user_id,role_name,assigned_by) values($1,'teacher',$2) on conflict(user_id,role_name) do nothing",[id,uid],tx);
+   }
+   await run("insert into fr_edu.registration_decisions(target_type,account_user_id,action,decided_by,note) values('account',$1,$2,$3,$4)",[id,action,uid,note||null],tx);
+  }else{
+   const rows=await run("select id,guardian_user_id,approval_status,consent_revoked_at from fr_edu.learners where id=$1 for update",[id],tx);
+   if(!rows.length)error(404,"Profil élève inconnu");
+   if(!step.from.includes(rows[0].approval_status))error(409,"Transition non autorisée: "+rows[0].approval_status);
+   if(rows[0].consent_revoked_at)error(409,"Consentement retiré");
+   if(step.to==="active"){
+    const parents=await run("select approval_status from fr_edu.account_requests where user_id=$1",[rows[0].guardian_user_id],tx);
+    if(parents[0]?.approval_status!=="active")error(409,"Compte responsable non actif");
+   }
+   await run("update fr_edu.learners set approval_status=$1,decided_at=now(),decided_by=$2,admin_note=$3 where id=$4",[step.to,uid,note||null,id],tx);
+   await run("insert into fr_edu.registration_decisions(target_type,learner_id,action,decided_by,note) values('learner',$1,$2,$3,$4)",[id,action,uid,note||null],tx);
+  }
+  return {target,target_id:id,approval_status:step.to};
+ });
+}
+async function teacher(uid){await requireAccount(uid,"teacher");return (await run("select 1 from fr_edu.user_roles where user_id=$1 and role_name='teacher' limit 1",[uid])).length>0;}
 async function learner(uid,id){
  if(!validId(id))error(400,"Identifiant d'élève invalide");
- const x=await run("select id,display_name,grade_code,consent_revoked_at from fr_edu.learners where id=$1 and guardian_user_id=$2",[id,uid]);
+ const x=await run("select id,display_name,grade_code,approval_status,consent_revoked_at from fr_edu.learners where id=$1 and guardian_user_id=$2",[id,uid]);
  if(!x.length||x[0].consent_revoked_at)error(403,"Accès élève refusé ou consentement retiré");
  return x[0];
 }
 async function accountReport(uid,id){
- await learner(uid,id);
+ await requireAccount(uid);await learner(uid,id);
  return await run("select assessment_code,attempt_number,auto_score,maximum_score,state,submitted_at from fr_edu.attempts where learner_id=$1 and student_user_id=$2 and state in ('scored','review_required') order by submitted_at desc limit 150",[id,uid]);
 }
 async function listLearners(uid){
- return await run("select id,display_name,grade_code,created_at from fr_edu.learners where guardian_user_id=$1 and consent_revoked_at is null order by created_at desc limit 100",[uid]);
+ await requireAccount(uid);
+ return await run("select id,display_name,grade_code,approval_status,admin_note,created_at from fr_edu.learners where guardian_user_id=$1 and consent_revoked_at is null order by created_at desc limit 100",[uid]);
 }
 async function createLearner(uid,b){
+ await requireAccount(uid);
  if(b.consent!==true)error(400,"Accord du responsable légal requis");
  const name=field(b,"learner_alias",60);
  const grade=b.grade_code?field(b,"grade_code",12):null;
@@ -57,9 +142,11 @@ async function teacherCode(uid){
  return {code:a[0].share_code};
 }
 async function shareTeacher(uid,b){
- await learner(uid,b.learner_id);
+ await requireAccount(uid);
+ const linked=await learner(uid,b.learner_id);
+ if(linked.approval_status!=="active")error(403,"Profil élève en attente de validation");
  const code=field(b,"teacher_code",40).toUpperCase();
- const rows=await run("select c.teacher_user_id from fr_edu.teacher_codes c join fr_edu.user_roles r on r.user_id=c.teacher_user_id and r.role_name in ('teacher','admin') where c.share_code=$1 limit 1",[code]);
+ const rows=await run("select c.teacher_user_id from fr_edu.teacher_codes c join fr_edu.user_roles r on r.user_id=c.teacher_user_id and r.role_name='teacher' join fr_edu.account_requests a on a.user_id=c.teacher_user_id and a.approval_status='active' where c.share_code=$1 limit 1",[code]);
  if(!rows.length)error(404,"Code enseignant inconnu");
  await run("insert into fr_edu.teacher_learner_access(teacher_user_id,learner_id,granted_by_guardian_id) values($1,$2,$3) on conflict(teacher_user_id,learner_id) do update set revoked_at=null,granted_at=now(),granted_by_guardian_id=excluded.granted_by_guardian_id",[rows[0].teacher_user_id,b.learner_id,uid]);
  return {shared:true};
@@ -86,13 +173,14 @@ async function deleteLearner(uid,b){
 }
 async function teacherReport(uid){
  if(!await teacher(uid))error(403,"Compte enseignant non autorisé");
- const learners=await run("select l.id,l.display_name,l.grade_code from fr_edu.teacher_learner_access x join fr_edu.learners l on l.id=x.learner_id where x.teacher_user_id=$1 and x.revoked_at is null and l.consent_revoked_at is null order by l.created_at desc limit 200",[uid]);
- const attempts=await run("select a.learner_id,a.assessment_code,a.attempt_number,a.auto_score,a.maximum_score,a.submitted_at,a.state from fr_edu.teacher_learner_access x join fr_edu.learners l on l.id=x.learner_id join fr_edu.attempts a on a.learner_id=l.id where x.teacher_user_id=$1 and x.revoked_at is null and l.consent_revoked_at is null and a.state in ('scored','review_required') order by a.submitted_at desc limit 500",[uid]);
+ const learners=await run("select l.id,l.display_name,l.grade_code from fr_edu.teacher_learner_access x join fr_edu.learners l on l.id=x.learner_id join fr_edu.account_requests ap on ap.user_id=l.guardian_user_id and ap.approval_status='active' where x.teacher_user_id=$1 and x.revoked_at is null and l.consent_revoked_at is null and l.approval_status='active' order by l.created_at desc limit 200",[uid]);
+ const attempts=await run("select a.learner_id,a.assessment_code,a.attempt_number,a.auto_score,a.maximum_score,a.submitted_at,a.state from fr_edu.teacher_learner_access x join fr_edu.learners l on l.id=x.learner_id join fr_edu.attempts a on a.learner_id=l.id join fr_edu.account_requests ap on ap.user_id=l.guardian_user_id and ap.approval_status='active' where x.teacher_user_id=$1 and x.revoked_at is null and l.consent_revoked_at is null and l.approval_status='active' and a.state in ('scored','review_required') order by a.submitted_at desc limit 500",[uid]);
  return {learners,attempts};
 }
 async function checkAttempt(uid,id){
+ await requireAccount(uid);
  if(!validId(id))error(400,"Tentative invalide");
- const x=await run("select a.id,a.learner_id,a.assessment_code,a.attempt_number,a.state,a.auto_score,a.maximum_score from fr_edu.attempts a join fr_edu.learners l on l.id=a.learner_id where a.id=$1 and a.student_user_id=$2 and l.guardian_user_id=$2 and l.consent_revoked_at is null",[id,uid]);
+ const x=await run("select a.id,a.learner_id,a.assessment_code,a.attempt_number,a.state,a.auto_score,a.maximum_score from fr_edu.attempts a join fr_edu.learners l on l.id=a.learner_id where a.id=$1 and a.student_user_id=$2 and l.guardian_user_id=$2 and l.consent_revoked_at is null and l.approval_status='active'",[id,uid]);
  if(!x.length)error(403,"Accès refusé");
  return x[0];
 }
@@ -120,7 +208,9 @@ async function questions(id){
  return out;
 }
 async function start(uid,b){
+ await requireAccount(uid);
  const own=await learner(uid,b.learner_id);
+ if(own.approval_status!=="active")error(403,"Profil élève en attente de validation");
  const code=field(b,"assessment_code",100);
  const assessments=await run("select code,question_count,max_attempts from fr_edu.assessments where code=$1 and pilot_enabled=true",[code]);
  if(!assessments.length)error(404,"Examen indisponible");
@@ -194,15 +284,18 @@ Deno.serve(async req=>{
   const u=await userFrom(req),uid=u.id;
   let value;
   switch(b.action){
-   case "session":value={role:await teacher(uid)?"teacher":"guardian",email:u.email,consent_version:CONSENT};break;
-   case "catalog":value=await run("select code,title_fr,question_count,max_attempts from fr_edu.assessments where pilot_enabled=true order by code");break;
+   case "session":value=await sessionInfo(u);break;
+   case "register-account":value=await registerAccount(uid,b);break;
+   case "admin-queue":value=await adminQueue(uid);break;
+   case "admin-decide":value=await adminDecide(uid,b);break;
+   case "catalog":await requireAccount(uid);value=await run("select code,title_fr,question_count,max_attempts from fr_edu.assessments where pilot_enabled=true order by code");break;
    case "list-learners":value=await listLearners(uid);break;
    case "create-learner":value=await createLearner(uid,b);break;
-   case "teacher-code":value=await teacherCode(uid);break;
+   case "teacher-code":await requireAccount(uid,"teacher");value=await teacherCode(uid);break;
    case "share-teacher":value=await shareTeacher(uid,b);break;
    case "unshare-teacher":value=await unshareTeacher(uid,b);break;
    case "delete-learner":value=await deleteLearner(uid,b);break;
-   case "teacher-report":value=await teacherReport(uid);break;
+   case "teacher-report":await requireAccount(uid,"teacher");value=await teacherReport(uid);break;
    case "own-report":value=await accountReport(uid,b.learner_id);break;
    case "start":value=await start(uid,b);break;
    case "get-attempt":value=await getAttempt(uid,b);break;
