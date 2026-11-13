@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#123d63">
+<meta name="description" content="Examen de français — Choisis la bonne réponse, 5 questions.">
+<title>Grammaire — Choisis la bonne réponse</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#183957;background:#f3f7fc;font-synthesis:none}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:18px}
+main{width:min(100%,560px);padding:clamp(21px,5vw,34px);background:white;border:1px solid #dce8f3;border-radius:22px;box-shadow:0 14px 42px #143b5e12}
+.eyebrow{color:#5d819e;font-size:12px;text-transform:uppercase;letter-spacing:.12em;font-weight:800;margin:0 0 12px}
+h1{font-size:clamp(26px,5vw,33px);line-height:1.2;margin:8px 0 15px}h2{font-size:22px;line-height:1.5;margin:24px 0 21px}
+.back{display:inline-block;color:#1b6aa0;text-decoration:none;font-size:14px;font-weight:740;margin:0 0 12px}
+.topline{display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:13px;color:#607d98}
+.topline strong{color:#17446b}.progress{height:7px;background:#e4eef7;border-radius:40px;overflow:hidden;margin:14px 0 18px}.bar{height:100%;background:#2a77b7;transition:width .2s}
+.choices{display:grid;gap:11px}.choice{display:block;width:100%;border:2px solid #d9e5ef;background:#f8fbff;color:#173b5c;text-align:left;border-radius:13px;font-size:17px;font-weight:720;padding:15px 17px;cursor:pointer;transition:background .12s,border-color .12s}
+.choice[aria-pressed="true"]{background:#deefff;border-color:#1b70b0}
+.choice:hover{background:#eef6ff}.choice:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #4499d8;outline-offset:3px}
+.btn{display:block;width:100%;border:0;border-radius:12px;margin-top:16px;padding:16px;font-size:16px;font-weight:800;color:#fff;background:#133f65;cursor:pointer}
+.btn:disabled{opacity:.4;cursor:not-allowed}.secondary{background:#e9f1f8;color:#15486e}.wa{background:#15864b}.muted{color:#6a839b;line-height:1.6}
+.hidden{display:none!important}.center{text-align:center}.score{font-size:58px;color:#165481;font-weight:900;margin:12px 0 2px;letter-spacing:-.06em}
+.status-card{border:1px solid #d9e7f2;background:#f3f8fc;border-radius:15px;padding:16px;text-align:center;margin:22px 0}
+.dots{display:flex;justify-content:center;gap:11px;margin:14px 0}.dot{display:grid;place-items:center;width:34px;height:34px;border:2px solid #b9ccdb;border-radius:50%;background:#fff;color:#66839b;font-size:14px;font-weight:850}.dot.done{background:#155b98;border-color:#155b98;color:#fff}
+.history{color:#506f89;font-size:14px;line-height:1.65;margin-top:12px}.notice{border:1px solid #d9e7ef;background:#f7fafc;border-radius:13px;padding:15px;line-height:1.7;font-size:14px;color:#476782;margin:17px 0}
+.notice strong{color:#174a71}.answer-record{color:#4a657c;font-size:14px;margin:6px 0}.label{display:block;font-weight:770;font-size:15px;margin:17px 0 7px}
+input{width:100%;border:1.5px solid #b9cddd;border-radius:11px;font-size:18px;padding:14px}
+.micro{font-size:12px;color:#72879c;line-height:1.65;margin:16px 0 0}
+</style>
+</head><body>
+<main><div class="eyebrow">Examen de Français</div>
+<section id="exam">
+<a class="back" href="./library.html">← Bibliothèque d'exercices</a>
+<div class="topline"><strong>Grammaire · Choisis la bonne réponse</strong><span id="counter"></span></div>
+<div class="progress"><div id="bar" class="bar"></div></div>
+<h2 id="question"></h2>
+<div id="choices" class="choices" role="group" aria-label="Choisis la bonne réponse"></div>
+<button class="btn" id="next" disabled>Suivant</button>
+<p class="micro">Sélectionne une seule réponse pour chaque phrase.</p>
+</section>
+<section id="result" class="hidden">
+<a class="back" href="./library.html">← Bibliothèque d'exercices</a>
+<h1 class="center">Examen terminé !</h1>
+<p class="muted center">Grammaire · Choisis la bonne réponse</p>
+<div class="center score" id="score"></div>
+<p class="center muted" id="percent"></p>
+<div class="status-card">
+<strong id="attemptTitle"></strong>
+<div class="dots" id="dots"></div>
+<div id="remaining" class="muted"></div>
+<div id="history" class="history"></div>
+</div>
+<div class="notice">
+<strong>Question 5 — correction en attente</strong>
+<p>La phrase avec « Hier, vous … les devoirs » ne comporte pas de réponse clairement correcte parmi les choix fournis. La réponse sélectionnée est enregistrée pour vérification par l'enseignant.</p>
+<div id="question5Choice" class="answer-record"></div>
+<p class="micro">Note provisoire : 4 questions corrigées automatiquement sur 5 questions présentées.</p>
+</div>
+<label class="label" for="studentName">Prénom et nom</label>
+<input id="studentName" placeholder="Écris ton nom" maxlength="100" autocomplete="name">
+<button class="btn" id="retry">Recommencer l'examen</button>
+<button class="btn wa" id="whatsapp" disabled>Envoyer mes résultats sur WhatsApp</button>
+<button class="btn secondary" id="copy" disabled>Copier toutes mes notes</button>
+<div id="status" role="status" class="muted"></div>
+<p class="micro">Résultats enregistrés seulement sur ce navigateur ; ils ne sont pas vérifiés par un serveur.</p>
+</section>
+</main>
+<script>
+(()=>{'use strict';
+const ITEMS=[
+ {stem:'1 — Je ............ le chocolat.',options:['Manges','Mange','Mangez'],correct:1},
+ {stem:'2 — Ils ............ le film.',options:['Regardent','Regarde','Regardes'],correct:0},
+ {stem:'3 — Tu ............ les pantalons.',options:['Choisissez','Choisis','Choisit'],correct:1},
+ {stem:'4 — Ce soir, nous ............ à Alex.',options:['Viyageons','Allons','Voyager','Voyages'],correct:1},
+ {stem:'5 — Hier, vous ............ les devoirs.',options:['Corrigez','Allez','Corrigez','Avez','Corrige'],correct:null}
+];
+const KEY='fr_examen_grammaire_choix_20261113_v1',MAX=3;
+const $=id=>document.getElementById(id);
+let state;
+function fresh(){return {name:'',attempts:[],current:null};}
+function read(){try{const raw=localStorage.getItem(KEY);if(raw){const d=JSON.parse(raw);if(d&&Array.isArray(d.attempts)){return {name:typeof d.name==='string'?d.name:'',attempts:d.attempts.slice(0,MAX),current:d.current||null};}}}catch(e){}return fresh();}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+function show(id){$('exam').classList.toggle('hidden',id!=='exam');$('result').classList.toggle('hidden',id!=='result');}
+function newAttempt(){
+ if(state.attempts.length>=MAX){renderResult();return;}
+ state.current={index:0,answers:[],selected:null,finished:false};save();renderQuestion();
+}
+function renderQuestion(){
+ const cur=state.current;
+ if(!cur){if(state.attempts.length>=MAX)renderResult();else newAttempt();return;}
+ if(cur.finished){renderResult();return;}
+ if(!Number.isInteger(cur.index)||cur.index<0||cur.index>=ITEMS.length){newAttempt();return;}
+ show('exam');
+ const item=ITEMS[cur.index];
+ $('counter').textContent='Question '+(cur.index+1)+' / '+ITEMS.length;
+ $('bar').style.width=((cur.index+1)/ITEMS.length*100)+'%';
+ $('question').textContent=item.stem;
+ const wrap=$('choices');wrap.replaceChildren();
+ item.options.forEach((label,i)=>{
+   const b=document.createElement('button');b.type='button';b.className='choice';b.textContent=label;
+   b.setAttribute('aria-pressed',String(cur.selected===i));
+   b.addEventListener('click',()=>{
+     cur.selected=i;save();
+     for(const node of wrap.children)node.setAttribute('aria-pressed',String(node===b));
+     $('next').disabled=false;
+   });
+   wrap.appendChild(b);
+ });
+ $('next').disabled=!Number.isInteger(cur.selected);
+ $('next').textContent=cur.index===ITEMS.length-1?'Terminer':'Suivant';
+}
+function advance(){
+ const cur=state.current;
+ if(!cur||cur.finished||!Number.isInteger(cur.selected))return;
+ cur.answers.push(cur.selected);cur.selected=null;cur.index++;
+ if(cur.index===ITEMS.length){
+   const autoCorrect=ITEMS.reduce((total,item,i)=>total+(item.correct!==null&&cur.answers[i]===item.correct?1:0),0);
+   const answer5Index=cur.answers[4];
+   cur.finished=true;cur.completedAt=new Date().toISOString();cur.autoScore=autoCorrect;
+   const rec={autoScore:autoCorrect,answer5Index,answer5Text:ITEMS[4].options[answer5Index],completedAt:cur.completedAt};
+   state.attempts.push(rec);save();renderResult();
+ }else{save();renderQuestion();}
+}
+function resultText(){
+ const lines=['Résultats — Grammaire','Examen : Choisis la bonne réponse','Élève : '+state.name.trim(),
+  '5 questions présentées · 4 corrigées automatiquement','Tentatives effectuées : '+state.attempts.length+'/3',''];
+ state.attempts.forEach((a,i)=>{
+   lines.push('Tentative '+(i+1)+' : '+a.autoScore+'/4 (note provisoire)');
+   lines.push('Question 5 — réponse sélectionnée : '+a.answer5Text+' (choix '+(a.answer5Index+1)+') — à vérifier');
+   lines.push('');
+ });
+ return lines.join('\n').trim();
+}
+function nameChange(){
+ const ok=!!state.name.trim();
+ $('whatsapp').disabled=!ok;$('copy').disabled=!ok;
+}
+function renderResult(){
+ if(!state.attempts.length){newAttempt();return;}
+ show('result');
+ const count=state.attempts.length,last=state.attempts[count-1];
+ $('score').textContent=last.autoScore+' / 4';
+ $('percent').textContent=(last.autoScore*25)+' % · note provisoire';
+ $('attemptTitle').textContent='Tentative '+count+' sur 3';
+ $('dots').replaceChildren();
+ for(let i=1;i<=MAX;i++){const dot=document.createElement('span');dot.className='dot'+(i<=count?' done':'');dot.textContent=i;$('dots').appendChild(dot);}
+ $('remaining').textContent=count===MAX?'3 tentatives utilisées — examen terminé':'Il vous reste '+(MAX-count)+(MAX-count===1?' tentative':' tentatives');
+ $('history').textContent='Notes : '+state.attempts.map((a,i)=>(i+1)+'. '+a.autoScore+'/4').join(' · ');
+ $('question5Choice').textContent='Réponse choisie : '+last.answer5Text+' (choix '+(last.answer5Index+1)+')';
+ $('retry').classList.toggle('hidden',count===MAX);
+ $('studentName').value=state.name||'';
+ $('status').textContent='';
+ nameChange();
+}
+$('next').addEventListener('click',advance);
+$('retry').addEventListener('click',()=>{if(state.attempts.length<MAX)newAttempt();});
+$('studentName').addEventListener('input',e=>{state.name=e.target.value.trimStart();save();nameChange();});
+$('whatsapp').addEventListener('click',()=>{if(!state.name.trim())return;window.open('https://api.whatsapp.com/send?text='+encodeURIComponent(resultText()),'_blank','noopener,noreferrer');});
+$('copy').addEventListener('click',async()=>{
+ if(!state.name.trim())return;
+ const txt=resultText();
+ try{await navigator.clipboard.writeText(txt);$('status').textContent='Notes copiées !';}
+ catch(e){const t=document.createElement('textarea');t.value=txt;document.body.appendChild(t);t.select();const ok=document.execCommand('copy');t.remove();$('status').textContent=ok?'Notes copiées !':'Copie indisponible.';}
+});
+state=read();
+state.current?.finished||state.attempts.length>=MAX?renderResult():state.current?renderQuestion():newAttempt();
+})();
+</script></body></html>
