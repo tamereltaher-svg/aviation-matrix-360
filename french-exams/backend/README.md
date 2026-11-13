@@ -105,3 +105,19 @@ The guardian-managed pilot has been deployed with these additional resources:
 **Not yet verified end to end:** live email delivery and allowed Auth callback URL, creation of a real test account, actual admin-approved login with a real session, a learner's server-scored attempt. These must be tested with consenting adults before going live. The public HTML demo exams remain accessible without cloud authentication and must not be represented as locked.
 
 **Supabase migration files:** `fr_edu_registration_admin_approval_gate.sql`, `fr_edu_registration_audit_learner_delete_fix.sql`.
+
+## Timed assessment pilot — 2026-11-13
+
+**Deployment:** `fr_edu_authoritative_exam_timers.sql` and `fr_edu_exam_expiry_cron.sql` applied to AviationMatrix-Core; Edge Function `french-education-pilot` updated to v4. Admin timer controls are in `admin-approval.html`; countdown and saved draft answers are in `cloud-beta.html`.
+
+- **Two distinct experiences:** the existing `library.html` provides untimed **practice** (browser-local attempt history); approved learner accounts take **cloud exams** from `cloud-beta.html`. Practice results do *not* sync to the cloud reports.
+- **Admin controls:** duration per cloud exam, `timer_enabled` boolean; valid time 1–120 minutes; saved changes apply to **new** attempts only. First pilot settings: `fr.colors.choose` = 300 seconds and `fr.general` = 1,200 seconds; all other exam timers initially disabled pending educational calibration.
+- **Authoritative deadline:** deadline and duration are saved on each attempt by PostgreSQL when it starts, and sent to the browser with server time. The browser shows a French countdown with warning under one minute. Changing device clock or refreshing cannot extend the server deadline.
+- **Draft answers:** one authenticated `save-answer` request on every Next click saves the response on the server; reloading/resuming restores saved progress. Responses arriving after the deadline are not accepted. The server does not rely on the browser's timer value.
+- **Expiry and scoring:** at expiry, `fr_edu.finalize_attempt` scores all saved responses, counts unanswered items as 0 and closes the attempt with `submission_reason='timeout'`. The same private, SECURITY INVOKER scoring routine handles ordinary submission (`manual`); manual submission requires every answer. Duplicate submissions are idempotent.
+- **Even after page closure:** one Supabase Cron job `fr-edu-timeout-finalizer-v1` invokes `fr_edu.expire_due_attempts(100)` **every minute**. This means backend closure can lag the exact second by up to roughly one polling interval if the page is closed; the browser itself submits at zero while open. The 3-attempt ceiling counts timeouts.
+- **Reporting:** server response and guardian/teacher reports distinguish timeouts and include elapsed seconds (where recorded). The server allows exam-start, draft-save, submit and result access only through the preexisting approved account/learner authorization gates.
+- **Security:** new SQL functions are private and execute privileges are revoked from anon and authenticated. No answer key, service-role secret or database credential was added to GitHub Pages.
+- **Validation:** database timer settings and Cron job confirmed; Cron job executions recorded with `succeeded` status; synthetic API tests passed pending account, admin-only timer access, draft saving, rejected late answers and duplicate submit; live end-to-end with real consenting guardian/learner is still pending. The original public quiz routes were not modified.
+
+**Change control:** duration settings are experimental, not curriculum standards. No grade mapping has been approved. If the application is later migrated to a new Supabase account, the timed exam migrations and named Cron job must also be migrated and revalidated.
