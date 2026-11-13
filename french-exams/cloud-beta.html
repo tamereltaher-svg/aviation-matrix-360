@@ -1,0 +1,255 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Français — Portail pilote sécurisé</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:#203c58;background:#f3f7fb}*{box-sizing:border-box}body{margin:0;padding:18px;min-height:100vh;display:grid;place-items:center}
+main{width:min(100%,700px);padding:clamp(18px,5vw,32px);border:1px solid #dde7f0;border-radius:21px;background:white;box-shadow:0 15px 40px #11395a12}
+.eyebrow{font-size:12px;letter-spacing:.11em;text-transform:uppercase;font-weight:800;color:#6484a0}
+h1{font-size:30px;margin:10px 0}h2{font-size:22px;margin:18px 0 10px}
+h3{font-size:17px;margin:15px 0 8px}.muted{color:#6a8398;line-height:1.6;font-size:14px}.small{font-size:12px;color:#6e869b}
+.panel{padding:17px;border:1px solid #d9e6f1;border-radius:14px;background:#f9fbff;margin:14px 0}
+label{font-weight:750;font-size:14px;display:block;margin:12px 0 6px}input,select{width:100%;padding:13px 14px;border:1px solid #b7cbdc;border-radius:10px;font-size:16px;background:white;outline-offset:3px}
+button{font-family:inherit;cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}
+.btn{border:0;background:#16446b;color:white;border-radius:11px;padding:14px 18px;font-weight:800;font-size:15px;margin-top:14px;width:100%}
+.light{background:#e9f1f8;color:#19547e}.wa{background:#15864b}
+.inline{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.inline>*{flex:1}.inline button{min-width:130px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0;flex-wrap:wrap}
+.chip{font-size:12px;padding:6px 9px;border-radius:20px;background:#e8f2fc;color:#1e5c8a;font-weight:800}
+.hidden{display:none!important}.err{color:#ad3030}.ok{color:#187e48}
+#notice{min-height:22px;font-size:14px;margin:12px 0}.spacer{margin:19px 0;border:0;border-top:1px solid #e4edf5}
+.learner{padding:12px 0;border-bottom:1px solid #e3edf5}.learner button{margin:0}
+.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:17px 0}
+.choice{padding:13px;background:#f3f8fd;border:2px solid #dce8f2;border-radius:11px;font-size:16px;color:#214965}
+.choice.selected{background:#dcefff;border-color:#296fa9}
+.visual{width:min(250px,100%);height:145px;border:1px solid #d3e1ec;border-radius:15px;margin:18px auto;display:grid;place-items:center;font-size:82px;font-weight:850;background:#f2f8ff;color:#215f91}
+.visual svg{width:170px;height:120px}
+.center{text-align:center}.answer{font-size:32px;text-align:center;font-weight:800;letter-spacing:.1em;color:#185786}.score{font-size:44px;font-weight:900;color:#115985}
+.scroll{overflow:auto;max-height:400px}.questionHead{display:flex;justify-content:space-between;gap:10px;align-items:center}.progress{height:6px;background:#e2edf6;border-radius:10px;overflow:hidden}.progress>div{height:100%;background:#2676b0}
+.checkboxline{display:flex;gap:11px;align-items:flex-start;font-size:13px;line-height:1.6}.checkboxline input{width:18px;flex-shrink:0;margin:3px 0 0}
+a{color:#1b6eaa}
+@media(max-width:410px){.choice-grid{gap:8px}.choice{font-size:14px;padding:11px}.inline{display:block}.inline>*{margin-top:8px}}
+</style></head><body><main>
+<div class="eyebrow">Français · Accès pilote</div><h1>Apprentissage et évaluations</h1>
+<p class="muted">Connexion des responsables légaux et des enseignants. Version pilote distincte des exercices libres existants.</p>
+<div id="notice" role="status"></div>
+<section id="auth">
+<h2>Connexion adulte</h2>
+<label for="email">Email</label><input id="email" type="email" autocomplete="email" placeholder="adresse@email.com">
+<label for="password">Mot de passe</label><input id="password" type="password" autocomplete="current-password" minlength="8" placeholder="8 caractères minimum">
+<button class="btn" id="signIn">Se connecter</button>
+<button class="btn light" id="signUp">Créer un compte de responsable légal</button>
+<p class="small">L'inscription est réservée aux adultes. La création de comptes d'enfants n'est pas proposée. La confirmation de l'email peut être exigée par Supabase.</p>
+<a href="./">Retour aux exercices publics</a>
+</section>
+<section id="account" class="hidden">
+<div class="row"><strong id="identity"></strong><button id="signOut" class="btn light" style="width:auto;margin:0">Se déconnecter</button></div>
+<div class="row"><span id="role" class="chip"></span><span class="small">Résultats enregistrés dans le cloud</span></div>
+<div id="guardian" class="hidden">
+<h2>Mes élèves</h2>
+<div id="learnerList"></div>
+<div class="panel">
+<h3>Ajouter un profil élève</h3>
+<label for="alias">Pseudonyme (pas de nom complet)</label><input id="alias" maxlength="60" placeholder="Ex. Élève A">
+<label for="grade">Classe (facultatif)</label>
+<select id="grade"><option value="">Non classé</option></select>
+<label class="checkboxline"><input id="consent" type="checkbox"><span>Je confirme être le responsable légal et autorise la création de ce profil pilote et le stockage de ses résultats. Les données sont accessibles au responsable légal et aux enseignants auxquels je donne accès. Ne pas saisir de données sensibles. Je peux demander le retrait du consentement et la suppression du profil avant toute utilisation réelle.</span></label>
+<button id="addLearner" class="btn">Créer ce profil</button>
+</div>
+<div id="studentPanel" class="panel hidden">
+<h3 id="selectedLearner"></h3>
+<label for="examType">Choisir un examen pilote</label><select id="examType"></select>
+<button id="beginExam" class="btn">Démarrer ou reprendre</button>
+<h3>Partager les résultats avec un enseignant</h3>
+<p class="small">Entrez le code communiqué par un enseignant autorisé.</p>
+<label for="teacherCode">Code enseignant</label><input id="teacherCode" maxlength="40" placeholder="FRXXXXXXXXXXXX">
+<button id="shareTeacher" class="btn light">Autoriser cet enseignant</button>
+<h3>Résultats de ce profil</h3><div id="ownResults" class="scroll"></div>
+</div>
+</div>
+<div id="teacher" class="hidden">
+<h2>Tableau de bord enseignant</h2>
+<p class="muted">Seuls les élèves expressément partagés par leurs responsables légaux apparaissent ici.</p>
+<div class="panel"><strong>Mon code enseignant</strong><p id="myCode" class="score" style="font-size:21px"></p></div>
+<button id="refreshTeacher" class="btn light">Actualiser les résultats</button>
+<div id="teacherResults" class="scroll"></div>
+<p class="small">Un administrateur doit attribuer le rôle « teacher » après vérification de votre identité. Il est impossible de s'attribuer soi-même ce rôle.</p>
+</div>
+</section>
+<section id="quiz" class="hidden">
+<button id="quizBack" class="btn light">Revenir au profil</button>
+<div class="panel"><div class="questionHead"><strong id="questionHeader"></strong><span id="qCount" class="small"></span></div><div class="progress"><div id="qBar"></div></div></div>
+<p class="center small" id="topic"></p><h2 class="center" id="questionTitle"></h2>
+<div class="visual" id="visual"></div>
+<div class="choice-grid hidden" id="choices"></div>
+<div id="typePanel" class="hidden"><label for="answer">Ta réponse en français</label><input id="answer" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="70" placeholder="Ta réponse..."></div>
+<button id="next" class="btn" disabled>Suivant</button>
+</section>
+<section id="quizResult" class="hidden">
+<h2>Résultat enregistré</h2><p id="serverScore" class="score"></p><p class="muted">Résultat calculé sur le serveur. Les tentatives et les réponses sont conservées dans la base.</p>
+<button id="goBack" class="btn">Voir mes résultats</button>
+</section>
+<p class="small">Version de développement. La publication générale et la validation juridique des traitements de données d'enfants restent à finaliser.</p>
+</main>
+<script type="module">
+import {createClient} from "https://esm.sh/@supabase/supabase-js@2.95.0";
+const SUPABASE_URL="https://vsuekfzyebqnhthyvwpf.supabase.co";
+const PUBLIC_KEY="sb_publishable_sRvoFKXyDEzQPLaAk3xZOQ_RLVxh5g3";
+const API=SUPABASE_URL+"/functions/v1/french-education-pilot";
+const sb=createClient(SUPABASE_URL,PUBLIC_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const $=id=>document.getElementById(id);
+let account=null,activeLearner=null,exam=null,studentName="",index=0,answers=[];
+function notice(msg,isError=false){$('notice').textContent=msg;$('notice').className=isError?"err":"ok";}
+function show(...ids){for(const id of ['auth','account','quiz','quizResult'])$(id).classList.toggle('hidden',!ids.includes(id));}
+function row(name,value){const div=document.createElement('div');div.className='row';const a=document.createElement('strong');a.textContent=name;const b=document.createElement('span');b.textContent=value;div.appendChild(a);div.appendChild(b);return div;}
+async function call(action,body={}){
+ const {data:{session}}=await sb.auth.getSession();
+ if(!session)throw Error("Veuillez vous reconnecter");
+ const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json',apikey:PUBLIC_KEY,authorization:'Bearer '+session.access_token},body:JSON.stringify({action,...body})});
+ const json=await r.json().catch(()=>({error:"Erreur de réponse"}));
+ if(!r.ok||!json.ok)throw Error(json.error||'Erreur du serveur');
+ return json.result;
+}
+async function guarded(fn){try{notice("");await fn();}catch(e){notice(e.message||String(e),true);}}
+async function login(){
+ const email=$('email').value.trim(),password=$('password').value;
+ if(!email||password.length<8)throw Error("Email et mot de passe requis (8 caractères minimum)");
+ const {error}=await sb.auth.signInWithPassword({email,password});if(error)throw error;
+ await init();
+}
+async function signup(){
+ const email=$('email').value.trim(),password=$('password').value;
+ if(!email||password.length<8)throw Error("Email et mot de passe requis (8 caractères minimum)");
+ const {data,error}=await sb.auth.signUp({email,password,options:{emailRedirectTo:location.href}});if(error)throw error;
+ if(!data.session){notice("Compte créé. Consultez votre email pour confirmer votre adresse.");return;}
+ await init();
+}
+async function init(){
+ const {data:{session}}=await sb.auth.getSession();
+ if(!session){show('auth');return;}
+ const info=await call('session');account=info;
+ $('identity').textContent=info.email||'Compte connecté';
+ $('role').textContent=info.role==='teacher'?'Enseignant':'Responsable légal';
+ show('account');
+ if(info.role==='teacher'){
+   $('teacher').classList.remove('hidden');$('guardian').classList.add('hidden');
+   const t=await call('teacher-code');$('myCode').textContent=t.code;
+   await refreshTeacher();
+ }else{
+   $('teacher').classList.add('hidden');$('guardian').classList.remove('hidden');
+   await refreshGuardian();
+ }
+}
+async function refreshTeacher(){
+ const r=await call('teacher-report');const box=$('teacherResults');box.replaceChildren();
+ if(!r.learners.length){box.textContent="Aucun élève partagé pour le moment.";return;}
+ for(const pupil of r.learners){
+   const panel=document.createElement('div');panel.className='panel';
+   const h=document.createElement('h3');h.textContent=pupil.display_name;panel.appendChild(h);
+   const results=r.attempts.filter(x=>x.learner_id===pupil.id);
+   for(const a of results)panel.appendChild(row(a.assessment_code+' · '+a.attempt_number+'/3',String(a.auto_score)+'/'+String(a.maximum_score)));
+   if(!results.length){const p=document.createElement('p');p.className='small';p.textContent="Pas de résultats pour le moment.";panel.appendChild(p);}
+   box.appendChild(panel);
+ }
+}
+async function refreshGuardian(){
+ const learners=await call('list-learners'),box=$('learnerList');box.replaceChildren();
+ if(!learners.length){box.textContent="Aucun profil élève créé.";return;}
+ for(const person of learners){
+  const line=document.createElement('div');line.className='learner row';
+  const t=document.createElement('strong');t.textContent=person.display_name;
+  const b=document.createElement('button');b.className='btn light';b.style.width='auto';b.textContent='Ouvrir';
+  b.addEventListener('click',()=>guarded(()=>openLearner(person)));
+  line.appendChild(t);line.appendChild(b);box.appendChild(line);
+ }
+ if(!window.__catalog){
+  window.__catalog=await call('catalog');
+  $('examType').replaceChildren();
+  for(const a of window.__catalog){
+   const o=document.createElement('option');o.value=a.code;o.textContent=a.title_fr+' · '+a.question_count+' questions';
+   $('examType').appendChild(o);
+  }
+ }
+}
+async function openLearner(person){
+ activeLearner=person.id;studentName=person.display_name;
+ $('studentPanel').classList.remove('hidden');$('selectedLearner').textContent="Profil : "+person.display_name;
+ const results=await call('own-report',{learner_id:person.id});const box=$('ownResults');box.replaceChildren();
+ if(!results.length)box.textContent="Aucune tentative terminée.";
+ for(const a of results)box.appendChild(row(a.assessment_code+' · tentative '+a.attempt_number,String(a.auto_score)+'/'+String(a.maximum_score)));
+}
+async function addLearner(){
+ const person=await call('create-learner',{learner_alias:$('alias').value.trim(),grade_code:$('grade').value||null,consent:$('consent').checked});
+ $('alias').value='';$('consent').checked=false;
+ await refreshGuardian();await openLearner(person);
+ notice('Profil ajouté');
+}
+async function selectTeacher(){
+ if(!activeLearner)throw Error("Sélectionne d'abord un élève");
+ await call('share-teacher',{learner_id:activeLearner,teacher_code:$('teacherCode').value.trim()});
+ $('teacherCode').value='';notice("Accès enseignant autorisé");
+}
+const title={colors:"Les Couleurs",numbers:"Les Nombres",alphabet:"L'Alphabet",shapes:"Les Formes",animals:"Les Animaux",fruits:"Les Fruits"};
+const shape={circle:'<circle cx="90" cy="62" r="47"/>',square:'<rect x="43" y="16" width="94" height="94"/>',triangle:'<polygon points="90,9 30,115 150,115"/>',rectangle:'<rect x="17" y="32" width="146" height="66"/>',oval:'<ellipse cx="90" cy="64" rx="73" ry="42"/>',star:'<polygon points="90,7 106,46 149,46 116,73 128,116 90,92 52,116 64,73 31,46 74,46"/>',heart:'<path d="M90 114 C68 94 22 68 22 42 C22 8 69 4 90 37 C111 4 158 8 158 42 C158 68 112 94 90 114Z"/>',diamond:'<polygon points="90,8 155,65 90,122 25,65"/>',pentagon:'<polygon points="90,8 154,56 130,116 50,116 26,56"/>',hexagon:'<polygon points="55,12 125,12 161,64 125,116 55,116 19,64"/>'};
+async function startQuiz(){
+ if(!activeLearner)throw Error("Sélectionne d'abord un élève");
+ exam=await call('start',{learner_id:activeLearner,assessment_code:$('examType').value});
+ index=0;answers=[];
+ if(!exam.questions?.length)throw Error("Aucune question reçue");
+ show('quiz');renderQuestion();
+}
+function renderQuestion(){
+ const q=exam.questions[index],len=exam.questions.length;
+ $('questionHeader').textContent='Examen pilote · tentative '+exam.attempt_number+'/3';
+ $('qCount').textContent=(index+1)+'/'+len;$('qBar').style.width=(index/len*100)+'%';
+ $('topic').textContent=title[q.topic]||q.topic;
+ $('questionTitle').textContent=q.mode==='letter'?'Quelle lettre manque ?':q.topic==='numbers'?'Quel est ce nombre ?':q.topic==='colors'?'Quelle est cette couleur ?':q.topic==='alphabet'?'Quelle est cette lettre ?':'Quel est ce mot en français ?';
+ const visual=$('visual');visual.textContent='';visual.style.backgroundColor='#f2f8ff';
+ if(q.visual_type==='color')visual.style.backgroundColor=q.visual_value;
+ else if(q.visual_type==='shape')visual.innerHTML='<svg viewBox="0 0 180 128" xmlns="http://www.w3.org/2000/svg" fill="#75b9e8" stroke="#195b97" stroke-width="3">'+(shape[q.visual_value]||'')+'</svg>';
+ else if(q.visual_type==='letter'&&q.mode==='letter')visual.textContent=q.partial;
+ else visual.textContent=q.visual_value;
+ if(q.mode==='letter'&&q.visual_type!=='letter'){visual.textContent='';visual.textContent=q.partial||'';visual.style.backgroundColor='#f2f8ff';}
+ $('choices').classList.toggle('hidden',q.mode!=='choose');$('typePanel').classList.toggle('hidden',q.mode==='choose');
+ $('next').disabled=true;
+ $('next').textContent=index===len-1?'Envoyer mes réponses':'Suivant';
+ if(q.mode==='choose'){
+  const box=$('choices');box.replaceChildren();
+  for(const option of q.options){
+   const b=document.createElement('button');b.className='choice';b.type='button';b.textContent=option;
+   b.addEventListener('click',()=>{
+    for(const x of box.children)x.classList.remove('selected');
+    b.classList.add('selected');$('next').disabled=false;
+    b.dataset.answer=option;window.__chosen=option;
+   });box.appendChild(b);
+  }
+ }else{
+  $('answer').value='';$('answer').maxLength=q.mode==='letter'?1:70;
+ }
+}
+async function nextQuestion(){
+ const q=exam.questions[index];
+ const answer=q.mode==='choose'?window.__chosen:$('answer').value.trim();
+ if(typeof answer!=='string'||!answer.trim())throw Error('Réponse requise');
+ answers.push({order:q.order,answer});
+ index++;window.__chosen='';
+ if(index<exam.questions.length){renderQuestion();return;}
+ const result=await call('submit',{attempt_id:exam.attempt_id,answers});
+ $('serverScore').textContent=result.score+' / '+result.maximum;
+ show('quizResult');
+ notice("Résultat sauvegardé en ligne");
+}
+$('signIn').addEventListener('click',()=>guarded(login));
+$('signUp').addEventListener('click',()=>guarded(signup));
+$('signOut').addEventListener('click',()=>guarded(async()=>{await sb.auth.signOut();location.reload();}));
+$('addLearner').addEventListener('click',()=>guarded(addLearner));
+$('shareTeacher').addEventListener('click',()=>guarded(selectTeacher));
+$('refreshTeacher').addEventListener('click',()=>guarded(refreshTeacher));
+$('beginExam').addEventListener('click',()=>guarded(startQuiz));
+$('next').addEventListener('click',()=>guarded(nextQuestion));
+$('quizBack').addEventListener('click',()=>{show('account');});
+$('goBack').addEventListener('click',()=>guarded(async()=>{show('account');await refreshGuardian();if(activeLearner){const r=await call('list-learners');const p=r.find(x=>x.id===activeLearner);if(p)await openLearner(p);}}));
+$('answer').addEventListener('input',e=>{$('next').disabled=!e.target.value.trim();});
+const gradeSelect=$('grade');
+const grades=[['kg1','KG1'],['kg2','KG2'],...Array.from({length:6},(_,i)=>['p'+(i+1),'Primaire '+(i+1)]),...Array.from({length:3},(_,i)=>['prep'+(i+1),'Préparatoire '+(i+1)]),...Array.from({length:3},(_,i)=>['sec'+(i+1),'Secondaire '+(i+1)])];
+for(const [code,name]of grades){const el=document.createElement('option');el.value=code;el.textContent=name;gradeSelect.appendChild(el);}
+guarded(init);
+</script></body></html>
