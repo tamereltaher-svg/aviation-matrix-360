@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en" dir="ltr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#0b2038">
+<title>AVIAENERGO | Local Master Control Center</title>
+<style>
+:root{--n:#0b2038;--b:#195784;--bg:#eef3f8;--line:#dbe5ef;--ink:#142a40;--mut:#64768a;--gold:#bd9a65}
+*{box-sizing:border-box}[hidden]{display:none!important}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 "Segoe UI",Arial,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #80bfed;outline-offset:2px}
+header{background:var(--n);color:white;padding:14px max(18px,calc((100vw - 1600px)/2));display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{font-size:18px;font-weight:900;letter-spacing:1.5px}.logo small{display:block;font-size:10px;letter-spacing:.6px;color:#a6c3da;font-weight:500}
+.toplink{color:#fff;font-weight:700;text-decoration:none;border:1px solid #45607b;padding:9px 14px;border-radius:9px}
+.wrap{max-width:1600px;margin:auto;padding:22px 18px 44px}.head{display:flex;align-items:end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:16px}.eyebrow{font-size:11px;letter-spacing:1.7px;font-weight:800;color:#937145}.head h1{font-size:clamp(25px,3vw,38px);margin:4px 0}.head p{color:var(--mut);margin:0;max-width:750px}.badge{display:inline-flex;border:1px solid #d8c9a9;background:#fff8e9;color:#73521b;padding:6px 11px;border-radius:100px;font-size:12px;font-weight:700}
+.notice{background:white;border-left:4px solid #c7a363;border-radius:10px;padding:10px 16px;margin-bottom:16px;color:#52667b}.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:14px}.btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 13px;color:#1d4566;font-weight:700}.btn.primary{background:var(--b);color:#fff;border-color:var(--b)}.btn.warn{background:#fff8ed;color:#87632e}.btn:disabled{opacity:.45;cursor:not-allowed}.toolbar .spacer{flex:1}.small{font-size:11px;color:var(--mut)}
+.layout{display:grid;grid-template-columns:minmax(250px,310px) minmax(270px,380px) minmax(340px,1fr);gap:14px;align-items:start}.panel{background:white;border:1px solid var(--line);border-radius:18px;box-shadow:0 9px 25px #173c5110;overflow:hidden}.panelHeader{padding:18px;border-bottom:1px solid var(--line)}.panelHeader h2{font-size:17px;margin:0 0 4px}.panelHeader p{margin:0;color:var(--mut);font-size:12px}.panelBody{padding:16px}.search{width:100%;padding:12px;border-radius:11px;border:1px solid var(--line);margin:0 0 12px}.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}.filter{border:1px solid var(--line);background:#f6f9fc;padding:7px 9px;border-radius:9px;font-size:11px}.filter.active{background:#deedf9;border-color:#87b5d5;color:#103e62}
+.groups{max-height:68vh;overflow:auto}.grp{border-bottom:1px solid #e6edf4;padding:5px 0}.grp summary{padding:9px 3px;font-weight:800;cursor:pointer}.grp summary small{float:right;color:var(--mut);font-weight:500}.node{display:flex;align-items:center;justify-content:space-between;width:100%;border:0;background:#fff;text-align:left;padding:9px 12px;border-radius:9px;gap:5px}.node:hover{background:#f5f9fc}.node.active{background:#eaf4fd;color:#174f7d;font-weight:700}.node span{font-size:12px}.node small{font-size:10px;white-space:nowrap;color:#74879a}.node.locked small{color:#a17b4c}
+.bread{font-size:11px;color:#778ba0;margin-bottom:11px}.itemTitle{font-size:22px;line-height:1.25;margin:4px 0 10px}.id{font:11px/1.5 ui-monospace,Consolas,monospace;background:#f3f6fa;color:#667a8c;display:inline-block;padding:5px 8px;border-radius:7px}.desc{color:#596f82;margin:14px 0}.label{display:block;font-weight:800;margin:20px 0 7px}.select,.textinput{width:100%;border:1px solid #cfdde8;border-radius:10px;background:#fff;padding:11px 12px;color:var(--ink)}.textinput{resize:vertical;min-height:92px}.note{background:#f6f9fc;border-radius:11px;padding:12px;color:#50677c;margin-top:16px;font-size:12px}.note.critical{background:#fff8ed;color:#775928;border-left:3px solid #c4a166}.state{margin-top:18px;color:#456078;font-size:12px}.state strong{color:#144b70}.previewTools{display:flex;gap:6px;align-items:center;justify-content:space-between;flex-wrap:wrap}.previewBody{background:#e7edf3;padding:15px;display:grid;place-items:start center}.frame{background:white;border:1px solid #c9d4df;box-shadow:0 12px 28px #07233e18;border-radius:11px;overflow:hidden;width:100%;transition:width .2s;min-height:600px}.frame.mobile{width:390px;max-width:100%}.frame iframe{width:100%;height:69vh;min-height:600px;border:0;background:white;display:block}.previewHint{font-size:11px;color:#697e92;margin-top:10px}.status{font-weight:700;color:#1d5c75;font-size:12px}.status.error{color:#b13b2e}
+dialog{border:0;border-radius:18px;max-width:660px;width:calc(100vw - 28px);box-shadow:0 22px 75px #10253a60;padding:0}dialog::backdrop{background:#0a1c30a8}.dialogInner{padding:24px}.dialogInner h2{margin:0 0 9px}.diff{max-height:48vh;overflow:auto}.diffItem{padding:11px;border-bottom:1px solid #e5ebf1}.diffItem small{display:block;color:var(--mut)}.dialogActions{display:flex;justify-content:end;gap:8px;flex-wrap:wrap;margin-top:18px}
+@media(max-width:1240px){.layout{grid-template-columns:290px 1fr}.previewPanel{grid-column:1/-1}}@media(max-width:730px){header{padding:12px}.layout{grid-template-columns:1fr}.groups{max-height:330px}.previewPanel{grid-column:auto}.toolbar .spacer{flex-basis:100%}.panelBody{padding:14px}.wrap{padding:16px 10px 32px}}
+</style>
+<script src="../control-runtime.js"></script>
+</head><body>
+<header><div class="logo">AVIAENERGO<small>MASTER PLATFORM CONTROL CENTER</small></div><a class="toplink" href="../index.html">Open Portal ↗</a></header>
+<div class="wrap">
+ <div class="head"><div><div class="eyebrow">DESIGN & PRESENTATION • PRE-INTEGRATION</div><h1>Control every published view.</h1><p>Choose what staff see, preview the real portal, review the draft, then apply settings to this browser. No database or server connection.</p></div><span class="badge">LOCAL PROTOTYPE • NOT ADMIN SECURITY</span></div>
+ <div class="notice"><b>Important:</b> Changes affect this browser only. Direct HTML links remain accessible. AIP sources, safety warnings, data accuracy, permissions and operational approvals are never changed by visibility controls.</div>
+ <div class="toolbar">
+  <span class="status" id="status" aria-live="polite">Loading local settings…</span><span class="spacer"></span>
+  <button class="btn" id="simplePreset">Simple View</button>
+  <button class="btn" id="fullPreset">Show All</button>
+  <button class="btn" id="restore">Restore Previous</button>
+  <button class="btn" id="export">Export JSON</button>
+  <button class="btn" id="copyJson">Copy JSON</button>
+  <label class="btn" for="importFile" style="cursor:pointer">Import JSON<input type="file" accept=".json,application/json" id="importFile" hidden></label>
+  <button class="btn primary" id="review" disabled>Review Changes</button>
+ </div>
+ <div class="layout">
+  <section class="panel"><div class="panelHeader"><h2>01 · Control Registry</h2><p id="registryCount">Choose a page or an element</p></div><div class="panelBody">
+   <input id="search" class="search" type="search" placeholder="Search pages, elements, warnings…" aria-label="Search registry">
+   <div class="filters"><button class="filter active" data-filter="all">All</button><button class="filter" data-filter="page">Pages</button><button class="filter" data-filter="visual">Appearance</button><button class="filter" data-filter="protected">Protected</button><button class="filter" data-filter="changed">Changed</button></div>
+   <div class="groups" id="registry"></div>
+  </div></section>
+  <section class="panel"><div class="panelHeader"><h2>02 · Item Inspector</h2><p>Only permitted presentation options can be edited.</p></div><div class="panelBody" id="inspector"></div></section>
+  <section class="panel previewPanel"><div class="panelHeader"><div class="previewTools"><div><h2>03 · Live Draft Preview</h2><p>Real portal layout, with the local draft applied.</p></div><div><button class="btn" id="desktop">Desktop</button> <button class="btn" id="mobile">Mobile</button></div></div></div><div class="previewBody">
+   <div class="frame" id="frame"><iframe id="preview" title="Actual AVIAENERGO portal design preview" src="../index.html?design_preview=1" loading="lazy"></iframe></div>
+   <p class="previewHint">Click a visible module in the preview to select its control. Hidden and paused modules remain selectable from the registry.</p>
+  </div></section>
+ </div>
+</div>
+<dialog id="reviewDialog"><div class="dialogInner"><h2>Review local changes</h2><p class="small">This updates only this browser’s saved presentation. It does not publish to employees or change any operational data.</p><div class="diff" id="diff"></div><div class="dialogActions"><button class="btn" id="cancelReview">Back to draft</button><button class="btn primary" id="confirmPublish">Apply Locally</button></div></div></dialog>
+<script>
+(function(){"use strict";
+const A=window.AviaControl;
+if(!A){document.getElementById("status").textContent="Control runtime missing.";return;}
+const $=id=>document.getElementById(id);
+const groups=["Knowledge","Airport Intelligence","Airspace & Routes","Sources & Evidence","Overview","Branding","Content","Protected"];
+let base=A.getRecord(),draft=structuredClone(base.settings),selected="page.tree",filter="all",mobile=false;
+let opened=new Set(groups),lastMessage="";
+const nodes=[
+ ...A.pages.map(p=>({id:"page."+p[0],kind:"page",key:p[0],title:p[1],group:p[2]})),
+ ...A.visuals.map(v=>({id:"visual."+v[0],kind:"visual",key:v[0],title:v[1],group:v[2]})),
+ {id:"copy.title",kind:"copy",key:"title",title:"Overview headline",group:"Content"},
+ {id:"copy.description",kind:"copy",key:"description",title:"Overview description",group:"Content"},
+ ...A.protectedItems.map(p=>({id:"protected."+p[0],kind:"protected",key:p[0],title:p[1],group:"Protected",reason:p[2]}))
+];
+const original=structuredClone(base.settings);
+const byId=new Map(nodes.map(n=>[n.id,n]));
+const desc={page:"Choose Visible, Unlisted or Paused. An unlisted page stays reachable by direct link. A paused module shows a notice in the portal shell, but its separate HTML URL remains accessible.",visual:"Hide optional presentation details without deleting content or altering source data.",copy:"Edit short English display text only. Original source material remains unchanged.",protected:"This information cannot be disabled by presentation controls."};
+function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function value(n,s){return n.kind==="page"?s.pages[n.key]:n.kind==="visual"?s.visuals[n.key]:n.kind==="copy"?s.copy[n.key]:null;}
+function changed(n){if(n.kind==="protected")return false;return JSON.stringify(value(n,draft))!==JSON.stringify(value(n,base.settings));}
+function dirty(){return JSON.stringify(draft)!==JSON.stringify(base.settings);}
+function mode(v){return v==="visible"?"Visible":v==="unlisted"?"Unlisted":v==="paused"?"Paused":v===true?"Shown":v===false?"Hidden":"Edited";}
+function stage(next){if(!A.valid(next)){inform("Settings did not pass validation.",true);return;}draft=next;render();pushPreview();}
+function inform(s,err){lastMessage=s;const el=$("status");el.textContent=s;el.classList.toggle("error",!!err);}
+function render(){renderTree();renderInspector();$("review").disabled=!dirty();const c=nodes.filter(changed).length;const suffix=base.updatedAt?" · Last applied: "+new Date(base.updatedAt).toLocaleString():"";inform("Local revision "+base.revision+" · "+c+" draft change(s)"+suffix,false);}
+function renderTree(){const q=$("search").value.toLowerCase().trim();const matched=nodes.filter(n=>(filter==="all"||filter==="changed"&&changed(n)||filter==="page"&&n.kind==="page"||filter==="visual"&&["visual","copy"].includes(n.kind)||filter==="protected"&&n.kind==="protected")&&(!q||[n.title,n.id,n.group,n.reason].join(" ").toLowerCase().includes(q)));
+ $("registryCount").textContent=matched.length+" of "+nodes.length+" registered controls";
+ $("registry").innerHTML=groups.map(g=>{const rows=matched.filter(n=>n.group===g);if(!rows.length)return "";return '<details class="grp" data-grp="'+escapeHtml(g)+'" '+(opened.has(g)?"open":"")+"><summary>"+escapeHtml(g)+" <small>"+rows.length+"</small></summary>"+rows.map(n=>'<button type="button" class="node '+(n.id===selected?"active ":"")+(n.kind==="protected"?"locked":"")+'" data-node="'+escapeHtml(n.id)+'"><span>'+escapeHtml(n.title)+'</span><small>'+(n.kind==="protected"?"LOCKED":changed(n)?"DRAFT":n.kind==="page"?mode(value(n,draft)):n.kind==="visual"?mode(value(n,draft)):"EDIT")+"</small></button>").join("")+"</details>";}).join("");
+ $("registry").querySelectorAll("[data-node]").forEach(b=>b.onclick=()=>{selected=b.dataset.node;render();});
+ $("registry").querySelectorAll("details").forEach(d=>d.ontoggle=()=>{if(d.open)opened.add(d.dataset.grp);else opened.delete(d.dataset.grp);});
+}
+function renderInspector(){const n=byId.get(selected)||nodes[0];let h='<div class="bread">'+escapeHtml(n.group)+' / '+escapeHtml(n.kind.toUpperCase())+'</div><h3 class="itemTitle">'+escapeHtml(n.title)+'</h3><span class="id">'+escapeHtml(n.id)+'</span><p class="desc">'+escapeHtml(desc[n.kind])+'</p>';
+ if(n.kind==="page"){h+='<label class="label" for="choice">Display mode</label><select id="choice" class="select">'+["visible","unlisted","paused"].map(v=>'<option value="'+v+'"'+(draft.pages[n.key]===v?" selected":"")+">"+mode(v)+"</option>").join("")+'</select><div class="note critical"><b>Page-level only.</b> Paused is a local portal-shell notice, not an access restriction. Direct standalone HTML files remain reachable.</div>';}
+ if(n.kind==="visual"){h+='<label class="label" for="choice">Appearance</label><select id="choice" class="select"><option value="true"'+(draft.visuals[n.key]?" selected":"")+'>Show</option><option value="false"'+(!draft.visuals[n.key]?" selected":"")+'>Hide</option></select>';}
+ if(n.kind==="copy"){h+='<label class="label" for="copyField">Plain English display text</label><textarea maxlength="220" id="copyField" class="textinput">'+escapeHtml(draft.copy[n.key])+'</textarea><p class="small">No HTML or executable markup. Maximum 220 characters.</p><button class="btn" id="copyStage">Add text to draft</button>';}
+ if(n.kind==="protected"){h+='<div class="note critical"><b>Protected, not configurable.</b><p>'+escapeHtml(n.reason)+'</p></div>';}
+ if(n.kind!=="protected"){const original=value(n,A.defaults());h+='<div class="state">Applied locally: <strong>'+escapeHtml(mode(value(n,base.settings)))+'</strong></div><div class="note">Default: '+escapeHtml(typeof original==="string"&&original.length>60?original.slice(0,60)+"…":mode(original))+'</div>';}
+ $("inspector").innerHTML=h;
+ const pick=$("choice");if(pick)pick.onchange=()=>{const next=structuredClone(draft);if(n.kind==="page")next.pages[n.key]=pick.value;else next.visuals[n.key]=pick.value==="true";stage(next);};
+ if($("copyStage"))$("copyStage").onclick=()=>{const next=structuredClone(draft);next.copy[n.key]=$("copyField").value.trim();stage(next);};
+}
+function pushPreview(){try{const frame=$("preview");if(frame.contentWindow)frame.contentWindow.postMessage({type:"AVIA_LOCAL_DRAFT",settings:draft},location.origin);}catch(e){inform("Preview is unavailable on this hosting origin.",true);}}
+function hookPreview(){const fr=$("preview");try{const doc=fr.contentDocument;if(!doc)return;
+ doc.addEventListener("click",ev=>{const mod=ev.target.closest?.("[data-open]");let id=mod&&"page."+mod.dataset.open;
+ if(!id&&ev.target.closest?.(".intro"))id="visual.intro";
+ if(!id&&ev.target.closest?.(".kpi"))id="visual.kpis";
+ if(!id&&ev.target.closest?.(".brand"))id="visual.brand";
+ if(!id&&ev.target.closest?.(".chip"))id="visual.chip";
+ if(!id&&ev.target.closest?.(".sectiontitle"))id="visual.sectiontitle";
+ if(!id||!byId.has(id))return;ev.preventDefault();ev.stopImmediatePropagation();selected=id;render();},{capture:true});
+ }catch(e){}pushPreview();}
+$("preview").addEventListener("load",hookPreview);
+$("search").oninput=renderTree;
+document.querySelectorAll("[data-filter]").forEach(b=>b.onclick=()=>{filter=b.dataset.filter;document.querySelectorAll("[data-filter]").forEach(x=>x.classList.toggle("active",x===b));renderTree();});
+$("desktop").onclick=()=>{$("frame").classList.remove("mobile");};
+$("mobile").onclick=()=>{$("frame").classList.add("mobile");};
+$("simplePreset").onclick=()=>{const n=structuredClone(draft);["subtitle","chip","kpi_dictionary","kpi_supplements","footer"].forEach(k=>n.visuals[k]=false);stage(n);};
+$("fullPreset").onclick=()=>stage(A.defaults());
+$("restore").onclick=()=>{const h=A.history();if(!h.length){inform("No previous local revision found.",true);return;}stage(structuredClone(h[h.length-1].settings));};
+function allChanges(){return nodes.filter(changed).map(n=>({title:n.title,from:value(n,base.settings),to:value(n,draft)}));}
+$("review").onclick=()=>{const changes=allChanges();if(!changes.length)return;$("diff").innerHTML=changes.map(c=>'<div class="diffItem"><b>'+escapeHtml(c.title)+'</b><small>'+escapeHtml(String(c.from))+' → '+escapeHtml(String(c.to))+'</small></div>').join("");$("reviewDialog").showModal();};
+$("cancelReview").onclick=()=>$("reviewDialog").close();
+$("confirmPublish").onclick=()=>{try{const n=A.publish(draft,base.revision);base=n;draft=structuredClone(n.settings);$("reviewDialog").close();render();pushPreview();inform("Applied locally · Revision "+n.revision+" · Open the portal in this browser to see it.",false);}catch(e){$("reviewDialog").close();inform(e.message==="VERSION_CONFLICT"?"Another tab changed the local settings. Refresh before applying.":"Unable to save locally. Storage may be blocked.",true);}};
+function exported(){return JSON.stringify({kind:"AVIAENERGO_LOCAL_PRESENTATION",revision:base.revision,exportedAt:new Date().toISOString(),settings:draft},null,2);}
+$("export").onclick=()=>{const blob=new Blob([exported()],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="AVIAENERGO_Local_Presentation_Settings.json";document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000);};
+$("copyJson").onclick=async()=>{try{await navigator.clipboard.writeText(exported());inform("Draft JSON copied to clipboard.",false);}catch(e){inform("Clipboard blocked. Use Export JSON instead.",true);}};
+$("importFile").onchange=async e=>{const file=e.target.files?.[0];if(!file)return;try{if(file.size>100000)throw Error("File too large");const obj=JSON.parse(await file.text()),candidate=obj?.settings??obj;if(!A.valid(candidate))throw Error("Invalid settings schema");stage(structuredClone(candidate));inform("Imported as draft. Review before applying.",false);}catch(err){inform("Import rejected: "+err.message,true);}e.target.value="";};
+window.addEventListener("storage",e=>{if(e.key===A.KEY){inform("Another tab changed the saved settings. Refresh this control center before applying.",true);}});
+render();pushPreview();
+})();
+</script></body></html>
