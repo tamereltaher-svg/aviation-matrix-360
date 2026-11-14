@@ -59,7 +59,7 @@ main{max-width:1460px;margin:auto;padding:22px 25px 45px}.intro{border-radius:20
  if(!isTree&&!isRoute&&!isGateway&&!isTrace&&!isCross){const frame=i;function activate(){try{const f=frame.contentWindow?.showView;if(typeof f==='function') f(k);}catch(err){/* embedded app remains independently navigable */}}
  frame.addEventListener('load',activate,{once:true});if(frame.contentDocument?.readyState==='complete')activate();}
  window.scrollTo({top:0});}
- document.querySelectorAll('.navbtn').forEach(b=>b.addEventListener('click',()=>openModule(b.dataset.tab==='intelligence'?'service':b.dataset.tab)));
+ document.querySelectorAll('.navbtn').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.tab,first=['service','matrix','request','company','sup','library','dictionary','accuracy','control','brief'].find(id=>window.AviaControl?.pageStatus(id)==='visible');openModule(k==='intelligence'?(first||'service'):k);}));
  document.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>openModule(b.dataset.open)));
  document.getElementById('overviewBtn').addEventListener('click',()=>openModule('home'));
  document.getElementById('pausedBack').addEventListener('click',()=>openModule('home'));
