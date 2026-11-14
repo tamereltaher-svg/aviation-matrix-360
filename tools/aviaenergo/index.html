@@ -51,6 +51,23 @@ main{max-width:1460px;margin:auto;padding:22px 25px 45px}.intro{border-radius:20
  const titles={cross:'Cross-Border FIR Trace',trace:'ENR Point Trace Explorer',gateway:'Egypt FIR Gateway Intelligence',route:'ENR Route Explorer',tree:'The AIP Knowledge Tree',service:'Find a Service',matrix:'Airport Capability Matrix',request:'Flight Request Check',company:'Company Readiness',sup:'Supplements & Restrictions',library:'AIP Source Library',dictionary:'Operational Dictionary',accuracy:'Evidence Verification',control:'Source Control Tower',brief:'Service Evidence Brief'};
  const pausedView=document.getElementById('pausedView'),viewer=document.getElementById('viewer'),home=document.getElementById('home'),t=document.getElementById('treeFrame'),i=document.getElementById('intelFrame'),r=document.getElementById('routeFrame'),g=document.getElementById('gatewayFrame'),p=document.getElementById('traceFrame'),x=document.getElementById('crossFrame');
  let pending='service',current='home';
+ function syncIntelligenceNav(){
+  try{
+   const doc=i.contentDocument;if(!doc)return;
+   const order=['service','matrix','request','company','sup','library','dictionary','accuracy','control','brief'];
+   doc.querySelectorAll('nav#nav [data-view]').forEach(b=>{
+    const k=b.dataset.view,state=window.AviaControl?.pageStatus(k)||'visible';
+    b.style.display=state==='visible'?'':'none';
+   });
+   const currentView=doc.querySelector('nav#nav [data-view].active')?.dataset.view;
+   if(currentView && window.AviaControl?.pageStatus(currentView)==='paused'){
+    const first=order.find(k=>window.AviaControl?.pageStatus(k)==='visible');
+    if(first&&typeof i.contentWindow?.showView==='function')i.contentWindow.showView(first);
+   }
+  }catch(e){/* A standalone iframe remains usable without local presentation access */ }
+ }
+ i.addEventListener('load',syncIntelligenceNav);
+ window.addEventListener('avia-control-visual-refresh',syncIntelligenceNav);
  function updateNav(tab){document.querySelectorAll('.navbtn').forEach(x=>{if(x.dataset.tab===tab)x.setAttribute('aria-current','page');else x.removeAttribute('aria-current');});}
  function openModule(k){if(k==='home'){current='home';pausedView.hidden=true;home.hidden=false;viewer.classList.remove('open');updateNav('home');window.scrollTo({top:0});return;}
  if(window.AviaControl?.pageStatus(k)==='paused'){current=k;home.hidden=true;viewer.classList.remove('open');pausedView.hidden=false;updateNav('home');window.scrollTo({top:0});return;}
