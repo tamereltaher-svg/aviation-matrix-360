@@ -21,8 +21,8 @@ dialog{border:0;border-radius:18px;max-width:660px;width:calc(100vw - 28px);box-
 </head><body>
 <header><div class="logo">AVIAENERGO<small>MASTER PLATFORM CONTROL CENTER</small></div><a class="toplink" href="../index.html">Open Portal ↗</a></header>
 <div class="wrap">
- <div class="head"><div><div class="eyebrow">DESIGN & PRESENTATION • PRE-INTEGRATION</div><h1>Control every published view.</h1><p>Choose what staff see, preview the real portal, review the draft, then apply settings to this browser. No database or server connection.</p></div><span class="badge">LOCAL PROTOTYPE • NOT ADMIN SECURITY</span></div>
- <div class="notice"><b>Important:</b> Changes affect this browser only. Direct HTML links remain accessible. AIP sources, safety warnings, data accuracy, permissions and operational approvals are never changed by visibility controls.</div>
+ <div class="head"><div><div class="eyebrow">DESIGN & PRESENTATION • PRE-INTEGRATION</div><h1>Control your portal layout.</h1><p>Choose what staff see, preview the real portal, review the draft, then apply settings to this browser. No database or server connection.</p></div><span class="badge">LOCAL PROTOTYPE • NOT ADMIN SECURITY</span></div>
+ <div class="notice"><b>Important:</b> Changes affect this browser only. Direct HTML links remain accessible. Internal module tabs remain unchanged in this first local prototype. AIP sources, safety warnings, data accuracy, permissions and operational approvals are never changed by visibility controls.</div>
  <div class="toolbar">
   <span class="status" id="status" aria-live="polite">Loading local settings…</span><span class="spacer"></span>
   <button class="btn" id="simplePreset">Simple View</button>
@@ -80,12 +80,13 @@ function renderTree(){const q=$("search").value.toLowerCase().trim();const match
  $("registry").querySelectorAll("details").forEach(d=>d.ontoggle=()=>{if(d.open)opened.add(d.dataset.grp);else opened.delete(d.dataset.grp);});
 }
 function renderInspector(){const n=byId.get(selected)||nodes[0];let h='<div class="bread">'+escapeHtml(n.group)+' / '+escapeHtml(n.kind.toUpperCase())+'</div><h3 class="itemTitle">'+escapeHtml(n.title)+'</h3><span class="id">'+escapeHtml(n.id)+'</span><p class="desc">'+escapeHtml(desc[n.kind])+'</p>';
- if(n.kind==="page"){h+='<label class="label" for="choice">Display mode</label><select id="choice" class="select">'+["visible","unlisted","paused"].map(v=>'<option value="'+v+'"'+(draft.pages[n.key]===v?" selected":"")+">"+mode(v)+"</option>").join("")+'</select><div class="note critical"><b>Page-level only.</b> Paused is a local portal-shell notice, not an access restriction. Direct standalone HTML files remain reachable.</div>';}
+ if(n.kind==="page"){h+='<label class="label" for="choice">Display mode</label><select id="choice" class="select">'+["visible","unlisted","paused"].map(v=>'<option value="'+v+'"'+(draft.pages[n.key]===v?" selected":"")+">"+mode(v)+"</option>").join("")+'</select><div style="margin-top:10px"><button type="button" class="btn" id="openPage">Preview this page</button></div><div class="note critical"><b>Page-level only.</b> Paused is a local portal-shell notice, not an access restriction. Direct standalone HTML files remain reachable.</div>';}
  if(n.kind==="visual"){h+='<label class="label" for="choice">Appearance</label><select id="choice" class="select"><option value="true"'+(draft.visuals[n.key]?" selected":"")+'>Show</option><option value="false"'+(!draft.visuals[n.key]?" selected":"")+'>Hide</option></select>';}
  if(n.kind==="copy"){h+='<label class="label" for="copyField">Plain English display text</label><textarea maxlength="220" id="copyField" class="textinput">'+escapeHtml(draft.copy[n.key])+'</textarea><p class="small">No HTML or executable markup. Maximum 220 characters.</p><button class="btn" id="copyStage">Add text to draft</button>';}
  if(n.kind==="protected"){h+='<div class="note critical"><b>Protected, not configurable.</b><p>'+escapeHtml(n.reason)+'</p></div>';}
  if(n.kind!=="protected"){const original=value(n,A.defaults());h+='<div class="state">Applied locally: <strong>'+escapeHtml(mode(value(n,base.settings)))+'</strong></div><div class="note">Default: '+escapeHtml(typeof original==="string"&&original.length>60?original.slice(0,60)+"…":mode(original))+'</div>';}
  $("inspector").innerHTML=h;
+ if($("openPage"))$("openPage").onclick=()=>{pushPreview();try{$("preview").contentWindow.AviaPortalOpen(n.key);$("preview").scrollIntoView({block:"start",behavior:"smooth"});}catch(e){inform("Unable to open this module in preview.",true);}};
  const pick=$("choice");if(pick)pick.onchange=()=>{const next=structuredClone(draft);if(n.kind==="page")next.pages[n.key]=pick.value;else next.visuals[n.key]=pick.value==="true";stage(next);};
  if($("copyStage"))$("copyStage").onclick=()=>{const next=structuredClone(draft);next.copy[n.key]=$("copyField").value.trim();stage(next);};
 }
