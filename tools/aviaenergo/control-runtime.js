@@ -68,6 +68,7 @@ function apply(settings){if(!valid(settings)||!document.querySelector(".navinner
  const stats=document.querySelectorAll(".kpi > div");["kpi_airports","kpi_services","kpi_dictionary","kpi_supplements"].forEach((k,i)=>setHidden(stats[i],!settings.visuals[k]));
  const h=document.querySelector(".intro h1"),p=document.querySelector(".intro p");
  if(h)h.textContent=settings.copy.title;if(p)p.textContent=settings.copy.description;
+ window.dispatchEvent(new Event("avia-control-visual-refresh"));
  // Safety notice and source warnings are not configurable.
 }
 let previewSettings=null;
