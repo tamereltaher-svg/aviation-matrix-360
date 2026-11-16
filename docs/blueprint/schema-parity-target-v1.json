@@ -1,0 +1,65 @@
+{
+  "schema": "aviation-matrix-db-structure-contract/v1",
+  "sampled_on": "2026-10-25",
+  "source": "Read-only pg_catalog counts from current AviationMatrix-Core production",
+  "classification": "schema metadata only, no user records, credentials or content",
+  "status": "reference_target_not_yet_reproduced",
+  "note": "Counts include schema-level structures after private Master Blueprint migration, not educational content rows. Do not claim parity without executing the isolated rebuild.",
+  "domains": [
+    {
+      "schema_name": "am_blueprint",
+      "tables": 4,
+      "views": 0,
+      "indexes": 10,
+      "rls_tables": 4,
+      "functions": 0,
+      "constraints": 18,
+      "policies": 0,
+      "triggers": 0
+    },
+    {
+      "schema_name": "assessment",
+      "tables": 115,
+      "views": 8,
+      "indexes": 289,
+      "rls_tables": 115,
+      "functions": 132,
+      "constraints": 751,
+      "policies": 0,
+      "triggers": 44
+    },
+    {
+      "schema_name": "assessment_staging",
+      "tables": 12,
+      "views": 0,
+      "indexes": 42,
+      "rls_tables": 12,
+      "functions": 6,
+      "constraints": 74,
+      "policies": 0,
+      "triggers": 10
+    },
+    {
+      "schema_name": "avi_knowledge",
+      "tables": 59,
+      "views": 10,
+      "indexes": 184,
+      "rls_tables": 59,
+      "functions": 25,
+      "constraints": 350,
+      "policies": 0,
+      "triggers": 35
+    },
+    {
+      "schema_name": "public",
+      "tables": 222,
+      "views": 22,
+      "indexes": 499,
+      "rls_tables": 222,
+      "functions": 69,
+      "constraints": 956,
+      "policies": 38,
+      "triggers": 21
+    }
+  ]
+}

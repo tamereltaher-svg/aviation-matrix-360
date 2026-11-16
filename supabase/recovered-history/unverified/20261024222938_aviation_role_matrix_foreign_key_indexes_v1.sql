@@ -1,0 +1,3 @@
+create index role_axis_coverage_axis_idx on avi_knowledge.role_axis_coverage(axis_code);
+create index role_interdependencies_dimension_idx on avi_knowledge.role_interdependencies(dimension_code);
+create index role_storyline_stops_axis_idx on avi_knowledge.role_storyline_stops(focus_axis_code);

@@ -1,0 +1,1 @@
+create index if not exists am_student_events_lesson_idx on public.am_student_learning_events(lesson_id);
